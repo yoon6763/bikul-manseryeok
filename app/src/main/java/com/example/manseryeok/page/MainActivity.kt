@@ -1,8 +1,12 @@
-package com.example.manseryeok
+package com.example.manseryeok.page
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
+import androidx.core.view.forEach
+import com.example.manseryeok.R
 import com.example.manseryeok.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
@@ -12,6 +16,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        window.statusBarColor = getColor(R.color.navy)
 
         binding.run {
             clCalendar.setOnClickListener(this@MainActivity)
@@ -27,9 +32,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(p0: View?) {
         binding.run {
             when (p0?.id) {
-                clCalendar.id -> {
-
-                }
+                clCalendar.id -> startActivity(Intent(this@MainActivity, CalendarInputActivity::class.java))
             }
         }
     }

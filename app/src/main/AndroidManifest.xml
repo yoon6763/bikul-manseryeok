@@ -14,10 +14,13 @@
         android:theme="@style/Theme.Manseryeok"
         tools:targetApi="31">
         <activity
-            android:name=".CalendarInputActivity"
+            android:name=".page.CalendarActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".page.CalendarInputActivity"
+            android:exported="false" />
+        <activity
+            android:name=".page.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

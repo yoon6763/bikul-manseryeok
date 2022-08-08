@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_background"
-    tools:context=".MainActivity">
+    tools:context=".page.MainActivity">
 
     <TextView
         android:id="@+id/textView"
@@ -52,7 +52,8 @@
             android:id="@+id/cl_calendar"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:background="@drawable/box_round_2">
+            android:background="@drawable/box_round_2"
+            android:foreground="?attr/selectableItemBackground">
 
             <ImageView
                 android:id="@+id/imageView"
@@ -82,7 +83,8 @@
             android:id="@+id/cl_database"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:background="@drawable/box_round_2">
+            android:background="@drawable/box_round_2"
+            android:foreground="?attr/selectableItemBackground">
 
             <ImageView
                 android:id="@+id/iv_database"
@@ -112,7 +114,8 @@
             android:id="@+id/cl_name"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:background="@drawable/box_round_2">
+            android:background="@drawable/box_round_2"
+            android:foreground="?attr/selectableItemBackground">
 
             <ImageView
                 android:id="@+id/iv_name"
@@ -142,7 +145,8 @@
             android:id="@+id/cl_compass"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:background="@drawable/box_round_2">
+            android:background="@drawable/box_round_2"
+            android:foreground="?attr/selectableItemBackground">
 
             <ImageView
                 android:id="@+id/iv_compass"
@@ -172,14 +176,16 @@
             android:id="@+id/cl_question"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:background="@drawable/box_round_2">
+            android:background="@drawable/box_round_2"
+            android:foreground="?attr/selectableItemBackground">
+
 
             <ImageView
                 android:id="@+id/iv_question"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_compass"
+                android:src="@drawable/ic_question"
                 app:layout_constraintBottom_toTopOf="@id/tv_question"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -189,7 +195,7 @@
                 android:id="@+id/tv_question"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/obj_compass"
+                android:text="@string/obj_question"
                 android:textColor="@color/main_background"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -210,7 +216,8 @@
             android:id="@+id/cl_media"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:background="@drawable/box_round_3">
+            android:background="@drawable/box_round_3"
+            android:foreground="?attr/selectableItemBackground">
 
             <ImageView
                 android:id="@+id/iv_media"

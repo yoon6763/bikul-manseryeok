@@ -1,4 +1,4 @@
-package com.example.manseryeok
+package com.example.manseryeok.page
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +12,12 @@ class CalendarInputActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        setSupportActionBar(binding.toolbarCalendarInput)
+        supportActionBar?.run {
+            // 앱 바 뒤로가기 버튼 설정
+            setDisplayHomeAsUpEnabled(true)
+        }
 
         binding.run {
             btnCalenderInputFinish.setOnClickListener {

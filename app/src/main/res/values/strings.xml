@@ -1,10 +1,44 @@
 <resources>
     <string name="app_name">Manseryeok</string>
     <string name="Manseryeok">만세력</string>
+
+    <string name="glb_search">조회 하기</string>
+
+    <!-- Main Activity -->
     <string name="obj_calendar">만세력</string>
     <string name="obj_database">데이터베이스</string>
     <string name="obj_name">이름</string>
     <string name="obj_compass">나침반</string>
     <string name="obj_question">문의사항</string>
     <string name="obj_media">미디어</string>
+
+    <!-- CalendarInputActivity -->
+    <string name="obj_toolbar_calendar_input">만세력 정보 입력</string>
+    <string name="obj_first_name">성</string>
+    <string name="obj_gender">성별</string>
+    <string name="obj_gender_male">남</string>
+    <string name="obj_gender_female">여</string>
+    <string name="obj_cal_type">양/음력</string>
+    <string name="obj_cal_type_sun">양력</string>
+    <string name="obj_cal_type_moon">음력</string>
+    <string name="obj_cal_type_moon_leap">음력윤달</string>
+    <string name="obj_input_birth">생년월일</string>
+    <string name="obj_input_birth_time">태어난 시</string>
+    <string name="obj_input_birth_time_unknown">모름</string>
+    <string name="obj_input_birth_place">출생지</string>
+    <string name="obj_cal_5">正</string>
+    <string name="obj_cal_terms">大雪</string>
+
+
+    <!-- CalenderActivity -->
+    <string name="obj_cal_pillar_1">식신</string>
+    <string name="obj_cal_pillar_2">일원</string>
+    <string name="obj_cal_pillar_3">정재</string>
+    <string name="obj_cal_pillar_4">정재</string>
+    <string name="obj_toolbar_calendar">만세력 결과</string>
+    <string name="obj_luck">대운</string>
+    <string name="obj_year_pillar">년주</string>
+    <string name="obj_month_pillar">월주</string>
+
+
 </resources>
