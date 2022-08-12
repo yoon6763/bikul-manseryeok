@@ -39,6 +39,7 @@
     <string name="obj_luck">대운</string>
     <string name="obj_year_pillar">년주</string>
     <string name="obj_month_pillar">월주</string>
+    <string name="obj_toolbar_map">방위 나침반</string>
 
 
 </resources>

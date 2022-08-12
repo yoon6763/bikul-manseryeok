@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".page.CompassActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_compass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:elevation="3dp"
+        app:title="@string/obj_toolbar_map" />
+
+    <FrameLayout
+        android:id="@+id/mv_compass"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btn_now_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|bottom"
+            android:layout_margin="15dp"
+            android:backgroundTint="@color/navy"
+            android:elevation="3dp"
+            android:src="@drawable/ic_my_location"
+            android:tint="@color/white" />
+
+    </FrameLayout>
+
+</LinearLayout>
