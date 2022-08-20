@@ -41,20 +41,24 @@
                     <TextView
                         android:layout_width="40dp"
                         android:layout_height="wrap_content"
+                        android:gravity="center"
                         android:text="@string/obj_cal_type_sun" />
 
                     <TextView
                         android:id="@+id/tv_cal_sun"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="20dp"
+                        android:layout_marginRight="10dp"
                         android:layout_weight="1"
+                        android:autoSizeTextType="uniform"
                         android:gravity="center"
+                        android:lines="1"
                         tools:text="1998년 12월 04일" />
 
                     <TextView
                         android:layout_width="40dp"
                         android:layout_height="wrap_content"
+                        android:gravity="center"
                         android:text="@string/obj_cal_type_moon" />
 
                     <TextView
@@ -62,7 +66,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:autoSizeTextType="uniform"
                         android:gravity="center"
+                        android:lines="1"
                         tools:text="1992년 10월 16일" />
 
                 </LinearLayout>
@@ -77,21 +83,25 @@
                     <TextView
                         android:layout_width="40dp"
                         android:layout_height="wrap_content"
+                        android:gravity="center"
                         android:text="@string/obj_cal_5" />
 
                     <TextView
                         android:id="@+id/tv_cal_5"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="20dp"
+                        android:layout_marginRight="10dp"
                         android:layout_weight="1"
+                        android:autoSizeTextType="uniform"
                         android:gravity="center"
+                        android:lines="1"
                         tools:text="1998년 12월 04일" />
 
                     <TextView
                         android:id="@+id/tv_cal_terms_title"
                         android:layout_width="40dp"
                         android:layout_height="wrap_content"
+                        android:gravity="center"
                         android:text="@string/obj_cal_terms" />
 
                     <TextView
@@ -99,7 +109,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:autoSizeTextType="uniform"
                         android:gravity="center"
+                        android:lines="1"
                         tools:text="1992년 10월 16일" />
 
                 </LinearLayout>
@@ -149,6 +161,7 @@
                     android:showDividers="middle">
 
                     <TextView
+                        android:id="@+id/tv_pillar_time_top"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:autoSizeTextType="uniform"
@@ -158,6 +171,7 @@
                         android:text="子" />
 
                     <TextView
+                        android:id="@+id/tv_pillar_day_top"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:autoSizeTextType="uniform"
@@ -167,6 +181,7 @@
                         android:text="丑" />
 
                     <TextView
+                        android:id="@+id/tv_pillar_month_top"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:autoSizeTextType="uniform"
@@ -176,6 +191,7 @@
                         android:text="寅" />
 
                     <TextView
+                        android:id="@+id/tv_pillar_year_top"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:autoSizeTextType="uniform"
@@ -196,6 +212,7 @@
                     android:showDividers="middle">
 
                     <TextView
+                        android:id="@+id/tv_pillar_time_bottom"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:autoSizeTextType="uniform"
@@ -205,6 +222,7 @@
                         android:text="卯" />
 
                     <TextView
+                        android:id="@+id/tv_pillar_day_bottom"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:autoSizeTextType="uniform"
@@ -214,6 +232,7 @@
                         android:text="乙" />
 
                     <TextView
+                        android:id="@+id/tv_pillar_month_bottom"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:autoSizeTextType="uniform"
@@ -223,6 +242,7 @@
                         android:text="丙" />
 
                     <TextView
+                        android:id="@+id/tv_pillar_year_bottom"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:autoSizeTextType="uniform"
@@ -278,6 +298,16 @@
                     android:showDividers="middle">
 
                     <TextView
+                        android:id="@+id/tv_tree"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/box_mint"
+                        android:gravity="center"
+                        android:paddingVertical="10dp"
+                        android:text="木(1)" />
+
+                    <TextView
                         android:id="@+id/tv_fire"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -288,24 +318,14 @@
                         android:text="火(1)" />
 
                     <TextView
-                        android:id="@+id/tv_water"
+                        android:id="@+id/tv_sand"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@drawable/box_sky"
+                        android:background="@drawable/box_yellow"
                         android:gravity="center"
                         android:paddingVertical="10dp"
-                        android:text="水(1)" />
-
-                    <TextView
-                        android:id="@+id/tv_tree"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/box_mint"
-                        android:gravity="center"
-                        android:paddingVertical="10dp"
-                        android:text="木(1)" />
+                        android:text="土(1)" />
 
                     <TextView
                         android:id="@+id/tv_gold"
@@ -318,14 +338,14 @@
                         android:text="金(1)" />
 
                     <TextView
-                        android:id="@+id/tv_sand"
+                        android:id="@+id/tv_water"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@drawable/box_yellow"
+                        android:background="@drawable/box_sky"
                         android:gravity="center"
                         android:paddingVertical="10dp"
-                        android:text="土(1)" />
+                        android:text="水(1)" />
 
                 </LinearLayout>
 
@@ -422,6 +442,7 @@
                     android:textSize="@dimen/middle_title_size"
                     android:textStyle="bold" />
 
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_year_pillar"
                     android:layout_width="match_parent"
@@ -449,6 +470,18 @@
                     android:text="@string/obj_month_pillar"
                     android:textSize="@dimen/middle_title_size" />
 
+                <TextView
+                    android:id="@+id/tv_month_pillar_message"
+                    android:textSize="20sp"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:layout_marginVertical="@dimen/gap_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="#90000000"
+                    android:text="@string/obj_cal_pillar_year_msg" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_month_pillar"
                     android:layout_width="match_parent"
@@ -460,7 +493,6 @@
                     tools:listitem="@layout/item_sixty_horizon" />
 
             </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

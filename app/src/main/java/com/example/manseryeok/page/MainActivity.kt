@@ -1,5 +1,6 @@
 package com.example.manseryeok.page
 
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
@@ -9,7 +10,10 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.manseryeok.R
+import com.example.manseryeok.Utils.Utils
+import com.example.manseryeok.adapter.ManseryeokSQLAdapter
 import com.example.manseryeok.databinding.ActivityMainBinding
+import java.io.*
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 
@@ -33,7 +37,24 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         getHashKey()
+
     }
+
+//    private fun initLoadDB() {
+//        val mDBHelper = ManseryeokSQLAdapter(applicationContext)
+//        mDBHelper.createDataBase()
+//        mDBHelper.open()
+//
+//        val manList = mDBHelper.getTableData(2011, 2013)
+//
+//        mDBHelper.close()
+//
+//        manList!!.forEach {
+//            Log.d("devvv","${it.sig}  ${it.sun_year}  ${it.sun_month}  ${it.sun_day}")
+//        }
+//    }
+
+
 
     private fun getHashKey() {
         var packageInfo: PackageInfo? = null

@@ -40,6 +40,9 @@
     <string name="obj_year_pillar">년주</string>
     <string name="obj_month_pillar">월주</string>
     <string name="obj_toolbar_map">방위 나침반</string>
+    <string name="msg_permission_granted">위치 권한이 허용되었습니다</string>
+    <string name="msg_permission_denied">위치 권한이 거부되었습니다\n권한이 없으면 나침반 기능을 사용할 수 없습니다</string>
+    <string name="obj_cal_pillar_year_msg">" 2100년 이후의 월주는 지원하지 않습니다"</string>
 
 
 </resources>

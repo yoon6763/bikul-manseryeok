@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.manseryeok.R
+import com.example.manseryeok.Utils.Utils
 import com.example.manseryeok.databinding.ItemSixtyHorizonBinding
 import com.example.manseryeok.models.SixtyHorizontalItem
 import java.util.*
@@ -26,26 +27,33 @@ class SixtyHorizontalAdapter(
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.binding.run {
             val item = items[position]
-            tvItemSixtyLabel.text = item.label
+            tvItemSixtyLabel.text = item.label.toString()
             tvItemSixtyTop.text = item.top
             tvItemSixtyBottom.text = item.bottom
 
-            val rd = Random()
-            val temp = rd.nextInt(5)
-            val tmep2 = rd.nextInt(5)
-            when (temp) {
-                0 -> tvItemSixtyTop.setBackgroundResource(R.drawable.box_light_gray)
-                1 -> tvItemSixtyTop.setBackgroundResource(R.drawable.box_mint)
-                2 -> tvItemSixtyTop.setBackgroundResource(R.drawable.box_red)
-                3 -> tvItemSixtyTop.setBackgroundResource(R.drawable.box_dark_gray)
-                4 -> tvItemSixtyTop.setBackgroundResource(R.drawable.box_yellow)
+//            "甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"
+//            "갑", "을", "병", "정", "무", "기", "경", "신", "임", "계"
+//            "목", "목", "화", "화", "토", "토", "금", "금", "수", "수"
+
+//            "子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"
+//            "자", "축", "인", "묘", "진", "사", "오", "미", "신", "유", "술", "해"
+//            "수", "토", "목", "목", "토", "화", "화", "토", "금", "금", "토", "수"
+
+
+            when(Utils.tenGan[0].indexOf(item.top)) {
+                0, 1 -> tvItemSixtyTop.setBackgroundResource(R.drawable.box_mint) // 목
+                2, 3 -> tvItemSixtyTop.setBackgroundResource(R.drawable.box_red) // 화
+                4, 5 -> tvItemSixtyTop.setBackgroundResource(R.drawable.box_yellow) // 토
+                6, 7 -> tvItemSixtyTop.setBackgroundResource(R.drawable.box_light_gray) // 금
+                8, 9 -> tvItemSixtyTop.setBackgroundResource(R.drawable.box_sky) // 수
             }
-            when (tmep2) {
-                0 -> tvItemSixtyBottom.setBackgroundResource(R.drawable.box_light_gray)
-                1 -> tvItemSixtyBottom.setBackgroundResource(R.drawable.box_mint)
-                2 -> tvItemSixtyBottom.setBackgroundResource(R.drawable.box_red)
-                3 -> tvItemSixtyBottom.setBackgroundResource(R.drawable.box_dark_gray)
-                4 -> tvItemSixtyBottom.setBackgroundResource(R.drawable.box_yellow)
+
+            when(Utils.twelveGan[0].indexOf(item.bottom)) {
+                0, 11 -> tvItemSixtyBottom.setBackgroundResource(R.drawable.box_sky) // 수
+                1, 4, 7, 10 -> tvItemSixtyBottom.setBackgroundResource(R.drawable.box_yellow) // 토
+                2, 3 -> tvItemSixtyBottom.setBackgroundResource(R.drawable.box_mint) // 목
+                5, 6 -> tvItemSixtyBottom.setBackgroundResource(R.drawable.box_red) // 화
+                8, 9 -> tvItemSixtyBottom.setBackgroundResource(R.drawable.box_light_gray) // 금
             }
         }
     }

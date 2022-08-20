@@ -16,9 +16,16 @@
         app:title="@string/obj_toolbar_map" />
 
     <FrameLayout
-        android:id="@+id/mv_compass"
+        android:id="@+id/fl_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <fragment
+            android:id="@+id/frag_map"
+            tools:context = ".page.CompassActivity"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btn_now_location"
@@ -32,5 +39,4 @@
             android:tint="@color/white" />
 
     </FrameLayout>
-
 </LinearLayout>
