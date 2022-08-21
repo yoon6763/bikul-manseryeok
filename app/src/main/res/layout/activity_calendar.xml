@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_background"
+    android:orientation="vertical"
+    tools:context=".page.CalendarActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_calendar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:elevation="3dp"
+        app:title="@string/obj_toolbar_calendar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/container_top"
+                android:orientation="vertical"
+                android:paddingTop="@dimen/gap_vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/gap_horizontal"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="40dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/obj_cal_type_sun" />
+
+                    <TextView
+                        android:id="@+id/tv_cal_sun"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:autoSizeTextType="uniform"
+                        android:gravity="center"
+                        android:lines="1"
+                        tools:text="1998년 12월 04일" />
+
+                    <TextView
+                        android:layout_width="40dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/obj_cal_type_moon" />
+
+                    <TextView
+                        android:id="@+id/tv_cal_moon"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:autoSizeTextType="uniform"
+                        android:gravity="center"
+                        android:lines="1"
+                        tools:text="1992년 10월 16일" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/gap_horizontal"
+                    android:layout_marginTop="@dimen/gap_line"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="40dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/obj_cal_5" />
+
+                    <TextView
+                        android:id="@+id/tv_cal_5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:autoSizeTextType="uniform"
+                        android:gravity="center"
+                        android:lines="1"
+                        tools:text="1998년 12월 04일" />
+
+                    <TextView
+                        android:id="@+id/tv_cal_terms_title"
+                        android:layout_width="40dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/obj_cal_terms" />
+
+                    <TextView
+                        android:id="@+id/tv_cal_terms"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:autoSizeTextType="uniform"
+                        android:gravity="center"
+                        android:lines="1"
+                        tools:text="1992년 10월 16일" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_pillar_top_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/gap_vertical"
+                    android:divider="@drawable/empty_divider"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:showDividers="middle">
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="식신" />
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="정재" />
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="편인" />
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="정재" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_pillar_top"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/gap_line"
+                    android:divider="@drawable/empty_divider"
+                    android:gravity="center"
+                    android:showDividers="middle">
+
+                    <TextView
+                        android:id="@+id/tv_pillar_time_top"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:autoSizeTextType="uniform"
+                        android:background="@drawable/box_dark_gray"
+                        android:gravity="center"
+                        android:padding="15dp"
+                        android:text="子" />
+
+                    <TextView
+                        android:id="@+id/tv_pillar_day_top"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:autoSizeTextType="uniform"
+                        android:background="@drawable/box_red"
+                        android:gravity="center"
+                        android:padding="15dp"
+                        android:text="丑" />
+
+                    <TextView
+                        android:id="@+id/tv_pillar_month_top"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:autoSizeTextType="uniform"
+                        android:background="@drawable/box_yellow"
+                        android:gravity="center"
+                        android:padding="15dp"
+                        android:text="寅" />
+
+                    <TextView
+                        android:id="@+id/tv_pillar_year_top"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:autoSizeTextType="uniform"
+                        android:background="@drawable/box_sky"
+                        android:gravity="center"
+                        android:padding="15dp"
+                        android:text="卯" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_pillar_bottom"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/gap_line"
+                    android:divider="@drawable/empty_divider"
+                    android:gravity="center"
+                    android:showDividers="middle">
+
+                    <TextView
+                        android:id="@+id/tv_pillar_time_bottom"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:autoSizeTextType="uniform"
+                        android:background="@drawable/box_mint"
+                        android:gravity="center"
+                        android:padding="15dp"
+                        android:text="卯" />
+
+                    <TextView
+                        android:id="@+id/tv_pillar_day_bottom"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:autoSizeTextType="uniform"
+                        android:background="@drawable/box_sky"
+                        android:gravity="center"
+                        android:padding="15dp"
+                        android:text="乙" />
+
+                    <TextView
+                        android:id="@+id/tv_pillar_month_bottom"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:autoSizeTextType="uniform"
+                        android:background="@drawable/box_red"
+                        android:gravity="center"
+                        android:padding="15dp"
+                        android:text="丙" />
+
+                    <TextView
+                        android:id="@+id/tv_pillar_year_bottom"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:autoSizeTextType="uniform"
+                        android:background="@drawable/box_light_gray"
+                        android:gravity="center"
+                        android:padding="15dp"
+                        android:text="丁" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_pillar_bottom_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/gap_line"
+                    android:divider="@drawable/empty_divider"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:showDividers="middle">
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="식신" />
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="정재" />
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="편인" />
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="정재" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/gap_horizontal"
+                    android:layout_marginTop="@dimen/gap_vertical"
+                    android:divider="@drawable/empty_divider"
+                    android:orientation="horizontal"
+                    android:showDividers="middle">
+
+                    <TextView
+                        android:id="@+id/tv_tree"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/box_mint"
+                        android:gravity="center"
+                        android:paddingVertical="10dp"
+                        android:text="木(1)" />
+
+                    <TextView
+                        android:id="@+id/tv_fire"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/box_red"
+                        android:gravity="center"
+                        android:paddingVertical="10dp"
+                        android:text="火(1)" />
+
+                    <TextView
+                        android:id="@+id/tv_sand"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/box_yellow"
+                        android:gravity="center"
+                        android:paddingVertical="10dp"
+                        android:text="土(1)" />
+
+                    <TextView
+                        android:id="@+id/tv_gold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/box_light_gray"
+                        android:gravity="center"
+                        android:paddingVertical="10dp"
+                        android:text="金(1)" />
+
+                    <TextView
+                        android:id="@+id/tv_water"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/box_sky"
+                        android:gravity="center"
+                        android:paddingVertical="10dp"
+                        android:text="水(1)" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/gap_horizontal"
+                    android:layout_marginTop="@dimen/gap_line"
+                    android:layout_marginBottom="@dimen/gap_vertical"
+                    android:background="@drawable/box_navy"
+                    android:paddingVertical="10dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="역마살"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="반안살"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="겁살"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="지살"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/gap_vertical"
+                android:background="@drawable/container_middle"
+                android:orientation="vertical"
+                android:paddingVertical="@dimen/gap_vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="@string/obj_luck"
+                    android:textSize="@dimen/middle_title_size"
+                    android:textStyle="bold" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_luck"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/gap_line"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:reverseLayout="true"
+                    tools:listitem="@layout/item_sixty_horizon" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/gap_vertical"
+                android:background="@drawable/container_middle"
+                android:orientation="vertical"
+                android:paddingVertical="@dimen/gap_horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/obj_year_pillar"
+                    android:textSize="@dimen/middle_title_size"
+                    android:textStyle="bold" />
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_year_pillar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/gap_line"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:reverseLayout="true"
+                    tools:listitem="@layout/item_sixty_horizon" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/gap_vertical"
+                android:background="@drawable/container_bottom"
+                android:orientation="vertical"
+                android:paddingVertical="@dimen/gap_vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/obj_month_pillar"
+                    android:textSize="@dimen/middle_title_size" />
+
+                <TextView
+                    android:id="@+id/tv_month_pillar_message"
+                    android:textSize="20sp"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:layout_marginVertical="@dimen/gap_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="#90000000"
+                    android:text="@string/obj_cal_pillar_year_msg" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_month_pillar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/gap_line"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:reverseLayout="true"
+                    tools:listitem="@layout/item_sixty_horizon" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
