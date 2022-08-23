@@ -20,6 +20,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".page.QuestionActivity"
+            android:exported="false" />
+        <activity
             android:name=".page.CompassActivity"
             android:exported="false" />
         <activity
@@ -36,16 +39,12 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!--        <meta-data-->
-        <!--            android:name="com.google.android.geo.API_KEY"-->
-        <!--            android:value="AIzaSyCBMxOrA67nzoiH0_jrhf9rqMyvaSkmFgo" />-->
-
+        </activity> <!-- <meta-data -->
+        <!-- android:name="com.google.android.geo.API_KEY" -->
+        <!-- android:value="AIzaSyCBMxOrA67nzoiH0_jrhf9rqMyvaSkmFgo" /> -->
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="a45a47aca829985df7d51c9b241934f5" />
-
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="1usbnlh4m0" />
