@@ -97,7 +97,6 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
         }
 
         binding.btnCompassLocation.setOnClickListener {
-            Toast.makeText(applicationContext, "Clicked",Toast.LENGTH_SHORT).show()
             btnLocationSource = FusedLocationSource(this@CompassActivity, LOCATION_PERMISSION_REQUEST_CODE)
 
             naverMap.locationSource = btnLocationSource
