@@ -50,6 +50,10 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
     implementation 'com.google.android.gms:play-services-location:20.0.0'
 
+    // Naver Map SDK
+    implementation 'com.naver.maps:map-sdk:3.15.0'
+
+
     // Ted Permission
     implementation 'io.github.ParkSangGwon:tedpermission-normal:3.3.0'
 

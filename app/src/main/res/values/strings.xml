@@ -43,6 +43,12 @@
     <string name="msg_permission_granted">위치 권한이 허용되었습니다</string>
     <string name="msg_permission_denied">위치 권한이 거부되었습니다\n권한이 없으면 나침반 기능을 사용할 수 없습니다</string>
     <string name="obj_cal_pillar_year_msg">" 2100년 이후의 월주는 지원하지 않습니다"</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="obj_com_help_title">방향이 맞지 않아요!</string>
+    <string name="obj_com_help_content_1">1. 주변에 다른 전자기기가 있을 경우\n기기의 방향센서에 영향을 줍니다.\n다른 전자기기와 거리를 둬 주세요.</string>
+    <string name="obj_com_help_content_2">2. 기기를 하늘을 바라보게 하고,\n8자를 그리며 이동하여\n방향센서를 초기화 해주세요.</string>
+    <string name="glb_close">닫기</string>
 
 
 </resources>

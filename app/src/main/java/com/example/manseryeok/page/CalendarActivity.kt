@@ -68,7 +68,11 @@ class CalendarActivity : AppCompatActivity() {
         mDBHelper.createDataBase()
         mDBHelper.open()
 
-        userCalendar = mDBHelper.getTableData(userBirth[Calendar.YEAR], userBirth[Calendar.YEAR] + 100)!!
+        val tempCal = Calendar.getInstance().apply {
+            add(Calendar.MONTH, -2)
+        }
+
+        userCalendar = mDBHelper.getTableData(tempCal[Calendar.YEAR], tempCal[Calendar.YEAR] + 100)!!
         Log.d(TAG, "initLoadDB: "+Utils.dateFormat.format(userBirth.timeInMillis))
 
         mDBHelper.close()
@@ -90,7 +94,7 @@ class CalendarActivity : AppCompatActivity() {
                 this[Calendar.DAY_OF_MONTH] = userBirthCalender.cd_ld!!
             }
 
-            tvCalMoon.text = "${Utils.dateKorFormat.format(moonCalendar.timeInMillis)}"
+            //tvCalMoon.text = "${Utils.dateKorFormat.format(moonCalendar.timeInMillis)}"
 
             // 正 생일
             tvCal5.text = "${Utils.dateKorFormat.format(userBirth.timeInMillis)}"
@@ -131,6 +135,8 @@ class CalendarActivity : AppCompatActivity() {
         binding.run {
             tvCalSun.text = Utils.dateKorFormat.format(Utils.dateFormat.parse(userModel.birth))
             userBirth = Calendar.getInstance().apply { timeInMillis = Utils.dateTimeFormat.parse(userModel.birth).time }
+            tvCalMoon.text =
+                Utils.dateKorFormat.format(Utils.convertSolarToLunar(Utils.dateFormat.format(userBirth.timeInMillis)))
         }
     }
 

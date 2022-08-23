@@ -2,7 +2,6 @@ package com.example.manseryeok.page
 
 import android.Manifest
 import android.content.Context
-import android.content.pm.PackageManager
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -12,30 +11,30 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.DialogFragment
 import com.example.manseryeok.R
 import com.example.manseryeok.databinding.ActivityCompassBinding
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
+import com.naver.maps.geometry.LatLng
+import com.naver.maps.map.*
+import com.naver.maps.map.util.FusedLocationSource
+import kotlin.math.roundToInt
 
-class CompassActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListener {
-    private lateinit var googleMap: GoogleMap
+class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCallback {
+    private val TAG = "CompassActivity"
     private val locationManager by lazy { getSystemService(Context.LOCATION_SERVICE) as LocationManager }
     private val gpsListener = GPSListener()
     private val binding by lazy { ActivityCompassBinding.inflate(layoutInflater) }
-    private var recentRefreshTime = 0L
+    private val fm by lazy { supportFragmentManager }
+    private lateinit var mapFragment: MapFragment
+    private lateinit var naverMap: NaverMap
+    private lateinit var locationSource: FusedLocationSource
+    private lateinit var btnLocationSource: FusedLocationSource
 
     lateinit var mSensorManager: SensorManager
     lateinit var mAccelerometer: Sensor
@@ -47,10 +46,10 @@ class CompassActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventList
     var mLastMagnetometerSet = false
     var mOrientation = FloatArray(3)
     var mCurrentDegree = 0f
+    var mapIsReady = false
 
     private val permissionListener = object : PermissionListener {
         override fun onPermissionGranted() {
-
         }
 
         override fun onPermissionDenied(deniedPermissions: MutableList<String>?) {
@@ -84,31 +83,71 @@ class CompassActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventList
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
         mMagnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)
 
-        val mapFragment =
-            supportFragmentManager.findFragmentById(R.id.frag_map) as SupportMapFragment
-        mapFragment.getMapAsync(this@CompassActivity)
+        mapFragment = fm.findFragmentById(R.id.frag_map) as MapFragment?
+            ?: MapFragment.newInstance().also {
+                fm.beginTransaction().add(R.id.frag_map, it).commit()
+            }
+
+        locationSource = FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
+        mapFragment.getMapAsync(this)
+
+        binding.btnCompassQuestion.setOnClickListener {
+            val helpFragment = CompassHelpFragment.newInstance()
+            helpFragment.show(supportFragmentManager, "HelpDialog")
+        }
+
+        binding.btnCompassLocation.setOnClickListener {
+            Toast.makeText(applicationContext, "Clicked",Toast.LENGTH_SHORT).show()
+            btnLocationSource = FusedLocationSource(this@CompassActivity, LOCATION_PERMISSION_REQUEST_CODE)
+
+            naverMap.locationSource = btnLocationSource
+            val cameraPosition = CameraPosition(LatLng(locationSource.lastLocation!!.latitude, locationSource.lastLocation!!.longitude),
+                naverMap.cameraPosition.zoom,
+                naverMap.cameraPosition.tilt,
+                naverMap.cameraPosition.bearing)
+
+            naverMap.cameraPosition = cameraPosition
+
+
+//            val camera = CameraUpdate.toCameraPosition(cameraPosition)
+//                .animate(CameraAnimation.Easing, 1000)
+//            naverMap.moveCamera(camera)
+        }
     }
 
-    override fun onMapReady(p0: GoogleMap) {
-        googleMap = p0
-        googleMap.isMyLocationEnabled = true
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
 
-        if (ContextCompat.checkSelfPermission(
-                this@CompassActivity,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            )
-            == PackageManager.PERMISSION_GRANTED
-        ) {
-            // 위치권한 있음
-
-            startLocationService()
-        } else {
-            // 위치권한 없음
-            val SEOUL = LatLng(37.56, 126.98)
-
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(SEOUL))
-            googleMap.animateCamera(CameraUpdateFactory.zoomTo(11f))
+//        if(requestCode == BTN_LOCATION_PERMISSION_REQUEST_CODE) {
+//            Toast.makeText(applicationContext,"1",Toast.LENGTH_SHORT).show()
+//            naverMap.locationSource = btnLocationSource
+//
+//            val cameraPosition = CameraPosition(LatLng(btnLocationSource.lastLocation!!.latitude, btnLocationSource.lastLocation!!.longitude),
+//                naverMap.cameraPosition.zoom,
+//                naverMap.cameraPosition.tilt,
+//                naverMap.cameraPosition.bearing)
+//            val camera = CameraUpdate.toCameraPosition(cameraPosition).animate(CameraAnimation.Easing, 1)
+//            naverMap.moveCamera(camera)
+//        }
+        if (locationSource.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
+            if (!locationSource.isActivated) { // 권한 거부됨
+                naverMap.locationTrackingMode = LocationTrackingMode.None
+            }
+            return
         }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
+    override fun onMapReady(p0: NaverMap) {
+        naverMap = p0
+        naverMap.locationSource = locationSource
+        naverMap.locationTrackingMode = LocationTrackingMode.Follow
+        //naverMap.uiSettings.isLocationButtonEnabled = true
+
+        mapIsReady = true
     }
 
     override fun onResume() {
@@ -123,94 +162,55 @@ class CompassActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventList
         mSensorManager.unregisterListener(this, mMagnetometer)
     }
 
-    override fun onSensorChanged(event: SensorEvent?) {
-        recentRefreshTime = System.currentTimeMillis()
-        if (event?.sensor == mAccelerometer) {
-            System.arraycopy(event.values, 0, mLastAccelerometer, 0, event.values.size)
-            mLastAccelerometerSet = true
-        } else if (event?.sensor == mMagnetometer) {
-            System.arraycopy(event.values, 0, mLastMagnetometer, 0, event.values.size)
-            mLastMagnetometerSet = true
-        }
-        if (mLastAccelerometerSet && mLastMagnetometerSet) {
-            SensorManager.getRotationMatrix(mR, null, mLastAccelerometer, mLastMagnetometer)
-            val azimuthinDegress = Math.toDegrees(
-                (SensorManager.getOrientation(
-                    mR,
-                    mOrientation
-                )[0] + 360).toDouble()
-            ) % 360 as Int
+    var mCount = 0
 
-            val ra = RotateAnimation(
-                mCurrentDegree,
-                -azimuthinDegress.toFloat(),
-                Animation.RELATIVE_TO_SELF, 0.5f,
-                Animation.RELATIVE_TO_SELF, 0.5f
-            )
-            ra.duration = 250
-            ra.fillAfter = true
+    override fun onSensorChanged(event: SensorEvent) {
+        if (mCount++ > 200 && mapIsReady) {
 
-            val currentPlace = CameraPosition.builder().target(
-                LatLng(
-                    googleMap.cameraPosition.target.latitude,
-                    googleMap.cameraPosition.target.longitude
+            if (event.sensor == mAccelerometer) {
+                System.arraycopy(event.values, 0, mLastAccelerometer, 0, event.values.size)
+                mLastAccelerometerSet = true
+            } else if (event.sensor == mMagnetometer) {
+                System.arraycopy(event.values, 0, mLastMagnetometer, 0, event.values.size)
+                mLastMagnetometerSet = true
+            }
+            if (mLastAccelerometerSet && mLastMagnetometerSet) {
+                SensorManager.getRotationMatrix(mR, null, mLastAccelerometer, mLastMagnetometer)
+                val azimuthinDegress = ((Math.toDegrees(
+                    SensorManager.getOrientation(mR, mOrientation)[0]
+                        .toDouble()
+                ) + 360).toInt() % 360).toFloat()
+
+                val ra = RotateAnimation(
+                    mCurrentDegree,
+                    -azimuthinDegress,
+                    Animation.RELATIVE_TO_SELF, 0.5f,
+                    Animation.RELATIVE_TO_SELF, 0.5f
                 )
-            )
-                .bearing(azimuthinDegress.toFloat())
-                .zoom(googleMap.cameraPosition.zoom)
-                .build()
+                ra.duration = 2000
+                ra.fillAfter = true
+                binding.ivCompass.startAnimation(ra)
 
-            googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(currentPlace))
-            //mPointer.startAnimation(ra);
-            binding.ivCompass.startAnimation(ra)
-            mCurrentDegree = -azimuthinDegress.toFloat()
+                // target, zoom, tilt, bearing
+                val cameraPosition = CameraPosition(
+                    naverMap.cameraPosition.target,
+                    naverMap.cameraPosition.zoom,
+                    naverMap.cameraPosition.tilt,
+                    azimuthinDegress.toDouble()
+                )
+
+                val camera = CameraUpdate.toCameraPosition(cameraPosition)
+                    .animate(CameraAnimation.Easing, 1000)
+                naverMap.moveCamera(camera)
+                //naverMap.cameraPosition = cameraPosition
+
+                mCurrentDegree = -azimuthinDegress
+            }
         }
     }
 
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
 
-    }
-
-    private fun startLocationService() {
-        try {
-            var location: Location? = null
-
-            val minTime = 0L
-            val minDistance = 0f
-
-            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-
-                if (location != null) {
-                    val latitude = location.latitude
-                    val longitude = location.longitude
-                    showCurrentLocation(latitude, longitude)
-                }
-
-                locationManager.requestLocationUpdates(
-                    LocationManager.GPS_PROVIDER,
-                    minTime,
-                    minDistance,
-                    gpsListener
-                )
-            } else if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-                location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
-
-                if (location != null) {
-                    val latitude = location.latitude
-                    val longitude = location.longitude
-                    showCurrentLocation(latitude, longitude)
-                }
-            }
-
-        } catch (e: SecurityException) {
-            e.printStackTrace()
-        }
-    }
-
-    private fun showCurrentLocation(latitude: Double, longitude: Double) {
-        val currentPoint = LatLng(latitude, longitude)
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentPoint, 15f))
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -230,4 +230,10 @@ class CompassActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventList
             val longitude = p0.longitude
         }
     }
+
+    companion object {
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 1000
+        private const val BTN_LOCATION_PERMISSION_REQUEST_CODE = 1001
+    }
+
 }

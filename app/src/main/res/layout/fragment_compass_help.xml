@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".page.CompassHelpFragment">
+
+    <TextView
+        android:id="@+id/tv_compass_help_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:paddingVertical="@dimen/gap_vertical"
+        android:text="@string/obj_com_help_title"
+        android:textSize="25sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:lineSpacingExtra="@dimen/line_spacing"
+        android:text="@string/obj_com_help_content_1"
+        android:textSize="@dimen/text_size_15" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/gap_vertical"
+        android:gravity="center"
+        android:lineSpacingExtra="@dimen/line_spacing"
+        android:text="@string/obj_com_help_content_2"
+        android:textSize="@dimen/text_size_15" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/gap_vertical"
+        android:background="@color/gray" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_compass_help_close"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/btn_full_height"
+        android:background="@drawable/btn_white"
+        android:foreground="?attr/selectableItemBackground"
+        android:text="@string/glb_close"
+        android:textColor="@color/black" />
+</LinearLayout>
