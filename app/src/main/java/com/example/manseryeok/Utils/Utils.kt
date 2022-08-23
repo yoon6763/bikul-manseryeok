@@ -1,7 +1,9 @@
 package com.example.manseryeok.Utils
 
+import android.icu.util.ChineseCalendar
 import android.util.Log
 import java.text.SimpleDateFormat
+import java.util.*
 
 object Utils {
     const val INTENT_EXTRAS_USER = "INTENT_EXTRAS_USER"
@@ -94,4 +96,36 @@ object Utils {
 
         return if (dayIdx == -1) "" else timeGanji[dayIdx][timeIdx]
     }
+
+    /*** 음력날짜를 양력날짜로 변환* @param 음력날짜 (yyyyMMdd)* @return 양력날짜 (yyyyMMdd) */
+    fun convertLunarToSolar(date: String): String {
+        val nDate = date.replace("-","")
+        val cc = ChineseCalendar()
+        val cal = Calendar.getInstance()
+        cc[ChineseCalendar.EXTENDED_YEAR] = nDate.substring(0, 4).toInt() + 2637
+        cc[ChineseCalendar.MONTH] = nDate.substring(4, 6).toInt() - 1
+        cc[ChineseCalendar.DAY_OF_MONTH] = nDate.substring(6).toInt()
+        cal.timeInMillis = cc.timeInMillis
+        return dateTimeFormat.format(cal.time)
+    }
+
+    /*** 양력날짜를 음력날짜로 변환* @param 양력날짜 (yyyyMMdd)* @return 음력날짜 (yyyyMMdd) */
+     fun convertSolarToLunar(date: String): Long {
+        val nDate = date.replace("-","")
+        val cc = ChineseCalendar()
+        val cal = Calendar.getInstance()
+        cal[Calendar.YEAR] = nDate.substring(0, 4).toInt()
+        cal[Calendar.MONTH] = nDate.substring(4, 6).toInt() - 1
+        cal[Calendar.DAY_OF_MONTH] = nDate.substring(6).toInt()
+        cc.timeInMillis = cal.timeInMillis
+        val y = cc[ChineseCalendar.EXTENDED_YEAR] - 2637
+        val m = cc[ChineseCalendar.MONTH] + 1
+        val d = cc[ChineseCalendar.DAY_OF_MONTH]
+        val ret = StringBuffer()
+        ret.append(String.format("%04d", y)).append("-")
+        ret.append(String.format("%02d", m)).append("-")
+        ret.append(String.format("%02d", d))
+        return dateFormat.parse(ret.toString())!!.time
+    }
+
 }

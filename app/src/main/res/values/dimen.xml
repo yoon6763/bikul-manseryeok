@@ -16,4 +16,6 @@
     <dimen name="input_text_width">80dp</dimen>
 
     <dimen name="radio_height">30dp</dimen>
+
+    <dimen name="line_spacing">15dp</dimen>
 </resources>

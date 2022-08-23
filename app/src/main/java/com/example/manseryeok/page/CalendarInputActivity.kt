@@ -7,6 +7,7 @@ import android.icu.util.Calendar
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Toast
 import com.example.manseryeok.Utils.Utils
 import com.example.manseryeok.databinding.ActivityCalendarInputBinding
 import com.example.manseryeok.models.User
@@ -39,6 +40,10 @@ class CalendarInputActivity : AppCompatActivity() {
             }
 
             btnCalenderInputFinish.setOnClickListener {
+                if(birth[Calendar.YEAR] >= 2101) {
+                    Toast.makeText(applicationContext, "최대 2100년까지의 만세력 정보만 제공합니다",Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
                 nextPage()
             }
         }
@@ -83,12 +88,19 @@ class CalendarInputActivity : AppCompatActivity() {
 //            var birthPlace: String?
             birth.add(Calendar.MINUTE, -30)
 
+            val date = if(rgCalType.checkedRadioButtonId == rbCalTypeMoon.id) {
+                Utils.convertLunarToSolar(Utils.dateTimeFormat.format(birth.timeInMillis))
+            } else {
+                Utils.dateTimeFormat.format(birth.timeInMillis)
+            }
+
+
             val userModel = User(
                 etFirstName.text.toString(),
                 etName.text.toString(),
                 if(rgGender.checkedRadioButtonId == rbGenderMale.id) 0 else 1,
                 !cbInputBirthTime.isChecked,
-                Utils.dateTimeFormat.format(birth.timeInMillis),
+                date,
                 etInputBirthPlace.text.toString()
             )
 
