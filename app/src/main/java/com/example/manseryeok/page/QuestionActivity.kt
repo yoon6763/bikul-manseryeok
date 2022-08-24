@@ -16,6 +16,12 @@ class QuestionActivity : AppCompatActivity() {
             // 앱 바 뒤로가기 버튼 설정
             setDisplayHomeAsUpEnabled(true)
         }
+
+        binding.run {
+            btnQueFinish.setOnClickListener {
+                finish()
+            }
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

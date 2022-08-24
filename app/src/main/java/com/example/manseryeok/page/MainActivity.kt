@@ -40,22 +40,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
-//    private fun initLoadDB() {
-//        val mDBHelper = ManseryeokSQLAdapter(applicationContext)
-//        mDBHelper.createDataBase()
-//        mDBHelper.open()
-//
-//        val manList = mDBHelper.getTableData(2011, 2013)
-//
-//        mDBHelper.close()
-//
-//        manList!!.forEach {
-//            Log.d("devvv","${it.sig}  ${it.sun_year}  ${it.sun_month}  ${it.sun_day}")
-//        }
-//    }
-
-
-
     private fun getHashKey() {
         var packageInfo: PackageInfo? = null
         try {
@@ -81,6 +65,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 clCalendar.id -> startActivity(Intent(this@MainActivity, CalendarInputActivity::class.java))
                 clCompass.id -> startActivity(Intent(this@MainActivity, CompassActivity::class.java))
                 clQuestion.id -> startActivity(Intent(this@MainActivity, QuestionActivity::class.java))
+                clDatabase.id -> startActivity(Intent(this@MainActivity, DBActivity::class.java))
             }
         }
     }
