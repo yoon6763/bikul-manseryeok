@@ -69,10 +69,12 @@ class CalendarActivity : AppCompatActivity() {
         mDBHelper.open()
 
         val tempCal = Calendar.getInstance().apply {
+            this[Calendar.YEAR] = userBirth[Calendar.YEAR]
             add(Calendar.MONTH, -2)
         }
 
         userCalendar = mDBHelper.getTableData(tempCal[Calendar.YEAR], tempCal[Calendar.YEAR] + 100)!!
+        Log.d(TAG, "initLoadDB: ${tempCal[Calendar.YEAR]} ~ ${tempCal[Calendar.YEAR]+100}")
         Log.d(TAG, "initLoadDB: "+Utils.dateFormat.format(userBirth.timeInMillis))
 
         mDBHelper.close()
@@ -81,18 +83,14 @@ class CalendarActivity : AppCompatActivity() {
     // 기둥 세우기
     private fun setUpPillar() {
         binding.run {
+            Log.d(TAG, "setUpUserInfo: ${Utils.dateTimeFormat.format(userBirth.timeInMillis)}")
+
             userBirthCalender = userCalendar.find {
                 it.cd_sy == userBirth[Calendar.YEAR] &&
                 it.cd_sm == userBirth[Calendar.MONTH] + 1 &&
                 it.cd_sd == userBirth[Calendar.DAY_OF_MONTH]
             }!!
-
-            // 음력 생일
-            val moonCalendar = Calendar.getInstance().apply {
-                this[Calendar.YEAR] = userBirthCalender.cd_ly!!
-                this[Calendar.MONTH] = userBirthCalender.cd_lm!!
-                this[Calendar.DAY_OF_MONTH] = userBirthCalender.cd_ld!!
-            }
+            
 
             //tvCalMoon.text = "${Utils.dateKorFormat.format(moonCalendar.timeInMillis)}"
 
