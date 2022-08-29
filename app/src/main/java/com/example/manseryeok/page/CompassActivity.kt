@@ -100,13 +100,20 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
             btnLocationSource = FusedLocationSource(this@CompassActivity, LOCATION_PERMISSION_REQUEST_CODE)
 
             naverMap.locationSource = btnLocationSource
-            val cameraPosition = CameraPosition(LatLng(locationSource.lastLocation!!.latitude, locationSource.lastLocation!!.longitude),
-                naverMap.cameraPosition.zoom,
-                naverMap.cameraPosition.tilt,
-                naverMap.cameraPosition.bearing)
 
-            naverMap.cameraPosition = cameraPosition
+            if(locationSource.lastLocation != null) {
+                val cameraPosition = CameraPosition(
+                    LatLng(
+                        locationSource.lastLocation!!.latitude,
+                        locationSource.lastLocation!!.longitude
+                    ),
+                    naverMap.cameraPosition.zoom,
+                    naverMap.cameraPosition.tilt,
+                    naverMap.cameraPosition.bearing
+                )
 
+                naverMap.cameraPosition = cameraPosition
+            }
 
 //            val camera = CameraUpdate.toCameraPosition(cameraPosition)
 //                .animate(CameraAnimation.Easing, 1000)

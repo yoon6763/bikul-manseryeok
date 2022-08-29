@@ -56,6 +56,7 @@
             android:layout_height="match_parent"
             android:background="@drawable/et_box"
             android:gravity="top"
+            android:lineSpacingExtra="10dp"
             android:hint="@string/obj_que_content_hint"
             android:padding="@dimen/gap_line" />
     </LinearLayout>

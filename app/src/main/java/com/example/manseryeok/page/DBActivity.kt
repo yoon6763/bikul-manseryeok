@@ -3,13 +3,14 @@ package com.example.manseryeok.page
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
-import androidx.recyclerview.widget.DividerItemDecoration
+import android.widget.Toast
+import com.example.manseryeok.UserDB.DatabaseHelper
 import com.example.manseryeok.adapter.DBListAdapter
 import com.example.manseryeok.databinding.ActivityDbactivityBinding
 import com.example.manseryeok.models.DBListItem
 
 class DBActivity : AppCompatActivity() {
-    private lateinit var dbListAdapter:DBListAdapter
+    private lateinit var dbListAdapter: DBListAdapter
     private val binding by lazy { ActivityDbactivityBinding.inflate(layoutInflater) }
     private val dbList = ArrayList<DBListItem>()
 
@@ -23,27 +24,36 @@ class DBActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
         }
 
+
+        val myDB = DatabaseHelper(this)
+        val sqliteData = myDB.allData
+
+        while(sqliteData.moveToNext()) {
+            // firstName, lastName, birth, gender, yearPillar, monthPillar, dayPillar, timePillar
+            val id = sqliteData.getString(0)
+            val firstName = sqliteData.getString(1)
+            val lastName = sqliteData.getString(2)
+            val birth = sqliteData.getString(3)
+            val gender = sqliteData.getString(4)
+            val yearPillar = sqliteData.getString(5)
+            val monthPillar = sqliteData.getString(6)
+            val dayPillar = sqliteData.getString(7)
+            val timePillar = sqliteData.getString(8)
+
+            var pillar = "${yearPillar[0]}${monthPillar[0]}${dayPillar[0]}${if (timePillar == null || timePillar == "NULL") "" else timePillar[0]}" +
+                    "\n"+"${yearPillar[1]}${monthPillar[0]}${dayPillar[0]}${if(timePillar == null || timePillar == "NULL") "" else timePillar[1]}"
+
+            dbList.add(DBListItem(id,firstName, lastName, birth, if(gender == "남") 0 else 1, pillar))
+        }
+
+//        val isInserted = myDB.insertData("전", "윤호", "202208082020", "남", "子丑","子丑","子丑","子丑")
+//        val isInserted2 = myDB.insertData("테", "스트", "202208082020", "여","子丑","子丑","子丑","子丑")
+//        Toast.makeText(applicationContext,"${if (isInserted) "케이스 1 성공" else "케이스 1 실패" }",Toast.LENGTH_SHORT).show()
+//        Toast.makeText(applicationContext,"${if (isInserted2) "케이스 2 성공" else "케이스 2 실패" }",Toast.LENGTH_SHORT).show()
+
         binding.run {
-
-            dbList.add(DBListItem(0, "전윤호", 0, "2000-00-00", "2000-00-00", "丁戊己庚\n辰巳午未"))
-            dbList.add(DBListItem(1, "전윤호", 0, "2000-00-00", "2000-00-00", "丁戊己庚\n辰巳午未"))
-            dbList.add(DBListItem(2, "전윤호", 0, "2000-00-00", "2000-00-00", "丁戊己庚\n辰巳午未"))
-            dbList.add(DBListItem(3, "전윤호", 0, "2000-00-00", "2000-00-00", "丁戊己庚\n辰巳午未"))
-            dbList.add(DBListItem(4, "전윤호", 0, "2000-00-00", "2000-00-00", "丁戊己庚\n辰巳午未"))
-            dbList.add(DBListItem(5, "전윤호", 0, "2000-00-00", "2000-00-00", "丁戊己庚\n辰巳午未"))
-            dbList.add(DBListItem(6, "전윤호", 0, "2000-00-00", "2000-00-00", "丁戊己庚\n辰巳午未"))
-            dbList.add(DBListItem(7, "전윤호", 0, "2000-00-00", "2000-00-00", "丁戊己庚\n辰巳午未"))
-            dbList.add(DBListItem(8, "전윤호", 0, "2000-00-00", "2000-00-00", "丁戊己庚\n辰巳午未"))
-            dbList.add(DBListItem(9, "전윤호", 0, "2000-00-00", "2000-00-00", "丁戊己庚\n辰巳午未"))
-            dbList.add(DBListItem(10, "전윤호", 0, "2000-00-00", "2000-00-00", "丁戊己庚\n辰巳午未"))
-            dbList.add(DBListItem(11, "전윤호", 0, "2000-00-00", "2000-00-00", "丁戊己庚\n辰巳午未"))
-            dbList.add(DBListItem(12, "전윤호", 0, "2000-00-00", "2000-00-00", "丁戊己庚\n辰巳午未"))
-            dbList.add(DBListItem(13, "전윤호", 0, "2000-00-00", "2000-00-00", "丁戊己庚\n辰巳午未"))
-
             dbListAdapter = DBListAdapter(this@DBActivity, dbList)
-
             dbListAdapter.notifyDataSetChanged()
-
             rvDbList.adapter = dbListAdapter
         }
     }

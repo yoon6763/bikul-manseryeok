@@ -228,17 +228,39 @@
                 android:id="@+id/et_input_birth_place"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="대한민국 (-30분)"
-                android:gravity="center" />
+                android:clickable="true"
+                android:editable="false"
+                android:focusable="false"
+                android:gravity="center"
+                android:text="대한민국 (-30분)" />
         </LinearLayout>
 
     </LinearLayout>
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_calender_input_finish"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/btn_full_height"
-        android:background="@drawable/btn_navy"
-        android:foreground="?attr/selectableItemBackground"
-        android:text="@string/glb_search" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_name_input_finish"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/btn_full_height"
+            android:layout_weight="1"
+            android:background="@drawable/btn_mint"
+            android:foreground="?attr/selectableItemBackground"
+            android:text="@string/obj_search_name"
+            android:textColor="@color/navy" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_calender_input_finish"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/btn_full_height"
+            android:layout_weight="1"
+            android:background="@drawable/btn_navy"
+            android:foreground="?attr/selectableItemBackground"
+            android:text="@string/glb_search"
+            android:textColor="@color/mint" />
+    </LinearLayout>
+
 </LinearLayout>

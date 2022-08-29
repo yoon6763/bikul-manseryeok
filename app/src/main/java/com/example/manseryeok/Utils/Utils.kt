@@ -10,10 +10,12 @@ object Utils {
 
     val TAG = "Utils"
 
-    val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+    val dateNumFormat = SimpleDateFormat("yyyyMMdd")
+    val dateTimeNumFormat = SimpleDateFormat("yyyyMMddHHmm")
+    val dateSlideFormat = SimpleDateFormat("yyyy-MM-dd")
+    val dateTimeSlideFormat = SimpleDateFormat("yyyy-MM-dd HH:mm")
     val dateKorFormat = SimpleDateFormat("yyyy년 MM월 dd일")
     val timeFormat = SimpleDateFormat("a hh:mm")
-    val dateTimeFormat = SimpleDateFormat("yyyy-MM-dd HH:mm")
     //const val DB_FILE_NAME = "Manseryeok.db"
 
 
@@ -45,6 +47,25 @@ object Utils {
 //    子 丑 寅 卯 辰 巳 午 未 申 酉 戌 亥
 //    자 축 인 묘 진 사 오 미 신 유 술 해
 //    수 토 목 목 토 화 화 토 금 금 토 수
+
+//    丙丁巳午 화
+//    壬癸子亥 수
+//    甲乙寅卯 목
+//    庚辛申酉 금
+//    戊己丑辰未戌 토
+
+    fun getProperty(c: Char): Int {
+        // 화 수 목 금 토
+        //  0 1 2 3 4
+        return when (c) {
+            '丙', '丁', '巳', '午' -> 0 // 화
+            '壬', '癸', '子', '亥' -> 1 // 수
+            '甲', '乙', '寅', '卯' -> 2 // 목
+            '庚', '辛', '申', '酉' -> 3 // 금
+            '戊', '己', '丑', '辰', '未', '戌' -> 4 // 토
+            else -> 5
+        }
+    }
 
     fun getYearGanji(year: Int): String {
         var result = ""
@@ -92,26 +113,29 @@ object Utils {
             in 21 until 23 -> 11
             else -> 0
         }
-        Log.d(TAG, "getTimeGanji:   Time = $hour    ${dayIdx}   $timeIdx     ${timeGanji[dayIdx][timeIdx]}")
+        Log.d(
+            TAG,
+            "getTimeGanji:   Time = $hour    ${dayIdx}   $timeIdx     ${timeGanji[dayIdx][timeIdx]}"
+        )
 
         return if (dayIdx == -1) "" else timeGanji[dayIdx][timeIdx]
     }
 
     /*** 음력날짜를 양력날짜로 변환* @param 음력날짜 (yyyyMMdd)* @return 양력날짜 (yyyyMMdd) */
     fun convertLunarToSolar(date: String): String {
-        val nDate = date.replace("-","")
+        val nDate = date.replace("-", "")
         val cc = ChineseCalendar()
         val cal = Calendar.getInstance()
         cc[ChineseCalendar.EXTENDED_YEAR] = nDate.substring(0, 4).toInt() + 2637
         cc[ChineseCalendar.MONTH] = nDate.substring(4, 6).toInt() - 1
         cc[ChineseCalendar.DAY_OF_MONTH] = nDate.substring(6).toInt()
         cal.timeInMillis = cc.timeInMillis
-        return dateTimeFormat.format(cal.time)
+        return dateTimeSlideFormat.format(cal.time)
     }
 
     /*** 양력날짜를 음력날짜로 변환* @param 양력날짜 (yyyyMMdd)* @return 음력날짜 (yyyyMMdd) */
-     fun convertSolarToLunar(date: String): Long {
-        val nDate = date.replace("-","")
+    fun convertSolarToLunar(date: String): Long {
+        val nDate = date.replace("-", "")
         val cc = ChineseCalendar()
         val cal = Calendar.getInstance()
         cal[Calendar.YEAR] = nDate.substring(0, 4).toInt()
@@ -125,7 +149,7 @@ object Utils {
         ret.append(String.format("%04d", y)).append("-")
         ret.append(String.format("%02d", m)).append("-")
         ret.append(String.format("%02d", d))
-        return dateFormat.parse(ret.toString())!!.time
+        return dateSlideFormat.parse(ret.toString())!!.time
     }
 
 }

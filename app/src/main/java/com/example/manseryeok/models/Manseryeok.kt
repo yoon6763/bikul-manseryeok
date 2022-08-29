@@ -24,7 +24,7 @@ data class Manseryeok(
     var cd_month_size: Int?,
     var cd_hterms: String?,
     var cd_kterms: String?,
-    var cd_terms_time: Int?,
+    var cd_terms_time: Long?,
     var cd_keventday: String?,
     var cd_ddi: String?,
     var cd_sol_plan: String?,

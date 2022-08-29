@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.Manseryeok" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimary">@color/mint</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
@@ -17,6 +17,7 @@
         <item name="android:textColor">@color/black</item>
         <item name="android:textStyle">bold</item>
         <item name="android:buttonStyle">@style/defaultButtonStyle</item>
+
     </style>
 
     <style name="styleInputText" parent="Widget.AppCompat.TextView">

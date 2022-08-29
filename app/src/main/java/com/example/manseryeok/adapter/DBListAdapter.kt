@@ -8,8 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.manseryeok.R
+import com.example.manseryeok.Utils.Utils
 import com.example.manseryeok.databinding.ItemDbListBinding
 import com.example.manseryeok.models.DBListItem
+import okhttp3.internal.Util
 
 
 class DBListAdapter(
@@ -32,9 +34,12 @@ class DBListAdapter(
         holder.binding.run {
             val item = items[position]
 
-            tvItemDbName.text = item.name
-            tvItemDbBirthSum.text = "(양) ${item.sunBirth}"
-            tvItemDbBirthMoon.text = "(음) ${item.moonBirth}"
+            val birth = item.birth
+            val sunBirth = "${birth.substring(0,4)}-${birth.substring(4,6)}-${birth.substring(6,8)}"
+
+            tvItemDbName.text = "${item.firstName}${item.lastName}"
+            tvItemDbBirthSum.text = "(양) $sunBirth"
+            tvItemDbBirthMoon.text = "(음) ${Utils.dateSlideFormat.format(Utils.convertSolarToLunar(sunBirth))}"
             tvItemDbGanji.text = item.ganji
 
             changeVisibility(holder.binding,selectedItems.get(position))

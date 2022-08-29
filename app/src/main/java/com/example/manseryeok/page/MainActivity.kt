@@ -1,6 +1,5 @@
 package com.example.manseryeok.page
 
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
@@ -10,10 +9,7 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.manseryeok.R
-import com.example.manseryeok.Utils.Utils
-import com.example.manseryeok.adapter.ManseryeokSQLAdapter
 import com.example.manseryeok.databinding.ActivityMainBinding
-import java.io.*
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 
@@ -31,13 +27,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             clCalendar.setOnClickListener(this@MainActivity)
             clCompass.setOnClickListener(this@MainActivity)
             clDatabase.setOnClickListener(this@MainActivity)
-            clName.setOnClickListener(this@MainActivity)
             clMedia.setOnClickListener(this@MainActivity)
             clQuestion.setOnClickListener(this@MainActivity)
         }
 
-        getHashKey()
-
+        // getHashKey()
     }
 
     private fun getHashKey() {

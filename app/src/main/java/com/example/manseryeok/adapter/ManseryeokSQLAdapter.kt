@@ -116,7 +116,7 @@ class ManseryeokSQLAdapter(val context: Context) {
                     manseryeokModel.cd_month_size = mCur.getInt(20)
                     manseryeokModel.cd_hterms = mCur.getString(21)
                     manseryeokModel.cd_kterms = mCur.getString(22)
-                    manseryeokModel.cd_terms_time = mCur.getInt(23)
+                    manseryeokModel.cd_terms_time = mCur.getLong(23)
                     manseryeokModel.cd_keventday = mCur.getString(24)
                     manseryeokModel.cd_ddi = mCur.getString(25)
                     manseryeokModel.cd_sol_plan = mCur.getString(26)
