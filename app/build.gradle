@@ -66,4 +66,12 @@ dependencies {
     // Leku PlacePicker
     implementation 'com.adevinta.android:leku:9.1.4'
 
+
+    // Retrofit2, okhttp3
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.0'
+
+    // json 변환 라이브러리
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
 }

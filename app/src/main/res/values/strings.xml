@@ -86,5 +86,8 @@
     <string name="glb_save">저장하기</string>
     <string name="msg_delete_complete">삭제가 완료되었습니다</string>
     <string name="msg_delete_fail">삭제에 실패했습니다\n해당 오류가 계속될경우 문의해주세요</string>
+    <string name="msg_send_inquiry_fail">문의사항 전송에 실패했습니다</string>
+    <string name="msg_send_inquiry_complete">문의사항 전송에 성공하였습니다</string>
+    <string name="glb_please_wait">잠시만 기다려주세요</string>
 
 </resources>

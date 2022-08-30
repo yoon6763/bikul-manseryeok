@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".page.QuestionActivity">
+    tools:context=".page.InquiryActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar_question"
+        android:id="@+id/toolbar_inquiry"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -32,13 +32,13 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/et_que_title"
+            android:id="@+id/et_inquiry_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/et_box"
             android:gravity="top"
             android:hint="@string/obj_que_title_hint"
-            android:maxLength="3"
+            android:maxLines="3"
             android:padding="@dimen/gap_line" />
 
         <TextView
@@ -51,7 +51,7 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/et_que_content"
+            android:id="@+id/et_inquiry_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/et_box"
@@ -62,7 +62,7 @@
     </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_que_finish"
+        android:id="@+id/btn_inquiry_finish"
         android:layout_width="match_parent"
         android:layout_height="@dimen/btn_full_height"
         android:background="@drawable/btn_navy"

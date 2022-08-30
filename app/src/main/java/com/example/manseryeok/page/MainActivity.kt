@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             when (p0?.id) {
                 clCalendar.id -> startActivity(Intent(this@MainActivity, CalendarInputActivity::class.java))
                 clCompass.id -> startActivity(Intent(this@MainActivity, CompassActivity::class.java))
-                clQuestion.id -> startActivity(Intent(this@MainActivity, QuestionActivity::class.java))
+                clQuestion.id -> startActivity(Intent(this@MainActivity, InquiryActivity::class.java))
                 clDatabase.id -> startActivity(Intent(this@MainActivity, DBActivity::class.java))
             }
         }
