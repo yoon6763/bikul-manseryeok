@@ -1,13 +1,17 @@
 package com.example.manseryeok.page
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
+import com.example.manseryeok.R
 import com.example.manseryeok.UserDB.DatabaseHelper
+import com.example.manseryeok.Utils.Utils
 import com.example.manseryeok.adapter.DBListAdapter
 import com.example.manseryeok.databinding.ActivityDbactivityBinding
 import com.example.manseryeok.models.DBListItem
+import com.example.manseryeok.models.User
 
 class DBActivity : AppCompatActivity() {
     private lateinit var dbListAdapter: DBListAdapter
@@ -40,21 +44,55 @@ class DBActivity : AppCompatActivity() {
             val dayPillar = sqliteData.getString(7)
             val timePillar = sqliteData.getString(8)
 
-            var pillar = "${yearPillar[0]}${monthPillar[0]}${dayPillar[0]}${if (timePillar == null || timePillar == "NULL") "" else timePillar[0]}" +
-                    "\n"+"${yearPillar[1]}${monthPillar[0]}${dayPillar[0]}${if(timePillar == null || timePillar == "NULL") "" else timePillar[1]}"
+            val pillar = "${if (timePillar == null || timePillar == "NULL" || timePillar == "") "" else timePillar[0]}${dayPillar[0]}${monthPillar[0]}${yearPillar[0]}" +
+                    "\n"+"${if(timePillar == null || timePillar == "NULL" || timePillar == "") "" else timePillar[1]}${dayPillar[1]}${monthPillar[1]}${yearPillar[1]}"
 
-            dbList.add(DBListItem(id,firstName, lastName, birth, if(gender == "남") 0 else 1, pillar))
+            dbList.add(DBListItem(id,firstName, lastName, birth, if(gender == "남") "남" else "여", pillar))
+
         }
-
-//        val isInserted = myDB.insertData("전", "윤호", "202208082020", "남", "子丑","子丑","子丑","子丑")
-//        val isInserted2 = myDB.insertData("테", "스트", "202208082020", "여","子丑","子丑","子丑","子丑")
-//        Toast.makeText(applicationContext,"${if (isInserted) "케이스 1 성공" else "케이스 1 실패" }",Toast.LENGTH_SHORT).show()
-//        Toast.makeText(applicationContext,"${if (isInserted2) "케이스 2 성공" else "케이스 2 실패" }",Toast.LENGTH_SHORT).show()
 
         binding.run {
             dbListAdapter = DBListAdapter(this@DBActivity, dbList)
             dbListAdapter.notifyDataSetChanged()
             rvDbList.adapter = dbListAdapter
+        }
+
+
+        dbListAdapter.onMenuClickListener = object : DBListAdapter.OnMenuClickListener {
+            override fun onSearchClick(ID: String, position: Int) {
+                val intent = Intent(this@DBActivity, CalendarActivity::class.java)
+
+//                firstName: String?,
+//                lastName: String?,
+//                gender: Int, // 0 - 남자, 1 - 여자
+//                isIncludedTime: Boolean,
+//                birth: String?, // yyyy-MM-dd HH:mm
+//                birthPlace: String?
+                val dbModel = dbList[position]
+
+                val userModel =
+                    User(
+                        dbModel.firstName,
+                        dbModel.lastName,
+                        if(dbModel.gender == "남") 0 else 1,
+                        if(dbModel.birth.length == 8) false else true,
+                        dbModel.birth,
+                        "서울")
+
+                intent.putExtra(Utils.INTENT_EXTRAS_USER, userModel)
+                startActivity(intent)
+            }
+
+            override fun onDeleteClick(ID: String, position: Int) {
+                val deleteResult = myDB.deleteData(ID)
+                if(deleteResult > 0) {
+                    Toast.makeText(applicationContext,getString(R.string.msg_delete_complete),Toast.LENGTH_SHORT).show()
+                    dbList.removeAt(position)
+                } else {
+                    Toast.makeText(applicationContext,getString(R.string.msg_delete_fail),Toast.LENGTH_SHORT).show()
+                }
+                dbListAdapter.notifyDataSetChanged()
+            }
         }
     }
 

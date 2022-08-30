@@ -113,10 +113,7 @@ object Utils {
             in 21 until 23 -> 11
             else -> 0
         }
-        Log.d(
-            TAG,
-            "getTimeGanji:   Time = $hour    ${dayIdx}   $timeIdx     ${timeGanji[dayIdx][timeIdx]}"
-        )
+        Log.d(TAG, "getTimeGanji:   Time = $hour    ${dayIdx}   $timeIdx     ${timeGanji[dayIdx][timeIdx]}")
 
         return if (dayIdx == -1) "" else timeGanji[dayIdx][timeIdx]
     }

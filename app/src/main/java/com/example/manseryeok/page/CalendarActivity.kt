@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.manseryeok.R
+import com.example.manseryeok.UserDB.DatabaseHelper
 import com.example.manseryeok.Utils.Utils
 import com.example.manseryeok.adapter.ManseryeokSQLAdapter
 import com.example.manseryeok.adapter.SixtyHorizontalAdapter
@@ -52,6 +54,12 @@ class CalendarActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
         }
 
+        binding.run {
+            btnCalendarSave.setOnClickListener {
+                 saveResult()
+            }
+        }
+
         userModel = intent.getParcelableExtra<User>(Utils.INTENT_EXTRAS_USER)!!
 
         setUpUserInfo()
@@ -62,6 +70,35 @@ class CalendarActivity : AppCompatActivity() {
         setUpLuckRecyclerView() // 대운 리사이클러뷰
         setUpYearAndMonthPillar() // 년주 리사이클러뷰
         setRecyclerViewClickEvent() // 년주 리사이클러뷰 클릭 이벤트 처리
+    }
+
+    private fun saveResult() {
+        val myDB = DatabaseHelper(this)
+//        firstName: String,
+//        lastName: String,
+//        birth: String,   202201012459, 20220101
+//        gender: String,
+//        yearPillar: String,
+//        monthPillar: String,
+//        dayPillar: String,
+//        timePillar: String
+
+        val insertDataResult = myDB.insertData(userModel.firstName!!,
+            userModel.lastName!!,
+            userModel.birth!!,
+            if(userModel.gender == 0) "남" else "여",
+            yearPillar,
+            monthPillar,
+            dayPillar,
+            timePillar)
+
+        myDB.close()
+
+        if(insertDataResult) {
+            Toast.makeText(applicationContext,getString(R.string.msg_save_complete),Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(applicationContext,getString(R.string.msg_save_fail),Toast.LENGTH_SHORT).show()
+        }
     }
 
     // SQLite 불러오기

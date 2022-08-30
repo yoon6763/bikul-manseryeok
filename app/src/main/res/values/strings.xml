@@ -44,6 +44,9 @@
     <string name="obj_luck">대운</string>
     <string name="obj_year_pillar">년주</string>
     <string name="obj_month_pillar">월주</string>
+    <string name="msg_save_complete">저장이 완료되었습니다</string>
+    <string name="msg_save_fail">저장에 실패했습니다\n해당 오류가 계속될경우 문의해주세요</string>
+
 
     <!-- CompassActivity -->
     <string name="obj_toolbar_map">방위 나침반</string>
@@ -80,5 +83,8 @@
     <string name="leku_latitude">위도</string>
     <string name="leku_longitude">경도</string>
     <string name="leku_use_this_location">이 위치로 선택</string>
+    <string name="glb_save">저장하기</string>
+    <string name="msg_delete_complete">삭제가 완료되었습니다</string>
+    <string name="msg_delete_fail">삭제에 실패했습니다\n해당 오류가 계속될경우 문의해주세요</string>
 
 </resources>

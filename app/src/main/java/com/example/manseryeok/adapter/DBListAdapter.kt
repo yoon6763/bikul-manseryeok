@@ -11,7 +11,6 @@ import com.example.manseryeok.R
 import com.example.manseryeok.Utils.Utils
 import com.example.manseryeok.databinding.ItemDbListBinding
 import com.example.manseryeok.models.DBListItem
-import okhttp3.internal.Util
 
 
 class DBListAdapter(
@@ -22,6 +21,13 @@ class DBListAdapter(
     private var selectedItems: SparseBooleanArray = SparseBooleanArray()
     private val TAG = "DBListAdapter"
     private var prePosition = -1
+
+    var onMenuClickListener: OnMenuClickListener? = null
+
+    interface OnMenuClickListener{
+        fun onSearchClick(ID: String, position: Int)
+        fun onDeleteClick(ID: String, position: Int)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -38,8 +44,9 @@ class DBListAdapter(
             val sunBirth = "${birth.substring(0,4)}-${birth.substring(4,6)}-${birth.substring(6,8)}"
 
             tvItemDbName.text = "${item.firstName}${item.lastName}"
-            tvItemDbBirthSum.text = "(양) $sunBirth"
-            tvItemDbBirthMoon.text = "(음) ${Utils.dateSlideFormat.format(Utils.convertSolarToLunar(sunBirth))}"
+            tvItemDbBirthSum.text = "(양) $birth"
+            //tvItemDbBirthSum.text = "(양) $sunBirth"
+            //tvItemDbBirthMoon.text = "(음) ${Utils.dateSlideFormat.format(Utils.convertSolarToLunar(sunBirth))}"
             tvItemDbGanji.text = item.ganji
 
             changeVisibility(holder.binding,selectedItems.get(position))
@@ -54,6 +61,15 @@ class DBListAdapter(
         val binding = ItemDbListBinding.bind(itemView)
 
         init {
+            binding.btnItemDbSearch.setOnClickListener {
+                onMenuClickListener?.onSearchClick(items[adapterPosition].id, adapterPosition)
+            }
+
+            binding.btnItemDbDelete.setOnClickListener {
+                onMenuClickListener?.onDeleteClick(items[adapterPosition].id, adapterPosition)
+            }
+
+
             itemView.setOnClickListener {
                 if(selectedItems.get(adapterPosition)) {
                     selectedItems.delete(adapterPosition)

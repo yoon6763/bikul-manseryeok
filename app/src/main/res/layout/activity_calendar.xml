@@ -472,26 +472,38 @@
 
                 <TextView
                     android:id="@+id/tv_month_pillar_message"
-                    android:textSize="20sp"
-                    android:visibility="gone"
-                    tools:visibility="visible"
-                    android:layout_marginVertical="@dimen/gap_vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/gap_vertical"
                     android:gravity="center"
+                    android:text="@string/obj_cal_pillar_year_msg"
                     android:textColor="#90000000"
-                    android:text="@string/obj_cal_pillar_year_msg" />
+                    android:textSize="20sp"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_month_pillar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/gap_line"
+                    android:layout_marginBottom="@dimen/gap_vertical"
                     android:orientation="horizontal"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:reverseLayout="true"
                     tools:listitem="@layout/item_sixty_horizon" />
 
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_calendar_save"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/btn_full_height"
+                    android:layout_marginHorizontal="@dimen/gap_horizontal"
+                    android:background="@drawable/box_navy"
+                    android:drawableLeft="@drawable/ic_save"
+                    android:drawableTint="@color/white"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:padding="10dp"
+                    android:text="@string/glb_save" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
