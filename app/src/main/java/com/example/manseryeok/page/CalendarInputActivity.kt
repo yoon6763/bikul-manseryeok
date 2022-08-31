@@ -11,21 +11,30 @@ import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.adevinta.leku.*
-import com.adevinta.leku.locale.SearchZoneRect
 import com.example.manseryeok.Utils.Utils
+import com.example.manseryeok.adapter.LocationAdapter
 import com.example.manseryeok.databinding.ActivityCalendarInputBinding
 import com.example.manseryeok.models.User
 import com.google.android.gms.maps.model.LatLng
 
 
 class CalendarInputActivity : AppCompatActivity() {
-    companion object {
-        const val PLACE_PICKER_REQUEST = 1
-    }
+
     private val TAG = "CalendarInputActivity"
     private val binding by lazy { ActivityCalendarInputBinding.inflate(layoutInflater) }
     private val birth = Calendar.getInstance()
+    private var birthPlace = "대한민국"
+    private var timeDiff = -30
+    private lateinit var fragment: LocationPickerFragment
+
+    private val locationClickListener = object : LocationAdapter.OnLocationClickListener {
+        override fun onLocationClick(location: String, argsTimeDiff: Int) {
+            birthPlace = location
+            timeDiff = argsTimeDiff
+            fragment.dismiss()
+            binding.etInputBirthPlace.setText("$location (${argsTimeDiff}분)")
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +46,7 @@ class CalendarInputActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
         }
 
+
         binding.run {
             etInputBirth.setOnClickListener {
                 openBirthPicker()
@@ -47,7 +57,7 @@ class CalendarInputActivity : AppCompatActivity() {
             }
 
             etInputBirthPlace.setOnClickListener {
-                openPlacePicker()
+                openBirthPlacePicker()
             }
 
             cbInputBirthTime.setOnCheckedChangeListener { compoundButton, b ->
@@ -66,72 +76,6 @@ class CalendarInputActivity : AppCompatActivity() {
                 nextPage()
             }
         }
-    }
-
-    // AIzaSyCBMxOrA67nzoiH0_jrhf9rqMyvaSkmFgo
-    // AIzaSyDDT-Qk36iL8nPUx7n3Y1omsBHgYNZlBck
-
-    private fun openPlacePicker() {
-        val locationPickerIntent = LocationPickerActivity.Builder()
-            .withLocation(37.5666805, 126.9784147) // 디폴트 위치, 서울 시청
-            .withGeolocApiKey("AIzaSyCBMxOrA67nzoiH0_jrhf9rqMyvaSkmFgo")
-            .withSearchZone("kr_KR")
-            .withSearchZone(SearchZoneRect(LatLng(26.525467, -18.910366), LatLng(43.906271, 5.394197)))
-            .withDefaultLocaleSearchZone()
-            .shouldReturnOkOnBackPressed()
-            .withStreetHidden()
-            .withCityHidden()
-            .withZipCodeHidden()
-            .withSatelliteViewHidden()
-            .withGoogleTimeZoneEnabled()
-            .withVoiceSearchHidden()
-            .withUnnamedRoadHidden()
-            .build(this@CalendarInputActivity)
-
-
-        startActivityForResult(locationPickerIntent, PLACE_PICKER_REQUEST)
-//        D/LATITUDE****: 37.474917421227204
-//        D/LONGITUDE****: 126.95632204413414
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode == Activity.RESULT_OK && data != null) {
-            Log.d("RESULT****", "OK")
-            if (requestCode == 1) {
-                val latitude = data.getDoubleExtra(LATITUDE, 0.0)
-                Log.d("LATITUDE****", latitude.toString())
-                val longitude = data.getDoubleExtra(LONGITUDE, 0.0)
-                Log.d("LONGITUDE****", longitude.toString())
-                val address = data.getStringExtra(LOCATION_ADDRESS)
-                Log.d("ADDRESS****", address.toString())
-                val postalcode = data.getStringExtra(ZIPCODE)
-                Log.d("POSTALCODE****", postalcode.toString())
-                val bundle = data.getBundleExtra(TRANSITION_BUNDLE)
-                Log.d("BUNDLE TEXT****", bundle?.getString("test")?: "")
-                val fullAddress = data.getParcelableExtra<Address>(ADDRESS)
-                if (fullAddress != null) {
-                    Log.d("FULL ADDRESS****", fullAddress.toString())
-                }
-                val timeZoneId = data.getStringExtra(TIME_ZONE_ID)
-                Log.d("TIME ZONE ID****", timeZoneId?:"")
-                val timeZoneDisplayName = data.getStringExtra(TIME_ZONE_DISPLAY_NAME)
-                Log.d("TIME ZONE NAME****", timeZoneDisplayName?:"")
-            } else if (requestCode == 2) {
-                val latitude = data.getDoubleExtra(LATITUDE, 0.0)
-                Log.d("LATITUDE****", latitude.toString())
-                val longitude = data.getDoubleExtra(LONGITUDE, 0.0)
-                Log.d("LONGITUDE****", longitude.toString())
-                val address = data.getStringExtra(LOCATION_ADDRESS)
-                Log.d("ADDRESS****", address.toString())
-                val lekuPoi = data.getParcelableExtra<LekuPoi>(LEKU_POI)
-                Log.d("LekuPoi****", lekuPoi.toString())
-            }
-        }
-        if (resultCode == Activity.RESULT_CANCELED) {
-            Log.d("RESULT****", "CANCELLED")
-        }
-
-        super.onActivityResult(requestCode, resultCode, data)
     }
 
     private fun openBirthPicker() {
@@ -164,33 +108,45 @@ class CalendarInputActivity : AppCompatActivity() {
         timePicker.show()
     }
 
+    private fun openBirthPlacePicker() {
+        fragment = LocationPickerFragment()
+        fragment.onLocationClickListener = locationClickListener
+        fragment.show(supportFragmentManager, "LocationPicker")
+    }
+
     private fun nextPage() {
         binding.run {
-//            var firstName: String?,
-//            var lastName: String?,
-//            var gender: Int, // 0 - 남자, 1 - 여자
-//            var birth: String?, // yyyy-MM-dd
-//            var birthTimeHour: Int?,
-//            var birthTimeMin: Int?,
-//            var birthPlace: String?
-            birth.add(Calendar.MINUTE, -30)
+//            firstName: String?,
+//            lastName: String?,
+//            gender: Int, // 0 - 남자, 1 - 여자
+//            birth: String?, // yyyyMMddHHmm or yyyyMMdd
+//            birthPlace: String?,
+//            timeDiff: Int
 
-            val date = if (rgCalType.checkedRadioButtonId == rbCalTypeMoon.id) {
-                Utils.convertLunarToSolar(Utils.dateTimeSlideFormat.format(birth.timeInMillis))
+
+            val date = if(rgCalType.checkedRadioButtonId == rbCalTypeSun.id) {
+                // 양력
+                Utils.dateTimeNumFormat.format(birth.timeInMillis)
             } else {
-                Utils.dateTimeSlideFormat.format(birth.timeInMillis)
+                // 음력
+                val strTime = Utils.dateNumFormat.format(birth.timeInMillis).substring(0, 8)
+                val moonBirth = Utils.convertLunarToSolar(strTime)
+                val tempCal = Calendar.getInstance().apply {
+                    timeInMillis = moonBirth
+                    this[Calendar.HOUR_OF_DAY] = birth[Calendar.HOUR_OF_DAY]
+                    this[Calendar.MINUTE] = birth[Calendar.MINUTE]
+                }
+                Utils.dateTimeNumFormat.format(tempCal.timeInMillis)
             }
 
-
             val userModel = User(
-                etFirstName.text.toString(),
-                etName.text.toString(),
-                if (rgGender.checkedRadioButtonId == rbGenderMale.id) 0 else 1,
-                !cbInputBirthTime.isChecked,
-                date,
-                etInputBirthPlace.text.toString()
+                etFirstName.text.toString(), // 성
+                etName.text.toString(), // 이름
+                if (rgGender.checkedRadioButtonId == rbGenderMale.id) 0 else 1, // 성별
+                if(cbInputBirthTime.isChecked) date.substring(0, 8) else date, // 생일, 시간포함 - yyyyMMddHHmm, 미포함 - yyyyMMdd
+                etInputBirthPlace.text.toString(), // 출생지
+                timeDiff
             )
-
 
             val intent = Intent(this@CalendarInputActivity, CalendarActivity::class.java)
             intent.putExtra(Utils.INTENT_EXTRAS_USER, userModel)

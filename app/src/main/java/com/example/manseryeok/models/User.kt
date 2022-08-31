@@ -7,17 +7,17 @@ data class User(
     var firstName: String?,
     var lastName: String?,
     var gender: Int, // 0 - 남자, 1 - 여자
-    var isIncludedTime: Boolean,
-    var birth: String?, // yyyy-MM-dd HH:mm
-    var birthPlace: String?
+    var birth: String?, // yyyyMMddHHmm or yyyyMMdd
+    var birthPlace: String?,
+    var timeDiff: Int
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
         parcel.readString(),
         parcel.readInt(),
-        parcel.readByte() != 0.toByte(),
         parcel.readString(),
-        parcel.readString()
+        parcel.readString(),
+        parcel.readInt()
     ) {
     }
 
@@ -25,9 +25,9 @@ data class User(
         parcel.writeString(firstName)
         parcel.writeString(lastName)
         parcel.writeInt(gender)
-        parcel.writeByte(if (isIncludedTime) 1 else 0)
         parcel.writeString(birth)
         parcel.writeString(birthPlace)
+        parcel.writeInt(timeDiff)
     }
 
     override fun describeContents(): Int {

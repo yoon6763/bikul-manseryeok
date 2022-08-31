@@ -359,6 +359,7 @@
                     android:paddingVertical="10dp">
 
                     <TextView
+                        android:id="@+id/tv_time_jiji"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -368,6 +369,7 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/tv_day_jiji"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -377,6 +379,7 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/tv_month_jiji"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -386,6 +389,7 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/tv_year_jiji"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"

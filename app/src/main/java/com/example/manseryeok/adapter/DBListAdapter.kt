@@ -41,13 +41,16 @@ class DBListAdapter(
             val item = items[position]
 
             val birth = item.birth
-            val sunBirth = "${birth.substring(0,4)}-${birth.substring(4,6)}-${birth.substring(6,8)}"
-
+            val sunBirth = "${birth.substring(0,4)}.${birth.substring(4,6)}.${birth.substring(6,8)}"
             tvItemDbName.text = "${item.firstName}${item.lastName}"
-            tvItemDbBirthSum.text = "(양) $birth"
-            //tvItemDbBirthSum.text = "(양) $sunBirth"
-            //tvItemDbBirthMoon.text = "(음) ${Utils.dateSlideFormat.format(Utils.convertSolarToLunar(sunBirth))}"
+            tvItemDbBirthSum.text = "(양) $sunBirth"
+            tvItemDbBirthMoon.text = "(음) ${Utils.dateDotFormat.format(Utils.convertSolarToLunar(birth.substring(0, 8)))}"
             tvItemDbGanji.text = item.ganji
+
+            if(item.gender == 0)
+                ivItemDbGender.setImageResource(R.drawable.ic_male)
+            else
+                ivItemDbGender.setImageResource(R.drawable.ic_female)
 
             changeVisibility(holder.binding,selectedItems.get(position))
         }

@@ -4,6 +4,9 @@
 
     <string name="glb_search">조회</string>
     <string name="glb_close">닫기</string>
+    <string name="glb_save">저장하기</string>
+
+    <string name="glb_please_wait">잠시만 기다려주세요</string>
 
 
     <!-- Main Activity -->
@@ -59,7 +62,7 @@
     <string name="obj_com_help_content_2">2. 기기를 하늘을 바라보게 하고,\n8자를 그리며 이동하여\n방향센서를 초기화 해주세요.</string>
 
 
-    <!-- QuestionActivity -->
+    <!-- InquiryActivity -->
     <string name="obj_toolbar_question">문의사항</string>
     <string name="obj_que_content">문의 내용</string>
     <string name="send">보내기</string>
@@ -68,26 +71,14 @@
     <string name="obj_que_title">제목</string>
     <string name="glb_delete">삭제</string>
     <string name="obj_toolbar_db">데이터베이스</string>
-
-    <string name="title_activity_google_place_picker">GooglePlacePicker</string>
-
-    <string name="leku_title_activity_location_picker">Location Picker</string>
-    <string name="leku_load_location_error">Something went wrong. Please try again.</string>
-    <string name="leku_no_search_results">There are no results for your search</string>
-    <string name="leku_unknown_location">unknown location</string>
-    <string name="leku_voice_search_promp">Search by voice…</string>
-    <string name="leku_voice_search_extra_language">kr-KR</string>
-    <string name="leku_toolbar_action_voice_title">Voice</string>
-    <string name="leku_search_hint">검색</string>
-    <string name="leku_coordinates">좌표</string>
-    <string name="leku_latitude">위도</string>
-    <string name="leku_longitude">경도</string>
-    <string name="leku_use_this_location">이 위치로 선택</string>
-    <string name="glb_save">저장하기</string>
-    <string name="msg_delete_complete">삭제가 완료되었습니다</string>
-    <string name="msg_delete_fail">삭제에 실패했습니다\n해당 오류가 계속될경우 문의해주세요</string>
     <string name="msg_send_inquiry_fail">문의사항 전송에 실패했습니다</string>
     <string name="msg_send_inquiry_complete">문의사항 전송에 성공하였습니다</string>
-    <string name="glb_please_wait">잠시만 기다려주세요</string>
+
+    <!-- DBActivity -->
+    <string name="msg_delete_complete">삭제가 완료되었습니다</string>
+    <string name="msg_delete_fail">삭제에 실패했습니다\n해당 오류가 계속될경우 문의해주세요</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="obj_location_title">지역을 선택해주세요</string>
 
 </resources>

@@ -34,7 +34,7 @@
                     android:textSize="@dimen/text_size_20" />
 
                 <ImageView
-                    android:id="@+id/tv_item_db_gender"
+                    android:id="@+id/iv_item_db_gender"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_male" />
@@ -81,6 +81,7 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/btn_half_height"
             android:layout_weight="1"
+            android:foreground="?attr/selectableItemBackground"
             android:background="@drawable/box_red"
             android:text="@string/glb_delete" />
 
@@ -89,6 +90,7 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/btn_half_height"
             android:layout_weight="1"
+            android:foreground="?attr/selectableItemBackground"
             android:background="@drawable/box_mint"
             android:text="@string/glb_search" />
 

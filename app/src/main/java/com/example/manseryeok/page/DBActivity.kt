@@ -33,22 +33,42 @@ class DBActivity : AppCompatActivity() {
         val sqliteData = myDB.allData
 
         while(sqliteData.moveToNext()) {
-            // firstName, lastName, birth, gender, yearPillar, monthPillar, dayPillar, timePillar
+//            firstName: String
+//            lastName: String
+//            gender: Int
+//            birth: String
+//            birthPlace: String
+//            timeDiff: Int
+//            yearPillar: String
+//            monthPillar: String
+//            dayPillar: String
+//            timePillar: String
+
             val id = sqliteData.getString(0)
             val firstName = sqliteData.getString(1)
             val lastName = sqliteData.getString(2)
-            val birth = sqliteData.getString(3)
-            val gender = sqliteData.getString(4)
-            val yearPillar = sqliteData.getString(5)
-            val monthPillar = sqliteData.getString(6)
-            val dayPillar = sqliteData.getString(7)
-            val timePillar = sqliteData.getString(8)
+            val gender = sqliteData.getInt(3)
+            val birth = sqliteData.getString(4)
+            val birthPlace = sqliteData.getString(5)
+            val timeDiff = sqliteData.getInt(6)
+            val yearPillar = sqliteData.getString(7)
+            val monthPillar = sqliteData.getString(8)
+            val dayPillar = sqliteData.getString(9)
+            val timePillar = sqliteData.getString(10)
+
+
 
             val pillar = "${if (timePillar == null || timePillar == "NULL" || timePillar == "") "" else timePillar[0]}${dayPillar[0]}${monthPillar[0]}${yearPillar[0]}" +
                     "\n"+"${if(timePillar == null || timePillar == "NULL" || timePillar == "") "" else timePillar[1]}${dayPillar[1]}${monthPillar[1]}${yearPillar[1]}"
 
-            dbList.add(DBListItem(id,firstName, lastName, birth, if(gender == "남") "남" else "여", pillar))
-
+            dbList.add(DBListItem(
+                id,
+                firstName,
+                lastName,
+                birth,
+                birthPlace,
+                timeDiff,
+                if(gender == 0) 0 else 1, pillar))
         }
 
         binding.run {
@@ -62,22 +82,22 @@ class DBActivity : AppCompatActivity() {
             override fun onSearchClick(ID: String, position: Int) {
                 val intent = Intent(this@DBActivity, CalendarActivity::class.java)
 
-//                firstName: String?,
-//                lastName: String?,
-//                gender: Int, // 0 - 남자, 1 - 여자
-//                isIncludedTime: Boolean,
-//                birth: String?, // yyyy-MM-dd HH:mm
-//                birthPlace: String?
+//              firstName: String?,
+//              lastName: String?,
+//              gender: Int, // 0 - 남자, 1 - 여자
+//              birth: String?, // yyyyMMddHHmm or yyyyMMdd
+//              birthPlace: String?,
+//              timeDiff: Int
                 val dbModel = dbList[position]
 
                 val userModel =
                     User(
                         dbModel.firstName,
                         dbModel.lastName,
-                        if(dbModel.gender == "남") 0 else 1,
-                        if(dbModel.birth.length == 8) false else true,
+                        dbModel.gender,
                         dbModel.birth,
-                        "서울")
+                        dbModel.birthPlace,
+                        dbModel.timeDiff)
 
                 intent.putExtra(Utils.INTENT_EXTRAS_USER, userModel)
                 startActivity(intent)

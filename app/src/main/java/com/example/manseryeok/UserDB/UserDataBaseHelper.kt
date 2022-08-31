@@ -13,17 +13,21 @@ class DatabaseHelper(context: Context) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, 1) {
 
     override fun onCreate(db: SQLiteDatabase) {
-        db.execSQL("create table $TABLE_NAME(" +
-                "ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "$FIRST_NAME TEXT, " +
-                "$LAST_NAME TEXT, " +
-                "$BIRTH TEXT," +
-                "$GENDER TEXT," +
-                "$YEAR_PILLAR TEXT," +
-                "$MONTH_PILLAR TEXT," +
-                "$DAY_PILLAR TEXT, " +
-                "$TIME_PILLAR TEXT " +
-                ")")
+        db.execSQL(
+            "create table $TABLE_NAME(" +
+                    "ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "$FIRST_NAME TEXT, " +
+                    "$LAST_NAME TEXT, " +
+                    "$GENDER INTEGER," +
+                    "$BIRTH TEXT," +
+                    "$BIRTH_PLACE TEXT," +
+                    "$TIME_DIFF INTEGER," +
+                    "$YEAR_PILLAR TEXT," +
+                    "$MONTH_PILLAR TEXT," +
+                    "$DAY_PILLAR TEXT, " +
+                    "$TIME_PILLAR TEXT " +
+                    ")"
+        )
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
@@ -35,8 +39,10 @@ class DatabaseHelper(context: Context) :
     fun insertData(
         firstName: String,
         lastName: String,
+        gender: Int,
         birth: String,
-        gender: String,
+        birthPlace: String,
+        timeDiff: Int,
         yearPillar: String,
         monthPillar: String,
         dayPillar: String,
@@ -46,8 +52,10 @@ class DatabaseHelper(context: Context) :
         val contentValues = ContentValues()
         contentValues.put(FIRST_NAME, firstName)
         contentValues.put(LAST_NAME, lastName)
-        contentValues.put(BIRTH, birth)
         contentValues.put(GENDER, gender)
+        contentValues.put(BIRTH, birth)
+        contentValues.put(BIRTH_PLACE, birthPlace)
+        contentValues.put(TIME_DIFF, timeDiff)
         contentValues.put(YEAR_PILLAR, yearPillar)
         contentValues.put(MONTH_PILLAR, monthPillar)
         contentValues.put(DAY_PILLAR, dayPillar)
@@ -74,8 +82,10 @@ class DatabaseHelper(context: Context) :
         id: String,
         firstName: String,
         lastName: String,
+        gender: Int,
         birth: String,
-        gender: String,
+        birthPlace: String,
+        timeDIff: Int,
         yearPillar: String,
         monthPillar: String,
         dayPillar: String,
@@ -85,8 +95,10 @@ class DatabaseHelper(context: Context) :
         val contentValues = ContentValues()
         contentValues.put(FIRST_NAME, firstName)
         contentValues.put(LAST_NAME, lastName)
-        contentValues.put(BIRTH, birth)
         contentValues.put(GENDER, gender)
+        contentValues.put(BIRTH, birth)
+        contentValues.put(BIRTH_PLACE, birthPlace)
+        contentValues.put(TIME_DIFF, timeDIff)
         contentValues.put(YEAR_PILLAR, yearPillar)
         contentValues.put(MONTH_PILLAR, monthPillar)
         contentValues.put(DAY_PILLAR, dayPillar)
@@ -103,8 +115,10 @@ class DatabaseHelper(context: Context) :
         const val INDEX = "ID"
         const val FIRST_NAME = "first_name"
         const val LAST_NAME = "last_name"
-        const val BIRTH = "birth"
         const val GENDER = "gender"
+        const val BIRTH = "birth"
+        const val BIRTH_PLACE = "birth_place"
+        const val TIME_DIFF = "time_diff"
         const val YEAR_PILLAR = "year_pillar"
         const val MONTH_PILLAR = "month_pillar"
         const val DAY_PILLAR = "day_pillar"

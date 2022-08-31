@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foreground="?attr/selectableItemBackground"
+    android:orientation="horizontal"
+    android:padding="@dimen/gap_line_double">
+
+    <TextView
+        android:id="@+id/tv_item_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="@integer/material_motion_duration_long_1"
+        android:textSize="@dimen/text_size_15"
+        tools:text="대한민국" />
+
+    <TextView
+        android:id="@+id/tv_item_time_diff"
+        android:layout_gravity="center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_15"
+        tools:text="+ 3시 30분" />
+</LinearLayout>

@@ -5,6 +5,8 @@ data class DBListItem(
     val firstName: String,
     val lastName: String,
     val birth: String,
-    val gender: String,
+    val birthPlace: String,
+    val timeDiff: Int,
+    val gender: Int,
     val ganji: String
 )

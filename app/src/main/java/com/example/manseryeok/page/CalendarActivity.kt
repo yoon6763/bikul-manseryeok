@@ -34,6 +34,8 @@ class CalendarActivity : AppCompatActivity() {
     private var dayPillar = ""
     private var timePillar = ""
 
+    private var isTimeInclude = false
+
     private lateinit var luckAdapter: SixtyHorizontalAdapter
     private lateinit var yearAdapter: SixtyHorizontalSmallAdapter
     private lateinit var monthAdapter: SixtyHorizontalSmallAdapter
@@ -62,11 +64,12 @@ class CalendarActivity : AppCompatActivity() {
 
         userModel = intent.getParcelableExtra<User>(Utils.INTENT_EXTRAS_USER)!!
 
-        setUpUserInfo()
         initLoadDB()
+        setUserBirth()
         setUpPillar() // 기둥 세우기
         setUpSeasonBirth() // 절기 설정
         setUpProperty() // 오행 설정
+        setUpJiJiAmjangan() // 지지 암장간
         setUpLuckRecyclerView() // 대운 리사이클러뷰
         setUpYearAndMonthPillar() // 년주 리사이클러뷰
         setRecyclerViewClickEvent() // 년주 리사이클러뷰 클릭 이벤트 처리
@@ -76,17 +79,20 @@ class CalendarActivity : AppCompatActivity() {
         val myDB = DatabaseHelper(this)
 //        firstName: String,
 //        lastName: String,
-//        birth: String,   202201012459, 20220101
-//        gender: String,
+//        gender: Int,
+//        birth: String,
+//        birthPlace: String,
+//        timeDiff: Int,
 //        yearPillar: String,
 //        monthPillar: String,
-//        dayPillar: String,
-//        timePillar: String
 
-        val insertDataResult = myDB.insertData(userModel.firstName!!,
+        val insertDataResult = myDB.insertData(
+            userModel.firstName!!,
             userModel.lastName!!,
+            if(userModel.gender == 0) 0 else 1,
             userModel.birth!!,
-            if(userModel.gender == 0) "남" else "여",
+            userModel.birthPlace!!,
+            userModel.timeDiff,
             yearPillar,
             monthPillar,
             dayPillar,
@@ -101,28 +107,9 @@ class CalendarActivity : AppCompatActivity() {
         }
     }
 
-    // SQLite 불러오기
-    private fun initLoadDB() {
-        val mDBHelper = ManseryeokSQLAdapter(applicationContext)
-        mDBHelper.createDataBase()
-        mDBHelper.open()
-
-        val tempCal = Calendar.getInstance().apply {
-            this[Calendar.YEAR] = userBirth[Calendar.YEAR]
-            add(Calendar.MONTH, -2)
-        }
-
-        userCalendar = mDBHelper.getTableData(tempCal[Calendar.YEAR] - 1, tempCal[Calendar.YEAR] + 100)!!
-        Log.d(TAG, "initLoadDB: ${tempCal[Calendar.YEAR]} ~ ${tempCal[Calendar.YEAR]+100}")
-        Log.d(TAG, "initLoadDB: "+Utils.dateSlideFormat.format(userBirth.timeInMillis))
-
-        mDBHelper.close()
-    }
-
     // 기둥 세우기
     private fun setUpPillar() {
         binding.run {
-            Log.d(TAG, "setUpUserInfo: ${Utils.dateTimeSlideFormat.format(userBirth.timeInMillis)}")
 
             userBirthCalender = userCalendar.find {
                 it.cd_sy == userBirth[Calendar.YEAR] &&
@@ -142,7 +129,7 @@ class CalendarActivity : AppCompatActivity() {
             dayPillar = userBirthCalender.cd_hdganjee!!
 
 
-            if(userBirthCalender.cd_hterms != "NULL" && userModel.isIncludedTime) {
+            if(userBirthCalender.cd_hterms != "NULL" && isTimeInclude) {
                 val seasonTimeString = userBirthCalender.cd_terms_time.toString()
 
                 val seasonCalendar = Calendar.getInstance().apply {
@@ -173,7 +160,7 @@ class CalendarActivity : AppCompatActivity() {
             tvPillarDayBottom.text = dayPillar[1].toString()
 
             // 시주
-            if(userModel.isIncludedTime) {
+            if(isTimeInclude) {
                 timePillar = Utils.getTimeGanji(dayPillar[0].toString(), userBirth[Calendar.HOUR_OF_DAY])
                 tvPillarTimeTop.text = timePillar[0].toString()
                 tvPillarTimeBottom.text = timePillar[1].toString()
@@ -214,11 +201,11 @@ class CalendarActivity : AppCompatActivity() {
                 if(nearSeasonBottom > 0 && userCalendar[nearSeasonBottom].cd_terms_time != null && userCalendar[nearSeasonBottom].cd_terms_time != 0L) {
                     val termsTimeString = userCalendar[nearSeasonBottom].cd_terms_time.toString()
                     seasonCalendar.run {
-                        this[Calendar.YEAR] = termsTimeString.substring(0, 3).toInt()
-                        this[Calendar.MONTH] = termsTimeString.substring(4, 5).toInt() - 1
-                        this[Calendar.DAY_OF_MONTH] = termsTimeString.substring(6, 7).toInt()
-                        this[Calendar.HOUR_OF_DAY] = termsTimeString.substring(8, 9).toInt()
-                        this[Calendar.MINUTE] = termsTimeString.substring(10, 11).toInt()
+                        this[Calendar.YEAR] = termsTimeString.substring(0, 4).toInt()
+                        this[Calendar.MONTH] = termsTimeString.substring(4, 6).toInt() - 1
+                        this[Calendar.DAY_OF_MONTH] = termsTimeString.substring(6, 8).toInt()
+                        this[Calendar.HOUR_OF_DAY] = termsTimeString.substring(8, 10).toInt()
+                        this[Calendar.MINUTE] = termsTimeString.substring(10, 12).toInt()
                     }
                     seasonK = userCalendar[nearSeasonBottom].cd_kterms.toString()
                     seasonH = userCalendar[nearSeasonBottom].cd_hterms.toString()
@@ -246,8 +233,11 @@ class CalendarActivity : AppCompatActivity() {
         properties[Utils.getProperty(monthPillar[1])]++
         properties[Utils.getProperty(dayPillar[0])]++
         properties[Utils.getProperty(dayPillar[1])]++
-        properties[Utils.getProperty(timePillar[0])]++
-        properties[Utils.getProperty(timePillar[1])]++
+
+        if(isTimeInclude) {
+            properties[Utils.getProperty(timePillar[0])]++
+            properties[Utils.getProperty(timePillar[1])]++
+        }
 
         binding.run {
             tvFire.text = "火(${properties[0]})"
@@ -258,25 +248,91 @@ class CalendarActivity : AppCompatActivity() {
         }
     }
 
-    private fun setUpUserInfo() {
+    private fun setUpJiJiAmjangan() {
         binding.run {
-            tvCalSun.text = Utils.dateKorFormat.format(Utils.dateSlideFormat.parse(userModel.birth))
-            userBirth = Calendar.getInstance().apply { timeInMillis = Utils.dateTimeSlideFormat.parse(userModel.birth).time }
-            tvCalMoon.text =
-                Utils.dateKorFormat.format(Utils.convertSolarToLunar(Utils.dateSlideFormat.format(userBirth.timeInMillis)))
+            if(isTimeInclude) tvTimeJiji.text = Utils.getJijiAmJangan(timePillar[1])
+            else tvTimeJiji.text = "-"
+            tvDayJiji.text = Utils.getJijiAmJangan(dayPillar[1])
+            tvMonthJiji.text = Utils.getJijiAmJangan(monthPillar[1])
+            tvYearJiji.text = Utils.getJijiAmJangan(yearPillar[1])
         }
+    }
+
+    private fun setUserBirth() {
+        binding.run {
+            tvCalSun.text = Utils.dateKorFormat.format(userBirth.timeInMillis)
+            tvCalMoon.text = Utils.dateKorFormat.format(Utils.convertSolarToLunar(userModel.birth!!.substring(0, 8)))
+        }
+    }
+
+    // SQLite 불러오기
+    private fun initLoadDB() {
+        // 유저 생일 가져오기
+        val birthStr = userModel.birth!!
+
+        if(birthStr.length == 8) {
+            // 시간 미포함
+            isTimeInclude = false
+            userBirth = Calendar.getInstance().apply { timeInMillis = Utils.dateNumFormat.parse(birthStr).time }
+        } else {
+            // 시간 포함
+            isTimeInclude = true
+            userBirth = Calendar.getInstance().apply {
+                timeInMillis = Utils.dateTimeNumFormat.parse(birthStr).time
+                add(Calendar.MINUTE, userModel.timeDiff)
+            }
+        }
+
+        val mDBHelper = ManseryeokSQLAdapter(applicationContext)
+        mDBHelper.createDataBase()
+        mDBHelper.open()
+
+        // 유저의 생일 - 1년 부터 + 100년까지의 정보
+        userCalendar = mDBHelper.getTableData(userBirth[Calendar.YEAR] - 1, userBirth[Calendar.YEAR] + 100)!!
+
+        mDBHelper.close()
     }
 
     // 대운 리사이클러 뷰 세팅
     private fun setUpLuckRecyclerView() {
+        var direction = if(userModel.gender == 0) 1 else -1 // 남자 순행, 여자 역행, 양 순행, 음 역행
+        direction *= Utils.getSign(yearPillar[0])
+
+
+        var firstAge = 0
+
+        if(direction == 1) {
+            var cnt = 0
+            var ptr = userCalendar.indexOf(userBirthCalender)
+            while (true) {
+                if (userCalendar[ptr].cd_terms_time != null && userCalendar[ptr].cd_terms_time != 0L) {
+                    break
+                }
+                ptr++
+                cnt++
+            }
+            firstAge = (cnt / 3).toInt()
+        } else {
+            var cnt = 0
+            var ptr = userCalendar.indexOf(userBirthCalender)
+            while (true) {
+                if (userCalendar[ptr].cd_terms_time != null && userCalendar[ptr].cd_terms_time != 0L) {
+                    break
+                }
+                ptr--
+                cnt++
+            }
+            firstAge = (cnt / 3).toInt()
+        }
+
         binding.run {
             luckAdapter = SixtyHorizontalAdapter(this@CalendarActivity, luckItems)
             rvLuck.adapter = luckAdapter
 
-            repeat(10) {
+            repeat(13) {
                 luckItems.add(
                     SixtyHorizontalItem(
-                        it * 2 + 3,
+                        it * 10 + firstAge,
                         tenArray.random(),
                         twelveArray.random()
                     )
