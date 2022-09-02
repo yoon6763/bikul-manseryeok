@@ -6,6 +6,8 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.manseryeok.R
 import com.example.manseryeok.UserDB.DatabaseHelper
 import com.example.manseryeok.Utils.Utils
@@ -70,9 +72,9 @@ class CalendarActivity : AppCompatActivity() {
         setUpSeasonBirth() // 절기 설정
         setUpProperty() // 오행 설정
         setUpJiJiAmjangan() // 지지 암장간
-        setUpLuckRecyclerView() // 대운 리사이클러뷰
         setUpYearAndMonthPillar() // 년주 리사이클러뷰
         setRecyclerViewClickEvent() // 년주 리사이클러뷰 클릭 이벤트 처리
+        setUpLuckRecyclerView() // 대운 리사이클러뷰
     }
 
     private fun saveResult() {
@@ -329,7 +331,21 @@ class CalendarActivity : AppCompatActivity() {
             luckAdapter = SixtyHorizontalAdapter(this@CalendarActivity, luckItems)
             rvLuck.adapter = luckAdapter
 
-            repeat(13) {
+            luckAdapter.onItemClickListener = object : SixtyHorizontalAdapter.OnItemClickListener {
+                override fun onItemClick(age: Int, pos: Int) {
+//                    if(year == 0) return
+//                    rvYearPillar.findViewHolderForLayoutPosition(yearItems.find { it.label == year }!!.label)?.itemView?.performClick()
+//                    luckAdapter.notifyDataSetChanged()
+                    luckAdapter.notifyDataSetChanged()
+                    val yPos = pos * 10 + firstAge -1
+                    if(yPos >= 0) {
+                        yearAdapter.itemClicked(yPos)
+                        (rvYearPillar.layoutManager!! as LinearLayoutManager).scrollToPositionWithOffset(yPos,-5)
+                    }
+                }
+            }
+
+            repeat(10) {
                 luckItems.add(
                     SixtyHorizontalItem(
                         it * 10 + firstAge,
@@ -350,7 +366,7 @@ class CalendarActivity : AppCompatActivity() {
             monthAdapter = SixtyHorizontalSmallAdapter(this@CalendarActivity, monthItems)
             rvMonthPillar.adapter = monthAdapter
 
-            for(i in 0 .. 100) {
+            for(i in 0 .. 110) {
                 val yGanji = Utils.getYearGanji(userBirth[Calendar.YEAR] + i)
                 yearItems.add(SixtyHorizontalItem(userBirth[Calendar.YEAR] + i, yGanji[0].toString(), yGanji[1].toString()))
             }
@@ -365,7 +381,7 @@ class CalendarActivity : AppCompatActivity() {
                 override fun onItemClick(year: Int) {
                     yearAdapter.notifyDataSetChanged()
 
-                    setUpMonthPillar(year)
+                    setUpMonthPillar(Utils.getYearGanji(year)[0])
                 }
             }
 
@@ -383,31 +399,18 @@ class CalendarActivity : AppCompatActivity() {
             var initialYear = today[Calendar.YEAR]
             if(initialYear !in userBirth[Calendar.YEAR] .. userBirth[Calendar.YEAR] + 100) initialYear = userBirth[Calendar.YEAR]
 
-            setUpMonthPillar(initialYear)
+            setUpMonthPillar(yearPillar[0])
         }
     }
 
     // 월주 리사이클러뷰 세팅
-    private fun setUpMonthPillar(year:Int) {
-        if(year > 2100) {
-            binding.run {
-                tvMonthPillarMessage.visibility = View.VISIBLE
-                rvMonthPillar.visibility = View.GONE
-                return
-            }
-        } else {
-            binding.run {
-                tvMonthPillarMessage.visibility = View.GONE
-                rvMonthPillar.visibility = View.VISIBLE
-            }
-        }
-
+    private fun setUpMonthPillar(year:Char) {
         binding.run {
             monthItems.clear()
+            val yearGanji = Utils.getMonthGanji(year).split(" ")
 
-            for(i in 1 .. 12) {
-                val monthCal = userCalendar.findLast { it.cd_sy!! == year && it.cd_sm!! == i}
-                if(monthCal != null) monthItems.add(SixtyHorizontalItem(i, monthCal.cd_hmganjee!![0].toString(), monthCal.cd_hmganjee!![1].toString()))
+            for(i in 0 until  12) {
+                monthItems.add(SixtyHorizontalItem(i+1, yearGanji[i][0].toString(), yearGanji[i][1].toString()))
             }
 
             monthAdapter.notifyDataSetChanged()

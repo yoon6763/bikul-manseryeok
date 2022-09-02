@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.manseryeok.R
 import com.example.manseryeok.Utils.Utils
 import com.example.manseryeok.databinding.ItemSixtyHorizonBinding
+import com.example.manseryeok.databinding.ItemSixtyHorizonSmallBinding
 import com.example.manseryeok.models.SixtyHorizontalItem
 import java.util.*
 
@@ -16,6 +17,13 @@ class SixtyHorizontalAdapter(
     private val items: ArrayList<SixtyHorizontalItem>,
 ) :
     RecyclerView.Adapter<SixtyHorizontalAdapter.Holder>() {
+
+    interface OnItemClickListener {
+        fun onItemClick(age: Int, pos:Int)
+    }
+
+    var selectedItemPos = -1
+    var onItemClickListener: OnItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -30,6 +38,12 @@ class SixtyHorizontalAdapter(
             tvItemSixtyLabel.text = item.label.toString()
             tvItemSixtyTop.text = item.top
             tvItemSixtyBottom.text = item.bottom
+
+            if(selectedItemPos == position) {
+                tvItemSixtyLabel.setBackgroundResource(R.drawable.box_light_gray)
+            } else {
+                tvItemSixtyLabel.background = null
+            }
 
 //            "甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"
 //            "갑", "을", "병", "정", "무", "기", "경", "신", "임", "계"
@@ -62,7 +76,26 @@ class SixtyHorizontalAdapter(
         return items.size
     }
 
+    fun itemClicked(binding: ItemSixtyHorizonBinding, position: Int) {
+        selectedItemPos = position
+
+        // 이전 선택한 라벨의 배경 제거
+//            tvOldLabel?.background = null
+//            // OldLabel 최신화
+//            tvOldLabel = binding.tvItemSixtyLabel
+//            // 클릭한 라벨 배경 처리
+//            binding.tvItemSixtyLabel.setBackgroundResource(R.drawable.box_light_gray)
+        // 리스너 발동
+        onItemClickListener?.onItemClick(binding.tvItemSixtyLabel.text.toString().toInt(), position)
+    }
+
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val binding = ItemSixtyHorizonBinding.bind(itemView)
+
+        init {
+            itemView.setOnClickListener {
+                itemClicked(binding, adapterPosition)
+            }
+        }
     }
 }

@@ -25,7 +25,6 @@ class SixtyHorizontalSmallAdapter(
     var useItemClickEvent = false
 
     var selectedItemPos = -1
-    var tvOldLabel: TextView? = null
     var onItemClickListener: OnItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -80,7 +79,7 @@ class SixtyHorizontalSmallAdapter(
         return items.size
     }
 
-    private fun itemClicked(binding:ItemSixtyHorizonSmallBinding, position: Int) {
+    fun itemClicked(position: Int) {
         if(useItemClickEvent) {
             selectedItemPos = position
 
@@ -91,7 +90,7 @@ class SixtyHorizontalSmallAdapter(
 //            // 클릭한 라벨 배경 처리
 //            binding.tvItemSixtyLabel.setBackgroundResource(R.drawable.box_light_gray)
             // 리스너 발동
-            onItemClickListener?.onItemClick(binding.tvItemSixtyLabel.text.toString().toInt())
+            onItemClickListener?.onItemClick(items[position].label)
         }
     }
 
@@ -100,7 +99,7 @@ class SixtyHorizontalSmallAdapter(
 
         init {
             itemView.setOnClickListener {
-                itemClicked(binding, adapterPosition)
+                itemClicked(adapterPosition)
             }
         }
     }
