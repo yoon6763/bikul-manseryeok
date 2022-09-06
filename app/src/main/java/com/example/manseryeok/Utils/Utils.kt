@@ -68,6 +68,48 @@ object Utils {
         }
     }
 
+    val pillarLabelArr = arrayOf(
+        //         甲 乙 丙 丁 戊 己 庚 辛 壬 癸
+        arrayOf("정인", "편인", "정관", "편관", "정재", "편재", "상관", "식신", "겁재", "비견"), // 癸, 子
+        arrayOf("정재", "편재", "상관", "식신", "겁재", "비견", "정인", "편인", "정관", "편관"), // 己, 丑, 未
+        arrayOf("비견", "겁재", "편인", "정인", "편관", "정관", "편재", "정재", "식신", "상관"), // 甲, 寅
+        arrayOf("겁재", "비견", "정인", "편인", "정관", "편관", "정재", "편재", "상관", "식신"), // 乙, 卯
+        arrayOf("편재", "정재", "식신", "상관", "비견", "겁재", "편인", "정인", "편관", "정관"), // 戊, 辰, 戌
+        arrayOf("식신", "상관", "비견", "겁재", "편인", "정인", "편관", "정관", "편재", "정재"), // 丙, 巳
+        arrayOf("상관", "식신", "겁재", "비견", "정인", "편인", "정관", "편관", "정재", "편재"), // 丁, 午
+        arrayOf("정재", "편재", "정관", "편관", "겁재", "비견", "상관", "식신", "겁재", "비견"), // 己, 丑, 未
+        arrayOf("편관", "정관", "편재", "정재", "식신", "상관", "비견", "겁재", "편인", "정인"), // 庚, 申
+        arrayOf("정관", "편관", "정재", "편재", "상관", "식신", "겁재", "비견", "정인", "편인"), // 辛, 酉
+        arrayOf("편재", "정재", "식신", "상관", "비견", "겁재", "편인", "정인", "편관", "정관"), // 戊, 辰, 戌
+        arrayOf("편인", "정인", "편관", "정관", "편재", "정재", "식신", "상관", "비견", "겁재") //  壬, 亥
+    )
+
+
+    // 육친 속견표
+    fun getPillarLabel(me: String, target: String): String {
+        val meIdx = tenGan[0].indexOf(me)
+        val targetIdx = when (target) {
+            "癸", "子" -> 0
+            "己", "丑", "未" -> 1
+            "甲", "寅" -> 2
+            "乙", "卯" -> 3
+            "戊", "辰", "戌" -> 4
+            "丙", "巳" -> 5
+            "丁", "午" -> 6
+            "己", "丑", "未" -> 7
+            "庚", "申" -> 8
+            "辛", "酉" -> 9
+            "戊", "辰", "戌" -> 10
+            "壬", "亥" -> 11
+            else -> -1
+        }
+        return if(meIdx != -1 && targetIdx != -1) {
+            pillarLabelArr[targetIdx][meIdx]
+        } else {
+            "error"
+        }
+    }
+
     fun getYearGanji(year: Int): String {
         var result = ""
         result += tenGanForYear[0][year % 10]
@@ -75,13 +117,13 @@ object Utils {
         return result
     }
 
-    fun getMonthGanji(char: Char) :String {
-        return when(char) {
-            '甲','己' -> "乙丑 丙寅 丁卯 戊辰 己巳 庚午 辛未 壬申 癸酉 甲戌 乙亥 丙子"
-            '乙','庚' -> "丁丑 戊寅 己卯 庚辰 辛巳 壬午 癸未 甲申 乙酉 丙戌 丁亥 戊子"
-            '丙','辛' -> "己丑 庚寅 辛卯 壬辰 癸巳 甲午 乙未 丙申 丁酉 戊戌 己亥 庚子"
-            '丁','壬' -> "辛丑 壬寅 癸卯 甲辰 乙巳 丙午 丁未 戊申 己酉 庚戌 辛亥 壬子"
-            '戊','癸' -> "癸丑 甲寅 乙卯 丙辰 丁巳 戊午 己未 庚申 辛酉 壬戌 癸亥 甲子"
+    fun getMonthGanji(char: Char): String {
+        return when (char) {
+            '甲', '己' -> "乙丑 丙寅 丁卯 戊辰 己巳 庚午 辛未 壬申 癸酉 甲戌 乙亥 丙子"
+            '乙', '庚' -> "丁丑 戊寅 己卯 庚辰 辛巳 壬午 癸未 甲申 乙酉 丙戌 丁亥 戊子"
+            '丙', '辛' -> "己丑 庚寅 辛卯 壬辰 癸巳 甲午 乙未 丙申 丁酉 戊戌 己亥 庚子"
+            '丁', '壬' -> "辛丑 壬寅 癸卯 甲辰 乙巳 丙午 丁未 戊申 己酉 庚戌 辛亥 壬子"
+            '戊', '癸' -> "癸丑 甲寅 乙卯 丙辰 丁巳 戊午 己未 庚申 辛酉 壬戌 癸亥 甲子"
             else -> ""
         }
     }
@@ -101,27 +143,27 @@ object Utils {
     )
 
     // 지지암장간
-    fun getJijiAmJangan(char: Char):String {
-        return when(char) {
-            '子'->"壬癸"
-            '丑'->"癸辛己"
-            '寅'->"戊丙甲"
-            '卯'->"甲乙"
-            '辰'->"乙癸戊"
-            '巳'->"戊庚丙"
-            '午'->"丙己丁"
-            '未'->"丁己"
-            '申'->"戊壬庚"
-            '酉'->"庚辛"
-            '戌'->"辛丁戊"
-            '亥'->"戊甲壬"
+    fun getJijiAmJangan(char: Char): String {
+        return when (char) {
+            '子' -> "壬癸"
+            '丑' -> "癸辛己"
+            '寅' -> "戊丙甲"
+            '卯' -> "甲乙"
+            '辰' -> "乙癸戊"
+            '巳' -> "戊庚丙"
+            '午' -> "丙己丁"
+            '未' -> "丁己"
+            '申' -> "戊壬庚"
+            '酉' -> "庚辛"
+            '戌' -> "辛丁戊"
+            '亥' -> "戊甲壬"
             else -> ""
         }
     }
 
     // 양음
-    fun getSign(char: Char):Int {
-        return if(char in "甲丙戊庚壬") 1 else - 1
+    fun getSign(char: Char): Int {
+        return if (char in "甲丙戊庚壬") 1 else -1
     }
 
 
@@ -149,7 +191,10 @@ object Utils {
             in 21 until 23 -> 11
             else -> 0
         }
-        Log.d(TAG, "getTimeGanji:   Time = $hour    ${dayIdx}   $timeIdx     ${timeGanji[dayIdx][timeIdx]}")
+        Log.d(
+            TAG,
+            "getTimeGanji:   Time = $hour    ${dayIdx}   $timeIdx     ${timeGanji[dayIdx][timeIdx]}"
+        )
 
         return if (dayIdx == -1) "" else timeGanji[dayIdx][timeIdx]
     }

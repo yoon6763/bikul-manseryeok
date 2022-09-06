@@ -10,12 +10,12 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.DialogFragment
 import com.example.manseryeok.R
 import com.example.manseryeok.databinding.ActivityCompassBinding
 import com.gun0912.tedpermission.PermissionListener
@@ -23,7 +23,6 @@ import com.gun0912.tedpermission.normal.TedPermission
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
 import com.naver.maps.map.util.FusedLocationSource
-import kotlin.math.roundToInt
 
 class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCallback {
     private val TAG = "CompassActivity"
@@ -36,6 +35,7 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
     private lateinit var locationSource: FusedLocationSource
     private lateinit var btnLocationSource: FusedLocationSource
 
+
     lateinit var mSensorManager: SensorManager
     lateinit var mAccelerometer: Sensor
     lateinit var mMagnetometer: Sensor
@@ -47,6 +47,7 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
     var mOrientation = FloatArray(3)
     var mCurrentDegree = 0f
     var mapIsReady = false
+    var isRotationFixed = false
 
     private val permissionListener = object : PermissionListener {
         override fun onPermissionGranted() {
@@ -97,11 +98,12 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
         }
 
         binding.btnCompassLocation.setOnClickListener {
-            btnLocationSource = FusedLocationSource(this@CompassActivity, LOCATION_PERMISSION_REQUEST_CODE)
+            btnLocationSource =
+                FusedLocationSource(this@CompassActivity, LOCATION_PERMISSION_REQUEST_CODE)
 
             naverMap.locationSource = btnLocationSource
 
-            if(locationSource.lastLocation != null) {
+            if (locationSource.lastLocation != null) {
                 val cameraPosition = CameraPosition(
                     LatLng(
                         locationSource.lastLocation!!.latitude,
@@ -114,11 +116,38 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
 
                 naverMap.cameraPosition = cameraPosition
             }
-
-//            val camera = CameraUpdate.toCameraPosition(cameraPosition)
-//                .animate(CameraAnimation.Easing, 1000)
-//            naverMap.moveCamera(camera)
         }
+
+        binding.rgRotation.setOnCheckedChangeListener { radioGroup, i ->
+            when(i) {
+                binding.rbRotation.id -> onRotation()
+                binding.rbRotationFix.id -> onRotationFix()
+            }
+        }
+    }
+
+    private fun onRotationFix() {
+        isRotationFixed = true
+
+
+//mHandler = new Handler();
+//        Thread t = new Thread(new Runnable(){
+//        	@Override public void run() {
+//            // UI 작업 수행 X
+//            	mHandler.post(new Runnable(){
+//                	@Override
+//                    public void run() {
+//                    // UI 작업 수행 O
+//                    }
+//                });
+//            }
+//         });
+//         t.start();
+    }
+
+    private fun onRotation() {
+        isRotationFixed = false
+
     }
 
     override fun onRequestPermissionsResult(
@@ -171,7 +200,14 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
     var mCount = 0
 
     override fun onSensorChanged(event: SensorEvent) {
-        if (mCount++ > 200 && mapIsReady) {
+        if(isRotationFixed) {
+            val rotation = -naverMap.cameraPosition.bearing.toInt().toFloat()
+            binding.ivCompass.rotation = rotation
+            Log.d(TAG, "onSensorChanged: $rotation")
+            return
+        }
+
+        if (mapIsReady) {
 
             if (event.sensor == mAccelerometer) {
                 System.arraycopy(event.values, 0, mLastAccelerometer, 0, event.values.size)
@@ -187,15 +223,18 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
                         .toDouble()
                 ) + 360).toInt() % 360).toFloat()
 
-                val ra = RotateAnimation(
-                    mCurrentDegree,
-                    -azimuthinDegress,
-                    Animation.RELATIVE_TO_SELF, 0.5f,
-                    Animation.RELATIVE_TO_SELF, 0.5f
-                )
-                ra.duration = 2000
-                ra.fillAfter = true
-                binding.ivCompass.startAnimation(ra)
+//                val ra = RotateAnimation(
+//                    mCurrentDegree,
+//                    -azimuthinDegress,
+//                    Animation.RELATIVE_TO_SELF, 0.5f,
+//                    Animation.RELATIVE_TO_SELF, 0.5f
+//                )
+//                ra.duration = 500
+//                ra.fillAfter = true
+//                binding.ivCompass.startAnimation(ra)
+
+                binding.ivCompass.rotation = -azimuthinDegress
+
 
                 // target, zoom, tilt, bearing
                 val cameraPosition = CameraPosition(
@@ -206,7 +245,7 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
                 )
 
                 val camera = CameraUpdate.toCameraPosition(cameraPosition)
-                    .animate(CameraAnimation.Easing, 1000)
+                    .animate(CameraAnimation.Easing, 500)
                 naverMap.moveCamera(camera)
                 //naverMap.cameraPosition = cameraPosition
 

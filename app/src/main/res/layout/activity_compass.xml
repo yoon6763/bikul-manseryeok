@@ -65,5 +65,48 @@
             android:text="Degree"
             android:textSize="20sp" />
 
+        <RadioGroup
+            android:id="@+id/rg_rotation"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/btn_full_height"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="100dp"
+            android:background="@drawable/radio_group_background"
+            android:elevation="3dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rb_rotation"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/btn_full_height"
+                android:layout_weight="1"
+                android:background="@drawable/radio_button_background"
+                android:button="@null"
+                android:checked="true"
+                android:drawableStart="@drawable/ic_phone_rotation_small"
+                android:drawablePadding="@dimen/gap_line"
+                android:drawableTint="@drawable/radio_text"
+                android:paddingHorizontal="@dimen/gap_horizontal"
+                android:paddingVertical="@dimen/gap_line"
+                android:text="@string/obj_rotation"
+                android:textColor="@drawable/radio_text" />
+
+            <RadioButton
+                android:id="@+id/rb_rotation_fix"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/btn_full_height"
+                android:layout_weight="1"
+                android:background="@drawable/radio_button_background"
+                android:button="@null"
+                android:drawableEnd="@drawable/ic_phone_rotation_lock_small"
+
+                android:drawablePadding="@dimen/gap_line"
+                android:drawableTint="@drawable/radio_text"
+                android:paddingHorizontal="@dimen/gap_horizontal"
+                android:paddingVertical="@dimen/gap_line"
+                android:text="@string/obj_rotation_fix"
+                android:textColor="@drawable/radio_text" />
+        </RadioGroup>
+
     </FrameLayout>
 </LinearLayout>

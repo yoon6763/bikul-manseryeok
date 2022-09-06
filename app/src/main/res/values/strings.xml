@@ -80,5 +80,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="obj_location_title">지역을 선택해주세요</string>
+    <string name="obj_rotation">자동 회전</string>
+    <string name="obj_rotation_fix">지도 고정</string>
+    <string name="obj_today">오늘의 일진</string>
 
 </resources>
