@@ -69,6 +69,7 @@ class CalendarActivity : AppCompatActivity() {
         initLoadDB()
         setUserBirth()
         setUpPillar() // 기둥 세우기
+        setUpPillarLabel() // 라벨
         setUpSeasonBirth() // 절기 설정
         setUpProperty() // 오행 설정
         setUpJiJiAmjangan() // 지지 암장간
@@ -172,6 +173,22 @@ class CalendarActivity : AppCompatActivity() {
             } else {
                 tvPillarTimeTop.visibility = View.INVISIBLE
                 tvPillarTimeBottom.visibility = View.INVISIBLE
+            }
+        }
+    }
+
+    private fun setUpPillarLabel() {
+        binding.run {
+            val me = dayPillar[0].toString()
+            tvPillarYearTopLabel.text = Utils.getPillarLabel(me, yearPillar[0].toString())
+            tvPillarYearBottomLabel.text = Utils.getPillarLabel(me, yearPillar[1].toString())
+            tvPillarMonthTopLabel.text = Utils.getPillarLabel(me, monthPillar[0].toString())
+            tvPillarMonthBottomLabel.text = Utils.getPillarLabel(me, monthPillar[1].toString())
+            tvPillarDayBottomLabel.text = Utils.getPillarLabel(me, dayPillar[1].toString())
+
+            if(isTimeInclude) {
+                tvPillarTimeTopLabel.text = Utils.getPillarLabel(me, timePillar[0].toString())
+                tvPillarTimeBottomLabel.text = Utils.getPillarLabel(me, timePillar[1].toString())
             }
         }
     }

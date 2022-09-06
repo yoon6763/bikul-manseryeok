@@ -127,24 +127,28 @@
                     android:showDividers="middle">
 
                     <TextView
+                        android:id="@+id/tv_pillar_time_top_label"
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="식신" />
+                        android:text="" />
 
                     <TextView
+                        android:id="@+id/tv_pillar_day_top_label"
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="정재" />
+                        android:text="일원" />
 
                     <TextView
+                        android:id="@+id/tv_pillar_month_top_label"
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="편인" />
 
                     <TextView
+                        android:id="@+id/tv_pillar_year_top_label"
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -264,24 +268,28 @@
                     android:showDividers="middle">
 
                     <TextView
+                        android:id="@+id/tv_pillar_time_bottom_label"
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="식신" />
+                        android:text="" />
 
                     <TextView
+                        android:id="@+id/tv_pillar_day_bottom_label"
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="정재" />
 
                     <TextView
+                        android:id="@+id/tv_pillar_month_bottom_label"
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="편인" />
 
                     <TextView
+                        android:id="@+id/tv_pillar_year_bottom_label"
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
