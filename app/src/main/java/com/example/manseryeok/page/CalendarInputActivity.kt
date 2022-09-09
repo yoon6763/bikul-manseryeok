@@ -64,6 +64,18 @@ class CalendarInputActivity : AppCompatActivity() {
                 etInputBirthTime.isEnabled = !b
             }
 
+            btnNameInputFinish.setOnClickListener {
+                if (birth[Calendar.YEAR] >= 2101) {
+                    Toast.makeText(
+                        applicationContext,
+                        "최대 2100년까지의 만세력 정보만 제공합니다",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@setOnClickListener
+                }
+                nextPage(true)
+            }
+
             btnCalenderInputFinish.setOnClickListener {
                 if (birth[Calendar.YEAR] >= 2101) {
                     Toast.makeText(
@@ -73,7 +85,7 @@ class CalendarInputActivity : AppCompatActivity() {
                     ).show()
                     return@setOnClickListener
                 }
-                nextPage()
+                nextPage(false)
             }
         }
     }
@@ -114,7 +126,7 @@ class CalendarInputActivity : AppCompatActivity() {
         fragment.show(supportFragmentManager, "LocationPicker")
     }
 
-    private fun nextPage() {
+    private fun nextPage(isName: Boolean) {
         binding.run {
 //            firstName: String?,
 //            lastName: String?,
@@ -148,7 +160,9 @@ class CalendarInputActivity : AppCompatActivity() {
                 timeDiff
             )
 
-            val intent = Intent(this@CalendarInputActivity, CalendarActivity::class.java)
+
+            val intent = if(isName) Intent(this@CalendarInputActivity, NameActivity::class.java)
+                        else Intent(this@CalendarInputActivity, CalendarActivity::class.java)
             intent.putExtra(Utils.INTENT_EXTRAS_USER, userModel)
             startActivity(intent)
             finish()

@@ -30,6 +30,9 @@
         tools:replace="allowBackup"
         tools:targetApi="31">
         <activity
+            android:name=".page.NameActivity"
+            android:exported="false" />
+        <activity
             android:name=".Utils.BaseActivity"
             android:exported="false" />
         <activity
