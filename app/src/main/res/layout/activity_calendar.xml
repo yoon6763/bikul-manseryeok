@@ -169,7 +169,7 @@
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:autoSizeTextType="uniform"
-                        android:background="@drawable/box_dark_gray"
+                        android:background="@drawable/box_mint"
                         android:gravity="center"
                         android:padding="15dp"
                         android:text="子" />
@@ -357,12 +357,20 @@
 
                 </LinearLayout>
 
+                <TextView
+                    android:id="@+id/tv_empty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="@dimen/gap_horizontal"
+                    android:layout_marginTop="@dimen/gap_line"
+                    android:paddingVertical="10dp"
+                    android:text="공망 : ?(월) ?(일)" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/gap_horizontal"
                     android:layout_marginTop="@dimen/gap_line"
-                    android:layout_marginBottom="@dimen/gap_vertical"
                     android:background="@drawable/box_navy"
                     android:paddingVertical="10dp">
 
@@ -407,6 +415,55 @@
                         android:textStyle="bold" />
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/gap_horizontal"
+                    android:layout_marginTop="@dimen/gap_line"
+                    android:layout_marginBottom="@dimen/gap_vertical"
+                    android:background="@drawable/box_navy"
+                    android:paddingVertical="10dp">
+
+                    <TextView
+                        android:id="@+id/tv_five_property_time"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="大海水"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_five_property_day"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="大海水"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_five_property_month"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="大海水"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_five_property_year"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="大海水"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
+                </LinearLayout>
             </LinearLayout>
 
 
@@ -505,17 +562,42 @@
                     app:reverseLayout="true"
                     tools:listitem="@layout/item_sixty_horizon" />
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btn_calendar_save"
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/btn_full_height"
-                    android:layout_marginHorizontal="@dimen/gap_horizontal"
-                    android:background="@drawable/box_navy"
-                    android:drawableLeft="@drawable/ic_save"
-                    android:drawableTint="@color/white"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:padding="10dp"
-                    android:text="@string/glb_save" />
+                    android:layout_height="wrap_content"
+                    android:divider="@drawable/empty_divider_20"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="@dimen/gap_line_double"
+                    android:showDividers="middle">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btn_calendar_share"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/btn_full_height"
+                        android:layout_weight="1"
+                        android:background="@drawable/box_mint"
+                        android:drawableLeft="@drawable/ic_share"
+                        android:drawableTint="@color/white"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:padding="10dp"
+                        android:text="@string/obj_result_share"
+                        android:textSize="15sp" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btn_calendar_save"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/btn_full_height"
+                        android:layout_weight="1"
+                        android:background="@drawable/box_navy"
+                        android:drawableLeft="@drawable/ic_save"
+                        android:drawableTint="@color/white"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:padding="10dp"
+                        android:text="@string/obj_result_save"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

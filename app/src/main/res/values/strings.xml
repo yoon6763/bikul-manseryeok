@@ -50,6 +50,9 @@
     <string name="msg_save_complete">저장이 완료되었습니다</string>
     <string name="msg_save_fail">저장에 실패했습니다\n해당 오류가 계속될경우 문의해주세요</string>
 
+    <string name="obj_result_save">결과 저장하기</string>
+    <string name="obj_result_share">결과 공유하기</string>
+
 
     <!-- CompassActivity -->
     <string name="obj_toolbar_map">방위 나침반</string>

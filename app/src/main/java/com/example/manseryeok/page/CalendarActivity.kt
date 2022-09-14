@@ -1,13 +1,12 @@
 package com.example.manseryeok.page
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.manseryeok.R
 import com.example.manseryeok.UserDB.DatabaseHelper
 import com.example.manseryeok.Utils.Utils
@@ -31,10 +30,10 @@ class CalendarActivity : AppCompatActivity() {
     private val yearItems by lazy { ArrayList<SixtyHorizontalItem>() }
     private val monthItems by lazy { ArrayList<SixtyHorizontalItem>() }
 
-    private var yearPillar = ""
-    private var monthPillar = ""
-    private var dayPillar = ""
-    private var timePillar = ""
+    private var yearPillar = "" // 년주
+    private var monthPillar = "" // 월주
+    private var dayPillar = "" // 일주
+    private var timePillar = "" // 시주
 
     private var isTimeInclude = false
 
@@ -59,9 +58,8 @@ class CalendarActivity : AppCompatActivity() {
         }
 
         binding.run {
-            btnCalendarSave.setOnClickListener {
-                 saveResult()
-            }
+            btnCalendarSave.setOnClickListener { saveResult() }
+            btnCalendarShare.setOnClickListener { shareResult() }
         }
 
         userModel = intent.getParcelableExtra<User>(Utils.INTENT_EXTRAS_USER)!!
@@ -70,8 +68,10 @@ class CalendarActivity : AppCompatActivity() {
         setUserBirth()
         setUpPillar() // 기둥 세우기
         setUpPillarLabel() // 라벨
+        setUpEmpty() // 공망 설정
         setUpSeasonBirth() // 절기 설정
-        setUpProperty() // 오행 설정
+        setUpProperty() // 오행 - 화수목금토 개수 설정
+        setUpPlusMinusFiveProperty() // 음양오행 - 해중금, 복등화 등등
         setUpJiJiAmjangan() // 지지 암장간
         setUpYearAndMonthPillar() // 년주 리사이클러뷰
         setRecyclerViewClickEvent() // 년주 리사이클러뷰 클릭 이벤트 처리
@@ -108,6 +108,42 @@ class CalendarActivity : AppCompatActivity() {
         } else {
             Toast.makeText(applicationContext,getString(R.string.msg_save_fail),Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun shareResult() {
+        /*
+        만세력 결과 - 전윤호(25세)
+        (양)1998년 12월 04일
+        (음)1998년 10월 16일 23:00
+        (正)1998년 12월 04일 22:30
+
+        시 일 월 년
+        丁 乙 癸 戊
+        亥 酉 亥 寅
+
+        71 61 51 41 31 21 11 1.0
+        辛 庚 己 戊 丁 丙 乙 甲
+        未 午 巳 辰 卯 寅 丑 子
+         */
+        var sendContent = "${userModel.firstName}${userModel.lastName}\n" +
+                "${if(isTimeInclude) Utils.dateTimeKorFormat.format(userBirth.timeInMillis) else Utils.dateKorFormat.format(userBirth.timeInMillis)}\n" +
+                "\n"
+
+        if(isTimeInclude) {
+            sendContent += "시 일 월 년\n"
+            sendContent += "${timePillar[0]} ${dayPillar[0]} ${monthPillar[0]} ${yearPillar[0]}\n"
+            sendContent += "${timePillar[1]} ${dayPillar[1]} ${monthPillar[1]} ${yearPillar[1]}\n"
+        } else {
+            sendContent += "일 월 년\n"
+            sendContent += "${dayPillar[0]} ${monthPillar[0]} ${yearPillar[0]}\n"
+            sendContent += "${dayPillar[1]} ${monthPillar[1]} ${yearPillar[1]}\n"
+        }
+
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, sendContent)
+        }
+        startActivity(Intent.createChooser(intent, "Share"))
     }
 
     // 기둥 세우기
@@ -153,23 +189,88 @@ class CalendarActivity : AppCompatActivity() {
             // 년주
             tvPillarYearTop.text = yearPillar[0].toString()
             tvPillarYearBottom.text = yearPillar[1].toString()
+            when(Utils.tenGan[0].indexOf(yearPillar[0].toString())) {
+                0, 1 -> tvPillarYearTop.setBackgroundResource(R.drawable.box_mint) // 목
+                2, 3 -> tvPillarYearTop.setBackgroundResource(R.drawable.box_red) // 화
+                4, 5 -> tvPillarYearTop.setBackgroundResource(R.drawable.box_yellow) // 토
+                6, 7 -> tvPillarYearTop.setBackgroundResource(R.drawable.box_light_gray) // 금
+                8, 9 -> tvPillarYearTop.setBackgroundResource(R.drawable.box_sky) // 수
+            }
+
+            when(Utils.twelveGan[0].indexOf(yearPillar[1].toString())) {
+                0, 11 -> tvPillarYearBottom.setBackgroundResource(R.drawable.box_sky) // 수
+                1, 4, 7, 10 -> tvPillarYearBottom.setBackgroundResource(R.drawable.box_yellow) // 토
+                2, 3 -> tvPillarYearBottom.setBackgroundResource(R.drawable.box_mint) // 목
+                5, 6 -> tvPillarYearBottom.setBackgroundResource(R.drawable.box_red) // 화
+                8, 9 -> tvPillarYearBottom.setBackgroundResource(R.drawable.box_light_gray) // 금
+            }
 
             // 월주
             tvPillarMonthTop.text = monthPillar[0].toString()
             tvPillarMonthBottom.text = monthPillar[1].toString()
 
+            when(Utils.tenGan[0].indexOf(monthPillar[0].toString())) {
+                0, 1 -> tvPillarMonthTop.setBackgroundResource(R.drawable.box_mint) // 목
+                2, 3 -> tvPillarMonthTop.setBackgroundResource(R.drawable.box_red) // 화
+                4, 5 -> tvPillarMonthTop.setBackgroundResource(R.drawable.box_yellow) // 토
+                6, 7 -> tvPillarMonthTop.setBackgroundResource(R.drawable.box_light_gray) // 금
+                8, 9 -> tvPillarMonthTop.setBackgroundResource(R.drawable.box_sky) // 수
+            }
+
+            when(Utils.twelveGan[0].indexOf(monthPillar[1].toString())) {
+                0, 11 -> tvPillarMonthBottom.setBackgroundResource(R.drawable.box_sky) // 수
+                1, 4, 7, 10 -> tvPillarMonthBottom.setBackgroundResource(R.drawable.box_yellow) // 토
+                2, 3 -> tvPillarMonthBottom.setBackgroundResource(R.drawable.box_mint) // 목
+                5, 6 -> tvPillarMonthBottom.setBackgroundResource(R.drawable.box_red) // 화
+                8, 9 -> tvPillarMonthBottom.setBackgroundResource(R.drawable.box_light_gray) // 금
+            }
+
             // 일주
             tvPillarDayTop.text = dayPillar[0].toString()
             tvPillarDayBottom.text = dayPillar[1].toString()
 
+            when(Utils.tenGan[0].indexOf(dayPillar[0].toString())) {
+                0, 1 -> tvPillarDayTop.setBackgroundResource(R.drawable.box_mint) // 목
+                2, 3 -> tvPillarDayTop.setBackgroundResource(R.drawable.box_red) // 화
+                4, 5 -> tvPillarDayTop.setBackgroundResource(R.drawable.box_yellow) // 토
+                6, 7 -> tvPillarDayTop.setBackgroundResource(R.drawable.box_light_gray) // 금
+                8, 9 -> tvPillarDayTop.setBackgroundResource(R.drawable.box_sky) // 수
+            }
+
+            when(Utils.twelveGan[0].indexOf(dayPillar[1].toString())) {
+                0, 11 -> tvPillarDayBottom.setBackgroundResource(R.drawable.box_sky) // 수
+                1, 4, 7, 10 -> tvPillarDayBottom.setBackgroundResource(R.drawable.box_yellow) // 토
+                2, 3 -> tvPillarDayBottom.setBackgroundResource(R.drawable.box_mint) // 목
+                5, 6 -> tvPillarDayBottom.setBackgroundResource(R.drawable.box_red) // 화
+                8, 9 -> tvPillarDayBottom.setBackgroundResource(R.drawable.box_light_gray) // 금
+            }
+
             // 시주
             if(isTimeInclude) {
+                // 시간 포함
                 timePillar = Utils.getTimeGanji(dayPillar[0].toString(), userBirth[Calendar.HOUR_OF_DAY])
                 tvPillarTimeTop.text = timePillar[0].toString()
                 tvPillarTimeBottom.text = timePillar[1].toString()
 
                 tvPillarTimeTop.visibility = View.VISIBLE
                 tvPillarTimeBottom.visibility = View.VISIBLE
+
+
+                when(Utils.tenGan[0].indexOf(timePillar[0].toString())) {
+                    0, 1 -> tvPillarTimeTop.setBackgroundResource(R.drawable.box_mint) // 목
+                    2, 3 -> tvPillarTimeTop.setBackgroundResource(R.drawable.box_red) // 화
+                    4, 5 -> tvPillarTimeTop.setBackgroundResource(R.drawable.box_yellow) // 토
+                    6, 7 -> tvPillarTimeTop.setBackgroundResource(R.drawable.box_light_gray) // 금
+                    8, 9 -> tvPillarTimeTop.setBackgroundResource(R.drawable.box_sky) // 수
+                }
+
+                when(Utils.twelveGan[0].indexOf(timePillar[1].toString())) {
+                    0, 11 -> tvPillarTimeBottom.setBackgroundResource(R.drawable.box_sky) // 수
+                    1, 4, 7, 10 -> tvPillarTimeBottom.setBackgroundResource(R.drawable.box_yellow) // 토
+                    2, 3 -> tvPillarTimeBottom.setBackgroundResource(R.drawable.box_mint) // 목
+                    5, 6 -> tvPillarTimeBottom.setBackgroundResource(R.drawable.box_red) // 화
+                    8, 9 -> tvPillarTimeBottom.setBackgroundResource(R.drawable.box_light_gray) // 금
+                }
             } else {
                 tvPillarTimeTop.visibility = View.INVISIBLE
                 tvPillarTimeBottom.visibility = View.INVISIBLE
@@ -191,6 +292,13 @@ class CalendarActivity : AppCompatActivity() {
                 tvPillarTimeBottomLabel.text = Utils.getPillarLabel(me, timePillar[1].toString())
             }
         }
+    }
+
+    private fun setUpEmpty() {
+        val yearEmpty = Utils.getEmptyGanji(yearPillar)
+        val dayEmpty = Utils.getEmptyGanji(dayPillar)
+
+        binding.tvEmpty.text = "공망 : $yearEmpty (년), $dayEmpty (일)"
     }
 
     private fun setUpSeasonBirth() {
@@ -264,6 +372,19 @@ class CalendarActivity : AppCompatActivity() {
             tvTree.text = "木(${properties[2]})"
             tvGold.text = "金(${properties[3]})"
             tvSand.text = "土(${properties[4]})"
+        }
+    }
+
+    private fun setUpPlusMinusFiveProperty() {
+        binding.run {
+            tvFivePropertyYear.text = Utils.getFiveProperty(yearPillar)
+            tvFivePropertyMonth.text = Utils.getFiveProperty(monthPillar)
+            tvFivePropertyDay.text = Utils.getFiveProperty(dayPillar)
+            if(isTimeInclude) {
+                tvFivePropertyTime.text = Utils.getFiveProperty(timePillar)
+            } else {
+                tvFivePropertyTime.text = ""
+            }
         }
     }
 
@@ -363,13 +484,11 @@ class CalendarActivity : AppCompatActivity() {
             }
 
             repeat(10) {
-                luckItems.add(
-                    SixtyHorizontalItem(
-                        it * 10 + firstAge,
-                        tenArray.random(),
-                        twelveArray.random()
-                    )
-                )
+                val age = it * 10 + firstAge
+                val year = userBirth[Calendar.YEAR] + age - 1
+                val lucKYearPillar = Utils.getYearGanji(year)
+
+                luckItems.add(SixtyHorizontalItem(age, lucKYearPillar[0].toString(), lucKYearPillar[1].toString()))
             }
             luckAdapter.notifyDataSetChanged()
         }
