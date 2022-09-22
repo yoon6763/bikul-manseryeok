@@ -86,5 +86,8 @@
     <string name="obj_rotation">자동 회전</string>
     <string name="obj_rotation_fix">지도 고정</string>
     <string name="obj_today">오늘의 일진</string>
+    <string name="obj_toolbar_name">이름 분석 결과</string>
+    <string name="obj_name_year">年 년주 기준</string>
+    <string name="obj_name_month">월주 기준 月</string>
 
 </resources>

@@ -435,6 +435,9 @@ class CalendarActivity : AppCompatActivity() {
 
     // 대운 리사이클러 뷰 세팅
     private fun setUpLuckRecyclerView() {
+        var topPtr = tenArray.indexOf(monthPillar[0].toString())
+        var bottomPtr = twelveArray.indexOf(monthPillar[1].toString())
+
         var direction = if(userModel.gender == 0) 1 else -1 // 남자 순행, 여자 역행, 양 순행, 음 역행
         direction *= Utils.getSign(yearPillar[0])
 
@@ -445,9 +448,7 @@ class CalendarActivity : AppCompatActivity() {
             var cnt = 0
             var ptr = userCalendar.indexOf(userBirthCalender)
             while (true) {
-                if (userCalendar[ptr].cd_terms_time != null && userCalendar[ptr].cd_terms_time != 0L) {
-                    break
-                }
+                if (userCalendar[ptr].cd_terms_time != null && userCalendar[ptr].cd_terms_time != 0L) break
                 ptr++
                 cnt++
             }
@@ -483,12 +484,27 @@ class CalendarActivity : AppCompatActivity() {
                 }
             }
 
-            repeat(10) {
+            repeat(12) {
                 val age = it * 10 + firstAge
                 val year = userBirth[Calendar.YEAR] + age - 1
-                val lucKYearPillar = Utils.getYearGanji(year)
 
-                luckItems.add(SixtyHorizontalItem(age, lucKYearPillar[0].toString(), lucKYearPillar[1].toString()))
+
+                if(direction == 1) {
+                    topPtr++
+                    bottomPtr++
+
+                    if(topPtr >= 10) topPtr = 0
+                    if(bottomPtr >= 12) bottomPtr = 0
+                } else {
+                    topPtr--
+                    bottomPtr--
+
+                    if(topPtr < 0) topPtr = 9
+                    if(bottomPtr < 0) bottomPtr = 11
+                }
+
+                luckItems.add(SixtyHorizontalItem(age, tenArray[topPtr], twelveArray[bottomPtr]))
+
             }
             luckAdapter.notifyDataSetChanged()
         }
@@ -502,7 +518,7 @@ class CalendarActivity : AppCompatActivity() {
             monthAdapter = SixtyHorizontalSmallAdapter(this@CalendarActivity, monthItems)
             rvMonthPillar.adapter = monthAdapter
 
-            for(i in 0 .. 110) {
+            for(i in 0 .. 150) {
                 val yGanji = Utils.getYearGanji(userBirth[Calendar.YEAR] + i)
                 yearItems.add(SixtyHorizontalItem(userBirth[Calendar.YEAR] + i, yGanji[0].toString(), yGanji[1].toString()))
             }

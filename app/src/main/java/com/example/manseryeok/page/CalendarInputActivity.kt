@@ -65,14 +65,6 @@ class CalendarInputActivity : AppCompatActivity() {
             }
 
             btnNameInputFinish.setOnClickListener {
-                if (birth[Calendar.YEAR] >= 2101) {
-                    Toast.makeText(
-                        applicationContext,
-                        "최대 2100년까지의 만세력 정보만 제공합니다",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    return@setOnClickListener
-                }
                 nextPage(true)
             }
 

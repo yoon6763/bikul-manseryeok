@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingVertical="@dimen/gap_line_double">
+
+    <TextView
+        android:id="@+id/tv_item_ganji_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textSize="20sp"
+        tools:text="정재" />
+
+    <TextView
+        android:id="@+id/tv_item_name_kor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textSize="20sp"
+        tools:text="전" />
+
+    <TextView
+        android:id="@+id/tv_item_name_han"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textSize="20sp"
+        tools:text="全" />
+
+    <TextView
+        android:id="@+id/tv_item_ganji_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textSize="20sp"
+        tools:text="정관" />
+</LinearLayout>

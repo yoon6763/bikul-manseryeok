@@ -1,10 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:orientation="vertical"
     tools:context=".page.NameActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:elevation="3dp"
+        app:title="@string/obj_toolbar_name" />
+
+
+    <RadioGroup
+        android:id="@+id/rg_name"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/btn_full_height"
+        android:layout_gravity="bottom|center_horizontal"
+        android:background="@drawable/radio_group_background"
+        android:elevation="3dp"
+        android:layout_marginVertical="@dimen/gap_vertical"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rb_year"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/btn_full_height"
+            android:layout_weight="1"
+            android:background="@drawable/radio_button_background"
+            android:button="@null"
+            android:checked="true"
+            android:paddingHorizontal="@dimen/gap_horizontal"
+            android:paddingVertical="@dimen/gap_line"
+            android:text="@string/obj_name_year"
+            android:textColor="@drawable/radio_text" />
+
+        <RadioButton
+            android:id="@+id/rb_month"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/btn_full_height"
+            android:layout_weight="1"
+            android:background="@drawable/radio_button_background"
+            android:button="@null"
+            android:paddingHorizontal="@dimen/gap_horizontal"
+            android:paddingVertical="@dimen/gap_line"
+            android:text="@string/obj_name_month"
+            android:textColor="@drawable/radio_text" />
+    </RadioGroup>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/gap_vertical">
+
+        <TextView
+            android:id="@+id/tv_year_ganji_top"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="@dimen/title_size"
+            tools:text="卯" />
+
+        <TextView
+            android:id="@+id/tv_year_ganji_bottom"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:textSize="@dimen/title_size"
+            tools:text="卯" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_name_score"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_name" />
+</LinearLayout>
