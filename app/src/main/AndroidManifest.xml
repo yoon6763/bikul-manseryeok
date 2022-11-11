@@ -30,10 +30,13 @@
         tools:replace="allowBackup"
         tools:targetApi="31">
         <activity
+            android:name=".ParentActivity"
+            android:exported="false" />
+        <activity
             android:name=".page.NameActivity"
             android:exported="false" />
         <activity
-            android:name=".Utils.BaseActivity"
+            android:name=".utils.BaseActivity"
             android:exported="false" />
         <activity
             android:name=".page.DBActivity"

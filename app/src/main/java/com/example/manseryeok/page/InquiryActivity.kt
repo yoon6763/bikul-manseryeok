@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
 import com.example.manseryeok.R
-import com.example.manseryeok.Utils.BaseActivity
-import com.example.manseryeok.Utils.NotionAPI.NotionAPI
-import com.example.manseryeok.Utils.NotionAPI.ResponseDTO.*
-import com.example.manseryeok.Utils.SecretConstants
+import com.example.manseryeok.utils.BaseActivity
+import com.example.manseryeok.utils.notionAPI.NotionAPI
+import com.example.manseryeok.utils.notionAPI.responseDTO.*
+import com.example.manseryeok.utils.SecretConstants
 import com.example.manseryeok.databinding.ActivityInquiryBinding
 import okhttp3.ResponseBody
 import retrofit2.Call

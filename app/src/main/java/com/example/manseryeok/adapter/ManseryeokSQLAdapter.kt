@@ -5,7 +5,7 @@ import android.database.Cursor
 import android.database.SQLException
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
-import com.example.manseryeok.Utils.ManseryeokDBHelper
+import com.example.manseryeok.utils.ManseryeokDBHelper
 import com.example.manseryeok.models.Manseryeok
 import java.io.IOException
 

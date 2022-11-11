@@ -1,7 +1,6 @@
-package com.example.manseryeok.Utils.NotionAPI
+package com.example.manseryeok.utils.notionAPI
 
-import com.example.manseryeok.Utils.NotionAPI.ResponseDTO.InquiryRequestDTO
-import okhttp3.Response
+import com.example.manseryeok.utils.notionAPI.responseDTO.InquiryRequestDTO
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Retrofit

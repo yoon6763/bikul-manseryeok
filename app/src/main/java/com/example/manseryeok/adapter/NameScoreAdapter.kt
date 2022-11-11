@@ -6,12 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.manseryeok.R
-import com.example.manseryeok.Utils.Utils
 import com.example.manseryeok.databinding.ItemNameBinding
-import com.example.manseryeok.databinding.ItemSixtyHorizonBinding
-import com.example.manseryeok.databinding.ItemSixtyHorizonSmallBinding
 import com.example.manseryeok.models.NameScoreItem
-import com.example.manseryeok.models.SixtyHorizontalItem
 import java.util.*
 
 class NameScoreAdapter(

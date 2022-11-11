@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.manseryeok.R
-import com.example.manseryeok.Utils.Utils
+import com.example.manseryeok.utils.Utils
 import com.example.manseryeok.databinding.ItemDbListBinding
 import com.example.manseryeok.models.DBListItem
 

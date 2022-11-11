@@ -6,8 +6,8 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
 import com.example.manseryeok.R
-import com.example.manseryeok.UserDB.DatabaseHelper
-import com.example.manseryeok.Utils.Utils
+import com.example.manseryeok.userDB.DatabaseHelper
+import com.example.manseryeok.utils.Utils
 import com.example.manseryeok.adapter.DBListAdapter
 import com.example.manseryeok.databinding.ActivityDbactivityBinding
 import com.example.manseryeok.models.DBListItem

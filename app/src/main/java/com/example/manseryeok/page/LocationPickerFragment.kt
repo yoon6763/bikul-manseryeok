@@ -3,9 +3,7 @@ package com.example.manseryeok.page
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
-import com.example.manseryeok.R
-import com.example.manseryeok.Utils.TimeDiffConstants
+import com.example.manseryeok.utils.TimeDiffConstants
 import com.example.manseryeok.adapter.LocationAdapter
 import com.example.manseryeok.databinding.FragmentLocationPickerBinding
 

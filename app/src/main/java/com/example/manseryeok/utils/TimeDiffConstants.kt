@@ -1,4 +1,4 @@
-package com.example.manseryeok.Utils
+package com.example.manseryeok.utils
 
 import com.example.manseryeok.models.TimeZone
 

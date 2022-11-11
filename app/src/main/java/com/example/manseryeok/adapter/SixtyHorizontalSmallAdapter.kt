@@ -4,10 +4,9 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.manseryeok.R
-import com.example.manseryeok.Utils.Utils
+import com.example.manseryeok.utils.Utils
 import com.example.manseryeok.databinding.ItemSixtyHorizonSmallBinding
 import com.example.manseryeok.models.SixtyHorizontalItem
 import java.util.*

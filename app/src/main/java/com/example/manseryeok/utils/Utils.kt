@@ -1,7 +1,6 @@
-package com.example.manseryeok.Utils
+package com.example.manseryeok.utils
 
 import android.icu.util.ChineseCalendar
-import android.util.Log
 import java.text.SimpleDateFormat
 import java.util.*
 

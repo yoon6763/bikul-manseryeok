@@ -8,8 +8,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.manseryeok.R
-import com.example.manseryeok.UserDB.DatabaseHelper
-import com.example.manseryeok.Utils.Utils
+import com.example.manseryeok.userDB.DatabaseHelper
+import com.example.manseryeok.utils.Utils
 import com.example.manseryeok.adapter.ManseryeokSQLAdapter
 import com.example.manseryeok.adapter.SixtyHorizontalAdapter
 import com.example.manseryeok.adapter.SixtyHorizontalSmallAdapter
@@ -17,11 +17,12 @@ import com.example.manseryeok.databinding.ActivityCalendarBinding
 import com.example.manseryeok.models.Manseryeok
 import com.example.manseryeok.models.SixtyHorizontalItem
 import com.example.manseryeok.models.User
+import com.example.manseryeok.utils.ParentActivity
 import java.util.*
 import kotlin.collections.ArrayList
 
 
-class CalendarActivity : AppCompatActivity() {
+class CalendarActivity : ParentActivity() {
     private val binding by lazy { ActivityCalendarBinding.inflate(layoutInflater) }
     private val tenArray by lazy { resources.getStringArray(R.array.ten_array) }
     private val twelveArray by lazy { resources.getStringArray(R.array.twelve_array) }
@@ -62,7 +63,7 @@ class CalendarActivity : AppCompatActivity() {
             btnCalendarShare.setOnClickListener { shareResult() }
         }
 
-        userModel = intent.getParcelableExtra<User>(Utils.INTENT_EXTRAS_USER)!!
+        userModel = intent.getParcelableExtra(Utils.INTENT_EXTRAS_USER)!!
 
         initLoadDB()
         setUserBirth()

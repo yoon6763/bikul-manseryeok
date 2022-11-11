@@ -2,17 +2,14 @@ package com.example.manseryeok.page
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
-import com.example.manseryeok.UserDB.DatabaseHelper
-import com.example.manseryeok.Utils.Utils
+import com.example.manseryeok.utils.Utils
 import com.example.manseryeok.adapter.ManseryeokSQLAdapter
 import com.example.manseryeok.adapter.NameScoreAdapter
 import com.example.manseryeok.databinding.ActivityNameBinding
 import com.example.manseryeok.models.NameScoreItem
 import com.example.manseryeok.models.User
-import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 

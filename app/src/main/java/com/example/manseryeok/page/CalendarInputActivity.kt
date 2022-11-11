@@ -1,24 +1,21 @@
 package com.example.manseryeok.page
 
-import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.icu.util.Calendar
-import android.location.Address
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.manseryeok.Utils.Utils
+import com.example.manseryeok.utils.Utils
 import com.example.manseryeok.adapter.LocationAdapter
 import com.example.manseryeok.databinding.ActivityCalendarInputBinding
 import com.example.manseryeok.models.User
-import com.google.android.gms.maps.model.LatLng
+import com.example.manseryeok.utils.ParentActivity
 
 
-class CalendarInputActivity : AppCompatActivity() {
+class CalendarInputActivity : ParentActivity() {
 
     private val TAG = "CalendarInputActivity"
     private val binding by lazy { ActivityCalendarInputBinding.inflate(layoutInflater) }
@@ -48,33 +45,21 @@ class CalendarInputActivity : AppCompatActivity() {
 
 
         binding.run {
-            etInputBirth.setOnClickListener {
-                openBirthPicker()
-            }
+            etInputBirth.setOnClickListener { openBirthPicker() }
 
-            etInputBirthTime.setOnClickListener {
-                openBirthTimePicker()
-            }
+            etInputBirthTime.setOnClickListener { openBirthTimePicker() }
 
-            etInputBirthPlace.setOnClickListener {
-                openBirthPlacePicker()
-            }
+            etInputBirthPlace.setOnClickListener { openBirthPlacePicker() }
 
             cbInputBirthTime.setOnCheckedChangeListener { compoundButton, b ->
                 etInputBirthTime.isEnabled = !b
             }
 
-            btnNameInputFinish.setOnClickListener {
-                nextPage(true)
-            }
+            btnNameInputFinish.setOnClickListener { nextPage(true) }
 
             btnCalenderInputFinish.setOnClickListener {
                 if (birth[Calendar.YEAR] >= 2101) {
-                    Toast.makeText(
-                        applicationContext,
-                        "최대 2100년까지의 만세력 정보만 제공합니다",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    showShortToast("최대 2100년까지의 만세력 정보만 제공합니다")
                     return@setOnClickListener
                 }
                 nextPage(false)
@@ -83,7 +68,8 @@ class CalendarInputActivity : AppCompatActivity() {
     }
 
     private fun openBirthPicker() {
-        val datePicker = DatePickerDialog(this@CalendarInputActivity,
+        val datePicker = DatePickerDialog(
+            this@CalendarInputActivity,
             android.R.style.Theme_Holo_Light_Dialog_MinWidth,
             DatePickerDialog.OnDateSetListener { datePicker, y, m, d ->
                 birth[Calendar.YEAR] = y
@@ -128,7 +114,7 @@ class CalendarInputActivity : AppCompatActivity() {
 //            timeDiff: Int
 
 
-            val date = if(rgCalType.checkedRadioButtonId == rbCalTypeSun.id) {
+            val date = if (rgCalType.checkedRadioButtonId == rbCalTypeSun.id) {
                 // 양력
                 Utils.dateTimeNumFormat.format(birth.timeInMillis)
             } else {
@@ -147,14 +133,17 @@ class CalendarInputActivity : AppCompatActivity() {
                 etFirstName.text.toString(), // 성
                 etName.text.toString(), // 이름
                 if (rgGender.checkedRadioButtonId == rbGenderMale.id) 0 else 1, // 성별
-                if(cbInputBirthTime.isChecked) date.substring(0, 8) else date, // 생일, 시간포함 - yyyyMMddHHmm, 미포함 - yyyyMMdd
+                if (cbInputBirthTime.isChecked) date.substring(
+                    0,
+                    8
+                ) else date, // 생일, 시간포함 - yyyyMMddHHmm, 미포함 - yyyyMMdd
                 etInputBirthPlace.text.toString(), // 출생지
                 timeDiff
             )
 
 
-            val intent = if(isName) Intent(this@CalendarInputActivity, NameActivity::class.java)
-                        else Intent(this@CalendarInputActivity, CalendarActivity::class.java)
+            val intent = if (isName) Intent(this@CalendarInputActivity, NameActivity::class.java)
+            else Intent(this@CalendarInputActivity, CalendarActivity::class.java)
             intent.putExtra(Utils.INTENT_EXTRAS_USER, userModel)
             startActivity(intent)
             finish()

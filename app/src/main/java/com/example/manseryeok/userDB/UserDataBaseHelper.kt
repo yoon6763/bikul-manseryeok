@@ -1,4 +1,4 @@
-package com.example.manseryeok.UserDB
+package com.example.manseryeok.userDB
 
 import android.content.ContentValues
 import android.content.Context

@@ -1,18 +1,13 @@
 package com.example.manseryeok.adapter
 
-import android.animation.ValueAnimator
 import android.content.Context
 import android.util.Log
-import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.manseryeok.R
-import com.example.manseryeok.Utils.Utils
-import com.example.manseryeok.databinding.ItemDbListBinding
 import com.example.manseryeok.databinding.ItemLocationBinding
-import com.example.manseryeok.models.DBListItem
 import com.example.manseryeok.models.TimeZone
 import kotlin.math.abs
 
