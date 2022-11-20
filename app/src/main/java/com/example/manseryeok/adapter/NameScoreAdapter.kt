@@ -26,8 +26,11 @@ class NameScoreAdapter(
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.binding.run {
             val item = items[position]
-            tvItemGanjiTop.text = item.ganjiTop
-            tvItemGanjiBottom.text = item.ganjiBottom
+
+            tvItemYearGanjiTop.text = item.ganjiYearTop
+            tvItemMonthGanjiTop.text = item.ganjiMonthTop
+            tvItemYearGanjiBottom.text = item.ganjiYearBottom
+            tvItemMonthGanjiBottom.text = item.ganjiMonthBottom
 
             tvItemNameKor.text = item.name
             tvItemNameHan.text = item.nameHan

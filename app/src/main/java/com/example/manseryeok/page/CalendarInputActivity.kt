@@ -113,6 +113,16 @@ class CalendarInputActivity : ParentActivity() {
 //            birthPlace: String?,
 //            timeDiff: Int
 
+            if(isName) {
+                if (etFirstName.text.toString().isEmpty()) {
+                    showShortToast("성을 입력해주세요")
+                    return
+                }
+                if (etName.text.toString().isEmpty()) {
+                    showShortToast("이름을 입력해주세요")
+                    return
+                }
+            }
 
             val date = if (rgCalType.checkedRadioButtonId == rbCalTypeSun.id) {
                 // 양력

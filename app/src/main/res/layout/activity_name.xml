@@ -16,64 +16,104 @@
         android:elevation="3dp"
         app:title="@string/obj_toolbar_name" />
 
-
-    <RadioGroup
-        android:id="@+id/rg_name"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/btn_full_height"
-        android:layout_gravity="bottom|center_horizontal"
-        android:background="@drawable/radio_group_background"
-        android:elevation="3dp"
-        android:layout_marginVertical="@dimen/gap_vertical"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/gap_vertical"
+        android:layout_marginBottom="@dimen/gap_line_double"
         android:orientation="horizontal">
 
-        <RadioButton
-            android:id="@+id/rb_year"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/btn_full_height"
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/radio_button_background"
-            android:button="@null"
-            android:checked="true"
-            android:paddingHorizontal="@dimen/gap_horizontal"
-            android:paddingVertical="@dimen/gap_line"
-            android:text="@string/obj_name_year"
-            android:textColor="@drawable/radio_text" />
+            android:gravity="center"
+            android:text="월" />
 
-        <RadioButton
-            android:id="@+id/rb_month"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/btn_full_height"
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/radio_button_background"
-            android:button="@null"
-            android:paddingHorizontal="@dimen/gap_horizontal"
-            android:paddingVertical="@dimen/gap_line"
-            android:text="@string/obj_name_month"
-            android:textColor="@drawable/radio_text" />
-    </RadioGroup>
+            android:gravity="center"
+            android:text="년" />
 
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="년" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="월" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="@dimen/gap_vertical">
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_month_ganji_top"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="@dimen/title_size"
+            tools:text="卯" />
 
         <TextView
             android:id="@+id/tv_year_ganji_top"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:gravity="center"
             android:textSize="@dimen/title_size"
             tools:text="卯" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="@dimen/title_size" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="@dimen/title_size" />
 
         <TextView
             android:id="@+id/tv_year_ganji_bottom"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="right"
+            android:gravity="center"
+            android:textSize="@dimen/title_size"
+            tools:text="卯" />
+
+        <TextView
+            android:id="@+id/tv_month_ganji_bottom"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
             android:textSize="@dimen/title_size"
             tools:text="卯" />
     </LinearLayout>
@@ -84,5 +124,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:itemCount="3"
         tools:listitem="@layout/item_name" />
 </LinearLayout>

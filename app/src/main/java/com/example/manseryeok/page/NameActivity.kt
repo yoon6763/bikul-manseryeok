@@ -43,32 +43,20 @@ class NameActivity : AppCompatActivity() {
 
         binding.run {
             rvNameScore.adapter = nameAdapter
-            nameAdapter.notifyDataSetChanged()
         }
 
+        importGanji()
         setUpGanji()
-        setUpGanji(true)
-
-        binding.run {
-            rgName.setOnCheckedChangeListener { radioGroup, i ->
-                when (i) {
-                    binding.rbYear.id -> setUpGanji(true)
-                    binding.rbMonth.id -> setUpGanji(false)
-                }
-            }
-        }
-
     }
 
-    private fun setUpGanji(isYear: Boolean) {
-
-        if (isYear) {
-            binding.tvYearGanjiTop.text = yearGanji[0].toString()
-            binding.tvYearGanjiBottom.text = yearGanji[1].toString()
-        } else {
-            binding.tvYearGanjiTop.text = monthGanji[0].toString()
-            binding.tvYearGanjiBottom.text = monthGanji[1].toString()
+    private fun setUpGanji() {
+        binding.run {
+            tvYearGanjiTop.text = yearGanji[0].toString()
+            tvYearGanjiBottom.text = yearGanji[1].toString()
+            tvMonthGanjiTop.text = monthGanji[0].toString()
+            tvMonthGanjiBottom.text = monthGanji[1].toString()
         }
+
 
 /*
         한글 유니코드 규칙 - (초성 * 21 + 중성) * 28 + 종성 + 0xAC00
@@ -249,21 +237,31 @@ class NameActivity : AppCompatActivity() {
                 else -> ' '
             }
 
-            val ganjiTopLabel = Utils.getPillarLabel(
+            val ganjiYearTopLabel = Utils.getPillarLabel(
                 ganji.toString(),
-                if (isYear) yearGanji[0].toString() else monthGanji[0].toString()
+                yearGanji[0].toString()
             )
-            val ganjiBottomLabel = Utils.getPillarLabel(
+            val ganjiYearBottomLabel = Utils.getPillarLabel(
                 ganji.toString(),
-                if (isYear) yearGanji[1].toString() else monthGanji[1].toString()
+                yearGanji[1].toString()
+            )
+            val ganjiMonthTopLabel = Utils.getPillarLabel(
+                ganji.toString(),
+                monthGanji[0].toString()
+            )
+            val ganjiMonthBottomLabel = Utils.getPillarLabel(
+                ganji.toString(),
+                monthGanji[1].toString()
             )
 
             nameItems.add(
                 NameScoreItem(
                     element.toString(),
                     ganji.toString(),
-                    ganjiTopLabel,
-                    ganjiBottomLabel
+                    ganjiYearTopLabel,
+                    ganjiYearBottomLabel,
+                    ganjiMonthTopLabel,
+                    ganjiMonthBottomLabel
                 )
             )
         }
@@ -271,7 +269,7 @@ class NameActivity : AppCompatActivity() {
         nameAdapter.notifyDataSetChanged()
     }
 
-    private fun setUpGanji() {
+    private fun importGanji() {
         val mDBHelper = ManseryeokSQLAdapter(applicationContext)
         mDBHelper.createDataBase()
         mDBHelper.open()
@@ -288,8 +286,6 @@ class NameActivity : AppCompatActivity() {
         yearGanji = userManseryeok.cd_hyganjee!!
         monthGanji = userManseryeok.cd_hmganjee!!
 
-        binding.tvYearGanjiTop.text = yearGanji[0].toString()
-        binding.tvYearGanjiBottom.text = yearGanji[1].toString()
     }
 
 
@@ -303,5 +299,4 @@ class NameActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
-
 }
