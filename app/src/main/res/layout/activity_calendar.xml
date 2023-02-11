@@ -131,28 +131,28 @@
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="" />
+                        tools:text="" />
 
                     <TextView
                         android:id="@+id/tv_pillar_day_top_label"
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="일원" />
+                        tools:text="일원" />
 
                     <TextView
                         android:id="@+id/tv_pillar_month_top_label"
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="편인" />
+                        tools:text="편인" />
 
                     <TextView
                         android:id="@+id/tv_pillar_year_top_label"
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="정재" />
+                        tools:text="정재" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -172,7 +172,7 @@
                         android:background="@drawable/box_mint"
                         android:gravity="center"
                         android:padding="15dp"
-                        android:text="子" />
+                        tools:text="子" />
 
                     <TextView
                         android:id="@+id/tv_pillar_day_top"
@@ -182,7 +182,7 @@
                         android:background="@drawable/box_red"
                         android:gravity="center"
                         android:padding="15dp"
-                        android:text="丑" />
+                        tools:text="丑" />
 
                     <TextView
                         android:id="@+id/tv_pillar_month_top"
@@ -192,7 +192,7 @@
                         android:background="@drawable/box_yellow"
                         android:gravity="center"
                         android:padding="15dp"
-                        android:text="寅" />
+                        tools:text="寅" />
 
                     <TextView
                         android:id="@+id/tv_pillar_year_top"
@@ -202,7 +202,7 @@
                         android:background="@drawable/box_sky"
                         android:gravity="center"
                         android:padding="15dp"
-                        android:text="卯" />
+                        tools:text="卯" />
 
                 </LinearLayout>
 
@@ -223,7 +223,7 @@
                         android:background="@drawable/box_mint"
                         android:gravity="center"
                         android:padding="15dp"
-                        android:text="卯" />
+                        tools:text="卯" />
 
                     <TextView
                         android:id="@+id/tv_pillar_day_bottom"
@@ -233,7 +233,7 @@
                         android:background="@drawable/box_sky"
                         android:gravity="center"
                         android:padding="15dp"
-                        android:text="乙" />
+                        tools:text="乙" />
 
                     <TextView
                         android:id="@+id/tv_pillar_month_bottom"
@@ -243,7 +243,7 @@
                         android:background="@drawable/box_red"
                         android:gravity="center"
                         android:padding="15dp"
-                        android:text="丙" />
+                        tools:text="丙" />
 
                     <TextView
                         android:id="@+id/tv_pillar_year_bottom"
@@ -253,7 +253,7 @@
                         android:background="@drawable/box_light_gray"
                         android:gravity="center"
                         android:padding="15dp"
-                        android:text="丁" />
+                        tools:text="丁" />
 
                 </LinearLayout>
 
@@ -272,28 +272,28 @@
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="" />
+                        tools:text="" />
 
                     <TextView
                         android:id="@+id/tv_pillar_day_bottom_label"
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="정재" />
+                        tools:text="정재" />
 
                     <TextView
                         android:id="@+id/tv_pillar_month_bottom_label"
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="편인" />
+                        tools:text="편인" />
 
                     <TextView
                         android:id="@+id/tv_pillar_year_bottom_label"
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="정재" />
+                        tools:text="정재" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -313,7 +313,7 @@
                         android:background="@drawable/box_mint"
                         android:gravity="center"
                         android:paddingVertical="10dp"
-                        android:text="木(1)" />
+                        tools:text="木(1)" />
 
                     <TextView
                         android:id="@+id/tv_fire"
@@ -323,7 +323,7 @@
                         android:background="@drawable/box_red"
                         android:gravity="center"
                         android:paddingVertical="10dp"
-                        android:text="火(1)" />
+                        tools:text="火(1)" />
 
                     <TextView
                         android:id="@+id/tv_sand"
@@ -333,7 +333,7 @@
                         android:background="@drawable/box_yellow"
                         android:gravity="center"
                         android:paddingVertical="10dp"
-                        android:text="土(1)" />
+                        tools:text="土(1)" />
 
                     <TextView
                         android:id="@+id/tv_gold"
@@ -343,7 +343,7 @@
                         android:background="@drawable/box_light_gray"
                         android:gravity="center"
                         android:paddingVertical="10dp"
-                        android:text="金(1)" />
+                        tools:text="金(1)" />
 
                     <TextView
                         android:id="@+id/tv_water"
@@ -353,7 +353,7 @@
                         android:background="@drawable/box_sky"
                         android:gravity="center"
                         android:paddingVertical="10dp"
-                        android:text="水(1)" />
+                        tools:text="水(1)" />
 
                 </LinearLayout>
 
@@ -369,101 +369,152 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/gap_horizontal"
-                    android:layout_marginTop="@dimen/gap_line"
+                    android:layout_margin="@dimen/gap_horizontal"
                     android:background="@drawable/box_navy"
-                    android:paddingVertical="10dp">
+                    android:divider="@drawable/vertical_empty_divider"
+                    android:orientation="vertical"
+                    android:showDividers="middle|beginning|end">
 
-                    <TextView
-                        android:id="@+id/tv_time_jiji"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="역마살"
-                        android:textColor="@color/white"
-                        android:textStyle="bold" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/tv_day_jiji"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="반안살"
-                        android:textColor="@color/white"
-                        android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/tv_time_jiji"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            tools:text="역마살"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/tv_month_jiji"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="겁살"
-                        android:textColor="@color/white"
-                        android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/tv_day_jiji"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            tools:text="반안살"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/tv_year_jiji"
-                        android:layout_width="0dp"
+                        <TextView
+                            android:id="@+id/tv_month_jiji"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            tools:text="겁살"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_year_jiji"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            tools:text="지살"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/tv_five_property_time"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            tools:text="大海水"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_five_property_day"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            tools:text="大海水"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_five_property_month"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            tools:text="大海水"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_five_property_year"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            tools:text="大海水"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="지살"
-                        android:textColor="@color/white"
-                        android:textStyle="bold" />
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_shooting_star_time"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            tools:text="록" />
+
+                        <TextView
+                            android:id="@+id/tv_shooting_star_day"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            tools:text="쇠" />
+
+                        <TextView
+                            android:id="@+id/tv_shooting_star_month"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            tools:text="관" />
+
+                        <TextView
+                            android:id="@+id/tv_shooting_star_year"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            tools:text="태" />
+
+                    </LinearLayout>
+
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/gap_horizontal"
-                    android:layout_marginTop="@dimen/gap_line"
-                    android:layout_marginBottom="@dimen/gap_vertical"
-                    android:background="@drawable/box_navy"
-                    android:paddingVertical="10dp">
 
-                    <TextView
-                        android:id="@+id/tv_five_property_time"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="大海水"
-                        android:textColor="@color/white"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_five_property_day"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="大海水"
-                        android:textColor="@color/white"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_five_property_month"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="大海水"
-                        android:textColor="@color/white"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_five_property_year"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="大海水"
-                        android:textColor="@color/white"
-                        android:textStyle="bold" />
-                </LinearLayout>
             </LinearLayout>
 
 

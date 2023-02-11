@@ -13,6 +13,10 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.manseryeok.R
 import com.example.manseryeok.adapter.ManseryeokSQLAdapter
 import com.example.manseryeok.databinding.ActivityMainBinding
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 import java.util.*
@@ -36,6 +40,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
         setStatusBar()
         setDayLuck()
+
+
+        MobileAds.initialize(this) {}
+
+        val adRequest = AdRequest.Builder().build()
+        binding.adView.loadAd(adRequest)
+
         // getHashKey()
     }
 
@@ -61,12 +72,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val monthGanji = todayDB!!.cd_hmganjee!!
         val dayGanji = todayDB!!.cd_hdganjee!!
 
-        binding.tvToday.text = "${dayGanji[0]}${monthGanji[0]}${yearGanji[0]}\n${dayGanji[1]}${monthGanji[1]}${yearGanji[1]}"
+        binding.tvToday.text =
+            "${dayGanji[0]}${monthGanji[0]}${yearGanji[0]}\n${dayGanji[1]}${monthGanji[1]}${yearGanji[1]}"
     }
 
     private fun setStatusBar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.decorView.windowInsetsController?.setSystemBarsAppearance(0, APPEARANCE_LIGHT_STATUS_BARS)
+            window.decorView.windowInsetsController?.setSystemBarsAppearance(
+                0,
+                APPEARANCE_LIGHT_STATUS_BARS
+            )
         }
     }
 

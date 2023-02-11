@@ -12,8 +12,6 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import android.view.animation.Animation
-import android.view.animation.RotateAnimation
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.manseryeok.R
@@ -119,11 +117,13 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
         }
 
         binding.rgRotation.setOnCheckedChangeListener { radioGroup, i ->
-            when(i) {
+            when (i) {
                 binding.rbRotation.id -> onRotation()
                 binding.rbRotationFix.id -> onRotationFix()
             }
         }
+
+        setHeadDirection()
     }
 
     private fun onRotationFix() {
@@ -180,7 +180,7 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
         naverMap = p0
         naverMap.locationSource = locationSource
         naverMap.locationTrackingMode = LocationTrackingMode.Follow
-        //naverMap.uiSettings.isLocationButtonEnabled = true
+        naverMap.uiSettings.isZoomControlEnabled = false
 
         mapIsReady = true
     }
@@ -197,10 +197,16 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
         mSensorManager.unregisterListener(this, mMagnetometer)
     }
 
-    var mCount = 0
+    var currentTime = 0L
 
     override fun onSensorChanged(event: SensorEvent) {
-        if(isRotationFixed) {
+        val nowTime = System.currentTimeMillis()
+        if (nowTime - currentTime < 3) {
+            return
+        }
+        currentTime = nowTime
+
+        if (isRotationFixed) {
             val rotation = -naverMap.cameraPosition.bearing.toInt().toFloat()
             binding.ivCompass.rotation = rotation
             Log.d(TAG, "onSensorChanged: $rotation")
@@ -233,6 +239,7 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
 //                ra.fillAfter = true
 //                binding.ivCompass.startAnimation(ra)
 
+                binding.tvCompassDegree.text = "${azimuthinDegress.toInt()}°"
                 binding.ivCompass.rotation = -azimuthinDegress
 
 
@@ -250,6 +257,14 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
                 //naverMap.cameraPosition = cameraPosition
 
                 mCurrentDegree = -azimuthinDegress
+            }
+        }
+    }
+
+    private fun setHeadDirection() {
+        binding.run {
+            llHeadContainer.setOnClickListener {
+
             }
         }
     }

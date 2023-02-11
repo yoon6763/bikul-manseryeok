@@ -70,4 +70,8 @@ dependencies {
 
     // json 변환 라이브러리
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+
+    // Google AD
+    implementation 'com.google.android.gms:play-services-ads:21.3.0'
+
 }

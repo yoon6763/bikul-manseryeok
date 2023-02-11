@@ -2,6 +2,7 @@ package com.example.manseryeok.page
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
@@ -19,6 +20,7 @@ import com.example.manseryeok.models.Manseryeok
 import com.example.manseryeok.models.SixtyHorizontalItem
 import com.example.manseryeok.models.User
 import com.example.manseryeok.utils.ParentActivity
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -49,6 +51,8 @@ class CalendarActivity : ParentActivity() {
 
     private val TAG = "CalendarActivity"
 
+    private var currentTime = 0L
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -59,25 +63,46 @@ class CalendarActivity : ParentActivity() {
             setDisplayHomeAsUpEnabled(true)
         }
 
-        binding.run {
-            btnCalendarSave.setOnClickListener { saveResult() }
-            btnCalendarShare.setOnClickListener { shareResult() }
-        }
+        showProgress(this@CalendarActivity, "잠시만 기다려주세요")
+        val sdf = SimpleDateFormat("HH:mm:ss.SSS")
 
-        userModel = intent.getParcelableExtra(Utils.INTENT_EXTRAS_USER)!!
+        // 프로그래스바를 띄우기 위해 1초 딜레이
+        Handler().postDelayed({
+            currentTime = System.currentTimeMillis()
+            Log.d(TAG, "onCreate: ${sdf.format(currentTime)}")
 
-        initLoadDB()
-        setUserBirth()
-        setUpPillar() // 기둥 세우기
-        setUpPillarLabel() // 라벨
-        setUpEmpty() // 공망 설정
-        setUpSeasonBirth() // 절기 설정
-        setUpProperty() // 오행 - 화수목금토 개수 설정
-        setUpPlusMinusFiveProperty() // 음양오행 - 해중금, 복등화 등등
-        setUpJiJiAmjangan() // 지지 암장간
-        setUpYearAndMonthPillar() // 년주 리사이클러뷰
-        setRecyclerViewClickEvent() // 년주 리사이클러뷰 클릭 이벤트 처리
-        setUpLuckRecyclerView() // 대운 리사이클러뷰
+            binding.run {
+                btnCalendarSave.setOnClickListener { saveResult() }
+                btnCalendarShare.setOnClickListener { shareResult() }
+            }
+
+            userModel = intent.getParcelableExtra(Utils.INTENT_EXTRAS_USER)!!
+
+            initLoadDB()
+
+            setUserBirth()
+            setUpPillar() // 기둥 세우기
+            setUpPillarLabel() // 라벨
+            setUpEmpty() // 공망 설정
+            setUpSeasonBirth() // 절기 설정
+            setUpProperty() // 오행 - 화수목금토 개수 설정
+            setUpPlusMinusFiveProperty() // 음양오행 - 해중금, 복등화 등등
+            setUpJiJiAmjangan() // 지지 암장간
+            setUpShootingStar() // 십이운성
+            setUpYearAndMonthPillar() // 년주 리사이클러뷰
+            setRecyclerViewClickEvent() // 년주 리사이클러뷰 클릭 이벤트 처리
+            setUpLuckRecyclerView() // 대운 리사이클러뷰
+
+            currentTime = System.currentTimeMillis()
+            Log.d(TAG, "onCreate: 최종 ${sdf.format(currentTime)}")
+
+            hideProgress()
+        }, 1)
+
+    }
+
+    override fun onStart() {
+        super.onStart()
     }
 
     private fun saveResult() {
@@ -397,6 +422,20 @@ class CalendarActivity : ParentActivity() {
             tvDayJiji.text = Utils.getJijiAmJangan(dayPillar[1])
             tvMonthJiji.text = Utils.getJijiAmJangan(monthPillar[1])
             tvYearJiji.text = Utils.getJijiAmJangan(yearPillar[1])
+        }
+    }
+
+    private fun setUpShootingStar() {
+        binding.run {
+            tvShootingStarYear.text = Utils.getTwelveShootingStar(dayPillar[0],yearPillar[1])
+            tvShootingStarMonth.text = Utils.getTwelveShootingStar(dayPillar[0],monthPillar[1])
+            tvShootingStarDay.text = Utils.getTwelveShootingStar(dayPillar[0],dayPillar[1])
+
+            if(isTimeInclude) {
+                tvShootingStarTime.text = Utils.getTwelveShootingStar(dayPillar[0], timePillar[1])
+            } else {
+                tvShootingStarTime.text = ""
+            }
         }
     }
 

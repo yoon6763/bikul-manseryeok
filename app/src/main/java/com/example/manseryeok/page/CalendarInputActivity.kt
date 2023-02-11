@@ -143,15 +143,12 @@ class CalendarInputActivity : ParentActivity() {
                 etFirstName.text.toString(), // 성
                 etName.text.toString(), // 이름
                 if (rgGender.checkedRadioButtonId == rbGenderMale.id) 0 else 1, // 성별
-                if (cbInputBirthTime.isChecked) date.substring(
-                    0,
-                    8
-                ) else date, // 생일, 시간포함 - yyyyMMddHHmm, 미포함 - yyyyMMdd
+                if (cbInputBirthTime.isChecked) date.substring(0, 8) else date, // 생일, 시간포함 - yyyyMMddHHmm, 미포함 - yyyyMMdd
                 etInputBirthPlace.text.toString(), // 출생지
                 timeDiff
             )
 
-
+            //showProgress(this@CalendarInputActivity,"잠시만 기다려주세요")
             val intent = if (isName) Intent(this@CalendarInputActivity, NameActivity::class.java)
             else Intent(this@CalendarInputActivity, CalendarActivity::class.java)
             intent.putExtra(Utils.INTENT_EXTRAS_USER, userModel)

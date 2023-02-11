@@ -20,12 +20,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
         <fragment
             android:id="@+id/frag_map"
             android:name="com.naver.maps.map.MapFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            tools:layout="@layout/activity_base" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btn_compass_question"
@@ -51,19 +51,96 @@
 
         <ImageView
             android:id="@+id/iv_compass"
-            android:layout_width="250dp"
-            android:layout_height="250dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginHorizontal="@dimen/gap_line_double"
+            android:alpha="0.5"
             app:srcCompat="@drawable/img_compass" />
 
-        <TextView
-            android:id="@+id/tv_compass_degree"
-            android:layout_width="wrap_content"
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="30dp"
-            android:text="Degree"
-            android:textSize="20sp" />
+            android:layout_gravity="top|center_horizontal"
+            android:layout_marginHorizontal="@dimen/gap_line_double"
+            android:layout_marginTop="@dimen/gap_vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Degree"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/tv_compass_degree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/gap_line_double"
+                    android:textSize="20sp"
+                    tools:text="30" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_head_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/gap_vertical"
+                android:background="@drawable/box_white"
+                android:elevation="3dp"
+                android:orientation="vertical"
+                android:padding="@dimen/gap_line"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="생년"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/gap_line"
+                        android:text="1998" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/gap_line"
+                    android:text="회두극방향" />
+
+                <TextView
+                    android:id="@+id/tv_head_direction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/gap_line"
+                    android:text="東"
+                    android:textSize="25sp" />
+
+            </LinearLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <RadioGroup
             android:id="@+id/rg_rotation"
@@ -99,14 +176,29 @@
                 android:background="@drawable/radio_button_background"
                 android:button="@null"
                 android:drawableEnd="@drawable/ic_phone_rotation_lock_small"
-
                 android:drawablePadding="@dimen/gap_line"
                 android:drawableTint="@drawable/radio_text"
                 android:paddingHorizontal="@dimen/gap_horizontal"
                 android:paddingVertical="@dimen/gap_line"
                 android:text="@string/obj_rotation_fix"
                 android:textColor="@drawable/radio_text" />
+
         </RadioGroup>
 
     </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:id="@+id/"
+            android:layout_height="wrap_content">
+
+
+        </LinearLayout>
+
+    </LinearLayout>
 </LinearLayout>
