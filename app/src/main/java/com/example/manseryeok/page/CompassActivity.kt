@@ -9,13 +9,18 @@ import android.hardware.SensorManager
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
+import android.view.View
+import android.view.WindowInsetsController
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.manseryeok.R
+import com.example.manseryeok.adapter.MapLayerListAdapter
 import com.example.manseryeok.databinding.ActivityCompassBinding
+import com.example.manseryeok.utils.Utils
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
 import com.naver.maps.geometry.LatLng
@@ -47,6 +52,8 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
     var mapIsReady = false
     var isRotationFixed = false
 
+    lateinit var mapLayerListAdapter: MapLayerListAdapter
+
     private val permissionListener = object : PermissionListener {
         override fun onPermissionGranted() {
         }
@@ -63,11 +70,30 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        setSupportActionBar(binding.toolbarCompass)
-        supportActionBar?.run {
-            // 앱 바 뒤로가기 버튼 설정
-            setDisplayHomeAsUpEnabled(true)
+
+        // android status bar color
+        window.statusBarColor = getColor(R.color.navy)
+        // set status bar icon color
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.decorView.windowInsetsController?.setSystemBarsAppearance(
+                0,
+                WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+            )
         }
+
+
+        val tempList = ArrayList<String>()
+        for (i in 0..16) {
+            tempList.add("test")
+        }
+
+        mapLayerListAdapter = MapLayerListAdapter(this, tempList)
+        binding.rvCompassInfo.adapter = mapLayerListAdapter
+        binding.rvCompassInfo.layoutManager = GridLayoutManager(this, 3)
+
+        mapLayerListAdapter.degree = mCurrentDegree
+        mapLayerListAdapter.notifyDataSetChanged()
+
 
         // Location Permission Check
         TedPermission.create()
@@ -82,10 +108,9 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
         mMagnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)
 
-        mapFragment = fm.findFragmentById(R.id.frag_map) as MapFragment?
-            ?: MapFragment.newInstance().also {
-                fm.beginTransaction().add(R.id.frag_map, it).commit()
-            }
+        mapFragment =
+            fm.findFragmentById(R.id.frag_map) as MapFragment? ?: MapFragment.newInstance()
+                .also { fm.beginTransaction().add(R.id.frag_map, it).commit() }
 
         locationSource = FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
         mapFragment.getMapAsync(this)
@@ -118,37 +143,22 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
 
         binding.rgRotation.setOnCheckedChangeListener { radioGroup, i ->
             when (i) {
-                binding.rbRotation.id -> onRotation()
-                binding.rbRotationFix.id -> onRotationFix()
+                binding.rbRotation.id -> isRotationFixed = false
+                binding.rbRotationFix.id -> isRotationFixed = true
             }
         }
 
-        setHeadDirection()
+        binding.ivClose.setOnClickListener {
+            binding.flCompassInfo.visibility = View.GONE
+            binding.btnCompassInfo.visibility = View.VISIBLE
+        }
+
+        binding.btnCompassInfo.setOnClickListener {
+            binding.flCompassInfo.visibility = View.VISIBLE
+            it.visibility = View.GONE
+        }
     }
 
-    private fun onRotationFix() {
-        isRotationFixed = true
-
-
-//mHandler = new Handler();
-//        Thread t = new Thread(new Runnable(){
-//        	@Override public void run() {
-//            // UI 작업 수행 X
-//            	mHandler.post(new Runnable(){
-//                	@Override
-//                    public void run() {
-//                    // UI 작업 수행 O
-//                    }
-//                });
-//            }
-//         });
-//         t.start();
-    }
-
-    private fun onRotation() {
-        isRotationFixed = false
-
-    }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -156,17 +166,6 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
         grantResults: IntArray
     ) {
 
-//        if(requestCode == BTN_LOCATION_PERMISSION_REQUEST_CODE) {
-//            Toast.makeText(applicationContext,"1",Toast.LENGTH_SHORT).show()
-//            naverMap.locationSource = btnLocationSource
-//
-//            val cameraPosition = CameraPosition(LatLng(btnLocationSource.lastLocation!!.latitude, btnLocationSource.lastLocation!!.longitude),
-//                naverMap.cameraPosition.zoom,
-//                naverMap.cameraPosition.tilt,
-//                naverMap.cameraPosition.bearing)
-//            val camera = CameraUpdate.toCameraPosition(cameraPosition).animate(CameraAnimation.Easing, 1)
-//            naverMap.moveCamera(camera)
-//        }
         if (locationSource.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
             if (!locationSource.isActivated) { // 권한 거부됨
                 naverMap.locationTrackingMode = LocationTrackingMode.None
@@ -183,6 +182,19 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
         naverMap.uiSettings.isZoomControlEnabled = false
 
         mapIsReady = true
+
+        naverMap.addOnCameraChangeListener { i, b ->
+            if (isRotationFixed) {
+
+                // 네이버 지도 각도 받아오기
+                val rotation = naverMap.cameraPosition.bearing
+
+                binding.tvCompassDegree.text = "${Utils.degreeFormat.format(rotation)}°"
+
+                mapLayerListAdapter.degree = rotation.toFloat()
+                mapLayerListAdapter.notifyDataSetChanged()
+            }
+        }
     }
 
     override fun onResume() {
@@ -206,10 +218,10 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
         }
         currentTime = nowTime
 
+
         if (isRotationFixed) {
             val rotation = -naverMap.cameraPosition.bearing.toInt().toFloat()
             binding.ivCompass.rotation = rotation
-            Log.d(TAG, "onSensorChanged: $rotation")
             return
         }
 
@@ -227,7 +239,7 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
                 val azimuthinDegress = ((Math.toDegrees(
                     SensorManager.getOrientation(mR, mOrientation)[0]
                         .toDouble()
-                ) + 360).toInt() % 360).toFloat()
+                ) + 360) % 360).toFloat()
 
 //                val ra = RotateAnimation(
 //                    mCurrentDegree,
@@ -239,7 +251,11 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
 //                ra.fillAfter = true
 //                binding.ivCompass.startAnimation(ra)
 
-                binding.tvCompassDegree.text = "${azimuthinDegress.toInt()}°"
+                binding.tvCompassDegree.text = "${Utils.degreeFormat.format(azimuthinDegress)}°"
+
+                mapLayerListAdapter.degree = azimuthinDegress
+                mapLayerListAdapter.notifyDataSetChanged()
+
                 binding.ivCompass.rotation = -azimuthinDegress
 
 
@@ -257,14 +273,6 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
                 //naverMap.cameraPosition = cameraPosition
 
                 mCurrentDegree = -azimuthinDegress
-            }
-        }
-    }
-
-    private fun setHeadDirection() {
-        binding.run {
-            llHeadContainer.setOnClickListener {
-
             }
         }
     }
