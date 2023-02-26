@@ -23,6 +23,7 @@ import com.example.manseryeok.utils.ParentActivity
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.math.sign
 
 
 class CalendarActivity : ParentActivity() {
@@ -189,7 +190,6 @@ class CalendarActivity : ParentActivity() {
             // 正 생일
             tvCal5.text = "${Utils.dateKorFormat.format(userBirth.timeInMillis)}"
 
-
             yearPillar = userBirthCalender.cd_hyganjee!!
             monthPillar = userBirthCalender.cd_hmganjee!!
             dayPillar = userBirthCalender.cd_hdganjee!!
@@ -312,6 +312,7 @@ class CalendarActivity : ParentActivity() {
             tvPillarYearBottomLabel.text = Utils.getPillarLabel(me, yearPillar[1].toString())
             tvPillarMonthTopLabel.text = Utils.getPillarLabel(me, monthPillar[0].toString())
             tvPillarMonthBottomLabel.text = Utils.getPillarLabel(me, monthPillar[1].toString())
+            tvPillarDayTopLabel.text = Utils.getPillarLabel(me, dayPillar[0].toString())
             tvPillarDayBottomLabel.text = Utils.getPillarLabel(me, dayPillar[1].toString())
 
             if(isTimeInclude) {

@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setStatusBar()
         setDayLuck()
 
-
+        // 광고 초기화
         MobileAds.initialize(this) {}
 
         val adRequest = AdRequest.Builder().build()
@@ -72,8 +72,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val monthGanji = todayDB!!.cd_hmganjee!!
         val dayGanji = todayDB!!.cd_hdganjee!!
 
-        binding.tvToday.text =
-            "${dayGanji[0]}${monthGanji[0]}${yearGanji[0]}\n${dayGanji[1]}${monthGanji[1]}${yearGanji[1]}"
+        binding.tvToday.text = "${dayGanji[0]}${monthGanji[0]}${yearGanji[0]}\n${dayGanji[1]}${monthGanji[1]}${yearGanji[1]}"
     }
 
     private fun setStatusBar() {
