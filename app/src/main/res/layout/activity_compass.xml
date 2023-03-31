@@ -146,7 +146,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Degree"
+                    android:text="방위"
                     android:textSize="15sp" />
 
                 <TextView

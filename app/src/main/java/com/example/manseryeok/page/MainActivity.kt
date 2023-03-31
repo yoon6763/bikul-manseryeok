@@ -9,6 +9,7 @@ import android.util.Base64
 import android.util.Log
 import android.view.View
 import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.manseryeok.R
 import com.example.manseryeok.adapter.ManseryeokSQLAdapter
@@ -40,12 +41,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
         setStatusBar()
         setDayLuck()
-
-        // 광고 초기화
-        MobileAds.initialize(this) {}
-
-        val adRequest = AdRequest.Builder().build()
-        binding.adView.loadAd(adRequest)
 
         // getHashKey()
     }
@@ -125,6 +120,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     )
                 )
                 clDatabase.id -> startActivity(Intent(this@MainActivity, DBActivity::class.java))
+                clMedia.id -> Toast.makeText(applicationContext, "곧 오픈 예정입니다",Toast.LENGTH_SHORT).show()
             }
         }
     }

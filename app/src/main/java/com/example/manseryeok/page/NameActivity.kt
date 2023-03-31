@@ -1,17 +1,16 @@
 package com.example.manseryeok.page
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
-import com.example.manseryeok.utils.Utils
+import androidx.appcompat.app.AppCompatActivity
 import com.example.manseryeok.adapter.ManseryeokSQLAdapter
 import com.example.manseryeok.adapter.NameScoreAdapter
 import com.example.manseryeok.databinding.ActivityNameBinding
 import com.example.manseryeok.models.NameScoreItem
 import com.example.manseryeok.models.User
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
+import com.example.manseryeok.utils.Utils
 
 class NameActivity : AppCompatActivity() {
     private val TAG = "NameActivity"
@@ -246,12 +245,15 @@ class NameActivity : AppCompatActivity() {
                 yearGanji[1].toString()
             )
             val ganjiMonthTopLabel = Utils.getPillarLabel(
+                monthGanji[0].toString(),
                 ganji.toString(),
-                monthGanji[0].toString()
             )
+            Log.d(TAG, "setUpGanji: ${monthGanji}")
+            Log.d(TAG, "setUpGanji: ${ganji.toString()}")
+
             val ganjiMonthBottomLabel = Utils.getPillarLabel(
                 ganji.toString(),
-                monthGanji[1].toString()
+                monthGanji[1].toString(),
             )
 
             nameItems.add(
@@ -285,7 +287,6 @@ class NameActivity : AppCompatActivity() {
 
         yearGanji = userManseryeok.cd_hyganjee!!
         monthGanji = userManseryeok.cd_hmganjee!!
-
     }
 
 
