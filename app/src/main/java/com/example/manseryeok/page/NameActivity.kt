@@ -1,5 +1,6 @@
 package com.example.manseryeok.page
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -46,6 +47,14 @@ class NameActivity : AppCompatActivity() {
 
         importGanji()
         setUpGanji()
+
+
+        binding.btnGotoManseryeok.setOnClickListener {
+            val intent = Intent(this@NameActivity, CalendarActivity::class.java)
+            intent.putExtra(Utils.INTENT_EXTRAS_USER, userModel)
+            startActivity(intent)
+            finish()
+        }
     }
 
     private fun setUpGanji() {

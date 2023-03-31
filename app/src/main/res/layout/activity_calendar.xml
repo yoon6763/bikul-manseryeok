@@ -386,9 +386,9 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"
-                            tools:text="역마살"
                             android:textColor="@color/white"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            tools:text="역마살" />
 
                         <TextView
                             android:id="@+id/tv_day_jiji"
@@ -396,9 +396,9 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"
-                            tools:text="반안살"
                             android:textColor="@color/white"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            tools:text="반안살" />
 
                         <TextView
                             android:id="@+id/tv_month_jiji"
@@ -406,9 +406,9 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"
-                            tools:text="겁살"
                             android:textColor="@color/white"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            tools:text="겁살" />
 
                         <TextView
                             android:id="@+id/tv_year_jiji"
@@ -416,9 +416,9 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"
-                            tools:text="지살"
                             android:textColor="@color/white"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            tools:text="지살" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -431,9 +431,9 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"
-                            tools:text="大海水"
                             android:textColor="@color/white"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            tools:text="大海水" />
 
                         <TextView
                             android:id="@+id/tv_five_property_day"
@@ -441,9 +441,9 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"
-                            tools:text="大海水"
                             android:textColor="@color/white"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            tools:text="大海水" />
 
                         <TextView
                             android:id="@+id/tv_five_property_month"
@@ -451,9 +451,9 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"
-                            tools:text="大海水"
                             android:textColor="@color/white"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            tools:text="大海水" />
 
                         <TextView
                             android:id="@+id/tv_five_property_year"
@@ -461,9 +461,9 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"
-                            tools:text="大海水"
                             android:textColor="@color/white"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            tools:text="大海水" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -641,15 +641,26 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/btn_full_height"
                         android:layout_weight="1"
-                        android:background="@drawable/box_navy"
+                        android:background="@drawable/box_yellow"
                         android:drawableLeft="@drawable/ic_save"
-                        android:drawableTint="@color/white"
+                        android:drawableTint="@color/black"
                         android:foreground="?attr/selectableItemBackground"
                         android:padding="10dp"
                         android:text="@string/obj_result_save"
+                        android:textColor="@color/black"
                         android:textSize="15sp" />
 
                 </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_goto_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/gap_line_double"
+                    android:background="@drawable/box_navy"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:paddingVertical="@dimen/gap_line"
+                    android:text="이름 보기" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

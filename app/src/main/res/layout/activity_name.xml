@@ -122,8 +122,19 @@
         android:id="@+id/rv_name_score"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_weight="1"
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="3"
         tools:listitem="@layout/item_name" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_goto_manseryeok"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/gap_line"
+        android:background="@drawable/btn_navy_10"
+        android:foreground="?attr/selectableItemBackground"
+        android:paddingVertical="@dimen/gap_line"
+        android:text="만세력 보기" />
 </LinearLayout>
