@@ -655,12 +655,13 @@
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_goto_name"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/btn_full_height"
                     android:layout_margin="@dimen/gap_line_double"
                     android:background="@drawable/box_navy"
                     android:foreground="?attr/selectableItemBackground"
                     android:paddingVertical="@dimen/gap_line"
-                    android:text="이름 보기" />
+                    android:text="이름 보기"
+                    android:textSize="15sp" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

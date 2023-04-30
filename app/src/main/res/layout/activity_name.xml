@@ -131,10 +131,11 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_goto_manseryeok"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/gap_line"
+        android:layout_height="@dimen/btn_full_height"
+        android:layout_margin="@dimen/gap_line_double"
         android:background="@drawable/btn_navy_10"
         android:foreground="?attr/selectableItemBackground"
         android:paddingVertical="@dimen/gap_line"
-        android:text="만세력 보기" />
+        android:text="만세력 보기"
+        android:textSize="15sp" />
 </LinearLayout>
