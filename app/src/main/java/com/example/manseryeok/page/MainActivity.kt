@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.manseryeok.R
 import com.example.manseryeok.adapter.ManseryeokSQLAdapter
 import com.example.manseryeok.databinding.ActivityMainBinding
+import com.example.manseryeok.utils.Utils
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
@@ -67,7 +68,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val monthGanji = todayDB!!.cd_hmganjee!!
         val dayGanji = todayDB!!.cd_hdganjee!!
 
-        binding.tvToday.text = "${dayGanji[0]}${monthGanji[0]}${yearGanji[0]}\n${dayGanji[1]}${monthGanji[1]}${yearGanji[1]}"
+        val timeGanji = Utils.getTimeGanji(dayGanji[0].toString(), today[Calendar.HOUR_OF_DAY])
+
+        binding.tvToday.text =
+            "${timeGanji[0]}${dayGanji[0]}${monthGanji[0]}${yearGanji[0]}\n${timeGanji[1]}${dayGanji[1]}${monthGanji[1]}${yearGanji[1]}"
     }
 
     private fun setStatusBar() {
@@ -107,20 +111,24 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         CalendarInputActivity::class.java
                     )
                 )
+
                 clCompass.id -> startActivity(
                     Intent(
                         this@MainActivity,
                         CompassActivity::class.java
                     )
                 )
+
                 clQuestion.id -> startActivity(
                     Intent(
                         this@MainActivity,
                         InquiryActivity::class.java
                     )
                 )
+
                 clDatabase.id -> startActivity(Intent(this@MainActivity, DBActivity::class.java))
-                clMedia.id -> Toast.makeText(applicationContext, "곧 오픈 예정입니다",Toast.LENGTH_SHORT).show()
+                clMedia.id -> Toast.makeText(applicationContext, "곧 오픈 예정입니다", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
     }
