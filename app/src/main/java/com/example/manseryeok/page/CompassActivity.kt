@@ -88,11 +88,28 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
         }
 
         mapLayerListAdapter = MapLayerListAdapter(this, tempList)
-        binding.rvCompassInfo.adapter = mapLayerListAdapter
-        binding.rvCompassInfo.layoutManager = GridLayoutManager(this, 3)
 
         mapLayerListAdapter.degree = mCurrentDegree
         mapLayerListAdapter.notifyDataSetChanged()
+
+        binding.run {
+            rvCompassInfo.adapter = mapLayerListAdapter
+            rvCompassInfo.layoutManager = GridLayoutManager(this@CompassActivity, 3)
+
+            rgInfoType.setOnCheckedChangeListener { group, checkedId ->
+                when (checkedId) {
+                    R.id.rb_compass_nagyeong -> {
+                        rvCompassInfo.visibility = View.VISIBLE
+                        llSinsal.visibility = View.INVISIBLE
+                    }
+
+                    R.id.rb_compass_sinsal -> {
+                        rvCompassInfo.visibility = View.INVISIBLE
+                        llSinsal.visibility = View.VISIBLE
+                    }
+                }
+            }
+        }
 
 
         // Location Permission Check
