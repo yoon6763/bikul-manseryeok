@@ -136,6 +136,34 @@ object Utils {
         }
     }
 
+    fun getTimeGanji(day: String, hour: Int): String {
+        val dayIdx = when (day) {
+            "甲", "己" -> 0
+            "乙", "庚" -> 1
+            "丙", "辛" -> 2
+            "丁", "壬" -> 3
+            "戊", "癸" -> 4
+            else -> -1
+        }
+
+        val timeIdx = when (hour) {
+            in 1 until 3 -> 1
+            in 3 until 5 -> 2
+            in 5 until 7 -> 3
+            in 7 until 9 -> 4
+            in 9 until 11 -> 5
+            in 11 until 13 -> 6
+            in 13 until 15 -> 7
+            in 15 until 17 -> 8
+            in 17 until 19 -> 9
+            in 19 until 21 -> 10
+            in 21 until 23 -> 11
+            else -> 0
+        }
+
+        return if (dayIdx == -1) "" else timeGanji[dayIdx][timeIdx]
+    }
+
     // 오행
     fun getFiveProperty(ganji: String): String {
         return when (ganji) {
@@ -276,36 +304,6 @@ object Utils {
     fun getSign(char: Char): Int {
         return if (char in "甲丙戊庚壬") 1 else -1
     }
-
-
-    fun getTimeGanji(day: String, hour: Int): String {
-        val dayIdx = when (day) {
-            "甲", "己" -> 0
-            "乙", "庚" -> 1
-            "丙", "辛" -> 2
-            "丁", "壬" -> 3
-            "戊", "癸" -> 4
-            else -> -1
-        }
-
-        val timeIdx = when (hour) {
-            in 1 until 3 -> 1
-            in 3 until 5 -> 2
-            in 5 until 7 -> 3
-            in 7 until 9 -> 4
-            in 9 until 11 -> 5
-            in 11 until 13 -> 6
-            in 13 until 15 -> 7
-            in 15 until 17 -> 8
-            in 17 until 19 -> 9
-            in 19 until 21 -> 10
-            in 21 until 23 -> 11
-            else -> 0
-        }
-
-        return if (dayIdx == -1) "" else timeGanji[dayIdx][timeIdx]
-    }
-
 
     // 십이운성
     fun getTwelveShootingStar(day: Char, twelveGod: Char): String {

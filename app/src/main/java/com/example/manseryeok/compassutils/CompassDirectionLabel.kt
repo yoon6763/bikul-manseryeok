@@ -26,7 +26,7 @@ object CompassDirectionLabel {
 
     // 회두극 방향
     fun huiduguk(year: Int): String {
-        return when (year % 9) {
+        return when (year) {
             1924 -> "무관함"
             1925 -> "北西"
             1926 -> "西"

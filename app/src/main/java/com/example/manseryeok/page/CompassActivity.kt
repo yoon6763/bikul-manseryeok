@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.manseryeok.R
 import com.example.manseryeok.adapter.MapLayerListAdapter
+import com.example.manseryeok.compassutils.CompassDirectionLabel
 import com.example.manseryeok.databinding.ActivityCompassBinding
 import com.example.manseryeok.models.User
 import com.example.manseryeok.userDB.UserDatabaseHelper
@@ -37,6 +38,9 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
     private val binding by lazy { ActivityCompassBinding.inflate(layoutInflater) }
     private val fm by lazy { supportFragmentManager }
     private val userDBHelper by lazy { UserDatabaseHelper(this) }
+    private var userSelectedIndex = -1
+    private val users = ArrayList<User>()
+    private val usernames = ArrayList<String>()
 
     private lateinit var mapFragment: MapFragment
     private lateinit var naverMap: NaverMap
@@ -141,8 +145,6 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
         }
 
         val allUserRawData = userDBHelper.allData
-        val users = ArrayList<User>()
-        val usernames = ArrayList<String>()
 
         if (allUserRawData.count > 0) {
             allUserRawData.moveToFirst()
@@ -176,7 +178,13 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
                     allUserRawData.getInt(6),
                 )
                 users.add(user)
-                usernames.add(user.firstName + user.lastName)
+                var usernameLabel = user.firstName + user.lastName
+
+                if (user.birth != null && user.birth != "") {
+                    usernameLabel += " (${user.birth!!.substring(0, 4)})"
+                }
+
+                usernames.add(usernameLabel)
             } while (allUserRawData.moveToNext())
 
         }
@@ -187,7 +195,7 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
                 title = "불러올 사람을 선택하세요"
                 setItems(usernames.toTypedArray()) { dialog, index ->
                     if (index == -1) return@setItems
-                    val selectedUser = users[index]
+                    userSelectedIndex = index
                 }
             }.create()
 
@@ -274,8 +282,24 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
 
                 mapLayerListAdapter.degree = rotation.toFloat()
                 mapLayerListAdapter.notifyDataSetChanged()
+
+                updateSinsalBangwhi(rotation)
             }
         }
+    }
+
+    private fun updateSinsalBangwhi(rotation: Double) {
+        if (userSelectedIndex == -1) return
+
+        val user = users[userSelectedIndex]
+        var sinsalname = usernames[userSelectedIndex]
+        if (user.birth != null && user.birth != "") sinsalname = sinsalname +
+                " | " +
+                CompassDirectionLabel.huiduguk(user.birth!!.substring(0, 4).toInt()) +
+                " | " +
+                CompassDirectionLabel.bonmyeonggung(user.birth!!.substring(0, 4).toInt())[user.gender]
+
+        binding.tvSinsalName.text = sinsalname
     }
 
     override fun onResume() {
@@ -354,6 +378,8 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
                 //naverMap.cameraPosition = cameraPosition
 
                 mCurrentDegree = -azimuthinDegress
+
+                updateSinsalBangwhi(azimuthinDegress.toDouble())
             }
         }
     }
