@@ -39,20 +39,20 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
     private lateinit var btnLocationSource: FusedLocationSource
 
 
-    lateinit var mSensorManager: SensorManager
-    lateinit var mAccelerometer: Sensor
-    lateinit var mMagnetometer: Sensor
-    var mR = FloatArray(9)
-    var mLastAccelerometer = FloatArray(3)
-    var mLastMagnetometer = FloatArray(3)
-    var mLastAccelerometerSet = false
-    var mLastMagnetometerSet = false
-    var mOrientation = FloatArray(3)
-    var mCurrentDegree = 0f
-    var mapIsReady = false
-    var isRotationFixed = false
+    private lateinit var mSensorManager: SensorManager
+    private lateinit var mAccelerometer: Sensor
+    private lateinit var mMagnetometer: Sensor
+    private var mR = FloatArray(9)
+    private var mLastAccelerometer = FloatArray(3)
+    private var mLastMagnetometer = FloatArray(3)
+    private var mLastAccelerometerSet = false
+    private var mLastMagnetometerSet = false
+    private var mOrientation = FloatArray(3)
+    private var mCurrentDegree = 0f
+    private var mapIsReady = false
+    private var isRotationFixed = false
 
-    lateinit var mapLayerListAdapter: MapLayerListAdapter
+    private lateinit var mapLayerListAdapter: MapLayerListAdapter
 
     private val permissionListener = object : PermissionListener {
         override fun onPermissionGranted() {
@@ -67,9 +67,9 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) = with(binding) {
         super.onCreate(savedInstanceState)
-        setContentView(binding.root)
+        setContentView(root)
 
         // android status bar color
         window.statusBarColor = getColor(R.color.navy)
@@ -87,7 +87,7 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
             tempList.add("test")
         }
 
-        mapLayerListAdapter = MapLayerListAdapter(this, tempList)
+        mapLayerListAdapter = MapLayerListAdapter(this@CompassActivity, tempList)
 
         mapLayerListAdapter.degree = mCurrentDegree
         mapLayerListAdapter.notifyDataSetChanged()
@@ -129,15 +129,15 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
             fm.findFragmentById(R.id.frag_map) as MapFragment? ?: MapFragment.newInstance()
                 .also { fm.beginTransaction().add(R.id.frag_map, it).commit() }
 
-        locationSource = FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
-        mapFragment.getMapAsync(this)
+        locationSource = FusedLocationSource(this@CompassActivity, LOCATION_PERMISSION_REQUEST_CODE)
+        mapFragment.getMapAsync(this@CompassActivity)
 
-        binding.btnCompassQuestion.setOnClickListener {
+        btnCompassQuestion.setOnClickListener {
             val helpFragment = CompassHelpFragment.newInstance()
             helpFragment.show(supportFragmentManager, "HelpDialog")
         }
 
-        binding.btnCompassLocation.setOnClickListener {
+        btnCompassLocation.setOnClickListener {
             btnLocationSource =
                 FusedLocationSource(this@CompassActivity, LOCATION_PERMISSION_REQUEST_CODE)
 
@@ -158,19 +158,19 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
             }
         }
 
-        binding.rgRotation.setOnCheckedChangeListener { radioGroup, i ->
+        rgRotation.setOnCheckedChangeListener { radioGroup, i ->
             when (i) {
                 binding.rbRotation.id -> isRotationFixed = false
                 binding.rbRotationFix.id -> isRotationFixed = true
             }
         }
 
-        binding.ivClose.setOnClickListener {
+        ivClose.setOnClickListener {
             binding.flCompassInfo.visibility = View.GONE
             binding.btnCompassInfo.visibility = View.VISIBLE
         }
 
-        binding.btnCompassInfo.setOnClickListener {
+        btnCompassInfo.setOnClickListener {
             binding.flCompassInfo.visibility = View.VISIBLE
             it.visibility = View.GONE
         }
