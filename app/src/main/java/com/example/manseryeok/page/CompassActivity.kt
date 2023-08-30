@@ -15,11 +15,14 @@ import android.view.MenuItem
 import android.view.View
 import android.view.WindowInsetsController
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.manseryeok.R
 import com.example.manseryeok.adapter.MapLayerListAdapter
 import com.example.manseryeok.databinding.ActivityCompassBinding
+import com.example.manseryeok.models.User
+import com.example.manseryeok.userDB.UserDatabaseHelper
 import com.example.manseryeok.utils.Utils
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
@@ -33,15 +36,17 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
     private val gpsListener = GPSListener()
     private val binding by lazy { ActivityCompassBinding.inflate(layoutInflater) }
     private val fm by lazy { supportFragmentManager }
+    private val userDBHelper by lazy { UserDatabaseHelper(this) }
+
     private lateinit var mapFragment: MapFragment
     private lateinit var naverMap: NaverMap
     private lateinit var locationSource: FusedLocationSource
     private lateinit var btnLocationSource: FusedLocationSource
-
-
     private lateinit var mSensorManager: SensorManager
     private lateinit var mAccelerometer: Sensor
     private lateinit var mMagnetometer: Sensor
+    private lateinit var mapLayerListAdapter: MapLayerListAdapter
+
     private var mR = FloatArray(9)
     private var mLastAccelerometer = FloatArray(3)
     private var mLastMagnetometer = FloatArray(3)
@@ -52,7 +57,6 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
     private var mapIsReady = false
     private var isRotationFixed = false
 
-    private lateinit var mapLayerListAdapter: MapLayerListAdapter
 
     private val permissionListener = object : PermissionListener {
         override fun onPermissionGranted() {
@@ -67,9 +71,9 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) = with(binding) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(root)
+        setContentView(binding.root)
 
         // android status bar color
         window.statusBarColor = getColor(R.color.navy)
@@ -87,7 +91,7 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
             tempList.add("test")
         }
 
-        mapLayerListAdapter = MapLayerListAdapter(this@CompassActivity, tempList)
+        mapLayerListAdapter = MapLayerListAdapter(this, tempList)
 
         mapLayerListAdapter.degree = mCurrentDegree
         mapLayerListAdapter.notifyDataSetChanged()
@@ -111,16 +115,87 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
             }
         }
 
+        checkPermission()
+        mapInitialize()
 
-        // Location Permission Check
-        TedPermission.create()
-            .setPermissionListener(permissionListener)
-            .setRationaleMessage("지도 기능 사용을 위해서는 GPS 및 위치 접근 권한이 필요합니다")
-            .setDeniedMessage("[설정] > [권한] 에서 권한 허용을 할 수 있습니다")
-            .setPermissions(Manifest.permission.ACCESS_COARSE_LOCATION)
-            .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
-            .check()
+        binding.btnCompassQuestion.setOnClickListener {
+            val helpFragment = CompassHelpFragment.newInstance()
+            helpFragment.show(supportFragmentManager, "HelpDialog")
+        }
 
+        binding.rgRotation.setOnCheckedChangeListener { radioGroup, i ->
+            when (i) {
+                binding.rbRotation.id -> isRotationFixed = false
+                binding.rbRotationFix.id -> isRotationFixed = true
+            }
+        }
+
+        binding.ivClose.setOnClickListener {
+            binding.flCompassInfo.visibility = View.GONE
+            binding.btnCompassInfo.visibility = View.VISIBLE
+        }
+
+        binding.btnCompassInfo.setOnClickListener {
+            binding.flCompassInfo.visibility = View.VISIBLE
+            it.visibility = View.GONE
+        }
+
+        val allUserRawData = userDBHelper.allData
+        val users = ArrayList<User>()
+        val usernames = ArrayList<String>()
+
+        if (allUserRawData.count > 0) {
+            allUserRawData.moveToFirst()
+            do {
+//            firstName: String
+//            lastName: String
+//            gender: Int
+//            birth: String
+//            birthPlace: String
+//            timeDiff: Int
+//            yearPillar: String
+//            monthPillar: String
+//            dayPillar: String
+//            timePillar: String
+
+                //data class User(
+                //    var firstName: String?,
+                //    var lastName: String?,
+                //    var gender: Int, // 0 - 남자, 1 - 여자
+                //    var birth: String?, // yyyyMMddHHmm or yyyyMMdd
+                //    var birthPlace: String?,
+                //    var timeDiff: Int
+                //)
+
+                val user = User(
+                    allUserRawData.getString(1),
+                    allUserRawData.getString(2),
+                    allUserRawData.getInt(3),
+                    allUserRawData.getString(4),
+                    allUserRawData.getString(5),
+                    allUserRawData.getInt(6),
+                )
+                users.add(user)
+                usernames.add(user.firstName + user.lastName)
+            } while (allUserRawData.moveToNext())
+
+        }
+
+        binding.btnSelectFromDb.setOnClickListener {
+
+            val builder = AlertDialog.Builder(this@CompassActivity).apply {
+                title = "불러올 사람을 선택하세요"
+                setItems(usernames.toTypedArray()) { dialog, index ->
+                    if (index == -1) return@setItems
+                    val selectedUser = users[index]
+                }
+            }.create()
+
+            builder.show()
+        }
+    }
+
+    private fun mapInitialize() {
         mSensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
         mMagnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)
@@ -129,15 +204,10 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
             fm.findFragmentById(R.id.frag_map) as MapFragment? ?: MapFragment.newInstance()
                 .also { fm.beginTransaction().add(R.id.frag_map, it).commit() }
 
-        locationSource = FusedLocationSource(this@CompassActivity, LOCATION_PERMISSION_REQUEST_CODE)
-        mapFragment.getMapAsync(this@CompassActivity)
+        locationSource = FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
+        mapFragment.getMapAsync(this)
 
-        btnCompassQuestion.setOnClickListener {
-            val helpFragment = CompassHelpFragment.newInstance()
-            helpFragment.show(supportFragmentManager, "HelpDialog")
-        }
-
-        btnCompassLocation.setOnClickListener {
+        binding.btnCompassLocation.setOnClickListener {
             btnLocationSource =
                 FusedLocationSource(this@CompassActivity, LOCATION_PERMISSION_REQUEST_CODE)
 
@@ -158,22 +228,16 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
             }
         }
 
-        rgRotation.setOnCheckedChangeListener { radioGroup, i ->
-            when (i) {
-                binding.rbRotation.id -> isRotationFixed = false
-                binding.rbRotationFix.id -> isRotationFixed = true
-            }
-        }
+    }
 
-        ivClose.setOnClickListener {
-            binding.flCompassInfo.visibility = View.GONE
-            binding.btnCompassInfo.visibility = View.VISIBLE
-        }
-
-        btnCompassInfo.setOnClickListener {
-            binding.flCompassInfo.visibility = View.VISIBLE
-            it.visibility = View.GONE
-        }
+    private fun checkPermission() {
+        TedPermission.create()
+            .setPermissionListener(permissionListener)
+            .setRationaleMessage("지도 기능 사용을 위해서는 GPS 및 위치 접근 권한이 필요합니다")
+            .setDeniedMessage("[설정] > [권한] 에서 권한 허용을 할 수 있습니다")
+            .setPermissions(Manifest.permission.ACCESS_COARSE_LOCATION)
+            .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
+            .check()
     }
 
 

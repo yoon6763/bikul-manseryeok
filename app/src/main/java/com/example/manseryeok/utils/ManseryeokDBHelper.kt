@@ -79,11 +79,11 @@ class ManseryeokDBHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, 
     companion object {
         private const val TAG = "DataBaseHelper" //Logcat에 출력할 태그이름
 
-        //디바이스 장치에서 데이터베이스의 경로
-        // TODO : assets 폴더에 있는 경우 "", 그 외 경로기입
+        // 디바이스 장치에서 데이터베이스의 경로
+        // assets 폴더에 있는 경우 "", 그 외 경로기입
         private var DB_PATH = ""
 
-        // TODO : assets 폴더에 있는 DB명 또는 별도의 데이터베이스 파일이름
+        // assets 폴더에 있는 DB명 또는 별도의 데이터베이스 파일이름
         private const val DB_NAME = "Manseryeok.db"
     }
 

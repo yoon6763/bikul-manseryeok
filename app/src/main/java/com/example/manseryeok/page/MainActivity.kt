@@ -15,10 +15,6 @@ import com.example.manseryeok.R
 import com.example.manseryeok.adapter.ManseryeokSQLAdapter
 import com.example.manseryeok.databinding.ActivityMainBinding
 import com.example.manseryeok.utils.Utils
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdSize
-import com.google.android.gms.ads.AdView
-import com.google.android.gms.ads.MobileAds
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 import java.util.*
@@ -126,7 +122,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     )
                 )
 
-                clDatabase.id -> startActivity(Intent(this@MainActivity, DBActivity::class.java))
+                clDatabase.id -> startActivity(Intent(this@MainActivity, UserDBActivity::class.java))
                 clMedia.id -> Toast.makeText(applicationContext, "곧 오픈 예정입니다", Toast.LENGTH_SHORT)
                     .show()
             }

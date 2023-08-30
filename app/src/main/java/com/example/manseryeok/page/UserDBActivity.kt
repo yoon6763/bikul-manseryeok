@@ -6,14 +6,14 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
 import com.example.manseryeok.R
-import com.example.manseryeok.userDB.DatabaseHelper
+import com.example.manseryeok.userDB.UserDatabaseHelper
 import com.example.manseryeok.utils.Utils
 import com.example.manseryeok.adapter.DBListAdapter
 import com.example.manseryeok.databinding.ActivityDbactivityBinding
 import com.example.manseryeok.models.DBListItem
 import com.example.manseryeok.models.User
 
-class DBActivity : AppCompatActivity() {
+class UserDBActivity : AppCompatActivity() {
     private lateinit var dbListAdapter: DBListAdapter
     private val binding by lazy { ActivityDbactivityBinding.inflate(layoutInflater) }
     private val dbList = ArrayList<DBListItem>()
@@ -29,7 +29,7 @@ class DBActivity : AppCompatActivity() {
         }
 
 
-        val myDB = DatabaseHelper(this)
+        val myDB = UserDatabaseHelper(this)
         val sqliteData = myDB.allData
 
         while(sqliteData.moveToNext()) {
@@ -72,7 +72,7 @@ class DBActivity : AppCompatActivity() {
         }
 
         binding.run {
-            dbListAdapter = DBListAdapter(this@DBActivity, dbList)
+            dbListAdapter = DBListAdapter(this@UserDBActivity, dbList)
             dbListAdapter.notifyDataSetChanged()
             rvDbList.adapter = dbListAdapter
         }
@@ -80,7 +80,7 @@ class DBActivity : AppCompatActivity() {
 
         dbListAdapter.onMenuClickListener = object : DBListAdapter.OnMenuClickListener {
             override fun onSearchClick(ID: String, position: Int) {
-                val intent = Intent(this@DBActivity, CalendarActivity::class.java)
+                val intent = Intent(this@UserDBActivity, CalendarActivity::class.java)
 
 //              firstName: String?,
 //              lastName: String?,

@@ -40,7 +40,7 @@
             android:name=".utils.BaseActivity"
             android:exported="false" />
         <activity
-            android:name=".page.DBActivity"
+            android:name=".page.UserDBActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
