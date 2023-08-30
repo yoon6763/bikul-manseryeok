@@ -4,17 +4,17 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
 import com.example.manseryeok.R
-import com.example.manseryeok.utils.BaseActivity
 import com.example.manseryeok.utils.notionAPI.NotionAPI
 import com.example.manseryeok.utils.notionAPI.responseDTO.*
 import com.example.manseryeok.utils.SecretConstants
 import com.example.manseryeok.databinding.ActivityInquiryBinding
+import com.example.manseryeok.utils.ParentActivity
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class InquiryActivity : BaseActivity() {
+class InquiryActivity : ParentActivity() {
     private val notionAPI by lazy { NotionAPI.create() }
     private val binding by lazy { ActivityInquiryBinding.inflate(layoutInflater) }
 
@@ -55,19 +55,31 @@ class InquiryActivity : BaseActivity() {
 
         inquiryCall.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                if(response.isSuccessful) {
+                if (response.isSuccessful) {
                     hideProgress()
-                    Toast.makeText(applicationContext,getString(R.string.msg_send_inquiry_complete),Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        applicationContext,
+                        getString(R.string.msg_send_inquiry_complete),
+                        Toast.LENGTH_SHORT
+                    ).show()
                     finish()
                 } else {
                     hideProgress()
-                    Toast.makeText(applicationContext, getString(R.string.msg_send_inquiry_fail), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        applicationContext,
+                        getString(R.string.msg_send_inquiry_fail),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 hideProgress()
-                Toast.makeText(applicationContext, getString(R.string.msg_send_inquiry_fail), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    applicationContext,
+                    getString(R.string.msg_send_inquiry_fail),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         })
     }
