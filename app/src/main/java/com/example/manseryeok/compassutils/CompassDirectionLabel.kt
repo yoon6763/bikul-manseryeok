@@ -1,9 +1,31 @@
 package com.example.manseryeok.compassutils
 
-object CompassHuidugeuk {
+object CompassDirectionLabel {
+
+    fun bonmyeonggung(year: Int): Array<String> {
+        var year = year
+        // 1자리 수가 될 때까지 각 자리수를 더함
+        while (year > 9) {
+            year = year.toString().toCharArray().sumOf { it.digitToInt() }
+        }
+
+        var man = 11 - year // 남자 본명궁
+        var women = 4 + year // 여자 본명궁
+
+        while (man > 9) {
+            man = man.toString().toCharArray().sumOf { it.digitToInt() }
+        }
+        while (women > 9) {
+            women = women.toString().toCharArray().sumOf { it.digitToInt() }
+        }
+
+        val ans1 = if (man in arrayOf(1, 9, 3, 4)) "동사택" else "서사택"
+        val ans2 = if (man in arrayOf(1, 9, 3, 4)) "동사택" else "서사택"
+        return arrayOf(ans1, ans2)
+    }
 
     // 회두극 방향
-    fun getDirection(year: Int): String {
+    fun huiduguk(year: Int): String {
         return when (year % 9) {
             1924 -> "무관함"
             1925 -> "北西"
@@ -170,9 +192,4 @@ object CompassHuidugeuk {
             else -> "오류"
         }
     }
-
-    fun getGenderNumber(year: Int, gender: Boolean) {
-
-    }
-
 }
