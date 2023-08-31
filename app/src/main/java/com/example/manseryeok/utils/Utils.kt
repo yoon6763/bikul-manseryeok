@@ -16,7 +16,7 @@ object Utils {
     val dateKorFormat = SimpleDateFormat("yyyy년 MM월 dd일")
     val dateTimeKorFormat = SimpleDateFormat("yyyy년 MM월 dd일 HH:mm")
     val timeFormat = SimpleDateFormat("a hh:mm")
-    val degreeFormat = DecimalFormat("#.00")
+    val degreeFormat = DecimalFormat("#.0")
     //const val DB_FILE_NAME = "Manseryeok.db"
 
 

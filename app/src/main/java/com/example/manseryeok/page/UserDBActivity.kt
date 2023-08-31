@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
 import com.example.manseryeok.R
-import com.example.manseryeok.userDB.UserDatabaseHelper
+import com.example.manseryeok.userDB.UserDBHelper
 import com.example.manseryeok.utils.Utils
 import com.example.manseryeok.adapter.DBListAdapter
 import com.example.manseryeok.databinding.ActivityDbactivityBinding
@@ -29,7 +29,7 @@ class UserDBActivity : AppCompatActivity() {
         }
 
 
-        val myDB = UserDatabaseHelper(this)
+        val myDB = UserDBHelper(this)
         val sqliteData = myDB.allData
 
         while(sqliteData.moveToNext()) {

@@ -9,8 +9,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
 
-class UserDatabaseHelper(context: Context) :
-    SQLiteOpenHelper(context, DATABASE_NAME, null, 1) {
+class UserDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, 1) {
 
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(

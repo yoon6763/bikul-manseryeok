@@ -12,7 +12,7 @@
         android:id="@+id/fl_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="2.5"
         android:elevation="0dp">
 
 
@@ -66,10 +66,9 @@
 
             <RadioGroup
                 android:id="@+id/rg_rotation"
-                android:layout_width="match_parent"
+                android:layout_width="300dp"
                 android:layout_height="@dimen/btn_full_height"
                 android:layout_gravity="bottom|center_horizontal"
-                android:layout_marginHorizontal="@dimen/gap_horizontal"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/radio_group_background"
                 android:elevation="2dp"
@@ -80,6 +79,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/btn_full_height"
                     android:layout_weight="1"
+                    android:autoSizeTextType="uniform"
                     android:background="@drawable/radio_button_background"
                     android:button="@null"
                     android:checked="true"
@@ -96,6 +96,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/btn_full_height"
                     android:layout_weight="1"
+                    android:autoSizeTextType="uniform"
                     android:background="@drawable/radio_button_background"
                     android:button="@null"
                     android:drawableEnd="@drawable/ic_phone_rotation_lock_small"
@@ -108,36 +109,11 @@
 
             </RadioGroup>
 
-            <ImageView
-                android:id="@+id/iv_compass"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginHorizontal="@dimen/gap_line_double"
-                android:alpha="0.5"
-                app:srcCompat="@drawable/img_compass" />
-
-        </LinearLayout>
-
-    </FrameLayout>
-
-    <LinearLayout
-        android:id="@+id/fl_compass_info"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:elevation="3dp"
-        android:orientation="vertical"
-        android:paddingVertical="@dimen/gap_line_double">
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -159,45 +135,72 @@
             </LinearLayout>
 
             <ImageView
+                android:id="@+id/iv_compass"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="@dimen/gap_line_double"
+                android:alpha="0.5"
+                android:layout_marginBottom="80dp"
+                app:srcCompat="@drawable/img_compass" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/fl_compass_info"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:elevation="3dp"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioGroup
+                android:id="@+id/rg_info_type"
+                android:layout_width="300dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="@dimen/gap_line"
+                android:background="@drawable/radio_group_background"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb_compass_nagyeong"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/radio_button_background"
+                    android:button="@null"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:text="나경" />
+
+                <RadioButton
+                    android:id="@+id/rb_compass_sinsal"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/radio_button_background"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="신살 방위" />
+            </RadioGroup>
+
+            <ImageView
                 android:id="@+id/iv_close"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
+                android:layout_gravity="right|center_vertical"
                 android:layout_marginRight="10dp"
                 android:src="@drawable/ic_close" />
 
         </FrameLayout>
-
-        <RadioGroup
-            android:id="@+id/rg_info_type"
-            android:layout_width="300dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="@dimen/gap_line"
-            android:background="@drawable/radio_group_background"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/rb_compass_nagyeong"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/radio_button_background"
-                android:button="@null"
-                android:checked="true"
-                android:gravity="center"
-                android:text="나경" />
-
-            <RadioButton
-                android:id="@+id/rb_compass_sinsal"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/radio_button_background"
-                android:button="@null"
-                android:gravity="center"
-                android:text="신살 방위" />
-        </RadioGroup>
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -217,53 +220,51 @@
                 tools:listitem="@layout/item_idx_label"
                 tools:visibility="invisible" />
 
-            <LinearLayout
-                android:id="@+id/ll_sinsal"
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:visibility="invisible"
-                tools:visibility="visible">
+                android:layout_height="match_parent">
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btn_select_from_db"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/btn_navy_5"
-                    android:drawableLeft="@drawable/ic_save"
-                    android:drawablePadding="5dp"
-                    android:drawableTint="@color/white"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:padding="6dp"
-                    android:text="데이터베이스에서 선택"
-                    android:textSize="15sp" />
+                <LinearLayout
+                    android:id="@+id/ll_sinsal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:visibility="invisible"
+                    tools:visibility="visible">
 
-                <TextView
-                    android:id="@+id/tv_sinsal_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="10dp"
-                    android:text="(선택된 정보가 없습니다)" />
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btn_select_from_db"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/btn_navy_5"
+                        android:drawableLeft="@drawable/ic_save"
+                        android:drawablePadding="5dp"
+                        android:drawableTint="@color/white"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:padding="6dp"
+                        android:text="데이터베이스에서 선택"
+                        android:textSize="15sp" />
 
-                <TextView
-                    android:id="@+id/tv_sinsal_content"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/gap_line"
-                    android:gravity="center_horizontal"
-                    android:text="地殺日(지살일) 관계성\n
- 1. 여행을 하면 여행지나 목적지에서 고생하기 쉽다.\n
- 2. 개업하면 종업원 때문에 머리가 아프다.\n
- 3. 차를 사면 갈 곳이 많아진다.\n
- 4. 결혼을 하면 부부간의 떨어질 일이 많다. / 아이키우기가 조금 힘들다.
-" />
+                    <TextView
+                        android:id="@+id/tv_sinsal_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="10dp"
+                        android:text="(선택된 정보가 없습니다)" />
 
-
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/tv_sinsal_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/gap_line"
+                        android:gravity="center_horizontal"
+                        android:text="" />
+                </LinearLayout>
+            </ScrollView>
         </FrameLayout>
     </LinearLayout>
 </LinearLayout>

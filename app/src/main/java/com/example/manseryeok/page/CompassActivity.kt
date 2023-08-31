@@ -23,7 +23,8 @@ import com.example.manseryeok.adapter.MapLayerListAdapter
 import com.example.manseryeok.compassutils.CompassDirectionLabel
 import com.example.manseryeok.databinding.ActivityCompassBinding
 import com.example.manseryeok.models.User
-import com.example.manseryeok.userDB.UserDatabaseHelper
+import com.example.manseryeok.userDB.UserDBHelper
+import com.example.manseryeok.utils.ParentActivity
 import com.example.manseryeok.utils.Utils
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
@@ -31,13 +32,13 @@ import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
 import com.naver.maps.map.util.FusedLocationSource
 
-class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCallback {
+class CompassActivity : ParentActivity(), SensorEventListener, OnMapReadyCallback {
     private val TAG = "CompassActivity"
     private val locationManager by lazy { getSystemService(Context.LOCATION_SERVICE) as LocationManager }
     private val gpsListener = GPSListener()
     private val binding by lazy { ActivityCompassBinding.inflate(layoutInflater) }
     private val fm by lazy { supportFragmentManager }
-    private val userDBHelper by lazy { UserDatabaseHelper(this) }
+    private val userDBHelper by lazy { UserDBHelper(this) }
     private var userSelectedIndex = -1
     private val users = ArrayList<User>()
     private val usernames = ArrayList<String>()
@@ -191,6 +192,11 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
 
         binding.btnSelectFromDb.setOnClickListener {
 
+            if(users.isEmpty()) {
+                showShortToast("저장된 정보가 없습니다.")
+                return@setOnClickListener
+            }
+
             val builder = AlertDialog.Builder(this@CompassActivity).apply {
                 title = "불러올 사람을 선택하세요"
                 setItems(usernames.toTypedArray()) { dialog, index ->
@@ -300,7 +306,7 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
 
             sinsalname +=
                     " | (회두극 방향) " +
-                    CompassDirectionLabel.huiduguk(birthYear)
+                    CompassDirectionLabel.huiduguk(birthYear) +
                     " | " +
                     CompassDirectionLabel.bonmyeonggung(birthYear)[user.gender]
 
@@ -325,11 +331,11 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
         mSensorManager.unregisterListener(this, mMagnetometer)
     }
 
-    var currentTime = 0L
+    private var currentTime = 0L
 
     override fun onSensorChanged(event: SensorEvent) {
         val nowTime = System.currentTimeMillis()
-        if (nowTime - currentTime < 3) {
+        if (nowTime - currentTime < 5) {
             return
         }
         currentTime = nowTime
@@ -352,10 +358,9 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
             }
             if (mLastAccelerometerSet && mLastMagnetometerSet) {
                 SensorManager.getRotationMatrix(mR, null, mLastAccelerometer, mLastMagnetometer)
-                val azimuthinDegress = ((Math.toDegrees(
-                    SensorManager.getOrientation(mR, mOrientation)[0]
-                        .toDouble()
-                ) + 360) % 360).toFloat()
+
+                var azimuthinDegress = ((Math.toDegrees(SensorManager.getOrientation(mR, mOrientation)[0].toDouble()) + 360) % 360).toFloat()
+                azimuthinDegress = (azimuthinDegress *10).toInt().toFloat() / 10
 
 //                val ra = RotateAnimation(
 //                    mCurrentDegree,

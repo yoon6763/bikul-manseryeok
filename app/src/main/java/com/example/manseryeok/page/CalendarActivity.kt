@@ -16,7 +16,7 @@ import com.example.manseryeok.databinding.ActivityCalendarBinding
 import com.example.manseryeok.models.Manseryeok
 import com.example.manseryeok.models.SixtyHorizontalItem
 import com.example.manseryeok.models.User
-import com.example.manseryeok.userDB.UserDatabaseHelper
+import com.example.manseryeok.userDB.UserDBHelper
 import com.example.manseryeok.utils.ParentActivity
 import com.example.manseryeok.utils.Utils
 import java.text.SimpleDateFormat
@@ -111,7 +111,7 @@ class CalendarActivity : ParentActivity() {
     }
 
     private fun saveResult() {
-        val myDB = UserDatabaseHelper(this)
+        val myDB = UserDBHelper(this)
 //        firstName: String,
 //        lastName: String,
 //        gender: Int,
