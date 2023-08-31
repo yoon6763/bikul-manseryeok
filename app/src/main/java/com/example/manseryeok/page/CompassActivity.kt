@@ -293,13 +293,24 @@ class CompassActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCall
 
         val user = users[userSelectedIndex]
         var sinsalname = usernames[userSelectedIndex]
-        if (user.birth != null && user.birth != "") sinsalname = sinsalname +
-                " | " +
-                CompassDirectionLabel.huiduguk(user.birth!!.substring(0, 4).toInt()) +
-                " | " +
-                CompassDirectionLabel.bonmyeonggung(user.birth!!.substring(0, 4).toInt())[user.gender]
 
-        binding.tvSinsalName.text = sinsalname
+        if (user.birth != null && user.birth != "") {
+
+            val birthYear = user.birth!!.substring(0, 4).toInt()
+
+            sinsalname +=
+                    " | (회두극 방향) " +
+                    CompassDirectionLabel.huiduguk(birthYear)
+                    " | " +
+                    CompassDirectionLabel.bonmyeonggung(birthYear)[user.gender]
+
+            binding.tvSinsalName.text = sinsalname
+
+            val sinsal = CompassDirectionLabel.directionSinsal(birthYear,rotation.toInt())
+            val content = CompassDirectionLabel.directionSinsalTheory(sinsal)
+
+            binding.tvSinsalContent.text = content[0]
+        }
     }
 
     override fun onResume() {

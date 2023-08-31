@@ -629,8 +629,8 @@ class CalendarActivity : ParentActivity() {
 
 
             var initialYear = today[Calendar.YEAR]
-            if (initialYear !in userBirth[Calendar.YEAR]..userBirth[Calendar.YEAR] + 100) initialYear =
-                userBirth[Calendar.YEAR]
+            if (initialYear !in userBirth[Calendar.YEAR]..userBirth[Calendar.YEAR] + 100)
+                initialYear = userBirth[Calendar.YEAR]
 
             setUpMonthPillar(yearPillar[0])
         }
