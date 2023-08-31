@@ -15,3 +15,4 @@
 local.properties
 .idea/
 app/src/main/java/com/example/manseryeok/Utils/SecretConstants.kt
+/.idea/
