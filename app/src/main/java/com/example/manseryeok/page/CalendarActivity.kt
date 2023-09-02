@@ -18,9 +18,12 @@ import com.example.manseryeok.models.SixtyHorizontalItem
 import com.example.manseryeok.models.User
 import com.example.manseryeok.userDB.UserDBHelper
 import com.example.manseryeok.utils.ParentActivity
+import com.example.manseryeok.utils.Sinsal
 import com.example.manseryeok.utils.Utils
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashSet
 
 
 class CalendarActivity : ParentActivity() {
@@ -87,6 +90,7 @@ class CalendarActivity : ParentActivity() {
             setUpPlusMinusFiveProperty() // 음양오행 - 해중금, 복등화 등등
             setUpJiJiAmjangan() // 지지 암장간
             setUpShootingStar() // 십이운성
+            setUpSinsal() // 신살
             setUpYearAndMonthPillar() // 년주 리사이클러뷰
             setRecyclerViewClickEvent() // 년주 리사이클러뷰 클릭 이벤트 처리
             setUpLuckRecyclerView() // 대운 리사이클러뷰
@@ -106,8 +110,35 @@ class CalendarActivity : ParentActivity() {
 
     }
 
-    override fun onStart() {
-        super.onStart()
+    private fun setUpSinsal() {
+        // year: Int, gender: Int, yearGanji: Char, ganji: Char
+        val year = HashSet<String>()
+        val month = HashSet<String>()
+        val day = HashSet<String>()
+        val time = HashSet<String>()
+
+        // 생년 기준
+        month.addAll(Sinsal.getYearBottom(userBirth[Calendar.YEAR], userModel.gender, yearPillar[1], monthPillar[1]))
+        day.addAll(Sinsal.getYearBottom(userBirth[Calendar.YEAR], userModel.gender, yearPillar[1], dayPillar[1]))
+        time.addAll(Sinsal.getYearBottom(userBirth[Calendar.YEAR], userModel.gender, yearPillar[1], timePillar[1]))
+
+        // 생월 기준
+        // fun getMonthBottom(type: Type, monthGanji: Char, ganji: String)
+        month.addAll(Sinsal.getMonthBottom(Sinsal.Type.YEAR,monthPillar[1],yearPillar))
+        day.addAll(Sinsal.getMonthBottom(Sinsal.Type.DAY,monthPillar[1],dayPillar))
+        time.addAll(Sinsal.getMonthBottom(Sinsal.Type.TIME,monthPillar[1],timePillar))
+
+        // 생일 기준
+        year.addAll(Sinsal.getDayBottom(dayPillar[1],yearPillar))
+        month.addAll(Sinsal.getDayBottom(dayPillar[1],monthPillar))
+        time.addAll(Sinsal.getDayBottom(dayPillar[1],timePillar))
+
+        binding.run {
+            tvSinsalYear.text = year.joinToString("\n\n")
+            tvSinsalMonth.text = month.joinToString("\n\n")
+            tvSinsalDay.text = day.joinToString("\n\n")
+            tvSinsalTime.text =  time.joinToString("\n\n")
+        }
     }
 
     private fun saveResult() {
