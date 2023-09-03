@@ -6,14 +6,17 @@ import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.manseryeok.R
 import com.example.manseryeok.db.ManseryeokSQLHelper
 import com.example.manseryeok.adapter.NameScoreAdapter
 import com.example.manseryeok.databinding.ActivityNameBinding
+import com.example.manseryeok.db.UserDBHelper
 import com.example.manseryeok.models.NameScoreItem
 import com.example.manseryeok.models.User
+import com.example.manseryeok.utils.ParentActivity
 import com.example.manseryeok.utils.Utils
 
-class NameActivity : AppCompatActivity() {
+class NameActivity : ParentActivity() {
     private val TAG = "NameActivity"
 
     private lateinit var userModel: User // 유저의 정보 DTO
@@ -49,12 +52,38 @@ class NameActivity : AppCompatActivity() {
         setUpGanji()
 
 
+        binding.btnSave.setOnClickListener {
+            saveResult()
+        }
+
         binding.btnGotoManseryeok.setOnClickListener {
             val intent = Intent(this@NameActivity, CalendarActivity::class.java)
             intent.putExtra(Utils.INTENT_EXTRAS_USER, userModel)
             startActivity(intent)
             finish()
         }
+    }
+
+    private fun saveResult() {
+        val myDB = UserDBHelper(this)
+//        firstName: String,
+//        lastName: String,
+//        gender: Int,
+//        birth: String,
+//        birthPlace: String,
+//        timeDiff: Int,
+//        yearPillar: String,
+//        monthPillar: String,
+
+        val insertDataResult = myDB.insertData(userModel)
+
+        myDB.close()
+
+        if (insertDataResult != -1L) {
+            showShortToast(getString(R.string.msg_save_complete))
+            userModel.id = insertDataResult
+        }
+        else showShortToast(getString(R.string.msg_save_fail))
     }
 
     private fun setUpGanji() {

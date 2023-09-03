@@ -16,126 +16,152 @@
         android:elevation="3dp"
         app:title="@string/obj_toolbar_name" />
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/gap_vertical"
-        android:layout_marginBottom="@dimen/gap_line_double"
-        android:orientation="horizontal">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="월" />
+            android:orientation="vertical">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="년" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/gap_vertical"
+                android:layout_marginBottom="@dimen/gap_line_double"
+                android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="월" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="년" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="년" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="월" />
-    </LinearLayout>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="년" />
 
-        <TextView
-            android:id="@+id/tv_month_ganji_top"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textSize="@dimen/title_size"
-            tools:text="卯" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="월" />
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_year_ganji_top"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textSize="@dimen/title_size"
-            tools:text="卯" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textSize="@dimen/title_size" />
+                <TextView
+                    android:id="@+id/tv_month_ganji_top"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textSize="@dimen/title_size"
+                    tools:text="卯" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textSize="@dimen/title_size" />
+                <TextView
+                    android:id="@+id/tv_year_ganji_top"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textSize="@dimen/title_size"
+                    tools:text="卯" />
 
-        <TextView
-            android:id="@+id/tv_year_ganji_bottom"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textSize="@dimen/title_size"
-            tools:text="卯" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textSize="@dimen/title_size" />
 
-        <TextView
-            android:id="@+id/tv_month_ganji_bottom"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textSize="@dimen/title_size"
-            tools:text="卯" />
-    </LinearLayout>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textSize="@dimen/title_size" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_name_score"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:itemCount="3"
-        tools:listitem="@layout/item_name" />
+                <TextView
+                    android:id="@+id/tv_year_ganji_bottom"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textSize="@dimen/title_size"
+                    tools:text="卯" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_goto_manseryeok"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/btn_full_height"
-        android:layout_margin="@dimen/gap_line_double"
-        android:background="@drawable/btn_navy_10"
-        android:foreground="?attr/selectableItemBackground"
-        android:paddingVertical="@dimen/gap_line"
-        android:text="만세력 보기"
-        android:textSize="15sp" />
+                <TextView
+                    android:id="@+id/tv_month_ganji_bottom"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textSize="@dimen/title_size"
+                    tools:text="卯" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_name_score"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_name" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_goto_manseryeok"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/btn_full_height"
+                android:layout_margin="@dimen/gap_line_double"
+                android:background="@drawable/btn_navy_10"
+                android:foreground="?attr/selectableItemBackground"
+                android:paddingVertical="@dimen/gap_line"
+                android:text="만세력 보기"
+                android:textSize="15sp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_save"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/btn_full_height"
+                android:layout_margin="@dimen/gap_line_double"
+                android:layout_weight="1"
+                android:background="@drawable/box_yellow"
+                android:drawableLeft="@drawable/ic_save"
+                android:drawableTint="@color/black"
+                android:foreground="?attr/selectableItemBackground"
+                android:padding="10dp"
+                android:text="@string/obj_result_save"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>
