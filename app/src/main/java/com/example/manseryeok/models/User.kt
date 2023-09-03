@@ -6,6 +6,7 @@ import java.time.LocalDateTime
 import java.util.Calendar
 
 data class User(
+    var id: Long,
     var firstName: String?,
     var lastName: String?,
     var gender: Int, // 0 - 남자, 1 - 여자
@@ -20,10 +21,13 @@ data class User(
     var timeDiff: Int,
 
     var useSummerTime: Int,
-    var useTokyoTime: Int
+    var useTokyoTime: Int,
+
+    var memo: String?
 
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
+        parcel.readLong(),
         parcel.readString(),
         parcel.readString(),
         parcel.readInt(),
@@ -35,10 +39,12 @@ data class User(
         parcel.readString(),
         parcel.readInt(),
         parcel.readInt(),
-        parcel.readInt()
+        parcel.readInt(),
+        parcel.readString()
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeLong(id)
         parcel.writeString(firstName)
         parcel.writeString(lastName)
         parcel.writeInt(gender)
@@ -51,6 +57,7 @@ data class User(
         parcel.writeInt(timeDiff)
         parcel.writeInt(useSummerTime)
         parcel.writeInt(useTokyoTime)
+        parcel.writeString(memo)
     }
 
     override fun describeContents(): Int {

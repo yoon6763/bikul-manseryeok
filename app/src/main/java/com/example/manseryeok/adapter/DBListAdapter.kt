@@ -20,7 +20,6 @@ import java.util.Calendar
 
 class DBListAdapter(
     private val context: Context,
-    private val idList: ArrayList<String>,
     private val items: ArrayList<User>,
     private val manseryeokList: ArrayList<Manseryeok>
 ) :
@@ -101,11 +100,11 @@ class DBListAdapter(
 
         init {
             binding.btnItemDbSearch.setOnClickListener {
-                onMenuClickListener?.onSearchClick(idList[adapterPosition], adapterPosition)
+                onMenuClickListener?.onSearchClick(items[adapterPosition].id.toString(), adapterPosition)
             }
 
             binding.btnItemDbDelete.setOnClickListener {
-                onMenuClickListener?.onDeleteClick(idList[adapterPosition], adapterPosition)
+                onMenuClickListener?.onDeleteClick(items[adapterPosition].id.toString(), adapterPosition)
             }
 
 

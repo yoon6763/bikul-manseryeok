@@ -124,6 +124,7 @@ class CalendarInputActivity : ParentActivity() {
             }
 
             val userModel = User(
+                -1,
                 etFirstName.text.toString(), // 성
                 etName.text.toString(), // 이름
                 if (rgGender.checkedRadioButtonId == rbGenderMale.id) Gender.MALE.value else Gender.FEMALE.value, // 성별
@@ -136,7 +137,8 @@ class CalendarInputActivity : ParentActivity() {
                 etInputBirthPlace.text.toString(), // 출생지
                 timeDiff, // 시차
                 if(cbUseSummerTime.isChecked) 1 else 0, // 서머타임 사용
-                if(cbUseTokyo.isChecked) 1 else 0 // 도쿄시간 사용
+                if(cbUseTokyo.isChecked) 1 else 0, // 도쿄시간 사용
+                ""
             )
 
             //showProgress(this@CalendarInputActivity,"잠시만 기다려주세요")

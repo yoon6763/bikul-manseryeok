@@ -7,7 +7,6 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 
 import android.database.sqlite.SQLiteOpenHelper
-import com.example.manseryeok.models.Gender
 import com.example.manseryeok.models.User
 
 
@@ -28,7 +27,8 @@ class UserDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
                     "$BIRTH_PLACE TEXT," +
                     "$TIME_DIFF INTEGER," +
                     "$USE_SUMMER_TIME INTEGER," +
-                    "$USE_TOKYO_TIME INTEGER" +
+                    "$USE_TOKYO_TIME INTEGER," +
+                    "$MEMO TEXT" +
                     ")"
         )
     }
@@ -39,7 +39,7 @@ class UserDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
     }
 
     // 데이터베이스 추가하기 insert
-    fun insertData(user: User): Boolean {
+    fun insertData(user: User): Long {
         val db = this.writableDatabase
         val contentValues = ContentValues()
 
@@ -61,7 +61,7 @@ class UserDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
 
         contentValues.put(FIRST_NAME, user.firstName)
         contentValues.put(LAST_NAME, user.lastName)
-        contentValues.put(GENDER, if(user.gender == 0) 0 else 1)
+        contentValues.put(GENDER, if (user.gender == 0) 0 else 1)
         contentValues.put(BIRTH_YEAR, user.birthYear)
         contentValues.put(BIRTH_MONTH, user.birthMonth)
         contentValues.put(BIRTH_DAY, user.birthDay)
@@ -74,8 +74,10 @@ class UserDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
         contentValues.put(USE_SUMMER_TIME, user.useSummerTime)
         contentValues.put(USE_TOKYO_TIME, user.useTokyoTime)
 
-        val result = db.insert(TABLE_NAME, null, contentValues)
-        return result != -1L
+        contentValues.put(MEMO, "")
+
+        // 삽입한 행의 id값을 반환한다
+        return db.insert(TABLE_NAME, null, contentValues)
     }
 
     //데이터베이스 항목 읽어오기 Read
@@ -105,6 +107,13 @@ class UserDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
         val contentValues = ContentValues()
 
         return true
+    }
+
+    fun updateMemo(id: Long, memo: String):Boolean {
+        val db = this.writableDatabase
+        val contentValues = ContentValues()
+        contentValues.put(MEMO, memo)
+        return db.update(TABLE_NAME, contentValues, "ID = ?", arrayOf(id.toString())) != -1
     }
 
     companion object {
@@ -145,5 +154,7 @@ class UserDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
 
         const val USE_SUMMER_TIME = "use_summer_time"
         const val USE_TOKYO_TIME = "use_tokyo_time"
+
+        const val MEMO = "memo"
     }
 }

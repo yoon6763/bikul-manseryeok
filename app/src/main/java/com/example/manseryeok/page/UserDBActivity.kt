@@ -20,7 +20,6 @@ class UserDBActivity : ParentActivity() {
     private lateinit var dbListAdapter: DBListAdapter
     private val binding by lazy { ActivityDbactivityBinding.inflate(layoutInflater) }
     private val userList = ArrayList<User>()
-    private val idList = ArrayList<String>()
     private val manseryeokList = ArrayList<Manseryeok>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,7 +60,7 @@ class UserDBActivity : ParentActivity() {
             // useSummerTime: Int,
             // useTokyoTime: Int
 
-            val id = sqliteData.getString(0)
+            val id = sqliteData.getLong(0)
             val firstName = sqliteData.getString(1)
             val lastName = sqliteData.getString(2)
             val gender = sqliteData.getInt(3)
@@ -74,10 +73,11 @@ class UserDBActivity : ParentActivity() {
             val timeDiff = sqliteData.getInt(10)
             val useSummerTime = sqliteData.getInt(11)
             val useTokyoTime = sqliteData.getInt(12)
+            val memo = sqliteData.getString(13)
 
-            idList.add(id)
             userList.add(
                 User(
+                    id,
                     firstName,
                     lastName,
                     if (gender == 0) 0 else 1,
@@ -89,7 +89,8 @@ class UserDBActivity : ParentActivity() {
                     birthPlace,
                     timeDiff,
                     useSummerTime,
-                    useTokyoTime
+                    useTokyoTime,
+                    memo
                 )
             )
 
@@ -97,7 +98,7 @@ class UserDBActivity : ParentActivity() {
         }
 
         binding.run {
-            dbListAdapter = DBListAdapter(this@UserDBActivity, idList, userList, manseryeokList)
+            dbListAdapter = DBListAdapter(this@UserDBActivity, userList, manseryeokList)
             dbListAdapter.notifyDataSetChanged()
             rvDbList.adapter = dbListAdapter
         }

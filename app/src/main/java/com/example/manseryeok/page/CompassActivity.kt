@@ -149,9 +149,8 @@ class CompassActivity : ParentActivity(), SensorEventListener, OnMapReadyCallbac
         if (allUserRawData.count > 0) {
             allUserRawData.moveToFirst()
             do {
-
-
                 val user = User(
+                    allUserRawData.getLong(0),
                     allUserRawData.getString(1),
                     allUserRawData.getString(2),
                     allUserRawData.getInt(3),
@@ -164,6 +163,7 @@ class CompassActivity : ParentActivity(), SensorEventListener, OnMapReadyCallbac
                     allUserRawData.getInt(10),
                     allUserRawData.getInt(11),
                     allUserRawData.getInt(12),
+                    allUserRawData.getString(13),
                 )
                 users.add(user)
                 var usernameLabel = user.firstName + user.lastName

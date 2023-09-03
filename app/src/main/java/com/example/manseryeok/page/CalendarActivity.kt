@@ -53,6 +53,8 @@ class CalendarActivity : ParentActivity() {
 
     private var currentTime = 0L
 
+    private var memoMode = 0 // 0 - 수정모드, 1 - 읽기 모드
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -92,6 +94,7 @@ class CalendarActivity : ParentActivity() {
             setUpYearAndMonthPillar() // 년주 리사이클러뷰
             setRecyclerViewClickEvent() // 년주 리사이클러뷰 클릭 이벤트 처리
             setUpLuckRecyclerView() // 대운 리사이클러뷰
+            setUpMemo()
 
             currentTime = System.currentTimeMillis()
 
@@ -105,9 +108,33 @@ class CalendarActivity : ParentActivity() {
                 finish()
             }
         }, 1000)
+    }
 
 
+    private fun setUpMemo() {
+        binding.run {
+            if(userModel.memo != null && userModel.memo!!.isNotEmpty()) {
+                etMemo.setText(userModel.memo)
+            }
 
+            btnMemo.setOnClickListener {
+                if(userModel.id == -1L) {
+                    showShortToast("저장 후 메모를 작성할 수 있습니다.")
+                    return@setOnClickListener
+                }
+
+                userModel.memo = etMemo.text.toString()
+                val myDB = UserDBHelper(this@CalendarActivity)
+                val res = myDB.updateMemo(userModel.id, userModel.memo!!)
+                myDB.close()
+
+                if(res) {
+                    showShortToast("메모가 저장되었습니다")
+                } else {
+                    showShortToast("메모 저장에 실패하였습니다")
+                }
+            }
+        }
     }
 
     private fun setUpSinsal() {
@@ -177,7 +204,10 @@ class CalendarActivity : ParentActivity() {
 
         myDB.close()
 
-        if (insertDataResult) showShortToast(getString(R.string.msg_save_complete))
+        if (insertDataResult != -1L) {
+            showShortToast(getString(R.string.msg_save_complete))
+            userModel.id = insertDataResult
+        }
         else showShortToast(getString(R.string.msg_save_fail))
     }
 
