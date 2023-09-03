@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.manseryeok.utils.Utils
 import com.example.manseryeok.adapter.LocationAdapter
 import com.example.manseryeok.databinding.ActivityCalendarInputBinding
+import com.example.manseryeok.models.Gender
 import com.example.manseryeok.models.User
 import com.example.manseryeok.utils.ParentActivity
 
@@ -19,7 +20,7 @@ class CalendarInputActivity : ParentActivity() {
 
     private val TAG = "CalendarInputActivity"
     private val binding by lazy { ActivityCalendarInputBinding.inflate(layoutInflater) }
-    private val birth = Calendar.getInstance()
+    private var birth = Calendar.getInstance()
     private var birthPlace = "대한민국"
     private var timeDiff = -30
     private lateinit var fragment: LocationPickerFragment
@@ -46,15 +47,9 @@ class CalendarInputActivity : ParentActivity() {
 
         binding.run {
             etInputBirth.setOnClickListener { openBirthPicker() }
-
             etInputBirthTime.setOnClickListener { openBirthTimePicker() }
-
             etInputBirthPlace.setOnClickListener { openBirthPlacePicker() }
-
-            cbInputBirthTime.setOnCheckedChangeListener { compoundButton, b ->
-                etInputBirthTime.isEnabled = !b
-            }
-
+            cbInputBirthTime.setOnCheckedChangeListener { _, b -> etInputBirthTime.isEnabled = !b }
             btnNameInputFinish.setOnClickListener { nextPage(true) }
 
             btnCalenderInputFinish.setOnClickListener {
@@ -106,12 +101,6 @@ class CalendarInputActivity : ParentActivity() {
 
     private fun nextPage(isName: Boolean) {
         binding.run {
-//            firstName: String?,
-//            lastName: String?,
-//            gender: Int, // 0 - 남자, 1 - 여자
-//            birth: String?, // yyyyMMddHHmm or yyyyMMdd
-//            birthPlace: String?,
-//            timeDiff: Int
 
             if(isName) {
                 if (etFirstName.text.toString().isEmpty()) {
@@ -124,28 +113,30 @@ class CalendarInputActivity : ParentActivity() {
                 }
             }
 
-            val date = if (rgCalType.checkedRadioButtonId == rbCalTypeSun.id) {
-                // 양력
-                Utils.dateTimeNumFormat.format(birth.timeInMillis)
-            } else {
-                // 음력
+            if (rgCalType.checkedRadioButtonId == rbCalTypeMoon.id || rgCalType.checkedRadioButtonId == rbCalTypeMoonLeap.id) {
                 val strTime = Utils.dateNumFormat.format(birth.timeInMillis).substring(0, 8)
                 val moonBirth = Utils.convertLunarToSolar(strTime)
-                val tempCal = Calendar.getInstance().apply {
+                birth = Calendar.getInstance().apply {
                     timeInMillis = moonBirth
                     this[Calendar.HOUR_OF_DAY] = birth[Calendar.HOUR_OF_DAY]
                     this[Calendar.MINUTE] = birth[Calendar.MINUTE]
                 }
-                Utils.dateTimeNumFormat.format(tempCal.timeInMillis)
             }
 
             val userModel = User(
                 etFirstName.text.toString(), // 성
                 etName.text.toString(), // 이름
-                if (rgGender.checkedRadioButtonId == rbGenderMale.id) 0 else 1, // 성별
-                if (cbInputBirthTime.isChecked) date.substring(0, 8) else date, // 생일, 시간포함 - yyyyMMddHHmm, 미포함 - yyyyMMdd
+                if (rgGender.checkedRadioButtonId == rbGenderMale.id) Gender.MALE.value else Gender.FEMALE.value, // 성별
+
+                birth[Calendar.YEAR],
+                birth[Calendar.MONTH] + 1,
+                birth[Calendar.DAY_OF_MONTH],
+                if(cbInputBirthTime.isChecked) -1 else birth[Calendar.HOUR_OF_DAY],
+                if(cbInputBirthTime.isChecked) -1 else birth[Calendar.MINUTE],
                 etInputBirthPlace.text.toString(), // 출생지
-                timeDiff
+                timeDiff, // 시차
+                if(cbUseSummerTime.isChecked) 1 else 0, // 서머타임 사용
+                if(cbUseTokyo.isChecked) 1 else 0 // 도쿄시간 사용
             )
 
             //showProgress(this@CalendarInputActivity,"잠시만 기다려주세요")

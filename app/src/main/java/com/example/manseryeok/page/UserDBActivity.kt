@@ -6,17 +6,22 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
 import com.example.manseryeok.R
-import com.example.manseryeok.userDB.UserDBHelper
+import com.example.manseryeok.db.UserDBHelper
 import com.example.manseryeok.utils.Utils
 import com.example.manseryeok.adapter.DBListAdapter
 import com.example.manseryeok.databinding.ActivityDbactivityBinding
-import com.example.manseryeok.models.DBListItem
+import com.example.manseryeok.db.ManseryeokSQLHelper
+import com.example.manseryeok.models.Manseryeok
 import com.example.manseryeok.models.User
+import com.example.manseryeok.utils.ParentActivity
+import java.util.Calendar
 
-class UserDBActivity : AppCompatActivity() {
+class UserDBActivity : ParentActivity() {
     private lateinit var dbListAdapter: DBListAdapter
     private val binding by lazy { ActivityDbactivityBinding.inflate(layoutInflater) }
-    private val dbList = ArrayList<DBListItem>()
+    private val userList = ArrayList<User>()
+    private val idList = ArrayList<String>()
+    private val manseryeokList = ArrayList<Manseryeok>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,47 +37,67 @@ class UserDBActivity : AppCompatActivity() {
         val myDB = UserDBHelper(this)
         val sqliteData = myDB.allData
 
-        while(sqliteData.moveToNext()) {
-//            firstName: String
-//            lastName: String
-//            gender: Int
-//            birth: String
-//            birthPlace: String
-//            timeDiff: Int
-//            yearPillar: String
-//            monthPillar: String
-//            dayPillar: String
-//            timePillar: String
+
+        // 유저의 생일 - 1년 부터 + 100년까지의 정보
+        val manseryeokSQLHelper = ManseryeokSQLHelper(this)
+        manseryeokSQLHelper.createDataBase()
+        manseryeokSQLHelper.open()
+
+        while (sqliteData.moveToNext()) {
+
+            // firstName: String?,
+            // lastName: String?,
+            // gender: Int, // 0 - 남자, 1 - 여자
+
+            // birthYear: Int,
+            // birthMonth: Int,
+            // birthDay: Int,
+            // birthHour: Int,
+            // birthMinute: Int,
+
+            // birthPlace: String?,
+            // timeDiff: Int,
+
+            // useSummerTime: Int,
+            // useTokyoTime: Int
 
             val id = sqliteData.getString(0)
             val firstName = sqliteData.getString(1)
             val lastName = sqliteData.getString(2)
             val gender = sqliteData.getInt(3)
-            val birth = sqliteData.getString(4)
-            val birthPlace = sqliteData.getString(5)
-            val timeDiff = sqliteData.getInt(6)
-            val yearPillar = sqliteData.getString(7)
-            val monthPillar = sqliteData.getString(8)
-            val dayPillar = sqliteData.getString(9)
-            val timePillar = sqliteData.getString(10)
+            val birthYear = sqliteData.getInt(4)
+            val birthMonth = sqliteData.getInt(5)
+            val birthDay = sqliteData.getInt(6)
+            val birthHour = sqliteData.getInt(7)
+            val birthMinute = sqliteData.getInt(8)
+            val birthPlace = sqliteData.getString(9)
+            val timeDiff = sqliteData.getInt(10)
+            val useSummerTime = sqliteData.getInt(11)
+            val useTokyoTime = sqliteData.getInt(12)
 
+            idList.add(id)
+            userList.add(
+                User(
+                    firstName,
+                    lastName,
+                    if (gender == 0) 0 else 1,
+                    birthYear,
+                    birthMonth,
+                    birthDay,
+                    birthHour,
+                    birthMinute,
+                    birthPlace,
+                    timeDiff,
+                    useSummerTime,
+                    useTokyoTime
+                )
+            )
 
-
-            val pillar = "${if (timePillar == null || timePillar == "NULL" || timePillar == "") "" else timePillar[0]}${dayPillar[0]}${monthPillar[0]}${yearPillar[0]}" +
-                    "\n"+"${if(timePillar == null || timePillar == "NULL" || timePillar == "") "" else timePillar[1]}${dayPillar[1]}${monthPillar[1]}${yearPillar[1]}"
-
-            dbList.add(DBListItem(
-                id,
-                firstName,
-                lastName,
-                birth,
-                birthPlace,
-                timeDiff,
-                if(gender == 0) 0 else 1, pillar))
+            manseryeokList.add(manseryeokSQLHelper.getDayData(birthYear, birthMonth, birthDay))
         }
 
         binding.run {
-            dbListAdapter = DBListAdapter(this@UserDBActivity, dbList)
+            dbListAdapter = DBListAdapter(this@UserDBActivity, idList, userList, manseryeokList)
             dbListAdapter.notifyDataSetChanged()
             rvDbList.adapter = dbListAdapter
         }
@@ -81,39 +106,23 @@ class UserDBActivity : AppCompatActivity() {
         dbListAdapter.onMenuClickListener = object : DBListAdapter.OnMenuClickListener {
             override fun onSearchClick(ID: String, position: Int) {
                 val intent = Intent(this@UserDBActivity, CalendarActivity::class.java)
-
-//              firstName: String?,
-//              lastName: String?,
-//              gender: Int, // 0 - 남자, 1 - 여자
-//              birth: String?, // yyyyMMddHHmm or yyyyMMdd
-//              birthPlace: String?,
-//              timeDiff: Int
-                val dbModel = dbList[position]
-
-                val userModel =
-                    User(
-                        dbModel.firstName,
-                        dbModel.lastName,
-                        dbModel.gender,
-                        dbModel.birth,
-                        dbModel.birthPlace,
-                        dbModel.timeDiff)
-
-                intent.putExtra(Utils.INTENT_EXTRAS_USER, userModel)
+                intent.putExtra(Utils.INTENT_EXTRAS_USER, userList[position])
                 startActivity(intent)
             }
 
             override fun onDeleteClick(ID: String, position: Int) {
                 val deleteResult = myDB.deleteData(ID)
-                if(deleteResult > 0) {
-                    Toast.makeText(applicationContext,getString(R.string.msg_delete_complete),Toast.LENGTH_SHORT).show()
-                    dbList.removeAt(position)
+                if (deleteResult > 0) {
+                    showShortToast(getString(R.string.msg_delete_complete))
+                    userList.removeAt(position)
                 } else {
-                    Toast.makeText(applicationContext,getString(R.string.msg_delete_fail),Toast.LENGTH_SHORT).show()
+                    showShortToast(getString(R.string.msg_delete_fail))
                 }
                 dbListAdapter.notifyDataSetChanged()
             }
         }
+        manseryeokSQLHelper.close()
+
     }
 
 

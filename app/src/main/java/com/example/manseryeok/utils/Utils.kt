@@ -125,7 +125,11 @@ object Utils {
         return result
     }
 
-    fun getMonthGanji(char: Char): String {
+    fun getYearGanji(birth:Calendar):String {
+        return getYearGanji(birth[Calendar.YEAR])
+    }
+
+    fun getMonthGanjiList(char: Char): String {
         return when (char) {
             '甲', '己' -> "乙丑 丙寅 丁卯 戊辰 己巳 庚午 辛未 壬申 癸酉 甲戌 乙亥 丙子"
             '乙', '庚' -> "丁丑 戊寅 己卯 庚辰 辛巳 壬午 癸未 甲申 乙酉 丙戌 丁亥 戊子"
@@ -136,13 +140,35 @@ object Utils {
         }
     }
 
-    fun getTimeGanji(day: String, hour: Int): String {
+    fun getMonthGanji(char: Char, month: Int): String {
+        val monthGanjiList = getMonthGanjiList(char).split(" ")
+        return monthGanjiList[month - 1]
+    }
+
+    fun getDayGanji(year:Int, month:Int, day:Int): String {
+        val date = Calendar.getInstance().apply { set(1900, 0, 1) }
+        var sibganIdx = 0
+        var sibijiIdx = 10
+
+        while (true) {
+            if (date[Calendar.YEAR] == year && date[Calendar.MONTH] == month - 1 && date[Calendar.DAY_OF_MONTH] == day) {
+                break
+            }
+            date.add(Calendar.DATE, 1)
+            sibganIdx = (sibganIdx + 1) % 10
+            sibijiIdx = (sibijiIdx + 1) % 12
+        }
+
+        return tenGan[0][sibganIdx] + twelveGan[0][sibijiIdx]
+    }
+
+    fun getTimeGanji(day: Char, hour: Int): String {
         val dayIdx = when (day) {
-            "甲", "己" -> 0
-            "乙", "庚" -> 1
-            "丙", "辛" -> 2
-            "丁", "壬" -> 3
-            "戊", "癸" -> 4
+            '甲', '己' -> 0
+            '乙', '庚' -> 1
+            '丙', '辛' -> 2
+            '丁', '壬' -> 3
+            '戊', '癸' -> 4
             else -> -1
         }
 
@@ -205,80 +231,15 @@ object Utils {
     val timeGanji = arrayOf(
 //        시(時)  23~01 01~03 03~05 05~07 07~09 09~11 11~13 13~15 15~17 17~19 19~21 21~23
 //    갑(甲), 기(己)일
-        arrayOf(
-            "甲子",
-            "乙丑",
-            "丙寅",
-            "丁卯",
-            "戊辰",
-            "己巳",
-            "庚午",
-            "辛未",
-            "壬申",
-            "癸酉",
-            "甲戌",
-            "乙亥"
-        ),
+        arrayOf("甲子", "乙丑", "丙寅", "丁卯", "戊辰", "己巳", "庚午", "辛未", "壬申", "癸酉", "甲戌", "乙亥"),
 //    을(乙), 경(庚)일
-        arrayOf(
-            "丙子",
-            "丁丑",
-            "戊寅",
-            "己卯",
-            "庚辰",
-            "辛巳",
-            "壬午",
-            "癸未",
-            "甲申",
-            "乙酉",
-            "丙戌",
-            "丁亥"
-        ),
+        arrayOf("丙子", "丁丑", "戊寅", "己卯", "庚辰", "辛巳", "壬午", "癸未", "甲申", "乙酉", "丙戌", "丁亥"),
 //    병(丙), 신(辛)일
-        arrayOf(
-            "戊子",
-            "己丑",
-            "庚寅",
-            "辛卯",
-            "壬辰",
-            "癸巳",
-            "甲午",
-            "乙未",
-            "丙申",
-            "丁酉",
-            "戊戌",
-            "己亥"
-        ),
+        arrayOf("戊子", "己丑", "庚寅", "辛卯", "壬辰", "癸巳", "甲午", "乙未", "丙申", "丁酉", "戊戌", "己亥"),
 //    정(丁), 임(壬)일
-        arrayOf(
-            "庚子",
-            "辛丑",
-            "壬寅",
-            "癸卯",
-            "甲辰",
-            "乙巳",
-            "丙午",
-            "丁未",
-            "戊申",
-            "己酉",
-            "庚戌",
-            "辛亥"
-        ),
+        arrayOf("庚子", "辛丑", "壬寅", "癸卯", "甲辰", "乙巳", "丙午", "丁未", "戊申", "己酉", "庚戌", "辛亥"),
 //    무(戊), 계(癸)일
-        arrayOf(
-            "壬子",
-            "癸丑",
-            "甲寅",
-            "乙卯",
-            "丙辰",
-            "丁巳",
-            "戊午",
-            "己未",
-            "庚申",
-            "辛酉",
-            "壬戌",
-            "癸亥"
-        )
+        arrayOf("壬子", "癸丑", "甲寅", "乙卯", "丙辰", "丁巳", "戊午", "己未", "庚申", "辛酉", "壬戌", "癸亥")
     )
 
     // 지지암장간
@@ -481,13 +442,12 @@ object Utils {
     /***
      * 양력날짜를 음력날짜로 변환* @param 양력날짜 (yyyyMMdd)* @return 음력날짜 (yyyyMMdd)
      * */
-    fun convertSolarToLunar(date: String): Long {
-        val nDate = date.replace("-", "")
+    fun convertSolarToLunar(date: Calendar): Long {
         val cc = ChineseCalendar()
         val cal = Calendar.getInstance()
-        cal[Calendar.YEAR] = nDate.substring(0, 4).toInt()
-        cal[Calendar.MONTH] = nDate.substring(4, 6).toInt() - 1
-        cal[Calendar.DAY_OF_MONTH] = nDate.substring(6).toInt()
+        cal[Calendar.YEAR] = date[Calendar.YEAR]
+        cal[Calendar.MONTH] = date[Calendar.MONTH]
+        cal[Calendar.DAY_OF_MONTH] = date[Calendar.DAY_OF_MONTH]
         cc.timeInMillis = cal.timeInMillis
         val y = cc[ChineseCalendar.EXTENDED_YEAR] - 2637
         val m = cc[ChineseCalendar.MONTH] + 1

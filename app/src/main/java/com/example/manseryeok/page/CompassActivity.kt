@@ -16,14 +16,13 @@ import android.view.View
 import android.view.WindowInsetsController
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.manseryeok.R
 import com.example.manseryeok.adapter.MapLayerListAdapter
 import com.example.manseryeok.compassutils.CompassDirectionLabel
 import com.example.manseryeok.databinding.ActivityCompassBinding
 import com.example.manseryeok.models.User
-import com.example.manseryeok.userDB.UserDBHelper
+import com.example.manseryeok.db.UserDBHelper
 import com.example.manseryeok.utils.ParentActivity
 import com.example.manseryeok.utils.Utils
 import com.gun0912.tedpermission.PermissionListener
@@ -150,40 +149,26 @@ class CompassActivity : ParentActivity(), SensorEventListener, OnMapReadyCallbac
         if (allUserRawData.count > 0) {
             allUserRawData.moveToFirst()
             do {
-//            firstName: String
-//            lastName: String
-//            gender: Int
-//            birth: String
-//            birthPlace: String
-//            timeDiff: Int
-//            yearPillar: String
-//            monthPillar: String
-//            dayPillar: String
-//            timePillar: String
 
-                //data class User(
-                //    var firstName: String?,
-                //    var lastName: String?,
-                //    var gender: Int, // 0 - 남자, 1 - 여자
-                //    var birth: String?, // yyyyMMddHHmm or yyyyMMdd
-                //    var birthPlace: String?,
-                //    var timeDiff: Int
-                //)
 
                 val user = User(
                     allUserRawData.getString(1),
                     allUserRawData.getString(2),
                     allUserRawData.getInt(3),
-                    allUserRawData.getString(4),
-                    allUserRawData.getString(5),
+                    allUserRawData.getInt(4),
+                    allUserRawData.getInt(5),
                     allUserRawData.getInt(6),
+                    allUserRawData.getInt(7),
+                    allUserRawData.getInt(8),
+                    allUserRawData.getString(9),
+                    allUserRawData.getInt(10),
+                    allUserRawData.getInt(11),
+                    allUserRawData.getInt(12),
                 )
                 users.add(user)
                 var usernameLabel = user.firstName + user.lastName
 
-                if (user.birth != null && user.birth != "") {
-                    usernameLabel += " (${user.birth!!.substring(0, 4)})"
-                }
+                usernameLabel += " (${user.birthYear})"
 
                 usernames.add(usernameLabel)
             } while (allUserRawData.moveToNext())
@@ -192,7 +177,7 @@ class CompassActivity : ParentActivity(), SensorEventListener, OnMapReadyCallbac
 
         binding.btnSelectFromDb.setOnClickListener {
 
-            if(users.isEmpty()) {
+            if (users.isEmpty()) {
                 showShortToast("저장된 정보가 없습니다.")
                 return@setOnClickListener
             }
@@ -300,23 +285,22 @@ class CompassActivity : ParentActivity(), SensorEventListener, OnMapReadyCallbac
         val user = users[userSelectedIndex]
         var sinsalname = usernames[userSelectedIndex]
 
-        if (user.birth != null && user.birth != "") {
 
-            val birthYear = user.birth!!.substring(0, 4).toInt()
+        val birthYear = user.birthYear
 
-            sinsalname +=
-                    " | (회두극 방향) " +
+        sinsalname +=
+            " | (회두극 방향) " +
                     CompassDirectionLabel.huiduguk(birthYear) +
                     " | " +
                     CompassDirectionLabel.bonmyeonggung(birthYear)[user.gender]
 
-            binding.tvSinsalName.text = sinsalname
+        binding.tvSinsalName.text = sinsalname
 
-            val sinsal = CompassDirectionLabel.directionSinsal(birthYear,rotation.toInt())
-            val content = CompassDirectionLabel.directionSinsalTheory(sinsal)
+        val sinsal = CompassDirectionLabel.directionSinsal(birthYear, rotation.toInt())
+        val content = CompassDirectionLabel.directionSinsalTheory(sinsal)
 
-            binding.tvSinsalContent.text = content[0]
-        }
+        binding.tvSinsalContent.text = content[0]
+
     }
 
     override fun onResume() {
@@ -359,8 +343,13 @@ class CompassActivity : ParentActivity(), SensorEventListener, OnMapReadyCallbac
             if (mLastAccelerometerSet && mLastMagnetometerSet) {
                 SensorManager.getRotationMatrix(mR, null, mLastAccelerometer, mLastMagnetometer)
 
-                var azimuthinDegress = ((Math.toDegrees(SensorManager.getOrientation(mR, mOrientation)[0].toDouble()) + 360) % 360).toFloat()
-                azimuthinDegress = (azimuthinDegress *10).toInt().toFloat() / 10
+                var azimuthinDegress = ((Math.toDegrees(
+                    SensorManager.getOrientation(
+                        mR,
+                        mOrientation
+                    )[0].toDouble()
+                ) + 360) % 360).toFloat()
+                azimuthinDegress = (azimuthinDegress * 10).toInt().toFloat() / 10
 
 //                val ra = RotateAnimation(
 //                    mCurrentDegree,

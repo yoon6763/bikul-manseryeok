@@ -6,17 +6,16 @@ import android.os.Handler
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.manseryeok.R
-import com.example.manseryeok.adapter.ManseryeokSQLAdapter
+import com.example.manseryeok.db.ManseryeokSQLHelper
 import com.example.manseryeok.adapter.SixtyHorizontalAdapter
 import com.example.manseryeok.adapter.SixtyHorizontalSmallAdapter
 import com.example.manseryeok.databinding.ActivityCalendarBinding
 import com.example.manseryeok.models.Manseryeok
 import com.example.manseryeok.models.SixtyHorizontalItem
 import com.example.manseryeok.models.User
-import com.example.manseryeok.userDB.UserDBHelper
+import com.example.manseryeok.db.UserDBHelper
 import com.example.manseryeok.utils.ParentActivity
 import com.example.manseryeok.utils.Sinsal
 import com.example.manseryeok.utils.Utils
@@ -70,7 +69,6 @@ class CalendarActivity : ParentActivity() {
         // 프로그래스바를 띄우기 위해 1초 딜레이
         Handler().postDelayed({
             currentTime = System.currentTimeMillis()
-            Log.d(TAG, "onCreate: ${sdf.format(currentTime)}")
 
             binding.run {
                 btnCalendarSave.setOnClickListener { saveResult() }
@@ -96,17 +94,19 @@ class CalendarActivity : ParentActivity() {
             setUpLuckRecyclerView() // 대운 리사이클러뷰
 
             currentTime = System.currentTimeMillis()
-            Log.d(TAG, "onCreate: 최종 ${sdf.format(currentTime)}")
 
             hideProgress()
-        }, 1)
 
-        binding.btnGotoName.setOnClickListener {
-            val intent = Intent(this@CalendarActivity, NameActivity::class.java)
-            intent.putExtra(Utils.INTENT_EXTRAS_USER, userModel)
-            startActivity(intent)
-            finish()
-        }
+
+            binding.btnGotoName.setOnClickListener {
+                val intent = Intent(this@CalendarActivity, NameActivity::class.java)
+                intent.putExtra(Utils.INTENT_EXTRAS_USER, userModel)
+                startActivity(intent)
+                finish()
+            }
+        }, 1000)
+
+
 
     }
 
@@ -118,26 +118,47 @@ class CalendarActivity : ParentActivity() {
         val time = HashSet<String>()
 
         // 생년 기준
-        month.addAll(Sinsal.getYearBottom(userBirth[Calendar.YEAR], userModel.gender, yearPillar[1], monthPillar[1]))
-        day.addAll(Sinsal.getYearBottom(userBirth[Calendar.YEAR], userModel.gender, yearPillar[1], dayPillar[1]))
-        time.addAll(Sinsal.getYearBottom(userBirth[Calendar.YEAR], userModel.gender, yearPillar[1], timePillar[1]))
+        month.addAll(
+            Sinsal.getYearBottom(
+                userBirth[Calendar.YEAR],
+                userModel.gender,
+                yearPillar[1],
+                monthPillar[1]
+            )
+        )
+        day.addAll(
+            Sinsal.getYearBottom(
+                userBirth[Calendar.YEAR],
+                userModel.gender,
+                yearPillar[1],
+                dayPillar[1]
+            )
+        )
+        time.addAll(
+            Sinsal.getYearBottom(
+                userBirth[Calendar.YEAR],
+                userModel.gender,
+                yearPillar[1],
+                timePillar[1]
+            )
+        )
 
         // 생월 기준
         // fun getMonthBottom(type: Type, monthGanji: Char, ganji: String)
-        month.addAll(Sinsal.getMonthBottom(Sinsal.Type.YEAR,monthPillar[1],yearPillar))
-        day.addAll(Sinsal.getMonthBottom(Sinsal.Type.DAY,monthPillar[1],dayPillar))
-        time.addAll(Sinsal.getMonthBottom(Sinsal.Type.TIME,monthPillar[1],timePillar))
+        month.addAll(Sinsal.getMonthBottom(Sinsal.Type.YEAR, monthPillar[1], yearPillar))
+        day.addAll(Sinsal.getMonthBottom(Sinsal.Type.DAY, monthPillar[1], dayPillar))
+        time.addAll(Sinsal.getMonthBottom(Sinsal.Type.TIME, monthPillar[1], timePillar))
 
         // 생일 기준
-        year.addAll(Sinsal.getDayBottom(dayPillar[1],yearPillar))
-        month.addAll(Sinsal.getDayBottom(dayPillar[1],monthPillar))
-        time.addAll(Sinsal.getDayBottom(dayPillar[1],timePillar))
+        year.addAll(Sinsal.getDayBottom(dayPillar[1], yearPillar))
+        month.addAll(Sinsal.getDayBottom(dayPillar[1], monthPillar))
+        time.addAll(Sinsal.getDayBottom(dayPillar[1], timePillar))
 
         binding.run {
             tvSinsalYear.text = year.joinToString("\n\n")
             tvSinsalMonth.text = month.joinToString("\n\n")
             tvSinsalDay.text = day.joinToString("\n\n")
-            tvSinsalTime.text =  time.joinToString("\n\n")
+            tvSinsalTime.text = time.joinToString("\n\n")
         }
     }
 
@@ -152,42 +173,21 @@ class CalendarActivity : ParentActivity() {
 //        yearPillar: String,
 //        monthPillar: String,
 
-        val insertDataResult = myDB.insertData(
-            userModel.firstName!!,
-            userModel.lastName!!,
-            if (userModel.gender == 0) 0 else 1,
-            userModel.birth!!,
-            userModel.birthPlace!!,
-            userModel.timeDiff,
-            yearPillar,
-            monthPillar,
-            dayPillar,
-            timePillar
-        )
+        val insertDataResult = myDB.insertData(userModel)
 
         myDB.close()
 
-        if (insertDataResult) {
-            Toast.makeText(
-                applicationContext,
-                getString(R.string.msg_save_complete),
-                Toast.LENGTH_SHORT
-            ).show()
-        } else {
-            Toast.makeText(
-                applicationContext,
-                getString(R.string.msg_save_fail),
-                Toast.LENGTH_SHORT
-            ).show()
-        }
+        if (insertDataResult) showShortToast(getString(R.string.msg_save_complete))
+        else showShortToast(getString(R.string.msg_save_fail))
     }
 
     private fun shareResult() {
         /*
         만세력 결과 - 전윤호(25세)
-        (양)1998년 12월 04일
-        (음)1998년 10월 16일 23:00
-        (正)1998년 12월 04일 22:30
+
+        (양) 1998년 12월 04일
+        (음) 1998년 10월 16일 23:00
+        (正) 1998년 12월 04일 22:30
 
         시 일 월 년
         丁 乙 癸 戊
@@ -198,10 +198,7 @@ class CalendarActivity : ParentActivity() {
         未 午 巳 辰 卯 寅 丑 子
          */
         var sendContent = "${userModel.firstName}${userModel.lastName}\n" +
-                "${
-                    if (isTimeInclude) Utils.dateTimeKorFormat.format(userBirth.timeInMillis) else Utils.dateKorFormat.format(
-                        userBirth.timeInMillis
-                    )
+                "${if (isTimeInclude) Utils.dateTimeKorFormat.format(userBirth.timeInMillis) else Utils.dateKorFormat.format(userBirth.timeInMillis)
                 }\n" +
                 "\n"
 
@@ -232,15 +229,13 @@ class CalendarActivity : ParentActivity() {
                         it.cd_sd == userBirth[Calendar.DAY_OF_MONTH]
             }!!
 
-
-            //tvCalMoon.text = "${Utils.dateKorFormat.format(moonCalendar.timeInMillis)}"
-
             // 正 생일
             tvCal5.text = "${Utils.dateKorFormat.format(userBirth.timeInMillis)}"
 
             yearPillar = userBirthCalender.cd_hyganjee!!
             monthPillar = userBirthCalender.cd_hmganjee!!
             dayPillar = userBirthCalender.cd_hdganjee!!
+            timePillar = Utils.getTimeGanji(dayPillar[0], userBirth[Calendar.HOUR_OF_DAY])
 
 
             if (userBirthCalender.cd_hterms != "NULL" && isTimeInclude) {
@@ -323,8 +318,7 @@ class CalendarActivity : ParentActivity() {
             // 시주
             if (isTimeInclude) {
                 // 시간 포함
-                timePillar =
-                    Utils.getTimeGanji(dayPillar[0].toString(), userBirth[Calendar.HOUR_OF_DAY])
+                timePillar = Utils.getTimeGanji(dayPillar[0], userBirth[Calendar.HOUR_OF_DAY])
                 tvPillarTimeTop.text = timePillar[0].toString()
                 tvPillarTimeBottom.text = timePillar[1].toString()
 
@@ -493,43 +487,36 @@ class CalendarActivity : ParentActivity() {
     private fun setUserBirth() {
         binding.run {
             tvCalSun.text = Utils.dateKorFormat.format(userBirth.timeInMillis)
-            tvCalMoon.text = Utils.dateKorFormat.format(
-                Utils.convertSolarToLunar(
-                    userModel.birth!!.substring(
-                        0,
-                        8
-                    )
-                )
-            )
+            tvCalMoon.text = Utils.dateKorFormat.format(Utils.convertSolarToLunar(userBirth))
         }
     }
 
     // SQLite 불러오기
     private fun initLoadDB() {
         // 유저 생일 가져오기
-        val birthStr = userModel.birth!!
 
-        if (birthStr.length == 8) {
-            // 시간 미포함
-            isTimeInclude = false
-            userBirth = Calendar.getInstance()
-                .apply { timeInMillis = Utils.dateNumFormat.parse(birthStr).time }
-        } else {
-            // 시간 포함
-            isTimeInclude = true
-            userBirth = Calendar.getInstance().apply {
-                timeInMillis = Utils.dateTimeNumFormat.parse(birthStr).time
-                add(Calendar.MINUTE, userModel.timeDiff)
-            }
+        userBirth = Calendar.getInstance().apply {
+            this[Calendar.YEAR] = userModel.birthYear
+            this[Calendar.MONTH] = userModel.birthMonth - 1
+            this[Calendar.DAY_OF_MONTH] = userModel.birthDay
+            this[Calendar.HOUR_OF_DAY] = userModel.birthHour
+            this[Calendar.MINUTE] = userModel.birthMinute
         }
 
-        val mDBHelper = ManseryeokSQLAdapter(applicationContext)
+        Log.d(TAG, "[유저 생일] ${Utils.dateTimeKorFormat.format(userBirth.timeInMillis)}")
+        Log.d(TAG, "[시차] ${userModel.timeDiff}")
+
+        userBirth.add(Calendar.MINUTE, userModel.timeDiff)
+        Log.d(TAG, "[유저 생일] ${Utils.dateTimeKorFormat.format(userBirth.timeInMillis)}")
+
+        isTimeInclude = userModel.birthHour != -1
+
+        val mDBHelper = ManseryeokSQLHelper(applicationContext)
         mDBHelper.createDataBase()
         mDBHelper.open()
 
         // 유저의 생일 - 1년 부터 + 100년까지의 정보
-        userCalendar =
-            mDBHelper.getTableData(userBirth[Calendar.YEAR] - 1, userBirth[Calendar.YEAR] + 100)!!
+        userCalendar = mDBHelper.getTableData(userBirth[Calendar.YEAR] - 1, userBirth[Calendar.YEAR] + 100)!!
 
         mDBHelper.close()
     }
@@ -541,7 +528,6 @@ class CalendarActivity : ParentActivity() {
 
         var direction = if (userModel.gender == 0) 1 else -1 // 남자 순행, 여자 역행, 양 순행, 음 역행
         direction *= Utils.getSign(yearPillar[0])
-
 
         var firstAge = 0
 
@@ -591,7 +577,6 @@ class CalendarActivity : ParentActivity() {
             repeat(12) {
                 val age = it * 10 + firstAge
                 val year = userBirth[Calendar.YEAR] + age - 1
-
 
                 if (direction == 1) {
                     topPtr++
@@ -671,7 +656,7 @@ class CalendarActivity : ParentActivity() {
     private fun setUpMonthPillar(year: Char) {
         binding.run {
             monthItems.clear()
-            val yearGanji = Utils.getMonthGanji(year).split(" ")
+            val yearGanji = Utils.getMonthGanjiList(year).split(" ")
 
             for (i in 0 until 12) {
                 monthItems.add(

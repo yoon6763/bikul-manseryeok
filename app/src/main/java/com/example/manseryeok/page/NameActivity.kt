@@ -6,7 +6,7 @@ import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.manseryeok.adapter.ManseryeokSQLAdapter
+import com.example.manseryeok.db.ManseryeokSQLHelper
 import com.example.manseryeok.adapter.NameScoreAdapter
 import com.example.manseryeok.databinding.ActivityNameBinding
 import com.example.manseryeok.models.NameScoreItem
@@ -281,13 +281,13 @@ class NameActivity : AppCompatActivity() {
     }
 
     private fun importGanji() {
-        val mDBHelper = ManseryeokSQLAdapter(applicationContext)
+        val mDBHelper = ManseryeokSQLHelper(applicationContext)
         mDBHelper.createDataBase()
         mDBHelper.open()
 
-        val year = userModel.birth!!.substring(0, 4).toInt()
-        val month = userModel.birth!!.substring(4, 6).toInt()
-        val day = userModel.birth!!.substring(6, 8).toInt()
+        val year = userModel.birthYear
+        val month = userModel.birthMonth
+        val day = userModel.birthDay
 
         // 유저의 생일 - 1년 부터 + 100년까지의 정보
         val userManseryeok = mDBHelper.getDayData(year, month, day)

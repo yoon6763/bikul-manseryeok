@@ -16,226 +16,253 @@
         android:elevation="3dp"
         app:title="@string/obj_toolbar_calendar_input" />
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="15dp"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:orientation="horizontal">
+            android:layout_marginHorizontal="15dp"
+            android:orientation="vertical">
 
-            <TextView
-                style="@style/styleInputText"
-                android:layout_width="@dimen/input_text_width"
-                android:layout_height="wrap_content"
-                android:text="@string/obj_first_name" />
-
-            <EditText
-                android:id="@+id/et_first_name"
-                android:layout_width="70dp"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                style="@style/styleInputText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:text="@string/obj_name" />
-
-            <EditText
-                android:id="@+id/et_name"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/gap_horizontal"
-            android:orientation="horizontal">
-
-            <TextView
-                style="@style/styleInputText"
-                android:layout_width="@dimen/input_text_width"
-                android:layout_height="match_parent"
-                android:text="@string/obj_gender" />
-
-            <RadioGroup
-                android:id="@+id/rg_gender"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/radio_height"
-                android:layout_gravity="center_vertical"
-                android:background="@drawable/radio_group_background"
+                android:layout_marginTop="30dp"
                 android:orientation="horizontal">
 
-                <RadioButton
-                    android:id="@+id/rb_gender_male"
+                <TextView
+                    style="@style/styleInputText"
+                    android:layout_width="@dimen/input_text_width"
+                    android:layout_height="wrap_content"
+                    android:text="@string/obj_first_name" />
+
+                <EditText
+                    android:id="@+id/et_first_name"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    style="@style/styleInputText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:text="@string/obj_name" />
+
+                <EditText
+                    android:id="@+id/et_name"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/radio_height"
-                    android:layout_weight="1"
-                    android:background="@drawable/radio_button_background"
-                    android:button="@null"
-                    android:checked="true"
-                    android:gravity="center"
-                    android:text="@string/obj_gender_male"
-                    android:textColor="@drawable/radio_text" />
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
 
-                <RadioButton
-                    android:id="@+id/rb_gender_female"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/radio_height"
-                    android:layout_weight="1"
-                    android:background="@drawable/radio_button_background"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="@string/obj_gender_female"
-                    android:textColor="@drawable/radio_text" />
-            </RadioGroup>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/gap_vertical"
-            android:orientation="horizontal">
-
-            <TextView
-                style="@style/styleInputText"
-                android:layout_width="@dimen/input_text_width"
-                android:layout_height="match_parent"
-                android:text="@string/obj_cal_type" />
-
-            <RadioGroup
-                android:id="@+id/rg_cal_type"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/radio_height"
-                android:layout_gravity="center_vertical"
-                android:background="@drawable/radio_group_background"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/gap_horizontal"
                 android:orientation="horizontal">
 
-                <RadioButton
-                    android:id="@+id/rb_cal_type_sun"
+                <TextView
+                    style="@style/styleInputText"
+                    android:layout_width="@dimen/input_text_width"
+                    android:layout_height="match_parent"
+                    android:text="@string/obj_gender" />
+
+                <RadioGroup
+                    android:id="@+id/rg_gender"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/radio_height"
-                    android:layout_weight="1"
-                    android:background="@drawable/radio_button_background"
-                    android:button="@null"
-                    android:checked="true"
-                    android:gravity="center"
-                    android:text="@string/obj_cal_type_sun"
-                    android:textColor="@drawable/radio_text" />
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/radio_group_background"
+                    android:orientation="horizontal">
 
-                <RadioButton
-                    android:id="@+id/rb_cal_type_moon"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/radio_height"
-                    android:layout_weight="1"
-                    android:background="@drawable/radio_button_background"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="@string/obj_cal_type_moon"
-                    android:textColor="@drawable/radio_text" />
+                    <RadioButton
+                        android:id="@+id/rb_gender_male"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/radio_height"
+                        android:layout_weight="1"
+                        android:background="@drawable/radio_button_background"
+                        android:button="@null"
+                        android:checked="true"
+                        android:gravity="center"
+                        android:text="@string/obj_gender_male"
+                        android:textColor="@drawable/radio_text" />
 
-                <RadioButton
-                    android:id="@+id/rb_cal_type_moon_leap"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/radio_height"
-                    android:layout_weight="1"
-                    android:background="@drawable/radio_button_background"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="@string/obj_cal_type_moon_leap"
-                    android:textColor="@drawable/radio_text" />
-            </RadioGroup>
-        </LinearLayout>
+                    <RadioButton
+                        android:id="@+id/rb_gender_female"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/radio_height"
+                        android:layout_weight="1"
+                        android:background="@drawable/radio_button_background"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:text="@string/obj_gender_female"
+                        android:textColor="@drawable/radio_text" />
+                </RadioGroup>
+            </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/gap_vertical"
-            android:orientation="horizontal">
-
-            <TextView
-                style="@style/styleInputText"
-                android:layout_width="@dimen/input_text_width"
-                android:layout_height="wrap_content"
-                android:text="@string/obj_input_birth" />
-
-            <EditText
-                android:id="@+id/et_input_birth"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clickable="true"
-                android:editable="false"
-                android:focusable="false"
-                android:gravity="center" />
-        </LinearLayout>
+                android:layout_marginTop="@dimen/gap_vertical"
+                android:orientation="horizontal">
 
+                <TextView
+                    style="@style/styleInputText"
+                    android:layout_width="@dimen/input_text_width"
+                    android:layout_height="match_parent"
+                    android:text="@string/obj_cal_type" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/gap_vertical"
-            android:orientation="horizontal">
+                <RadioGroup
+                    android:id="@+id/rg_cal_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/radio_height"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/radio_group_background"
+                    android:orientation="horizontal">
 
-            <TextView
-                style="@style/styleInputText"
-                android:layout_width="@dimen/input_text_width"
-                android:layout_height="wrap_content"
-                android:text="@string/obj_input_birth_time" />
+                    <RadioButton
+                        android:id="@+id/rb_cal_type_sun"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/radio_height"
+                        android:layout_weight="1"
+                        android:background="@drawable/radio_button_background"
+                        android:button="@null"
+                        android:checked="true"
+                        android:gravity="center"
+                        android:text="@string/obj_cal_type_sun"
+                        android:textColor="@drawable/radio_text" />
 
-            <EditText
-                android:id="@+id/et_input_birth_time"
+                    <RadioButton
+                        android:id="@+id/rb_cal_type_moon"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/radio_height"
+                        android:layout_weight="1"
+                        android:background="@drawable/radio_button_background"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:text="@string/obj_cal_type_moon"
+                        android:textColor="@drawable/radio_text" />
+
+                    <RadioButton
+                        android:id="@+id/rb_cal_type_moon_leap"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/radio_height"
+                        android:layout_weight="1"
+                        android:background="@drawable/radio_button_background"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:text="@string/obj_cal_type_moon_leap"
+                        android:textColor="@drawable/radio_text" />
+                </RadioGroup>
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:layout_weight="1"
-                android:clickable="true"
-                android:editable="false"
-                android:focusable="false"
-                android:gravity="center" />
+                android:layout_marginTop="@dimen/gap_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/styleInputText"
+                    android:layout_width="@dimen/input_text_width"
+                    android:layout_height="wrap_content"
+                    android:text="@string/obj_input_birth" />
+
+                <EditText
+                    android:id="@+id/et_input_birth"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:editable="false"
+                    android:focusable="false"
+                    android:gravity="center" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/gap_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/styleInputText"
+                    android:layout_width="@dimen/input_text_width"
+                    android:layout_height="wrap_content"
+                    android:text="@string/obj_input_birth_time" />
+
+                <EditText
+                    android:id="@+id/et_input_birth_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:editable="false"
+                    android:focusable="false"
+                    android:gravity="center" />
+
+                <CheckBox
+                    android:id="@+id/cb_input_birth_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:buttonTint="@color/green"
+                    android:text="@string/obj_input_birth_time_unknown" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/gap_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/styleInputText"
+                    android:layout_width="@dimen/input_text_width"
+                    android:layout_height="wrap_content"
+                    android:text="@string/obj_input_birth_place" />
+
+
+                <EditText
+                    android:id="@+id/et_input_birth_place"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:editable="false"
+                    android:focusable="false"
+                    android:gravity="center"
+                    android:text="대한민국 (-30분)" />
+            </LinearLayout>
 
             <CheckBox
-                android:id="@+id/cb_input_birth_time"
+                android:id="@+id/cb_use_summer_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
                 android:buttonTint="@color/green"
-                android:text="@string/obj_input_birth_time_unknown" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/gap_vertical"
-            android:orientation="horizontal">
+                android:layout_marginTop="20dp"
+                android:text="서머타임 적용" />
 
             <TextView
-                style="@style/styleInputText"
-                android:layout_width="@dimen/input_text_width"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/obj_input_birth_place" />
+                android:layout_marginTop="20dp"
+                android:text="※ 대한민국 표준시는 실제 경도보다 30분 느리며,\n 30분을 앞당겨 계산합니다.\n원하지 않을 경우 아래 옵션을 체크해주세요."
+                android:textColor="@color/gray" />
 
-
-            <EditText
-                android:id="@+id/et_input_birth_place"
-                android:layout_width="match_parent"
+            <CheckBox
+                android:id="@+id/cb_use_tokyo"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:clickable="true"
-                android:editable="false"
-                android:focusable="false"
-                android:gravity="center"
-                android:text="대한민국 (-30분)" />
+                android:buttonTint="@color/green"
+                android:text="동경시 사용" />
+
         </LinearLayout>
-
-    </LinearLayout>
+    </ScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"

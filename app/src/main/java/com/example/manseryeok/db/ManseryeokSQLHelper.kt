@@ -1,16 +1,15 @@
-package com.example.manseryeok.adapter
+package com.example.manseryeok.db
 
 import android.content.Context
 import android.database.Cursor
 import android.database.SQLException
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
-import com.example.manseryeok.utils.ManseryeokDBHelper
 import com.example.manseryeok.models.Manseryeok
 import java.io.IOException
 
 
-class ManseryeokSQLAdapter(val context: Context) {
+class ManseryeokSQLHelper(val context: Context) {
     val TAG = "ManseryeokSQLAdapter"
     val TABLE_NAME = "manseryeok"
 
@@ -21,7 +20,7 @@ class ManseryeokSQLAdapter(val context: Context) {
         mDBHelper = ManseryeokDBHelper(context)
     }
 
-    fun createDataBase(): ManseryeokSQLAdapter {
+    fun createDataBase(): ManseryeokSQLHelper {
         try {
             mDBHelper?.createDataBase()
         } catch (e: IOException) {
@@ -30,7 +29,7 @@ class ManseryeokSQLAdapter(val context: Context) {
         return this
     }
 
-    fun open(): ManseryeokSQLAdapter {
+    fun open(): ManseryeokSQLHelper {
         try {
             mDBHelper?.openDataBase()
             mDBHelper?.close()

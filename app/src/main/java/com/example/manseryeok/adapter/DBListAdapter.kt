@@ -2,20 +2,27 @@ package com.example.manseryeok.adapter
 
 import android.animation.ValueAnimator
 import android.content.Context
+import android.util.Log
 import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.manseryeok.R
 import com.example.manseryeok.utils.Utils
 import com.example.manseryeok.databinding.ItemDbListBinding
-import com.example.manseryeok.models.DBListItem
+import com.example.manseryeok.models.Manseryeok
+import com.example.manseryeok.models.User
+import java.lang.StringBuilder
+import java.util.Calendar
 
 
 class DBListAdapter(
     private val context: Context,
-    private val items: ArrayList<DBListItem>,
+    private val idList: ArrayList<String>,
+    private val items: ArrayList<User>,
+    private val manseryeokList: ArrayList<Manseryeok>
 ) :
     RecyclerView.Adapter<DBListAdapter.Holder>() {
     private var selectedItems: SparseBooleanArray = SparseBooleanArray()
@@ -24,7 +31,7 @@ class DBListAdapter(
 
     var onMenuClickListener: OnMenuClickListener? = null
 
-    interface OnMenuClickListener{
+    interface OnMenuClickListener {
         fun onSearchClick(ID: String, position: Int)
         fun onDeleteClick(ID: String, position: Int)
     }
@@ -38,21 +45,50 @@ class DBListAdapter(
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.binding.run {
-            val item = items[position]
+            val user = items[position]
+            val birth = user.getBirthCalendar()
+            val manseryeok = manseryeokList[position]
 
-            val birth = item.birth
-            val sunBirth = "${birth.substring(0,4)}.${birth.substring(4,6)}.${birth.substring(6,8)}"
-            tvItemDbName.text = "${item.firstName}${item.lastName}"
+            var hourGanji = ""
+            val yearGanji = manseryeok.cd_hyganjee!!
+            val monthGanji = manseryeok.cd_hmganjee!!
+            val dayGanji = manseryeok.cd_hdganjee!!
+
+            val ganji = StringBuilder()
+
+            if(user.birthHour != -1) {
+                Log.d(TAG, "yearGanji: $yearGanji")
+                Log.d(TAG, "monthGanji: $monthGanji")
+                Log.d(TAG, "dayGanji: $dayGanji")
+                hourGanji = Utils.getTimeGanji(dayGanji[0], birth[Calendar.HOUR_OF_DAY])
+                Log.d(TAG, "hourGanji: $hourGanji")
+                ganji.append(hourGanji[0])
+            }
+            ganji.append(dayGanji[0])
+            ganji.append(monthGanji[0])
+            ganji.append(yearGanji[0])
+
+            ganji.append("\n")
+
+            if(user.birthHour != -1) ganji.append(hourGanji[1])
+            ganji.append(dayGanji[1])
+            ganji.append(monthGanji[1])
+            ganji.append(yearGanji[1])
+
+            val sunBirth = "${user.birthYear}.${user.birthMonth}.${user.birthDay}"
+
+
+            tvItemDbName.text = "${user.firstName}${user.lastName}"
             tvItemDbBirthSum.text = "(양) $sunBirth"
-            tvItemDbBirthMoon.text = "(음) ${Utils.dateDotFormat.format(Utils.convertSolarToLunar(birth.substring(0, 8)))}"
-            tvItemDbGanji.text = item.ganji
+            tvItemDbBirthMoon.text = "(음) ${Utils.dateDotFormat.format(Utils.convertSolarToLunar(birth))}"
+            tvItemDbGanji.text = ganji.toString()
 
-            if(item.gender == 0)
+            if (user.gender == 0)
                 ivItemDbGender.setImageResource(R.drawable.ic_male)
             else
                 ivItemDbGender.setImageResource(R.drawable.ic_female)
 
-            changeVisibility(holder.binding,selectedItems.get(position))
+            changeVisibility(holder.binding, selectedItems.get(position))
         }
     }
 
@@ -65,23 +101,23 @@ class DBListAdapter(
 
         init {
             binding.btnItemDbSearch.setOnClickListener {
-                onMenuClickListener?.onSearchClick(items[adapterPosition].id, adapterPosition)
+                onMenuClickListener?.onSearchClick(idList[adapterPosition], adapterPosition)
             }
 
             binding.btnItemDbDelete.setOnClickListener {
-                onMenuClickListener?.onDeleteClick(items[adapterPosition].id, adapterPosition)
+                onMenuClickListener?.onDeleteClick(idList[adapterPosition], adapterPosition)
             }
 
 
             itemView.setOnClickListener {
-                if(selectedItems.get(adapterPosition)) {
+                if (selectedItems.get(adapterPosition)) {
                     selectedItems.delete(adapterPosition)
                 } else {
                     selectedItems.delete(prePosition)
-                    selectedItems.put(adapterPosition,true)
+                    selectedItems.put(adapterPosition, true)
                 }
 
-                if(prePosition != -1) {
+                if (prePosition != -1) {
                     notifyItemChanged(prePosition)
                 }
                 notifyItemChanged(adapterPosition)

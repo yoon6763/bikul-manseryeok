@@ -1,4 +1,4 @@
-package com.example.manseryeok.userDB
+package com.example.manseryeok.db
 
 import android.content.ContentValues
 import android.content.Context
@@ -7,6 +7,8 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 
 import android.database.sqlite.SQLiteOpenHelper
+import com.example.manseryeok.models.Gender
+import com.example.manseryeok.models.User
 
 
 class UserDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, 1) {
@@ -18,13 +20,15 @@ class UserDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
                     "$FIRST_NAME TEXT, " +
                     "$LAST_NAME TEXT, " +
                     "$GENDER INTEGER," +
-                    "$BIRTH TEXT," +
+                    "$BIRTH_YEAR INTEGER," +
+                    "$BIRTH_MONTH INTEGER," +
+                    "$BIRTH_DAY INTEGER," +
+                    "$BIRTH_HOUR INTEGER," +
+                    "$BIRTH_MINUTE INTEGER," +
                     "$BIRTH_PLACE TEXT," +
                     "$TIME_DIFF INTEGER," +
-                    "$YEAR_PILLAR TEXT," +
-                    "$MONTH_PILLAR TEXT," +
-                    "$DAY_PILLAR TEXT, " +
-                    "$TIME_PILLAR TEXT " +
+                    "$USE_SUMMER_TIME INTEGER," +
+                    "$USE_TOKYO_TIME INTEGER" +
                     ")"
         )
     }
@@ -35,30 +39,41 @@ class UserDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
     }
 
     // 데이터베이스 추가하기 insert
-    fun insertData(
-        firstName: String,
-        lastName: String,
-        gender: Int,
-        birth: String,
-        birthPlace: String,
-        timeDiff: Int,
-        yearPillar: String,
-        monthPillar: String,
-        dayPillar: String,
-        timePillar: String
-    ): Boolean {
+    fun insertData(user: User): Boolean {
         val db = this.writableDatabase
         val contentValues = ContentValues()
-        contentValues.put(FIRST_NAME, firstName)
-        contentValues.put(LAST_NAME, lastName)
-        contentValues.put(GENDER, gender)
-        contentValues.put(BIRTH, birth)
-        contentValues.put(BIRTH_PLACE, birthPlace)
-        contentValues.put(TIME_DIFF, timeDiff)
-        contentValues.put(YEAR_PILLAR, yearPillar)
-        contentValues.put(MONTH_PILLAR, monthPillar)
-        contentValues.put(DAY_PILLAR, dayPillar)
-        contentValues.put(TIME_PILLAR, timePillar)
+
+//      firstName: String?,
+//      lastName: String?,
+//      gender: Int, // 0 - 남자, 1 - 여자
+
+//      birthYear: Int,
+//      birthMonth: Int,
+//      birthDay: Int,
+//      birthHour: Int,
+//      birthMinute: Int,
+
+//      birthPlace: String?,
+//      timeDiff: Int,
+
+//      useSummerTime: Boolean = false,
+//      useTokyoTime: Boolean = false
+
+        contentValues.put(FIRST_NAME, user.firstName)
+        contentValues.put(LAST_NAME, user.lastName)
+        contentValues.put(GENDER, if(user.gender == 0) 0 else 1)
+        contentValues.put(BIRTH_YEAR, user.birthYear)
+        contentValues.put(BIRTH_MONTH, user.birthMonth)
+        contentValues.put(BIRTH_DAY, user.birthDay)
+        contentValues.put(BIRTH_HOUR, user.birthHour) // 모를 경우 -1
+        contentValues.put(BIRTH_MINUTE, user.birthMinute) // 모를 경우 -1
+
+        contentValues.put(BIRTH_PLACE, user.birthPlace)
+        contentValues.put(TIME_DIFF, user.timeDiff)
+
+        contentValues.put(USE_SUMMER_TIME, user.useSummerTime)
+        contentValues.put(USE_TOKYO_TIME, user.useTokyoTime)
+
         val result = db.insert(TABLE_NAME, null, contentValues)
         return result != -1L
     }
@@ -85,24 +100,10 @@ class UserDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
         birth: String,
         birthPlace: String,
         timeDIff: Int,
-        yearPillar: String,
-        monthPillar: String,
-        dayPillar: String,
-        timePillar: String
     ): Boolean {
         val db = this.writableDatabase
         val contentValues = ContentValues()
-        contentValues.put(FIRST_NAME, firstName)
-        contentValues.put(LAST_NAME, lastName)
-        contentValues.put(GENDER, gender)
-        contentValues.put(BIRTH, birth)
-        contentValues.put(BIRTH_PLACE, birthPlace)
-        contentValues.put(TIME_DIFF, timeDIff)
-        contentValues.put(YEAR_PILLAR, yearPillar)
-        contentValues.put(MONTH_PILLAR, monthPillar)
-        contentValues.put(DAY_PILLAR, dayPillar)
-        contentValues.put(TIME_PILLAR, timePillar)
-        db.update(TABLE_NAME, contentValues, "ID = ?", arrayOf(id))
+
         return true
     }
 
@@ -110,17 +111,39 @@ class UserDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
         const val DATABASE_NAME = "UserDatabase.db" // 데이터베이스 명
         const val TABLE_NAME = "user_table" // 테이블 명
 
+
+//      firstName: String?,
+//      lastName: String?,
+//      gender: Int, // 0 - 남자, 1 - 여자
+//
+//      birthYear: Int,
+//      birthMonth: Int,
+//      birthDay: Int,
+//      birthHour: Int,
+//      birthMinute: Int,
+//
+//      birthPlace: String?,
+//      timeDiff: Int,
+//
+//      useSummerTime: Boolean = false,
+//      useTokyoTime: Boolean = false
+
         // 테이블 항목
         const val INDEX = "ID"
         const val FIRST_NAME = "first_name"
         const val LAST_NAME = "last_name"
         const val GENDER = "gender"
-        const val BIRTH = "birth"
+
+        const val BIRTH_YEAR = "birth_year"
+        const val BIRTH_MONTH = "birth_month"
+        const val BIRTH_DAY = "birth_day"
+        const val BIRTH_HOUR = "birth_hour"
+        const val BIRTH_MINUTE = "birth_minute"
+
         const val BIRTH_PLACE = "birth_place"
         const val TIME_DIFF = "time_diff"
-        const val YEAR_PILLAR = "year_pillar"
-        const val MONTH_PILLAR = "month_pillar"
-        const val DAY_PILLAR = "day_pillar"
-        const val TIME_PILLAR = "time_pillar"
+
+        const val USE_SUMMER_TIME = "use_summer_time"
+        const val USE_TOKYO_TIME = "use_tokyo_time"
     }
 }

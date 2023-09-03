@@ -12,7 +12,7 @@ import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.manseryeok.R
-import com.example.manseryeok.adapter.ManseryeokSQLAdapter
+import com.example.manseryeok.db.ManseryeokSQLHelper
 import com.example.manseryeok.databinding.ActivityMainBinding
 import com.example.manseryeok.utils.Utils
 import java.security.MessageDigest
@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun setDayLuck() {
         val today = Calendar.getInstance()
 
-        val mDBHelper = ManseryeokSQLAdapter(applicationContext)
+        val mDBHelper = ManseryeokSQLHelper(applicationContext)
         mDBHelper.createDataBase()
         mDBHelper.open()
 
@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val monthGanji = todayDB!!.cd_hmganjee!!
         val dayGanji = todayDB!!.cd_hdganjee!!
 
-        val timeGanji = Utils.getTimeGanji(dayGanji[0].toString(), today[Calendar.HOUR_OF_DAY])
+        val timeGanji = Utils.getTimeGanji(dayGanji[0], today[Calendar.HOUR_OF_DAY])
 
         binding.tvToday.text =
             "${timeGanji[0]}${dayGanji[0]}${monthGanji[0]}${yearGanji[0]}\n${timeGanji[1]}${dayGanji[1]}${monthGanji[1]}${yearGanji[1]}"
