@@ -72,8 +72,6 @@ class CalendarActivity : ParentActivity() {
         Handler().postDelayed({
             currentTime = System.currentTimeMillis()
 
-
-
             userModel = intent.getParcelableExtra(Utils.INTENT_EXTRAS_USER)!!
 
             initLoadDB()
@@ -97,7 +95,6 @@ class CalendarActivity : ParentActivity() {
 
             hideProgress()
 
-
             binding.btnGotoName.setOnClickListener {
                 val intent = Intent(this@CalendarActivity, NameActivity::class.java)
                 intent.putExtra(Utils.INTENT_EXTRAS_USER, userModel)
@@ -112,7 +109,13 @@ class CalendarActivity : ParentActivity() {
                     btnCalendarSave.visibility = View.GONE
                 }
 
-                btnCalendarSave.setOnClickListener { saveResult() }
+                btnCalendarSave.setOnClickListener {
+                    if(userModel.id != -1L) {
+                        showShortToast("이미 저장된 데이터입니다.")
+                        return@setOnClickListener
+                    }
+                    saveResult()
+                }
                 btnCalendarShare.setOnClickListener { shareResult() }
             }
         }, 1000)
@@ -533,13 +536,7 @@ class CalendarActivity : ParentActivity() {
     private fun initLoadDB() {
         // 유저 생일 가져오기
 
-        userBirth = Calendar.getInstance().apply {
-            this[Calendar.YEAR] = userModel.birthYear
-            this[Calendar.MONTH] = userModel.birthMonth - 1
-            this[Calendar.DAY_OF_MONTH] = userModel.birthDay
-            this[Calendar.HOUR_OF_DAY] = userModel.birthHour
-            this[Calendar.MINUTE] = userModel.birthMinute
-        }
+        userBirth = userModel.getBirthCalendar()
 
         Log.d(TAG, "[유저 생일] ${Utils.dateTimeKorFormat.format(userBirth.timeInMillis)}")
         Log.d(TAG, "[시차] ${userModel.timeDiff}")

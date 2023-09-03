@@ -42,7 +42,7 @@ class NameActivity : ParentActivity() {
             setDisplayHomeAsUpEnabled(true)
         }
 
-        userModel = intent.getParcelableExtra<User>(Utils.INTENT_EXTRAS_USER)!!
+        userModel = intent.getParcelableExtra(Utils.INTENT_EXTRAS_USER)!!
         name = userModel.firstName + userModel.lastName
 
         binding.run {
@@ -59,6 +59,10 @@ class NameActivity : ParentActivity() {
         }
 
         binding.btnSave.setOnClickListener {
+            if(userModel.id != -1L) {
+                showShortToast("이미 저장된 데이터입니다.")
+                return@setOnClickListener
+            }
             saveResult()
         }
 
