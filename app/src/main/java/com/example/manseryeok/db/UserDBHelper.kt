@@ -109,11 +109,11 @@ class UserDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
         return true
     }
 
-    fun updateMemo(id: Long, memo: String):Boolean {
+    fun updateMemo(id: Long, memo: String): Int {
         val db = this.writableDatabase
         val contentValues = ContentValues()
         contentValues.put(MEMO, memo)
-        return db.update(TABLE_NAME, contentValues, "ID = ?", arrayOf(id.toString())) != -1
+        return db.update(TABLE_NAME, contentValues, "ID = ?", arrayOf(id.toString()))
     }
 
     companion object {

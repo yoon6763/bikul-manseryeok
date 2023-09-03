@@ -86,13 +86,22 @@
             android:text="@string/glb_delete" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_item_db_search"
+            android:id="@+id/btn_item_db_search_name"
             android:layout_width="0dp"
             android:layout_height="@dimen/btn_half_height"
             android:layout_weight="1"
             android:foreground="?attr/selectableItemBackground"
             android:background="@drawable/box_mint"
-            android:text="@string/glb_search" />
+            android:text="이름 조회" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_item_db_search_calendar"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/btn_half_height"
+            android:layout_weight="1"
+            android:foreground="?attr/selectableItemBackground"
+            android:background="@drawable/box_navy"
+            android:text="만세력 조회" />
 
     </LinearLayout>
 

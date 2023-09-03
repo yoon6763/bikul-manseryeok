@@ -7,7 +7,6 @@ import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.manseryeok.R
 import com.example.manseryeok.utils.Utils
@@ -31,7 +30,8 @@ class DBListAdapter(
     var onMenuClickListener: OnMenuClickListener? = null
 
     interface OnMenuClickListener {
-        fun onSearchClick(ID: String, position: Int)
+        fun onManseryeokView(ID: String, position: Int)
+        fun onNameView(ID: String, position: Int)
         fun onDeleteClick(ID: String, position: Int)
     }
 
@@ -99,8 +99,12 @@ class DBListAdapter(
         val binding = ItemDbListBinding.bind(itemView)
 
         init {
-            binding.btnItemDbSearch.setOnClickListener {
-                onMenuClickListener?.onSearchClick(items[adapterPosition].id.toString(), adapterPosition)
+            binding.btnItemDbSearchCalendar.setOnClickListener {
+                onMenuClickListener?.onManseryeokView(items[adapterPosition].id.toString(), adapterPosition)
+            }
+
+            binding.btnItemDbSearchName.setOnClickListener {
+                onMenuClickListener?.onNameView(items[adapterPosition].id.toString(), adapterPosition)
             }
 
             binding.btnItemDbDelete.setOnClickListener {

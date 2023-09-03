@@ -137,6 +137,47 @@
                 tools:itemCount="3"
                 tools:listitem="@layout/item_name" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="30dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="메모"
+                    android:textSize="20sp" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_memo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:background="@drawable/box_navy"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:padding="5dp"
+                    android:text="저장하기"
+                    android:textSize="15sp" />
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/et_memo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/et_box_gray"
+                android:hint="메모를 입력하세요"
+                android:minHeight="60dp"
+                android:padding="10dp"
+                android:textColor="@color/black" />
+
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_goto_manseryeok"
                 android:layout_width="match_parent"

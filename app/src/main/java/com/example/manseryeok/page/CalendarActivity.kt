@@ -72,10 +72,7 @@ class CalendarActivity : ParentActivity() {
         Handler().postDelayed({
             currentTime = System.currentTimeMillis()
 
-            binding.run {
-                btnCalendarSave.setOnClickListener { saveResult() }
-                btnCalendarShare.setOnClickListener { shareResult() }
-            }
+
 
             userModel = intent.getParcelableExtra(Utils.INTENT_EXTRAS_USER)!!
 
@@ -107,6 +104,17 @@ class CalendarActivity : ParentActivity() {
                 startActivity(intent)
                 finish()
             }
+
+            binding.run {
+                if(userModel.id == -1L) {
+                    btnCalendarSave.visibility = View.VISIBLE
+                } else {
+                    btnCalendarSave.visibility = View.GONE
+                }
+
+                btnCalendarSave.setOnClickListener { saveResult() }
+                btnCalendarShare.setOnClickListener { shareResult() }
+            }
         }, 1000)
     }
 
@@ -128,7 +136,7 @@ class CalendarActivity : ParentActivity() {
                 val res = myDB.updateMemo(userModel.id, userModel.memo!!)
                 myDB.close()
 
-                if(res) {
+                if(res != -1) {
                     showShortToast("메모가 저장되었습니다")
                 } else {
                     showShortToast("메모 저장에 실패하였습니다")

@@ -31,11 +31,16 @@ class UserDBActivity : ParentActivity() {
             // 앱 바 뒤로가기 버튼 설정
             setDisplayHomeAsUpEnabled(true)
         }
+    }
 
-
+    override fun onStart() {
+        super.onStart()
         val myDB = UserDBHelper(this)
         val sqliteData = myDB.allData
 
+
+        userList.clear()
+        manseryeokList.clear()
 
         // 유저의 생일 - 1년 부터 + 100년까지의 정보
         val manseryeokSQLHelper = ManseryeokSQLHelper(this)
@@ -105,8 +110,14 @@ class UserDBActivity : ParentActivity() {
 
 
         dbListAdapter.onMenuClickListener = object : DBListAdapter.OnMenuClickListener {
-            override fun onSearchClick(ID: String, position: Int) {
+            override fun onManseryeokView(ID: String, position: Int) {
                 val intent = Intent(this@UserDBActivity, CalendarActivity::class.java)
+                intent.putExtra(Utils.INTENT_EXTRAS_USER, userList[position])
+                startActivity(intent)
+            }
+
+            override fun onNameView(ID: String, position: Int) {
+                val intent = Intent(this@UserDBActivity, NameActivity::class.java)
                 intent.putExtra(Utils.INTENT_EXTRAS_USER, userList[position])
                 startActivity(intent)
             }
@@ -123,7 +134,6 @@ class UserDBActivity : ParentActivity() {
             }
         }
         manseryeokSQLHelper.close()
-
     }
 
 

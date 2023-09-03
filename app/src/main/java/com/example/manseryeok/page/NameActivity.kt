@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.manseryeok.R
@@ -51,6 +52,11 @@ class NameActivity : ParentActivity() {
         importGanji()
         setUpGanji()
 
+        if(userModel.id == -1L) {
+            binding.btnSave.visibility = View.VISIBLE
+        } else {
+            binding.btnSave.visibility = View.GONE
+        }
 
         binding.btnSave.setOnClickListener {
             saveResult()
@@ -61,6 +67,35 @@ class NameActivity : ParentActivity() {
             intent.putExtra(Utils.INTENT_EXTRAS_USER, userModel)
             startActivity(intent)
             finish()
+        }
+
+        setUpMemo()
+
+    }
+
+    private fun setUpMemo() {
+        binding.run {
+            if(userModel.memo != null && userModel.memo!!.isNotEmpty()) {
+                etMemo.setText(userModel.memo)
+            }
+
+            btnMemo.setOnClickListener {
+                if(userModel.id == -1L) {
+                    showShortToast("저장 후 메모를 작성할 수 있습니다.")
+                    return@setOnClickListener
+                }
+
+                userModel.memo = etMemo.text.toString()
+                val myDB = UserDBHelper(this@NameActivity)
+                val res = myDB.updateMemo(userModel.id, userModel.memo!!)
+                myDB.close()
+
+                if(res != -1) {
+                    showShortToast("메모가 저장되었습니다")
+                } else {
+                    showShortToast("메모 저장에 실패하였습니다")
+                }
+            }
         }
     }
 
