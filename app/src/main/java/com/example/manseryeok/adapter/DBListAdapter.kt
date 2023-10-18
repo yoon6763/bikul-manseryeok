@@ -30,9 +30,10 @@ class DBListAdapter(
     var onMenuClickListener: OnMenuClickListener? = null
 
     interface OnMenuClickListener {
-        fun onManseryeokView(ID: String, position: Int)
-        fun onNameView(ID: String, position: Int)
-        fun onDeleteClick(ID: String, position: Int)
+        fun onManseryeokView(ID: Long, position: Int)
+        fun onNameView(ID: Long, position: Int)
+        fun onDeleteClick(ID: Long, position: Int)
+        fun onGroupClick(ID: Long, position: Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -55,7 +56,7 @@ class DBListAdapter(
 
             val ganji = StringBuilder()
 
-            if(user.birthHour != -1) {
+            if (user.birthHour != -1) {
                 Log.d(TAG, "yearGanji: $yearGanji")
                 Log.d(TAG, "monthGanji: $monthGanji")
                 Log.d(TAG, "dayGanji: $dayGanji")
@@ -69,7 +70,7 @@ class DBListAdapter(
 
             ganji.append("\n")
 
-            if(user.birthHour != -1) ganji.append(hourGanji[1])
+            if (user.birthHour != -1) ganji.append(hourGanji[1])
             ganji.append(dayGanji[1])
             ganji.append(monthGanji[1])
             ganji.append(yearGanji[1])
@@ -79,7 +80,8 @@ class DBListAdapter(
 
             tvItemDbName.text = "${user.firstName}${user.lastName}"
             tvItemDbBirthSum.text = "(양) $sunBirth"
-            tvItemDbBirthMoon.text = "(음) ${Utils.dateDotFormat.format(Utils.convertSolarToLunar(birth))}"
+            tvItemDbBirthMoon.text =
+                "(음) ${Utils.dateDotFormat.format(Utils.convertSolarToLunar(birth))}"
             tvItemDbGanji.text = ganji.toString()
 
             if (user.gender == 0)
@@ -100,15 +102,31 @@ class DBListAdapter(
 
         init {
             binding.btnItemDbSearchCalendar.setOnClickListener {
-                onMenuClickListener?.onManseryeokView(items[adapterPosition].id.toString(), adapterPosition)
+                onMenuClickListener?.onManseryeokView(
+                    items[adapterPosition].id,
+                    adapterPosition
+                )
             }
 
             binding.btnItemDbSearchName.setOnClickListener {
-                onMenuClickListener?.onNameView(items[adapterPosition].id.toString(), adapterPosition)
+                onMenuClickListener?.onNameView(
+                    items[adapterPosition].id,
+                    adapterPosition
+                )
             }
 
             binding.btnItemDbDelete.setOnClickListener {
-                onMenuClickListener?.onDeleteClick(items[adapterPosition].id.toString(), adapterPosition)
+                onMenuClickListener?.onDeleteClick(
+                    items[adapterPosition].id,
+                    adapterPosition
+                )
+            }
+
+            binding.btnItemDbGroup.setOnClickListener {
+                onMenuClickListener?.onGroupClick(
+                    items[adapterPosition].id,
+                    adapterPosition
+                )
             }
 
 
@@ -142,7 +160,7 @@ class DBListAdapter(
 
     private fun changeVisibility(binding: ItemDbListBinding, isExpanded: Boolean) {
         // height 값을 dp로 지정해서 넣고싶으면 아래 소스를 이용
-        val dpValue = 50
+        val dpValue = 85
         val d = context.resources.displayMetrics.density
         val height = (dpValue * d).toInt()
 

@@ -143,7 +143,6 @@ class CalendarInputActivity : ParentActivity() {
                 if (cbUseSummerTime.isChecked) 1 else 0, // 서머타임 사용
                 if (cbUseTokyo.isChecked) 1 else 0, // 도쿄시간 사용
                 "",
-                ""
             )
 
 

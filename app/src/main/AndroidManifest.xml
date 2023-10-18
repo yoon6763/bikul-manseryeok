@@ -30,6 +30,9 @@
         tools:replace="allowBackup"
         tools:targetApi="31">
         <activity
+            android:name=".page.GroupActivity"
+            android:exported="false" />
+        <activity
             android:name=".utils.ParentActivity"
             android:exported="false" />
         <activity
@@ -72,7 +75,6 @@
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-7343038111400084~3516180352" />
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCBMxOrA67nzoiH0_jrhf9rqMyvaSkmFgo" />

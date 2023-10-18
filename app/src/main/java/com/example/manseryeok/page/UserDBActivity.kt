@@ -70,27 +70,34 @@ class UserDBActivity : ParentActivity() {
         }
 
         dbListAdapter.onMenuClickListener = object : DBListAdapter.OnMenuClickListener {
-            override fun onManseryeokView(ID: String, position: Int) {
+            override fun onManseryeokView(ID: Long, position: Int) {
                 val intent = Intent(this@UserDBActivity, CalendarActivity::class.java)
                 intent.putExtra(Utils.INTENT_EXTRAS_USER_ID, userList[position].id)
                 startActivity(intent)
             }
 
-            override fun onNameView(ID: String, position: Int) {
+            override fun onNameView(ID: Long, position: Int) {
                 val intent = Intent(this@UserDBActivity, NameActivity::class.java)
                 intent.putExtra(Utils.INTENT_EXTRAS_USER_ID, userList[position].id)
                 startActivity(intent)
             }
 
-            override fun onDeleteClick(ID: String, position: Int) {
+            override fun onDeleteClick(ID: Long, position: Int) {
                 runBlocking {
-                    launch (IO){
+                    launch(IO) {
                         userDao.delete(userList[position])
                         userList.removeAt(position)
+                        userList.removeAll { it.id == ID }
                     }
                 }
                 showShortToast(getString(R.string.msg_delete_complete))
                 dbListAdapter.notifyDataSetChanged()
+            }
+
+            override fun onGroupClick(ID: Long, position: Int) {
+                val intent = Intent(this@UserDBActivity, GroupActivity::class.java)
+                intent.putExtra(Utils.INTENT_EXTRAS_USER_ID, userList[position].id)
+                startActivity(intent)
             }
         }
         manseryeokSQLHelper.close()
