@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 object Utils {
-    const val INTENT_EXTRAS_USER = "INTENT_EXTRAS_USER"
+    const val INTENT_EXTRAS_USER_ID = "INTENT_EXTRAS_USER_ID"
 
     val dateNumFormat = SimpleDateFormat("yyyyMMdd")
     val dateTimeNumFormat = SimpleDateFormat("yyyyMMddHHmm")
@@ -125,7 +125,7 @@ object Utils {
         return result
     }
 
-    fun getYearGanji(birth:Calendar):String {
+    fun getYearGanji(birth: Calendar): String {
         return getYearGanji(birth[Calendar.YEAR])
     }
 
@@ -145,7 +145,7 @@ object Utils {
         return monthGanjiList[month - 1]
     }
 
-    fun getDayGanji(year:Int, month:Int, day:Int): String {
+    fun getDayGanji(year: Int, month: Int, day: Int): String {
         val date = Calendar.getInstance().apply { set(1900, 0, 1) }
         var sibganIdx = 0
         var sibijiIdx = 10
@@ -231,15 +231,80 @@ object Utils {
     val timeGanji = arrayOf(
 //        시(時)  23~01 01~03 03~05 05~07 07~09 09~11 11~13 13~15 15~17 17~19 19~21 21~23
 //    갑(甲), 기(己)일
-        arrayOf("甲子", "乙丑", "丙寅", "丁卯", "戊辰", "己巳", "庚午", "辛未", "壬申", "癸酉", "甲戌", "乙亥"),
+        arrayOf(
+            "甲子",
+            "乙丑",
+            "丙寅",
+            "丁卯",
+            "戊辰",
+            "己巳",
+            "庚午",
+            "辛未",
+            "壬申",
+            "癸酉",
+            "甲戌",
+            "乙亥"
+        ),
 //    을(乙), 경(庚)일
-        arrayOf("丙子", "丁丑", "戊寅", "己卯", "庚辰", "辛巳", "壬午", "癸未", "甲申", "乙酉", "丙戌", "丁亥"),
+        arrayOf(
+            "丙子",
+            "丁丑",
+            "戊寅",
+            "己卯",
+            "庚辰",
+            "辛巳",
+            "壬午",
+            "癸未",
+            "甲申",
+            "乙酉",
+            "丙戌",
+            "丁亥"
+        ),
 //    병(丙), 신(辛)일
-        arrayOf("戊子", "己丑", "庚寅", "辛卯", "壬辰", "癸巳", "甲午", "乙未", "丙申", "丁酉", "戊戌", "己亥"),
+        arrayOf(
+            "戊子",
+            "己丑",
+            "庚寅",
+            "辛卯",
+            "壬辰",
+            "癸巳",
+            "甲午",
+            "乙未",
+            "丙申",
+            "丁酉",
+            "戊戌",
+            "己亥"
+        ),
 //    정(丁), 임(壬)일
-        arrayOf("庚子", "辛丑", "壬寅", "癸卯", "甲辰", "乙巳", "丙午", "丁未", "戊申", "己酉", "庚戌", "辛亥"),
+        arrayOf(
+            "庚子",
+            "辛丑",
+            "壬寅",
+            "癸卯",
+            "甲辰",
+            "乙巳",
+            "丙午",
+            "丁未",
+            "戊申",
+            "己酉",
+            "庚戌",
+            "辛亥"
+        ),
 //    무(戊), 계(癸)일
-        arrayOf("壬子", "癸丑", "甲寅", "乙卯", "丙辰", "丁巳", "戊午", "己未", "庚申", "辛酉", "壬戌", "癸亥")
+        arrayOf(
+            "壬子",
+            "癸丑",
+            "甲寅",
+            "乙卯",
+            "丙辰",
+            "丁巳",
+            "戊午",
+            "己未",
+            "庚申",
+            "辛酉",
+            "壬戌",
+            "癸亥"
+        )
     )
 
     // 지지암장간

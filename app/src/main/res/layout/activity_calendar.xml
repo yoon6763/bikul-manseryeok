@@ -733,7 +733,8 @@
                         android:padding="10dp"
                         android:text="@string/obj_result_save"
                         android:textColor="@color/black"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"
+                        android:visibility="gone" />
 
                 </LinearLayout>
 

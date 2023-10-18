@@ -12,7 +12,7 @@ import com.example.manseryeok.R
 import com.example.manseryeok.utils.Utils
 import com.example.manseryeok.databinding.ItemDbListBinding
 import com.example.manseryeok.models.Manseryeok
-import com.example.manseryeok.models.User
+import com.example.manseryeok.models.user.User
 import java.lang.StringBuilder
 import java.util.Calendar
 

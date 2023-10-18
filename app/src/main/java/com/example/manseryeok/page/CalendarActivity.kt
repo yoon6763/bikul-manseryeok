@@ -6,6 +6,7 @@ import android.os.Handler
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.manseryeok.R
 import com.example.manseryeok.db.ManseryeokSQLHelper
@@ -14,11 +15,15 @@ import com.example.manseryeok.adapter.SixtyHorizontalSmallAdapter
 import com.example.manseryeok.databinding.ActivityCalendarBinding
 import com.example.manseryeok.models.Manseryeok
 import com.example.manseryeok.models.SixtyHorizontalItem
-import com.example.manseryeok.models.User
+import com.example.manseryeok.models.user.User
 import com.example.manseryeok.db.UserDBHelper
+import com.example.manseryeok.models.AppDatabase
 import com.example.manseryeok.utils.ParentActivity
 import com.example.manseryeok.utils.Sinsal
 import com.example.manseryeok.utils.Utils
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -59,20 +64,14 @@ class CalendarActivity : ParentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        setSupportActionBar(binding.toolbarCalendar)
-        supportActionBar?.run {
-            // 앱 바 뒤로가기 버튼 설정
-            setDisplayHomeAsUpEnabled(true)
-        }
-
+        commonSetting()
         showProgress(this@CalendarActivity, "잠시만 기다려주세요")
-        val sdf = SimpleDateFormat("HH:mm:ss.SSS")
+
+        loadUserModel()
 
         // 프로그래스바를 띄우기 위해 1초 딜레이
         Handler().postDelayed({
             currentTime = System.currentTimeMillis()
-
-            userModel = intent.getParcelableExtra(Utils.INTENT_EXTRAS_USER)!!
 
             initLoadDB()
 
@@ -95,41 +94,63 @@ class CalendarActivity : ParentActivity() {
 
             hideProgress()
 
-            binding.btnGotoName.setOnClickListener {
-                val intent = Intent(this@CalendarActivity, NameActivity::class.java)
-                intent.putExtra(Utils.INTENT_EXTRAS_USER, userModel)
-                startActivity(intent)
-                finish()
-            }
-
             binding.run {
-                if(userModel.id == -1L) {
-                    btnCalendarSave.visibility = View.VISIBLE
-                } else {
-                    btnCalendarSave.visibility = View.GONE
+//                if (userModel.id == -1L) {
+//                    btnCalendarSave.visibility = View.VISIBLE
+//                } else {
+//                    btnCalendarSave.visibility = View.GONE
+//                }
+//
+//                btnCalendarSave.setOnClickListener {
+//                    if (userModel.id != -1L) {
+//                        showShortToast("이미 저장된 데이터입니다.")
+//                        return@setOnClickListener
+//                    }
+//                    saveResult()
+//                }
+
+                btnGotoName.setOnClickListener {
+                    val intent = Intent(this@CalendarActivity, NameActivity::class.java)
+                    intent.putExtra(Utils.INTENT_EXTRAS_USER_ID, userModel.id)
+                    startActivity(intent)
+                    finish()
                 }
 
-                btnCalendarSave.setOnClickListener {
-                    if(userModel.id != -1L) {
-                        showShortToast("이미 저장된 데이터입니다.")
-                        return@setOnClickListener
-                    }
-                    saveResult()
-                }
                 btnCalendarShare.setOnClickListener { shareResult() }
             }
         }, 1000)
     }
 
+    private fun loadUserModel() {
+        val userId = intent.getLongExtra(Utils.INTENT_EXTRAS_USER_ID, -1L)
+
+        runBlocking {
+            launch(IO) {
+                val userDao = AppDatabase.getInstance(applicationContext).userDao()
+                userModel = userDao.getUser(userId)
+
+                Log.d(TAG, "isInit 2: ${::userModel.isInitialized}")
+            }
+        }
+    }
+
+    private fun commonSetting() {
+        setSupportActionBar(binding.toolbarCalendar)
+        supportActionBar?.run {
+            // 앱 바 뒤로가기 버튼 설정
+            setDisplayHomeAsUpEnabled(true)
+        }
+    }
+
 
     private fun setUpMemo() {
         binding.run {
-            if(userModel.memo != null && userModel.memo!!.isNotEmpty()) {
+            if (userModel.memo != null && userModel.memo!!.isNotEmpty()) {
                 etMemo.setText(userModel.memo)
             }
 
             btnMemo.setOnClickListener {
-                if(userModel.id == -1L) {
+                if (userModel.id == -1L) {
                     showShortToast("저장 후 메모를 작성할 수 있습니다.")
                     return@setOnClickListener
                 }
@@ -139,7 +160,7 @@ class CalendarActivity : ParentActivity() {
                 val res = myDB.updateMemo(userModel.id, userModel.memo!!)
                 myDB.close()
 
-                if(res != -1) {
+                if (res != -1) {
                     showShortToast("메모가 저장되었습니다")
                 } else {
                     showShortToast("메모 저장에 실패하였습니다")
@@ -218,8 +239,7 @@ class CalendarActivity : ParentActivity() {
         if (insertDataResult != -1L) {
             showShortToast(getString(R.string.msg_save_complete))
             userModel.id = insertDataResult
-        }
-        else showShortToast(getString(R.string.msg_save_fail))
+        } else showShortToast(getString(R.string.msg_save_fail))
     }
 
     private fun shareResult() {
@@ -239,7 +259,10 @@ class CalendarActivity : ParentActivity() {
         未 午 巳 辰 卯 寅 丑 子
          */
         var sendContent = "${userModel.firstName}${userModel.lastName}\n" +
-                "${if (isTimeInclude) Utils.dateTimeKorFormat.format(userBirth.timeInMillis) else Utils.dateKorFormat.format(userBirth.timeInMillis)
+                "${
+                    if (isTimeInclude) Utils.dateTimeKorFormat.format(userBirth.timeInMillis) else Utils.dateKorFormat.format(
+                        userBirth.timeInMillis
+                    )
                 }\n" +
                 "\n"
 
@@ -551,7 +574,8 @@ class CalendarActivity : ParentActivity() {
         mDBHelper.open()
 
         // 유저의 생일 - 1년 부터 + 100년까지의 정보
-        userCalendar = mDBHelper.getTableData(userBirth[Calendar.YEAR] - 1, userBirth[Calendar.YEAR] + 100)!!
+        userCalendar =
+            mDBHelper.getTableData(userBirth[Calendar.YEAR] - 1, userBirth[Calendar.YEAR] + 100)!!
 
         mDBHelper.close()
     }

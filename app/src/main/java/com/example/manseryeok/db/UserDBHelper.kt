@@ -7,7 +7,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 
 import android.database.sqlite.SQLiteOpenHelper
-import com.example.manseryeok.models.User
+import com.example.manseryeok.models.user.User
 
 
 class UserDBHelper(context: Context) : SQLiteOpenHelper(context, DBConfig.DATABASE_NAME, null, 1) {

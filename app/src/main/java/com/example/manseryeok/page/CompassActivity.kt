@@ -21,8 +21,9 @@ import com.example.manseryeok.R
 import com.example.manseryeok.adapter.MapLayerListAdapter
 import com.example.manseryeok.compassutils.CompassDirectionLabel
 import com.example.manseryeok.databinding.ActivityCompassBinding
-import com.example.manseryeok.models.User
+import com.example.manseryeok.models.user.User
 import com.example.manseryeok.db.UserDBHelper
+import com.example.manseryeok.models.AppDatabase
 import com.example.manseryeok.utils.ParentActivity
 import com.example.manseryeok.utils.Utils
 import com.gun0912.tedpermission.PermissionListener
@@ -30,6 +31,9 @@ import com.gun0912.tedpermission.normal.TedPermission
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
 import com.naver.maps.map.util.FusedLocationSource
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class CompassActivity : ParentActivity(), SensorEventListener, OnMapReadyCallback {
     private val TAG = "CompassActivity"
@@ -37,9 +41,9 @@ class CompassActivity : ParentActivity(), SensorEventListener, OnMapReadyCallbac
     private val gpsListener = GPSListener()
     private val binding by lazy { ActivityCompassBinding.inflate(layoutInflater) }
     private val fm by lazy { supportFragmentManager }
-    private val userDBHelper by lazy { UserDBHelper(this) }
+    private val userDao by lazy { AppDatabase.getInstance(applicationContext).userDao() }
     private var userSelectedIndex = -1
-    private val users = ArrayList<User>()
+    private lateinit var users: List<User>
     private val usernames = ArrayList<String>()
 
     private lateinit var mapFragment: MapFragment
@@ -144,37 +148,7 @@ class CompassActivity : ParentActivity(), SensorEventListener, OnMapReadyCallbac
             it.visibility = View.GONE
         }
 
-        val allUserRawData = userDBHelper.allData
-
-        if (allUserRawData.count > 0) {
-            allUserRawData.moveToFirst()
-            do {
-                val user = User(
-                    allUserRawData.getLong(0),
-                    allUserRawData.getString(1),
-                    allUserRawData.getString(2),
-                    allUserRawData.getInt(3),
-                    allUserRawData.getInt(4),
-                    allUserRawData.getInt(5),
-                    allUserRawData.getInt(6),
-                    allUserRawData.getInt(7),
-                    allUserRawData.getInt(8),
-                    allUserRawData.getString(9),
-                    allUserRawData.getInt(10),
-                    allUserRawData.getInt(11),
-                    allUserRawData.getInt(12),
-                    allUserRawData.getString(13),
-                    allUserRawData.getString(14)
-                )
-                users.add(user)
-                var usernameLabel = user.firstName + user.lastName
-
-                usernameLabel += " (${user.birthYear})"
-
-                usernames.add(usernameLabel)
-            } while (allUserRawData.moveToNext())
-
-        }
+        userLoad()
 
         binding.btnSelectFromDb.setOnClickListener {
 
@@ -192,6 +166,20 @@ class CompassActivity : ParentActivity(), SensorEventListener, OnMapReadyCallbac
             }.create()
 
             builder.show()
+        }
+    }
+
+    private fun userLoad() {
+        runBlocking {
+            launch(IO) {
+                users = userDao.getAllUser()
+            }
+        }
+
+        users.forEach {user ->
+            var usernameLabel = user.firstName + user.lastName
+            usernameLabel += " (${user.birthYear})"
+            usernames.add(usernameLabel)
         }
     }
 

@@ -1,13 +1,16 @@
-package com.example.manseryeok.models
+package com.example.manseryeok.models.user
 
 import android.os.Parcel
 import android.os.Parcelable
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.time.LocalDateTime
 import java.util.Calendar
 
 @Entity
 data class User(
+    @PrimaryKey(autoGenerate = true)
+    var id: Long,
     var firstName: String?,
     var lastName: String?,
     var gender: Int, // 0 - 남자, 1 - 여자
@@ -28,6 +31,7 @@ data class User(
     var tag: String?
 
 ) : Parcelable {
+
     constructor(parcel: Parcel) : this(
         parcel.readLong(),
         parcel.readString(),

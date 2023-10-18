@@ -6,16 +6,19 @@ import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import com.example.manseryeok.R
 import com.example.manseryeok.db.ManseryeokSQLHelper
 import com.example.manseryeok.adapter.NameScoreAdapter
 import com.example.manseryeok.databinding.ActivityNameBinding
 import com.example.manseryeok.db.UserDBHelper
+import com.example.manseryeok.models.AppDatabase
 import com.example.manseryeok.models.NameScoreItem
-import com.example.manseryeok.models.User
+import com.example.manseryeok.models.user.User
 import com.example.manseryeok.utils.ParentActivity
 import com.example.manseryeok.utils.Utils
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class NameActivity : ParentActivity() {
     private val TAG = "NameActivity"
@@ -36,55 +39,53 @@ class NameActivity : ParentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        commonSetting()
+        loadUserModel()
+
+        binding.run {
+            rvNameScore.adapter = nameAdapter
+
+            importGanji()
+            setUpGanji()
+
+            btnGotoManseryeok.setOnClickListener {
+                val intent = Intent(this@NameActivity, CalendarActivity::class.java)
+                intent.putExtra(Utils.INTENT_EXTRAS_USER_ID, userModel.id)
+                startActivity(intent)
+                finish()
+            }
+
+            setUpMemo()
+        }
+    }
+
+    private fun loadUserModel() {
+        runBlocking {
+            launch(IO) {
+                val userDao = AppDatabase.getInstance(applicationContext).userDao()
+                val userId = intent.getLongExtra(Utils.INTENT_EXTRAS_USER_ID, -1L)
+                userModel = userDao.getUser(userId)
+                name = userModel.firstName + userModel.lastName
+            }
+        }
+    }
+
+    private fun commonSetting() {
         setSupportActionBar(binding.toolbarName)
         supportActionBar?.run {
             // 앱 바 뒤로가기 버튼 설정
             setDisplayHomeAsUpEnabled(true)
         }
-
-        userModel = intent.getParcelableExtra(Utils.INTENT_EXTRAS_USER)!!
-        name = userModel.firstName + userModel.lastName
-
-        binding.run {
-            rvNameScore.adapter = nameAdapter
-        }
-
-        importGanji()
-        setUpGanji()
-
-        if(userModel.id == -1L) {
-            binding.btnSave.visibility = View.VISIBLE
-        } else {
-            binding.btnSave.visibility = View.GONE
-        }
-
-        binding.btnSave.setOnClickListener {
-            if(userModel.id != -1L) {
-                showShortToast("이미 저장된 데이터입니다.")
-                return@setOnClickListener
-            }
-            saveResult()
-        }
-
-        binding.btnGotoManseryeok.setOnClickListener {
-            val intent = Intent(this@NameActivity, CalendarActivity::class.java)
-            intent.putExtra(Utils.INTENT_EXTRAS_USER, userModel)
-            startActivity(intent)
-            finish()
-        }
-
-        setUpMemo()
-
     }
 
     private fun setUpMemo() {
         binding.run {
-            if(userModel.memo != null && userModel.memo!!.isNotEmpty()) {
+            if (userModel.memo != null && userModel.memo!!.isNotEmpty()) {
                 etMemo.setText(userModel.memo)
             }
 
             btnMemo.setOnClickListener {
-                if(userModel.id == -1L) {
+                if (userModel.id == -1L) {
                     showShortToast("저장 후 메모를 작성할 수 있습니다.")
                     return@setOnClickListener
                 }
@@ -94,7 +95,7 @@ class NameActivity : ParentActivity() {
                 val res = myDB.updateMemo(userModel.id, userModel.memo!!)
                 myDB.close()
 
-                if(res != -1) {
+                if (res != -1) {
                     showShortToast("메모가 저장되었습니다")
                 } else {
                     showShortToast("메모 저장에 실패하였습니다")
@@ -121,8 +122,7 @@ class NameActivity : ParentActivity() {
         if (insertDataResult != -1L) {
             showShortToast(getString(R.string.msg_save_complete))
             userModel.id = insertDataResult
-        }
-        else showShortToast(getString(R.string.msg_save_fail))
+        } else showShortToast(getString(R.string.msg_save_fail))
     }
 
     private fun setUpGanji() {
@@ -134,11 +134,11 @@ class NameActivity : ParentActivity() {
         }
 
 
-/*
-        한글 유니코드 규칙 - (초성 * 21 + 중성) * 28 + 종성 + 0xAC00
-        전 -> ㅈ : 12, ㅓ : 4 ㄴ : 5
-        (12 * 21 + 4) * 28 + 5 + 0xAC00
-*/
+        /*
+                한글 유니코드 규칙 - (초성 * 21 + 중성) * 28 + 종성 + 0xAC00
+                전 -> ㅈ : 12, ㅓ : 4 ㄴ : 5
+                (12 * 21 + 4) * 28 + 5 + 0xAC00
+        */
 
         // 초성
         val initialSound = arrayOf(
