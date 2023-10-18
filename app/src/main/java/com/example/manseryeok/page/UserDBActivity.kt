@@ -86,7 +86,6 @@ class UserDBActivity : ParentActivity() {
                 runBlocking {
                     launch(IO) {
                         userDao.delete(userList[position])
-                        userList.removeAt(position)
                         userList.removeAll { it.id == ID }
                     }
                 }
