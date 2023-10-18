@@ -1,4 +1,4 @@
-package com.example.manseryeok.adapter
+package com.example.manseryeok.adapter.userlist
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -9,11 +9,11 @@ import com.example.manseryeok.R
 import com.example.manseryeok.databinding.ItemGroupBinding
 import com.example.manseryeok.models.user.GroupTag
 
-class GroupAdapter(
+class UserTagCheckBoxAdapter(
     private val context: Context,
     private val groupTags: List<GroupTag>,
     private val selectedTags: HashSet<Long>
-) : RecyclerView.Adapter<GroupAdapter.Holder>() {
+) : RecyclerView.Adapter<UserTagCheckBoxAdapter.Holder>() {
     private val TAG = "GroupAdapter"
 
     var onGroupCheckListener: OnGroupCheckListener? = null

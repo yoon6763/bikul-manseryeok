@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import com.example.manseryeok.R
 import com.example.manseryeok.utils.Utils
-import com.example.manseryeok.adapter.DBListAdapter
+import com.example.manseryeok.adapter.userlist.UserListAdapter
 import com.example.manseryeok.databinding.ActivityDbactivityBinding
 import com.example.manseryeok.db.ManseryeokSQLHelper
 import com.example.manseryeok.models.AppDatabase
@@ -17,11 +17,12 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 class UserDBActivity : ParentActivity() {
-    private lateinit var dbListAdapter: DBListAdapter
+    private lateinit var userListAdapter: UserListAdapter
     private val binding by lazy { ActivityDbactivityBinding.inflate(layoutInflater) }
     private val userList = ArrayList<User>()
     private val manseryeokList = ArrayList<Manseryeok>()
     private val userDao by lazy { AppDatabase.getInstance(applicationContext).userDao() }
+    private val userTagDao by lazy { AppDatabase.getInstance(applicationContext).userTagDao() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,36 +65,36 @@ class UserDBActivity : ParentActivity() {
         }
 
         binding.run {
-            dbListAdapter = DBListAdapter(this@UserDBActivity, userList, manseryeokList)
-            dbListAdapter.notifyDataSetChanged()
-            rvDbList.adapter = dbListAdapter
+            userListAdapter = UserListAdapter(this@UserDBActivity, userList, manseryeokList)
+            userListAdapter.notifyDataSetChanged()
+            rvDbList.adapter = userListAdapter
         }
 
-        dbListAdapter.onMenuClickListener = object : DBListAdapter.OnMenuClickListener {
-            override fun onManseryeokView(ID: Long, position: Int) {
+        userListAdapter.onMenuClickListener = object : UserListAdapter.OnMenuClickListener {
+            override fun onManseryeokView(id: Long, position: Int) {
                 val intent = Intent(this@UserDBActivity, CalendarActivity::class.java)
                 intent.putExtra(Utils.INTENT_EXTRAS_USER_ID, userList[position].id)
                 startActivity(intent)
             }
 
-            override fun onNameView(ID: Long, position: Int) {
+            override fun onNameView(id: Long, position: Int) {
                 val intent = Intent(this@UserDBActivity, NameActivity::class.java)
                 intent.putExtra(Utils.INTENT_EXTRAS_USER_ID, userList[position].id)
                 startActivity(intent)
             }
 
-            override fun onDeleteClick(ID: Long, position: Int) {
+            override fun onDeleteClick(id: Long, position: Int) {
                 runBlocking {
                     launch(IO) {
                         userDao.delete(userList[position])
-                        userList.removeAll { it.id == ID }
+                        userList.removeAll { it.id == id }
                     }
                 }
                 showShortToast(getString(R.string.msg_delete_complete))
-                dbListAdapter.notifyDataSetChanged()
+                userListAdapter.notifyDataSetChanged()
             }
 
-            override fun onGroupClick(ID: Long, position: Int) {
+            override fun onGroupClick(id: Long, position: Int) {
                 val intent = Intent(this@UserDBActivity, GroupActivity::class.java)
                 intent.putExtra(Utils.INTENT_EXTRAS_USER_ID, userList[position].id)
                 startActivity(intent)

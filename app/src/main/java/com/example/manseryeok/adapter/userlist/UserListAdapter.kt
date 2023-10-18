@@ -1,4 +1,4 @@
-package com.example.manseryeok.adapter
+package com.example.manseryeok.adapter.userlist
 
 import android.animation.ValueAnimator
 import android.content.Context
@@ -17,12 +17,12 @@ import java.lang.StringBuilder
 import java.util.Calendar
 
 
-class DBListAdapter(
+class UserListAdapter(
     private val context: Context,
     private val items: ArrayList<User>,
     private val manseryeokList: ArrayList<Manseryeok>
 ) :
-    RecyclerView.Adapter<DBListAdapter.Holder>() {
+    RecyclerView.Adapter<UserListAdapter.Holder>() {
     private var selectedItems: SparseBooleanArray = SparseBooleanArray()
     private val TAG = "DBListAdapter"
     private var prePosition = -1
@@ -30,10 +30,10 @@ class DBListAdapter(
     var onMenuClickListener: OnMenuClickListener? = null
 
     interface OnMenuClickListener {
-        fun onManseryeokView(ID: Long, position: Int)
-        fun onNameView(ID: Long, position: Int)
-        fun onDeleteClick(ID: Long, position: Int)
-        fun onGroupClick(ID: Long, position: Int)
+        fun onManseryeokView(id: Long, position: Int)
+        fun onNameView(id: Long, position: Int)
+        fun onDeleteClick(id: Long, position: Int)
+        fun onGroupClick(id: Long, position: Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {

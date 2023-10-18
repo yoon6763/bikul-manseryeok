@@ -1,8 +1,7 @@
 package com.example.manseryeok.page
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.manseryeok.adapter.GroupAdapter
+import com.example.manseryeok.adapter.userlist.UserTagCheckBoxAdapter
 import com.example.manseryeok.databinding.ActivityGroupBinding
 import com.example.manseryeok.models.AppDatabase
 import com.example.manseryeok.models.dao.GroupTagDAO
@@ -24,7 +23,7 @@ class GroupActivity : ParentActivity() {
     private lateinit var userDAO: UserDAO
     private lateinit var groupTagDAO: GroupTagDAO
     private lateinit var userTagDAO: UserTagDAO
-    private lateinit var groupAdapter: GroupAdapter
+    private lateinit var userTagCheckBoxAdapter: UserTagCheckBoxAdapter
     private val groupTags = ArrayList<GroupTag>()
     private val selectedTags = HashSet<Long>()
 
@@ -64,15 +63,15 @@ class GroupActivity : ParentActivity() {
                 }
             }
 
-            groupAdapter.notifyDataSetChanged()
+            userTagCheckBoxAdapter.notifyDataSetChanged()
         }
     }
 
     private fun groupAdapterSetting() = with(binding) {
-        groupAdapter = GroupAdapter(this@GroupActivity, groupTags, selectedTags)
-        rvGroup.adapter = groupAdapter
+        userTagCheckBoxAdapter = UserTagCheckBoxAdapter(this@GroupActivity, groupTags, selectedTags)
+        rvGroup.adapter = userTagCheckBoxAdapter
 
-        groupAdapter.onGroupCheckListener = object : GroupAdapter.OnGroupCheckListener {
+        userTagCheckBoxAdapter.onGroupCheckListener = object : UserTagCheckBoxAdapter.OnGroupCheckListener {
             override fun onGroupCheck(groupId: Long, check: Boolean) {
                 runBlocking {
                     launch(IO) {
@@ -88,7 +87,7 @@ class GroupActivity : ParentActivity() {
             }
         }
 
-        groupAdapter.notifyDataSetChanged()
+        userTagCheckBoxAdapter.notifyDataSetChanged()
     }
 
     private fun usernameSetting() = with(binding) {
