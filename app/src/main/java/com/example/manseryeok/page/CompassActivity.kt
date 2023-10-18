@@ -164,6 +164,7 @@ class CompassActivity : ParentActivity(), SensorEventListener, OnMapReadyCallbac
                     allUserRawData.getInt(11),
                     allUserRawData.getInt(12),
                     allUserRawData.getString(13),
+                    allUserRawData.getString(14)
                 )
                 users.add(user)
                 var usernameLabel = user.firstName + user.lastName
@@ -196,8 +197,8 @@ class CompassActivity : ParentActivity(), SensorEventListener, OnMapReadyCallbac
 
     private fun mapInitialize() {
         mSensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
-        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
-        mMagnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)!!
+        mMagnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)!!
 
         mapFragment =
             fm.findFragmentById(R.id.frag_map) as MapFragment? ?: MapFragment.newInstance()

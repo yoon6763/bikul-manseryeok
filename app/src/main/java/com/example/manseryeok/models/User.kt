@@ -2,11 +2,12 @@ package com.example.manseryeok.models
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.room.Entity
 import java.time.LocalDateTime
 import java.util.Calendar
 
+@Entity
 data class User(
-    var id: Long,
     var firstName: String?,
     var lastName: String?,
     var gender: Int, // 0 - 남자, 1 - 여자
@@ -23,7 +24,8 @@ data class User(
     var useSummerTime: Int,
     var useTokyoTime: Int,
 
-    var memo: String?
+    var memo: String?,
+    var tag: String?
 
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
@@ -40,6 +42,7 @@ data class User(
         parcel.readInt(),
         parcel.readInt(),
         parcel.readInt(),
+        parcel.readString(),
         parcel.readString()
     )
 
@@ -58,6 +61,7 @@ data class User(
         parcel.writeInt(useSummerTime)
         parcel.writeInt(useTokyoTime)
         parcel.writeString(memo)
+        parcel.writeString(tag)
     }
 
     override fun describeContents(): Int {
@@ -92,8 +96,9 @@ data class User(
         return calendar
     }
 
-    fun getBirthLocalDate():LocalDateTime {
-        val localDateTime = LocalDateTime.of(birthYear, birthMonth, birthDay, birthHour, birthMinute)
+    fun getBirthLocalDate(): LocalDateTime {
+        val localDateTime =
+            LocalDateTime.of(birthYear, birthMonth, birthDay, birthHour, birthMinute)
         return localDateTime
     }
 }

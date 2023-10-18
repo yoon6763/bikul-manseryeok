@@ -102,7 +102,7 @@ class CalendarInputActivity : ParentActivity() {
     private fun nextPage(isName: Boolean) {
         binding.run {
 
-            if(isName) {
+            if (isName) {
                 if (etFirstName.text.toString().isEmpty()) {
                     showShortToast("성을 입력해주세요")
                     return
@@ -132,12 +132,13 @@ class CalendarInputActivity : ParentActivity() {
                 birth[Calendar.YEAR],
                 birth[Calendar.MONTH] + 1,
                 birth[Calendar.DAY_OF_MONTH],
-                if(cbInputBirthTime.isChecked) -1 else birth[Calendar.HOUR_OF_DAY],
-                if(cbInputBirthTime.isChecked) -1 else birth[Calendar.MINUTE],
+                if (cbInputBirthTime.isChecked) -1 else birth[Calendar.HOUR_OF_DAY],
+                if (cbInputBirthTime.isChecked) -1 else birth[Calendar.MINUTE],
                 etInputBirthPlace.text.toString(), // 출생지
                 timeDiff, // 시차
-                if(cbUseSummerTime.isChecked) 1 else 0, // 서머타임 사용
-                if(cbUseTokyo.isChecked) 1 else 0, // 도쿄시간 사용
+                if (cbUseSummerTime.isChecked) 1 else 0, // 서머타임 사용
+                if (cbUseTokyo.isChecked) 1 else 0, // 도쿄시간 사용
+                "",
                 ""
             )
 

@@ -95,7 +95,8 @@ class UserDBActivity : ParentActivity() {
                     timeDiff,
                     useSummerTime,
                     useTokyoTime,
-                    memo
+                    memo,
+                    ""
                 )
             )
 

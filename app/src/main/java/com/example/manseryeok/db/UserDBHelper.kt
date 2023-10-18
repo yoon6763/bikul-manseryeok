@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper
 import com.example.manseryeok.models.User
 
 
-class UserDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, 1) {
+class UserDBHelper(context: Context) : SQLiteOpenHelper(context, DBConfig.DATABASE_NAME, null, 1) {
 
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(
@@ -28,7 +28,8 @@ class UserDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
                     "$TIME_DIFF INTEGER," +
                     "$USE_SUMMER_TIME INTEGER," +
                     "$USE_TOKYO_TIME INTEGER," +
-                    "$MEMO TEXT" +
+                    "$MEMO TEXT," +
+                    "$TAG TEXT" +
                     ")"
         )
     }
@@ -75,6 +76,7 @@ class UserDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
         contentValues.put(USE_TOKYO_TIME, user.useTokyoTime)
 
         contentValues.put(MEMO, "")
+        contentValues.put(TAG, "")
 
         // 삽입한 행의 id값을 반환한다
         return db.insert(TABLE_NAME, null, contentValues)
@@ -116,8 +118,14 @@ class UserDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
         return db.update(TABLE_NAME, contentValues, "ID = ?", arrayOf(id.toString()))
     }
 
+    fun updateTag(id:Long, tag:String): Int {
+        val db = this.writableDatabase
+        val contentValues = ContentValues()
+        contentValues.put(TAG, tag)
+        return db.update(TABLE_NAME, contentValues, "ID = ?", arrayOf(id.toString()))
+    }
+
     companion object {
-        const val DATABASE_NAME = "UserDatabase.db" // 데이터베이스 명
         const val TABLE_NAME = "user_table" // 테이블 명
 
 
@@ -156,5 +164,6 @@ class UserDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
         const val USE_TOKYO_TIME = "use_tokyo_time"
 
         const val MEMO = "memo"
+        const val TAG = "tag"
     }
 }
