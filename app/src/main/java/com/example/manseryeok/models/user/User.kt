@@ -40,9 +40,13 @@ data class User(
             calendar.set(Calendar.HOUR_OF_DAY, birthHour)
             calendar.set(Calendar.MINUTE, birthMinute)
             calendar.add(Calendar.MINUTE, timeDiff)
+
+            // 23:30 이후면 다음날로 침
+            if (birthHour == 23 && birthMinute >= 30) calendar.add(Calendar.HOUR_OF_DAY, 1)
         }
         if (useSummerTime == 1) calendar.add(Calendar.HOUR_OF_DAY, 1)
         if (useTokyoTime == 1) calendar.add(Calendar.MINUTE, 30)
+
 
         return calendar
     }

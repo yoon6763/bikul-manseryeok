@@ -112,8 +112,6 @@ class CalendarActivity : ParentActivity() {
             launch(IO) {
                 val userDao = AppDatabase.getInstance(applicationContext).userDao()
                 userModel = userDao.getUser(userId)
-
-                Log.d(TAG, "isInit 2: ${::userModel.isInitialized}")
             }
         }
     }

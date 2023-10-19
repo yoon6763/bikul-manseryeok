@@ -78,7 +78,7 @@ class UserDBActivity : ParentActivity() {
 
         binding.run {
             groupListAdapter = GroupListAdapter(this@UserDBActivity, groupList)
-            rvDbList.addItemDecoration(RvDecorator(30,Color.parseColor("#30000000")))
+            rvDbList.addItemDecoration(RvDecorator(30,Color.parseColor("#d9d9d9")))
             groupListAdapter.notifyDataSetChanged()
             rvDbList.adapter = groupListAdapter
         }

@@ -47,7 +47,7 @@ class GroupListAdapter(
         holder.binding.run {
             tvGroupName.text = "${group.groupName} (${group.users.size}명)"
             rvGroupMemberList.adapter = userListAdapters[position]
-            rvGroupMemberList.addItemDecoration(RvDecorator(1, Color.parseColor("#10000000")))
+            rvGroupMemberList.addItemDecoration(RvDecorator(1, Color.parseColor("#EDEDED")))
 
             //changeVisibility(holder.binding, selectedItems.get(position))
         }

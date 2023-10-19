@@ -42,8 +42,8 @@ class CompassActivity : ParentActivity(), SensorEventListener, OnMapReadyCallbac
     private val fm by lazy { supportFragmentManager }
     private val userDao by lazy { AppDatabase.getInstance(applicationContext).userDao() }
     private var userSelectedIndex = -1
-    private lateinit var users: List<User>
     private val usernames = ArrayList<String>()
+    private lateinit var users: List<User>
 
     private lateinit var mapFragment: MapFragment
     private lateinit var naverMap: NaverMap
@@ -306,11 +306,11 @@ class CompassActivity : ParentActivity(), SensorEventListener, OnMapReadyCallbac
     private var currentTime = 0L
 
     override fun onSensorChanged(event: SensorEvent) {
-        val nowTime = System.currentTimeMillis()
-        if (nowTime - currentTime < 5) {
-            return
-        }
-        currentTime = nowTime
+//        val nowTime = System.currentTimeMillis()
+//        if (nowTime - currentTime < 5) {
+//            return
+//        }
+//        currentTime = nowTime
 
 
         if (isRotationFixed) {

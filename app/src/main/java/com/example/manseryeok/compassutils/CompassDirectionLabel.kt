@@ -7,13 +7,19 @@ object CompassDirectionLabel {
     fun bonmyeonggung(year: Int): Array<String> {
         var year = year
         // 1자리 수가 될 때까지 각 자리수를 더함
-        while (year > 9) { year = year.toString().toCharArray().sumOf { it.digitToInt() } }
+        while (year > 9) {
+            year = year.toString().toCharArray().sumOf { it.digitToInt() }
+        }
 
         var man = 11 - year // 남자 본명궁
         var women = 4 + year // 여자 본명궁
 
-        while (man > 9) { man = man.toString().toCharArray().sumOf { it.digitToInt() } }
-        while (women > 9) { women = women.toString().toCharArray().sumOf { it.digitToInt() } }
+        while (man > 9) {
+            man = man.toString().toCharArray().sumOf { it.digitToInt() }
+        }
+        while (women > 9) {
+            women = women.toString().toCharArray().sumOf { it.digitToInt() }
+        }
 
         val ans1 = if (man in arrayOf(1, 9, 3, 4)) "동사택" else "서사택"
         val ans2 = if (man in arrayOf(1, 9, 3, 4)) "동사택" else "서사택"
@@ -246,17 +252,17 @@ object CompassDirectionLabel {
     }
 
 
-    fun directionSinsalTheory(sinsal:String): Array<String> {
-        return when(sinsal) {
+    fun directionSinsalTheory(sinsal: String): Array<String> {
+        return when (sinsal) {
             "地殺" -> arrayOf(
-                    " 1. 사업장의 간판은 지살 방향에 위치해야 장사가 잘된다.\n" +
-                            " 2. 문패, 거울, 출입문, 차고 기타 선전물(등신대) 등이 위치해야 좋다. \n" +
-                            " 3. 자기가 사는 집을 기준하여 지살 방향으로 출근하면 개인회사장이나 업주가 되고 역마살 방향이면 월급을 잘받는다.\n" +
-                            " 4. 역마방향 출근자가 사장이면 동업이거나 월급쟁이 사장이다.\n",
-                    "1. 여행을 하면 여행지나 목적지에서 고생하기 쉽다.\n" +
-                            " 2. 개업하면 종업원 때문에 머리가 아프다.\n" +
-                            " 3. 차를 사면 갈 곳이 많아진다.\n" +
-                            " 4. 결혼을 하면 부부간의 떨어질 일이 많다. / 아이키우기가 조금 힘들다.\n"
+                " 1. 사업장의 간판은 지살 방향에 위치해야 장사가 잘된다.\n" +
+                        " 2. 문패, 거울, 출입문, 차고 기타 선전물(등신대) 등이 위치해야 좋다. \n" +
+                        " 3. 자기가 사는 집을 기준하여 지살 방향으로 출근하면 개인회사장이나 업주가 되고 역마살 방향이면 월급을 잘받는다.\n" +
+                        " 4. 역마방향 출근자가 사장이면 동업이거나 월급쟁이 사장이다.\n",
+                "1. 여행을 하면 여행지나 목적지에서 고생하기 쉽다.\n" +
+                        " 2. 개업하면 종업원 때문에 머리가 아프다.\n" +
+                        " 3. 차를 사면 갈 곳이 많아진다.\n" +
+                        " 4. 결혼을 하면 부부간의 떨어질 일이 많다. / 아이키우기가 조금 힘들다.\n"
             )
 
             "桃花" -> arrayOf(
@@ -324,12 +330,12 @@ object CompassDirectionLabel {
                         "  3. 영업실적이 좋지 않을 수 있다.\n"
             )
 
-            "華蓋"-> arrayOf(
-               "  1.반복 사용하는 물건이나 이동을 자주하는 물건(이불, 화장품,운동기구 등을 놓으면 좋다.)\n" +
-                       "  2. 접객업소나 단골집 이면 좋다.\n" +
-                       "  3. 화장실, 하수구 방향\n" +
-                       "  4. 사업을 복구하는 방향\n" +
-                       "  5. 싼집을 찾을 때 \n",
+            "華蓋" -> arrayOf(
+                "  1.반복 사용하는 물건이나 이동을 자주하는 물건(이불, 화장품,운동기구 등을 놓으면 좋다.)\n" +
+                        "  2. 접객업소나 단골집 이면 좋다.\n" +
+                        "  3. 화장실, 하수구 방향\n" +
+                        "  4. 사업을 복구하는 방향\n" +
+                        "  5. 싼집을 찾을 때 \n",
                 "  1. 실속없는 손님이 많다.\n" +
                         "  2. 문화행사를 하면 흥행에 성공한다.\n" +
                         "  3. 여행시 즐거운 일이 많다.\n"
@@ -367,7 +373,7 @@ object CompassDirectionLabel {
                         "  5. 학교 선택 방향으로 좋지 않다.\n"
             )
 
-            else -> arrayOf("오류")
+            else -> arrayOf("")
         }
     }
 }
