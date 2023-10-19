@@ -18,6 +18,8 @@ import java.util.Calendar
 
 class GroupListAdapter(
     private val context: Context,
+    private val items: ArrayList<User>,
+    private val manseryeokList: ArrayList<Manseryeok>,
     private val groupList: ArrayList<GroupItem>
 ) :
     RecyclerView.Adapter<GroupListAdapter.Holder>() {

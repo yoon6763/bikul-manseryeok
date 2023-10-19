@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.manseryeok.R
 import com.example.manseryeok.db.ManseryeokSQLHelper
@@ -16,7 +17,6 @@ import com.example.manseryeok.databinding.ActivityCalendarBinding
 import com.example.manseryeok.models.Manseryeok
 import com.example.manseryeok.models.SixtyHorizontalItem
 import com.example.manseryeok.models.user.User
-import com.example.manseryeok.db.UserDBHelper
 import com.example.manseryeok.models.AppDatabase
 import com.example.manseryeok.utils.ParentActivity
 import com.example.manseryeok.utils.Sinsal
@@ -24,7 +24,6 @@ import com.example.manseryeok.utils.Utils
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashSet
@@ -56,9 +55,9 @@ class CalendarActivity : ParentActivity() {
 
     private val TAG = "CalendarActivity"
 
+    private val userDao by lazy { AppDatabase.getInstance(applicationContext).userDao() }
     private var currentTime = 0L
 
-    private var memoMode = 0 // 0 - 수정모드, 1 - 읽기 모드
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -144,26 +143,13 @@ class CalendarActivity : ParentActivity() {
 
 
     private fun setUpMemo() {
-        binding.run {
-            if (userModel.memo != null && userModel.memo!!.isNotEmpty()) {
-                etMemo.setText(userModel.memo)
-            }
+        binding.etMemo.setText(userModel.memo)
 
-            btnMemo.setOnClickListener {
-                if (userModel.id == -1L) {
-                    showShortToast("저장 후 메모를 작성할 수 있습니다.")
-                    return@setOnClickListener
-                }
-
-                userModel.memo = etMemo.text.toString()
-                val myDB = UserDBHelper(this@CalendarActivity)
-                val res = myDB.updateMemo(userModel.id, userModel.memo!!)
-                myDB.close()
-
-                if (res != -1) {
-                    showShortToast("메모가 저장되었습니다")
-                } else {
-                    showShortToast("메모 저장에 실패하였습니다")
+        binding.etMemo.addTextChangedListener {
+            userModel.memo = it.toString()
+            runBlocking {
+                launch(IO) {
+                    userDao.update(userModel)
                 }
             }
         }
@@ -221,27 +207,6 @@ class CalendarActivity : ParentActivity() {
         }
     }
 
-    private fun saveResult() {
-        val myDB = UserDBHelper(this)
-//        firstName: String,
-//        lastName: String,
-//        gender: Int,
-//        birth: String,
-//        birthPlace: String,
-//        timeDiff: Int,
-//        yearPillar: String,
-//        monthPillar: String,
-
-        val insertDataResult = myDB.insertData(userModel)
-
-        myDB.close()
-
-        if (insertDataResult != -1L) {
-            showShortToast(getString(R.string.msg_save_complete))
-            userModel.id = insertDataResult
-        } else showShortToast(getString(R.string.msg_save_fail))
-    }
-
     private fun shareResult() {
         /*
         만세력 결과 - 전윤호(25세)
@@ -259,12 +224,7 @@ class CalendarActivity : ParentActivity() {
         未 午 巳 辰 卯 寅 丑 子
          */
         var sendContent = "${userModel.firstName}${userModel.lastName}\n" +
-                "${
-                    if (isTimeInclude) Utils.dateTimeKorFormat.format(userBirth.timeInMillis) else Utils.dateKorFormat.format(
-                        userBirth.timeInMillis
-                    )
-                }\n" +
-                "\n"
+                "${if (isTimeInclude) Utils.dateTimeKorFormat.format(userBirth.timeInMillis) else Utils.dateKorFormat.format(userBirth.timeInMillis)}\n" + "\n"
 
         if (isTimeInclude) {
             sendContent += "시 일 월 년\n"

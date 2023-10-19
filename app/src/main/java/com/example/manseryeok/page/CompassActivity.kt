@@ -22,7 +22,6 @@ import com.example.manseryeok.adapter.MapLayerListAdapter
 import com.example.manseryeok.compassutils.CompassDirectionLabel
 import com.example.manseryeok.databinding.ActivityCompassBinding
 import com.example.manseryeok.models.user.User
-import com.example.manseryeok.db.UserDBHelper
 import com.example.manseryeok.models.AppDatabase
 import com.example.manseryeok.utils.ParentActivity
 import com.example.manseryeok.utils.Utils

@@ -4,13 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
-import com.example.manseryeok.R
+import androidx.core.widget.addTextChangedListener
 import com.example.manseryeok.db.ManseryeokSQLHelper
 import com.example.manseryeok.adapter.NameScoreAdapter
 import com.example.manseryeok.databinding.ActivityNameBinding
-import com.example.manseryeok.db.UserDBHelper
 import com.example.manseryeok.models.AppDatabase
 import com.example.manseryeok.models.NameScoreItem
 import com.example.manseryeok.models.user.User
@@ -26,6 +24,8 @@ class NameActivity : ParentActivity() {
     private lateinit var userModel: User // 유저의 정보 DTO
 
     private val binding by lazy { ActivityNameBinding.inflate(layoutInflater) }
+
+    private val userDao by lazy { AppDatabase.getInstance(applicationContext).userDao() }
 
     private var yearGanji = ""
     private var monthGanji = ""
@@ -79,50 +79,17 @@ class NameActivity : ParentActivity() {
     }
 
     private fun setUpMemo() {
-        binding.run {
-            if (userModel.memo != null && userModel.memo!!.isNotEmpty()) {
-                etMemo.setText(userModel.memo)
-            }
 
-            btnMemo.setOnClickListener {
-                if (userModel.id == -1L) {
-                    showShortToast("저장 후 메모를 작성할 수 있습니다.")
-                    return@setOnClickListener
-                }
+        binding.etMemo.setText(userModel.memo)
 
-                userModel.memo = etMemo.text.toString()
-                val myDB = UserDBHelper(this@NameActivity)
-                val res = myDB.updateMemo(userModel.id, userModel.memo!!)
-                myDB.close()
-
-                if (res != -1) {
-                    showShortToast("메모가 저장되었습니다")
-                } else {
-                    showShortToast("메모 저장에 실패하였습니다")
+        binding.etMemo.addTextChangedListener {
+            userModel.memo = it.toString()
+            runBlocking {
+                launch(IO) {
+                    userDao.update(userModel)
                 }
             }
         }
-    }
-
-    private fun saveResult() {
-        val myDB = UserDBHelper(this)
-//        firstName: String,
-//        lastName: String,
-//        gender: Int,
-//        birth: String,
-//        birthPlace: String,
-//        timeDiff: Int,
-//        yearPillar: String,
-//        monthPillar: String,
-
-        val insertDataResult = myDB.insertData(userModel)
-
-        myDB.close()
-
-        if (insertDataResult != -1L) {
-            showShortToast(getString(R.string.msg_save_complete))
-            userModel.id = insertDataResult
-        } else showShortToast(getString(R.string.msg_save_fail))
     }
 
     private fun setUpGanji() {
