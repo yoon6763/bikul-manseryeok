@@ -1,4 +1,4 @@
-package com.example.manseryeok.db
+package com.example.manseryeok.manseryeokdb
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase

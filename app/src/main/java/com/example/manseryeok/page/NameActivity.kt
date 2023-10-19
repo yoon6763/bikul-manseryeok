@@ -6,7 +6,7 @@ import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
-import com.example.manseryeok.db.ManseryeokSQLHelper
+import com.example.manseryeok.manseryeokdb.ManseryeokSQLHelper
 import com.example.manseryeok.adapter.NameScoreAdapter
 import com.example.manseryeok.databinding.ActivityNameBinding
 import com.example.manseryeok.models.AppDatabase

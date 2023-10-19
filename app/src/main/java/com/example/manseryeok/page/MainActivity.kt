@@ -12,7 +12,7 @@ import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.manseryeok.R
-import com.example.manseryeok.db.ManseryeokSQLHelper
+import com.example.manseryeok.manseryeokdb.ManseryeokSQLHelper
 import com.example.manseryeok.databinding.ActivityMainBinding
 import com.example.manseryeok.utils.Utils
 import java.security.MessageDigest

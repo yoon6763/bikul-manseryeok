@@ -7,7 +7,7 @@ import com.example.manseryeok.R
 import com.example.manseryeok.utils.Utils
 import com.example.manseryeok.adapter.userlist.UserListAdapter
 import com.example.manseryeok.databinding.ActivityDbactivityBinding
-import com.example.manseryeok.db.ManseryeokSQLHelper
+import com.example.manseryeok.manseryeokdb.ManseryeokSQLHelper
 import com.example.manseryeok.models.AppDatabase
 import com.example.manseryeok.models.Manseryeok
 import com.example.manseryeok.models.user.User
