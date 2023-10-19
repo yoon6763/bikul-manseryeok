@@ -50,7 +50,7 @@
                 android:layout_marginTop="10dp"
                 android:orientation="vertical"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_group" />
+                tools:listitem="@layout/item_group_checklist" />
 
             <LinearLayout
                 android:layout_width="match_parent"

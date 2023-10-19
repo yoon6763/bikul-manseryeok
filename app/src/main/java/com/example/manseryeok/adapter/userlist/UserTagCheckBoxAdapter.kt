@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.manseryeok.R
 import com.example.manseryeok.databinding.ItemGroupBinding
+import com.example.manseryeok.databinding.ItemGroupChecklistBinding
 import com.example.manseryeok.models.user.GroupTag
 
 class UserTagCheckBoxAdapter(
@@ -14,7 +15,6 @@ class UserTagCheckBoxAdapter(
     private val groupTags: List<GroupTag>,
     private val selectedTags: HashSet<Long>
 ) : RecyclerView.Adapter<UserTagCheckBoxAdapter.Holder>() {
-    private val TAG = "GroupAdapter"
 
     var onGroupCheckListener: OnGroupCheckListener? = null
 
@@ -24,7 +24,7 @@ class UserTagCheckBoxAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val view: View = inflater.inflate(R.layout.item_group, parent, false)
+        val view: View = inflater.inflate(R.layout.item_group_checklist, parent, false)
         return Holder(view)
     }
 
@@ -40,7 +40,7 @@ class UserTagCheckBoxAdapter(
     }
 
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val binding = ItemGroupBinding.bind(itemView)
+        val binding = ItemGroupChecklistBinding.bind(itemView)
 
         init {
             binding.cbGroup.setOnCheckedChangeListener { buttonView, isChecked ->

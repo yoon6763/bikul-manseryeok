@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.manseryeok.R
 import com.example.manseryeok.databinding.ItemDbListBinding
+import com.example.manseryeok.databinding.ItemGroupBinding
 import com.example.manseryeok.models.Manseryeok
 import com.example.manseryeok.models.user.User
 import com.example.manseryeok.utils.Utils
@@ -18,118 +19,50 @@ import java.util.Calendar
 
 class GroupListAdapter(
     private val context: Context,
-    private val items: ArrayList<User>,
-    private val manseryeokList: ArrayList<Manseryeok>,
     private val groupList: ArrayList<GroupItem>
 ) :
     RecyclerView.Adapter<GroupListAdapter.Holder>() {
     private var selectedItems: SparseBooleanArray = SparseBooleanArray()
-    private val TAG = "DBListAdapter"
     private var prePosition = -1
+    private val userListAdapters = ArrayList<UserListAdapter>()
 
-    var onMenuClickListener: OnMenuClickListener? = null
-
-    interface OnMenuClickListener {
-        fun onManseryeokView(id: Long, position: Int)
-        fun onNameView(id: Long, position: Int)
-        fun onDeleteClick(id: Long, position: Int)
-        fun onGroupClick(id: Long, position: Int)
+    init {
+        for (group in groupList) {
+            userListAdapters.add(UserListAdapter(context, group.users, group.manseryeokList))
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val view: View = inflater.inflate(R.layout.item_db_list, parent, false)
+        val view: View = inflater.inflate(R.layout.item_group, parent, false)
 
         return Holder(view)
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.binding.run {
-            val user = items[position]
-            val birth = user.getBirthCalendar()
-            val manseryeok = manseryeokList[position]
+            val group = groupList[position]
+            tvGroupName.text = "${group.groupName} (${group.users.size}명)"
+            rvGroupMemberList.adapter = userListAdapters[position]
 
-            var hourGanji = ""
-            val yearGanji = manseryeok.cd_hyganjee!!
-            val monthGanji = manseryeok.cd_hmganjee!!
-            val dayGanji = manseryeok.cd_hdganjee!!
+            //changeVisibility(holder.binding, selectedItems.get(position))
+        }
+    }
 
-            val ganji = StringBuilder()
-
-            if (user.birthHour != -1) {
-                Log.d(TAG, "yearGanji: $yearGanji")
-                Log.d(TAG, "monthGanji: $monthGanji")
-                Log.d(TAG, "dayGanji: $dayGanji")
-                hourGanji = Utils.getTimeGanji(dayGanji[0], birth[Calendar.HOUR_OF_DAY])
-                Log.d(TAG, "hourGanji: $hourGanji")
-                ganji.append(hourGanji[0])
-            }
-            ganji.append(dayGanji[0])
-            ganji.append(monthGanji[0])
-            ganji.append(yearGanji[0])
-
-            ganji.append("\n")
-
-            if (user.birthHour != -1) ganji.append(hourGanji[1])
-            ganji.append(dayGanji[1])
-            ganji.append(monthGanji[1])
-            ganji.append(yearGanji[1])
-
-            val sunBirth = "${user.birthYear}.${user.birthMonth}.${user.birthDay}"
-
-
-            tvItemDbName.text = "${user.firstName}${user.lastName}"
-            tvItemDbBirthSum.text = "(양) $sunBirth"
-            tvItemDbBirthMoon.text =
-                "(음) ${Utils.dateDotFormat.format(Utils.convertSolarToLunar(birth))}"
-            tvItemDbGanji.text = ganji.toString()
-
-            if (user.gender == 0)
-                ivItemDbGender.setImageResource(R.drawable.ic_male)
-            else
-                ivItemDbGender.setImageResource(R.drawable.ic_female)
-
-            changeVisibility(holder.binding, selectedItems.get(position))
+    fun setUserMenuClickListener(menuClickListener: UserListAdapter.OnMenuClickListener) {
+        for (adapter in userListAdapters) {
+            adapter.onMenuClickListener = menuClickListener
         }
     }
 
     override fun getItemCount(): Int {
-        return items.size
+        return groupList.size
     }
 
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val binding = ItemDbListBinding.bind(itemView)
+        val binding = ItemGroupBinding.bind(itemView)
 
         init {
-            binding.btnItemDbSearchCalendar.setOnClickListener {
-                onMenuClickListener?.onManseryeokView(
-                    items[adapterPosition].id,
-                    adapterPosition
-                )
-            }
-
-            binding.btnItemDbSearchName.setOnClickListener {
-                onMenuClickListener?.onNameView(
-                    items[adapterPosition].id,
-                    adapterPosition
-                )
-            }
-
-            binding.btnItemDbDelete.setOnClickListener {
-                onMenuClickListener?.onDeleteClick(
-                    items[adapterPosition].id,
-                    adapterPosition
-                )
-            }
-
-            binding.btnItemDbGroup.setOnClickListener {
-                onMenuClickListener?.onGroupClick(
-                    items[adapterPosition].id,
-                    adapterPosition
-                )
-            }
-
-
             itemView.setOnClickListener {
                 if (selectedItems.get(adapterPosition)) {
                     selectedItems.delete(adapterPosition)
@@ -143,17 +76,6 @@ class GroupListAdapter(
                 }
                 notifyItemChanged(adapterPosition)
                 prePosition = adapterPosition
-
-//                if (selectedItems.get(adapterPosition)) {
-//                    // VISIBLE -> INVISIBLE
-//                    selectedItems.delete(adapterPosition)
-//
-//                    binding.llItemDbBottomPanel.visibility = View.GONE
-//                } else {
-//                    // INVISIBLE -> VISIBLE
-//                    selectedItems.put(adapterPosition, true)
-//                    binding.llItemDbBottomPanel.visibility = View.VISIBLE
-//                }
             }
         }
     }

@@ -93,20 +93,6 @@ class CalendarActivity : ParentActivity() {
             hideProgress()
 
             binding.run {
-//                if (userModel.id == -1L) {
-//                    btnCalendarSave.visibility = View.VISIBLE
-//                } else {
-//                    btnCalendarSave.visibility = View.GONE
-//                }
-//
-//                btnCalendarSave.setOnClickListener {
-//                    if (userModel.id != -1L) {
-//                        showShortToast("이미 저장된 데이터입니다.")
-//                        return@setOnClickListener
-//                    }
-//                    saveResult()
-//                }
-
                 btnGotoName.setOnClickListener {
                     val intent = Intent(this@CalendarActivity, NameActivity::class.java)
                     intent.putExtra(Utils.INTENT_EXTRAS_USER_ID, userModel.id)

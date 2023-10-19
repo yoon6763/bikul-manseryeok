@@ -1,15 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <CheckBox
-        android:id="@+id/cb_group"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/tv_group_name"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingVertical="20dp"
-        android:paddingStart="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:textSize="25sp"
+        android:textStyle="bold"
         tools:text="Group 1" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_group_member_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:itemCount="2"
+        tools:listitem="@layout/item_db_list" />
 
 </LinearLayout>

@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import com.example.manseryeok.R
+import com.example.manseryeok.adapter.userlist.GroupItem
+import com.example.manseryeok.adapter.userlist.GroupListAdapter
 import com.example.manseryeok.utils.Utils
 import com.example.manseryeok.adapter.userlist.UserListAdapter
 import com.example.manseryeok.databinding.ActivityDbactivityBinding
@@ -17,17 +19,21 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 class UserDBActivity : ParentActivity() {
-    private lateinit var userListAdapter: UserListAdapter
     private val binding by lazy { ActivityDbactivityBinding.inflate(layoutInflater) }
-    private val userList = ArrayList<User>()
-    private val manseryeokList = ArrayList<Manseryeok>()
     private val userDao by lazy { AppDatabase.getInstance(applicationContext).userDao() }
     private val userTagDao by lazy { AppDatabase.getInstance(applicationContext).userTagDao() }
+    private val groupTagDao by lazy { AppDatabase.getInstance(applicationContext).groupTagDao() }
+    private val groupList = ArrayList<GroupItem>()
+    private lateinit var groupListAdapter: GroupListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        toolbarSetting()
+    }
+
+    private fun toolbarSetting() {
         setSupportActionBar(binding.toolbarDb)
         supportActionBar?.run {
             // 앱 바 뒤로가기 버튼 설정
@@ -37,10 +43,7 @@ class UserDBActivity : ParentActivity() {
 
     override fun onStart() {
         super.onStart()
-
-        userList.clear()
-        manseryeokList.clear()
-
+        groupList.clear()
 
         // 유저의 생일 - 1년 부터 + 100년까지의 정보
         val manseryeokSQLHelper = ManseryeokSQLHelper(this)
@@ -49,57 +52,65 @@ class UserDBActivity : ParentActivity() {
 
         runBlocking {
             launch(IO) {
-                val allUserList = userDao.getAllUser()
 
-                allUserList.forEach { user ->
-                    userList.add(user)
-                    manseryeokList.add(
-                        manseryeokSQLHelper.getDayData(
-                            user.birthYear,
-                            user.birthMonth,
-                            user.birthDay
-                        )
-                    )
+                val allTags = groupTagDao.getAllTags()
+                allTags.forEach { tag ->
+                    val users = userTagDao.getUsersByTag(tag.id) as ArrayList<User>
+                    val manseryeokList = ArrayList<Manseryeok>()
+                    users.forEach { user ->
+                        manseryeokList.add(manseryeokSQLHelper.getDayData(user.birthYear, user.birthMonth, user.birthDay))
+                    }
+                    groupList.add(GroupItem(tag.name, users, manseryeokList))
                 }
+
+                val notGroupUsers = userTagDao.getUsersWithoutTag() as ArrayList<User>
+                val notGroupManseryeokList = ArrayList<Manseryeok>()
+
+                notGroupUsers.forEach { user ->
+                    notGroupManseryeokList.add(manseryeokSQLHelper.getDayData(user.birthYear, user.birthMonth, user.birthDay))
+                }
+
+                groupList.add(GroupItem("미분류", notGroupUsers, notGroupManseryeokList))
             }
         }
 
         binding.run {
-            userListAdapter = UserListAdapter(this@UserDBActivity, userList, manseryeokList)
-            userListAdapter.notifyDataSetChanged()
-            rvDbList.adapter = userListAdapter
+            groupListAdapter = GroupListAdapter(this@UserDBActivity, groupList)
+            groupListAdapter.notifyDataSetChanged()
+            rvDbList.adapter = groupListAdapter
         }
 
-        userListAdapter.onMenuClickListener = object : UserListAdapter.OnMenuClickListener {
+        groupListAdapter.setUserMenuClickListener(object : UserListAdapter.OnMenuClickListener {
             override fun onManseryeokView(id: Long, position: Int) {
                 val intent = Intent(this@UserDBActivity, CalendarActivity::class.java)
-                intent.putExtra(Utils.INTENT_EXTRAS_USER_ID, userList[position].id)
+                intent.putExtra(Utils.INTENT_EXTRAS_USER_ID, id)
                 startActivity(intent)
             }
 
             override fun onNameView(id: Long, position: Int) {
                 val intent = Intent(this@UserDBActivity, NameActivity::class.java)
-                intent.putExtra(Utils.INTENT_EXTRAS_USER_ID, userList[position].id)
+                intent.putExtra(Utils.INTENT_EXTRAS_USER_ID, id)
                 startActivity(intent)
             }
 
             override fun onDeleteClick(id: Long, position: Int) {
                 runBlocking {
                     launch(IO) {
-                        userDao.delete(userList[position])
-                        userList.removeAll { it.id == id }
+                        val user = userDao.getUser(id)
+                        userDao.delete(user)
                     }
                 }
-                showShortToast(getString(R.string.msg_delete_complete))
-                userListAdapter.notifyDataSetChanged()
+                onStart()
             }
 
             override fun onGroupClick(id: Long, position: Int) {
                 val intent = Intent(this@UserDBActivity, GroupActivity::class.java)
-                intent.putExtra(Utils.INTENT_EXTRAS_USER_ID, userList[position].id)
+                intent.putExtra(Utils.INTENT_EXTRAS_USER_ID, id)
                 startActivity(intent)
             }
-        }
+        })
+
+
         manseryeokSQLHelper.close()
     }
 

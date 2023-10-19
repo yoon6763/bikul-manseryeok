@@ -79,9 +79,7 @@ class NameActivity : ParentActivity() {
     }
 
     private fun setUpMemo() {
-
         binding.etMemo.setText(userModel.memo)
-
         binding.etMemo.addTextChangedListener {
             userModel.memo = it.toString()
             runBlocking {
