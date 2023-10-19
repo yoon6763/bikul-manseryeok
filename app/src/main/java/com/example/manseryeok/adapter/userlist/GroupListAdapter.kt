@@ -2,6 +2,7 @@ package com.example.manseryeok.adapter.userlist
 
 import android.animation.ValueAnimator
 import android.content.Context
+import android.graphics.Color
 import android.util.Log
 import android.util.SparseBooleanArray
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.manseryeok.R
+import com.example.manseryeok.adapter.decorator.RvDecorator
 import com.example.manseryeok.databinding.ItemDbListBinding
 import com.example.manseryeok.databinding.ItemGroupBinding
 import com.example.manseryeok.models.Manseryeok
@@ -40,10 +42,12 @@ class GroupListAdapter(
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
+        val group = groupList[position]
+
         holder.binding.run {
-            val group = groupList[position]
             tvGroupName.text = "${group.groupName} (${group.users.size}명)"
             rvGroupMemberList.adapter = userListAdapters[position]
+            rvGroupMemberList.addItemDecoration(RvDecorator(1, Color.parseColor("#10000000")))
 
             //changeVisibility(holder.binding, selectedItems.get(position))
         }
@@ -63,20 +67,20 @@ class GroupListAdapter(
         val binding = ItemGroupBinding.bind(itemView)
 
         init {
-            itemView.setOnClickListener {
-                if (selectedItems.get(adapterPosition)) {
-                    selectedItems.delete(adapterPosition)
-                } else {
-                    selectedItems.delete(prePosition)
-                    selectedItems.put(adapterPosition, true)
-                }
-
-                if (prePosition != -1) {
-                    notifyItemChanged(prePosition)
-                }
-                notifyItemChanged(adapterPosition)
-                prePosition = adapterPosition
-            }
+//            itemView.setOnClickListener {
+//                if (selectedItems.get(adapterPosition)) {
+//                    selectedItems.delete(adapterPosition)
+//                } else {
+//                    selectedItems.delete(prePosition)
+//                    selectedItems.put(adapterPosition, true)
+//                }
+//
+//                if (prePosition != -1) {
+//                    notifyItemChanged(prePosition)
+//                }
+//                notifyItemChanged(adapterPosition)
+//                prePosition = adapterPosition
+//            }
         }
     }
 

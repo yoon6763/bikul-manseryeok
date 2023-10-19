@@ -1,9 +1,11 @@
 package com.example.manseryeok.page
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.MenuItem
 import com.example.manseryeok.R
+import com.example.manseryeok.adapter.decorator.RvDecorator
 import com.example.manseryeok.adapter.userlist.GroupItem
 import com.example.manseryeok.adapter.userlist.GroupListAdapter
 import com.example.manseryeok.utils.Utils
@@ -76,6 +78,7 @@ class UserDBActivity : ParentActivity() {
 
         binding.run {
             groupListAdapter = GroupListAdapter(this@UserDBActivity, groupList)
+            rvDbList.addItemDecoration(RvDecorator(30,Color.parseColor("#30000000")))
             groupListAdapter.notifyDataSetChanged()
             rvDbList.adapter = groupListAdapter
         }

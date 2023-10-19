@@ -50,4 +50,11 @@ class UserTagCheckBoxAdapter(
             }
         }
     }
+
+    fun uncheckAll() {
+        for (element in groupTags) {
+            selectedTags.remove(element.id)
+        }
+        notifyDataSetChanged()
+    }
 }
