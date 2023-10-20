@@ -42,6 +42,7 @@
                 <EditText
                     android:id="@+id/et_first_name"
                     android:layout_width="70dp"
+                    android:text="@{viewModel.firstName}"
                     android:layout_height="wrap_content" />
 
                 <TextView

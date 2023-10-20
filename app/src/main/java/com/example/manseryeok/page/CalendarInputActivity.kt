@@ -95,7 +95,7 @@ class CalendarInputActivity : ParentActivity() {
             etName.setText(user?.lastName)
             etInputBirth.setText(Utils.dateSlideFormat.format(user?.getBirthCalculated()?.timeInMillis))
 
-            if(user?.includeTime!!) {
+            if (user?.includeTime!!) {
                 etInputBirthTime.setText(Utils.timeFormat.format(user?.getBirthCalculated()?.timeInMillis))
             }
             birth = user!!.getBirthOrigin()
