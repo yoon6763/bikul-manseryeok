@@ -24,6 +24,7 @@ import com.example.manseryeok.databinding.ActivityCompassBinding
 import com.example.manseryeok.models.user.User
 import com.example.manseryeok.models.AppDatabase
 import com.example.manseryeok.utils.ParentActivity
+import com.example.manseryeok.utils.SharedPreferenceHelper
 import com.example.manseryeok.utils.Utils
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
@@ -148,9 +149,7 @@ class CompassActivity : ParentActivity(), SensorEventListener, OnMapReadyCallbac
         }
 
         userLoad()
-
         binding.btnSelectFromDb.setOnClickListener {
-
             if (users.isEmpty()) {
                 showShortToast("저장된 정보가 없습니다.")
                 return@setOnClickListener
@@ -168,6 +167,30 @@ class CompassActivity : ParentActivity(), SensorEventListener, OnMapReadyCallbac
         }
     }
 
+    private fun setSatelliteMap() {
+        val initialType = SharedPreferenceHelper.isSatelliteMapEnable(this)
+        // satellite map
+        if(initialType) {
+            naverMap.mapType = NaverMap.MapType.Satellite
+            binding.btnMapTypeChange.setImageResource(R.drawable.ic_satellite_picture)
+        } else {
+            naverMap.mapType = NaverMap.MapType.Basic
+            binding.btnMapTypeChange.setImageResource(R.drawable.ic_satellite)
+        }
+
+        binding.btnMapTypeChange.setOnClickListener {
+            if (SharedPreferenceHelper.isSatelliteMapEnable(this)) {
+                naverMap.mapType = NaverMap.MapType.Basic
+                SharedPreferenceHelper.setSatelliteMapEnable(this, false)
+                binding.btnMapTypeChange.setImageResource(R.drawable.ic_satellite)
+            } else {
+                naverMap.mapType = NaverMap.MapType.Satellite
+                SharedPreferenceHelper.setSatelliteMapEnable(this, true)
+                binding.btnMapTypeChange.setImageResource(R.drawable.ic_satellite_picture)
+            }
+        }
+    }
+
     private fun userLoad() {
         runBlocking {
             launch(IO) {
@@ -175,7 +198,7 @@ class CompassActivity : ParentActivity(), SensorEventListener, OnMapReadyCallbac
             }
         }
 
-        users.forEach {user ->
+        users.forEach { user ->
             var usernameLabel = user.firstName + user.lastName
             usernameLabel += " (${user.birthYear})"
             usernames.add(usernameLabel)
@@ -244,12 +267,14 @@ class CompassActivity : ParentActivity(), SensorEventListener, OnMapReadyCallbac
     }
 
     override fun onMapReady(p0: NaverMap) {
+
         naverMap = p0
         naverMap.locationSource = locationSource
         naverMap.locationTrackingMode = LocationTrackingMode.Follow
         naverMap.uiSettings.isZoomControlEnabled = false
 
         mapIsReady = true
+        setSatelliteMap()
 
         naverMap.addOnCameraChangeListener { i, b ->
             if (isRotationFixed) {

@@ -24,6 +24,18 @@
             tools:layout="@layout/activity_base" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btn_map_type_change"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|top"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="80dp"
+            android:elevation="3dp"
+            android:src="@drawable/ic_satellite"
+            android:tint="@color/navy"
+            app:backgroundTint="@color/white" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btn_compass_question"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -140,8 +152,8 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="@dimen/gap_line_double"
-                android:alpha="0.5"
                 android:layout_marginBottom="80dp"
+                android:alpha="0.5"
                 app:srcCompat="@drawable/img_compass" />
 
         </LinearLayout>
