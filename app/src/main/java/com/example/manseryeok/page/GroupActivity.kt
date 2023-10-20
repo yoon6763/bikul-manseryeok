@@ -91,7 +91,7 @@ class GroupActivity : ParentActivity() {
     }
 
     private fun usernameSetting() = with(binding) {
-        val birth = Utils.dateSlideFormat.format(userModel.getBirthCalendar().timeInMillis)
+        val birth = Utils.dateSlideFormat.format(userModel.getBirthCalculated().timeInMillis)
         val username = "${userModel.firstName}${userModel.lastName} ($birth)"
         tvUsername.text = username
     }

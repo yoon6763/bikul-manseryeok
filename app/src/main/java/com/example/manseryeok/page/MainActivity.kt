@@ -101,30 +101,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(p0: View?) {
         binding.run {
             when (p0?.id) {
-                clCalendar.id -> startActivity(
-                    Intent(
-                        this@MainActivity,
-                        CalendarInputActivity::class.java
-                    )
-                )
-
-                clCompass.id -> startActivity(
-                    Intent(
-                        this@MainActivity,
-                        CompassActivity::class.java
-                    )
-                )
-
-                clQuestion.id -> startActivity(
-                    Intent(
-                        this@MainActivity,
-                        InquiryActivity::class.java
-                    )
-                )
-
+                clCalendar.id -> {
+                    val intent = Intent(this@MainActivity, CalendarInputActivity::class.java)
+                    intent.putExtra(Utils.INTENT_EXTRAS_INFO_TYPE, Utils.InfoType.CREATE)
+                    startActivity(intent)
+                }
+                clCompass.id -> startActivity(Intent(this@MainActivity, CompassActivity::class.java))
+                clQuestion.id -> startActivity(Intent(this@MainActivity, InquiryActivity::class.java))
                 clDatabase.id -> startActivity(Intent(this@MainActivity, UserDBActivity::class.java))
-                clMedia.id -> Toast.makeText(applicationContext, "곧 오픈 예정입니다", Toast.LENGTH_SHORT)
-                    .show()
+                clMedia.id -> Toast.makeText(applicationContext, "곧 오픈 예정입니다", Toast.LENGTH_SHORT).show()
             }
         }
     }

@@ -83,6 +83,18 @@
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_item_db_edit"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/btn_half_height"
+                android:layout_margin="2dp"
+                android:layout_weight="1"
+                android:background="@drawable/box_sky"
+                android:foreground="?attr/selectableItemBackground"
+                android:text="편집"
+                android:textColor="@color/black" />
+
+
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_item_db_group"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/btn_half_height"

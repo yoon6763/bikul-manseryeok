@@ -3,7 +3,6 @@ package com.example.manseryeok.adapter.userlist
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Color
-import android.util.Log
 import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
@@ -13,11 +12,6 @@ import com.example.manseryeok.R
 import com.example.manseryeok.adapter.decorator.RvDecorator
 import com.example.manseryeok.databinding.ItemDbListBinding
 import com.example.manseryeok.databinding.ItemGroupBinding
-import com.example.manseryeok.models.Manseryeok
-import com.example.manseryeok.models.user.User
-import com.example.manseryeok.utils.Utils
-import java.lang.StringBuilder
-import java.util.Calendar
 
 class GroupListAdapter(
     private val context: Context,
@@ -53,9 +47,9 @@ class GroupListAdapter(
         }
     }
 
-    fun setUserMenuClickListener(menuClickListener: UserListAdapter.OnMenuClickListener) {
+    fun setUserMenuClickListener(menuClickListener: OnUserMenuClickListener) {
         for (adapter in userListAdapters) {
-            adapter.onMenuClickListener = menuClickListener
+            adapter.onUserMenuClickListener = menuClickListener
         }
     }
 

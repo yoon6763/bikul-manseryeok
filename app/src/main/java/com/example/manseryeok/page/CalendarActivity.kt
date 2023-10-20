@@ -502,7 +502,7 @@ class CalendarActivity : ParentActivity() {
     private fun initLoadDB() {
         // 유저 생일 가져오기
 
-        userBirth = userModel.getBirthCalendar()
+        userBirth = userModel.getBirthCalculated()
 
         Log.d(TAG, "[유저 생일] ${Utils.dateTimeKorFormat.format(userBirth.timeInMillis)}")
         Log.d(TAG, "[시차] ${userModel.timeDiff}")

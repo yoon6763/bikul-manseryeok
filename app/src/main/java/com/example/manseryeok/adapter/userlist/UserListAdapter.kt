@@ -27,14 +27,8 @@ class UserListAdapter(
     private val TAG = "DBListAdapter"
     private var prePosition = -1
 
-    var onMenuClickListener: OnMenuClickListener? = null
+    var onUserMenuClickListener: OnUserMenuClickListener? = null
 
-    interface OnMenuClickListener {
-        fun onManseryeokView(id: Long, position: Int)
-        fun onNameView(id: Long, position: Int)
-        fun onDeleteClick(id: Long, position: Int)
-        fun onGroupClick(id: Long, position: Int)
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -46,7 +40,7 @@ class UserListAdapter(
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.binding.run {
             val user = items[position]
-            val birth = user.getBirthCalendar()
+            val birth = user.getBirthCalculated()
             val manseryeok = manseryeokList[position]
 
             var hourGanji = ""
@@ -102,28 +96,28 @@ class UserListAdapter(
 
         init {
             binding.btnItemDbSearchCalendar.setOnClickListener {
-                onMenuClickListener?.onManseryeokView(
+                onUserMenuClickListener?.onManseryeokView(
                     items[adapterPosition].id,
                     adapterPosition
                 )
             }
 
             binding.btnItemDbSearchName.setOnClickListener {
-                onMenuClickListener?.onNameView(
+                onUserMenuClickListener?.onNameView(
                     items[adapterPosition].id,
                     adapterPosition
                 )
             }
 
             binding.btnItemDbDelete.setOnClickListener {
-                onMenuClickListener?.onDeleteClick(
+                onUserMenuClickListener?.onDeleteClick(
                     items[adapterPosition].id,
                     adapterPosition
                 )
             }
 
             binding.btnItemDbGroup.setOnClickListener {
-                onMenuClickListener?.onGroupClick(
+                onUserMenuClickListener?.onGroupClick(
                     items[adapterPosition].id,
                     adapterPosition
                 )

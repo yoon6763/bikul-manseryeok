@@ -1,10 +1,7 @@
 package com.example.manseryeok.models.user
 
-import android.os.Parcel
-import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.time.LocalDateTime
 import java.util.Calendar
 
 @Entity
@@ -20,6 +17,7 @@ data class User(
     var birthDay: Int,
     var birthHour: Int,
     var birthMinute: Int,
+    var includeTime: Boolean,
 
     var birthPlace: String?,
     var timeDiff: Int,
@@ -29,31 +27,36 @@ data class User(
 
     var memo: String?
 ) {
-    fun getBirthCalendar(): Calendar {
+    fun getBirthOrigin()=Calendar.getInstance().apply {
+        set(Calendar.YEAR, birthYear)
+        set(Calendar.MONTH, birthMonth - 1)
+        set(Calendar.DAY_OF_MONTH, birthDay)
+
+        if(includeTime) {
+            set(Calendar.HOUR_OF_DAY, birthHour)
+            set(Calendar.MINUTE, birthMinute)
+        }
+    }
+
+    fun getBirthCalculated(): Calendar {
         val calendar = Calendar.getInstance().apply {
             set(Calendar.YEAR, birthYear)
             set(Calendar.MONTH, birthMonth - 1)
             set(Calendar.DAY_OF_MONTH, birthDay)
         }
 
-        if (birthHour != -1) {
+        if (includeTime) {
             calendar.set(Calendar.HOUR_OF_DAY, birthHour)
             calendar.set(Calendar.MINUTE, birthMinute)
             calendar.add(Calendar.MINUTE, timeDiff)
 
-            // 23:30 이후면 다음날로 침
-            if (birthHour == 23 && birthMinute >= 30) calendar.add(Calendar.HOUR_OF_DAY, 1)
-        }
-        if (useSummerTime == 1) calendar.add(Calendar.HOUR_OF_DAY, 1)
-        if (useTokyoTime == 1) calendar.add(Calendar.MINUTE, 30)
+            if (useSummerTime == 1) calendar.add(Calendar.HOUR_OF_DAY, 1)
+            if (useTokyoTime == 1) calendar.add(Calendar.MINUTE, 30)
 
+            // 23:30 이후면 다음날로 침
+            if (includeTime && birthHour == 23 && birthMinute >= 30) calendar.add(Calendar.HOUR_OF_DAY, 1)
+        }
 
         return calendar
-    }
-
-    fun getBirthLocalDate(): LocalDateTime {
-        val localDateTime =
-            LocalDateTime.of(birthYear, birthMonth, birthDay, birthHour, birthMinute)
-        return localDateTime
     }
 }

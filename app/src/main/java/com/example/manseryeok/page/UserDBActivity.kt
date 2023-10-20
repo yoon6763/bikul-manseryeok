@@ -4,12 +4,11 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.MenuItem
-import com.example.manseryeok.R
 import com.example.manseryeok.adapter.decorator.RvDecorator
 import com.example.manseryeok.adapter.userlist.GroupItem
 import com.example.manseryeok.adapter.userlist.GroupListAdapter
+import com.example.manseryeok.adapter.userlist.OnUserMenuClickListener
 import com.example.manseryeok.utils.Utils
-import com.example.manseryeok.adapter.userlist.UserListAdapter
 import com.example.manseryeok.databinding.ActivityDbactivityBinding
 import com.example.manseryeok.manseryeokdb.ManseryeokSQLHelper
 import com.example.manseryeok.models.AppDatabase
@@ -60,7 +59,13 @@ class UserDBActivity : ParentActivity() {
                     val users = userTagDao.getUsersByTag(tag.id) as ArrayList<User>
                     val manseryeokList = ArrayList<Manseryeok>()
                     users.forEach { user ->
-                        manseryeokList.add(manseryeokSQLHelper.getDayData(user.birthYear, user.birthMonth, user.birthDay))
+                        manseryeokList.add(
+                            manseryeokSQLHelper.getDayData(
+                                user.birthYear,
+                                user.birthMonth,
+                                user.birthDay
+                            )
+                        )
                     }
                     groupList.add(GroupItem(tag.name, users, manseryeokList))
                 }
@@ -69,7 +74,13 @@ class UserDBActivity : ParentActivity() {
                 val notGroupManseryeokList = ArrayList<Manseryeok>()
 
                 notGroupUsers.forEach { user ->
-                    notGroupManseryeokList.add(manseryeokSQLHelper.getDayData(user.birthYear, user.birthMonth, user.birthDay))
+                    notGroupManseryeokList.add(
+                        manseryeokSQLHelper.getDayData(
+                            user.birthYear,
+                            user.birthMonth,
+                            user.birthDay
+                        )
+                    )
                 }
 
                 groupList.add(GroupItem("미분류", notGroupUsers, notGroupManseryeokList))
@@ -78,12 +89,12 @@ class UserDBActivity : ParentActivity() {
 
         binding.run {
             groupListAdapter = GroupListAdapter(this@UserDBActivity, groupList)
-            rvDbList.addItemDecoration(RvDecorator(30,Color.parseColor("#d9d9d9")))
+            rvDbList.addItemDecoration(RvDecorator(30, Color.parseColor("#d9d9d9")))
             groupListAdapter.notifyDataSetChanged()
             rvDbList.adapter = groupListAdapter
         }
 
-        groupListAdapter.setUserMenuClickListener(object : UserListAdapter.OnMenuClickListener {
+        groupListAdapter.setUserMenuClickListener(object : OnUserMenuClickListener {
             override fun onManseryeokView(id: Long, position: Int) {
                 val intent = Intent(this@UserDBActivity, CalendarActivity::class.java)
                 intent.putExtra(Utils.INTENT_EXTRAS_USER_ID, id)
@@ -109,6 +120,14 @@ class UserDBActivity : ParentActivity() {
             override fun onGroupClick(id: Long, position: Int) {
                 val intent = Intent(this@UserDBActivity, GroupActivity::class.java)
                 intent.putExtra(Utils.INTENT_EXTRAS_USER_ID, id)
+                startActivity(intent)
+            }
+
+            override fun onEditClick(id: Long, position: Int) {
+                val intent = Intent(this@UserDBActivity, CalendarInputActivity::class.java).apply {
+                    putExtra(Utils.INTENT_EXTRAS_USER_ID, id)
+                    putExtra(Utils.INTENT_EXTRAS_INFO_TYPE, Utils.InfoType.EDIT)
+                }
                 startActivity(intent)
             }
         })

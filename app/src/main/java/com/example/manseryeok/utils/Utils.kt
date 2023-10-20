@@ -7,6 +7,11 @@ import java.util.*
 
 object Utils {
     const val INTENT_EXTRAS_USER_ID = "INTENT_EXTRAS_USER_ID"
+    const val INTENT_EXTRAS_INFO_TYPE = "INTENT_EXTRAS_INFO_TYPE"
+
+    enum class InfoType(val value: String) {
+        CREATE("CREATE"), EDIT("EDIT")
+    }
 
     val dateNumFormat = SimpleDateFormat("yyyyMMdd")
     val dateTimeNumFormat = SimpleDateFormat("yyyyMMddHHmm")

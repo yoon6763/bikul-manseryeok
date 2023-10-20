@@ -243,8 +243,8 @@
                 android:id="@+id/cb_use_summer_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:buttonTint="@color/green"
                 android:layout_marginTop="20dp"
+                android:buttonTint="@color/green"
                 android:text="서머타임 적용" />
 
             <TextView
@@ -264,7 +264,25 @@
         </LinearLayout>
     </ScrollView>
 
+    <FrameLayout
+        android:id="@+id/container_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_edit_finish"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/btn_full_height"
+            android:background="@drawable/btn_navy"
+            android:text="수정 완료"
+            android:textColor="@color/mint" />
+
+    </FrameLayout>
+
+
     <LinearLayout
+        android:id="@+id/container_next_page"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
