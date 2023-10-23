@@ -27,6 +27,7 @@ data class User(
 
     var memo: String?
 ) {
+
     fun getBirthOrigin()=Calendar.getInstance().apply {
         set(Calendar.YEAR, birthYear)
         set(Calendar.MONTH, birthMonth - 1)

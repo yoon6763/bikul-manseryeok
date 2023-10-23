@@ -35,9 +35,7 @@ android {
     }
     buildFeatures {
         viewBinding true
-    }
-    dataBinding {
-        enabled = true
+        dataBinding true
     }
     namespace 'com.example.manseryeok'
 }
@@ -73,7 +71,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
     // Google AD
-    implementation 'com.google.android.gms:play-services-ads:21.3.0'
+    implementation 'com.google.android.gms:play-services-ads:22.4.0'
 
     // Room (DB)
     implementation 'androidx.room:room-runtime:2.5.2'
