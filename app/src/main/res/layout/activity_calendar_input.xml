@@ -192,8 +192,8 @@
                         android:clickable="true"
                         android:focusable="false"
                         android:gravity="center"
-                        android:text="@{viewModel.birthLabel}"
-                        android:onClick="@{(v) -> viewModel.openBirthPicker(v)}"/>
+                        android:onClick="@{(v) -> viewModel.openBirthPicker(v)}"
+                        android:text="@{viewModel.birthLabel}" />
                 </LinearLayout>
 
 
@@ -211,11 +211,11 @@
 
                     <EditText
                         android:id="@+id/et_input_birth_time"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginEnd="10dp"
                         android:layout_weight="1"
-                        android:clickable="@{!viewModel.isIncludeTime()}"
+                        android:clickable="true"
                         android:focusable="false"
                         android:gravity="center" />
 
@@ -225,7 +225,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:buttonTint="@color/green"
-                        android:checked="@={!viewModel.isIncludeTime()}"
+                        android:checked="@={!viewModel.isIncludeTime}"
                         android:text="@string/obj_input_birth_time_unknown" />
 
                 </LinearLayout>

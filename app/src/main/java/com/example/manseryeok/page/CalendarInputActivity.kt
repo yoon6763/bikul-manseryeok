@@ -56,13 +56,8 @@ class CalendarInputActivity : ParentActivity() {
 
         toolbarSetting()
 
-        userInputViewModel.firstName.value = "test"
-
         dataBinding.run {
-//            etInputBirth.setOnClickListener { openBirthPicker() }
-            etInputBirthTime.setOnClickListener { openBirthTimePicker() }
             etInputBirthPlace.setOnClickListener { openBirthPlacePicker() }
-            cbInputBirthTime.setOnCheckedChangeListener { _, b -> etInputBirthTime.isEnabled = !b }
             btnNameInputFinish.setOnClickListener { nextPage(NextPageType.NAME) }
             btnCalenderInputFinish.setOnClickListener {
                 if (birth[Calendar.YEAR] >= 2101) {
@@ -121,37 +116,6 @@ class CalendarInputActivity : ParentActivity() {
             // 앱 바 뒤로가기 버튼 설정
             setDisplayHomeAsUpEnabled(true)
         }
-    }
-
-//    private fun openBirthPicker() {
-//        val datePicker = DatePickerDialog(
-//            this@CalendarInputActivity,
-//            android.R.style.Theme_Holo_Light_Dialog_MinWidth,
-//            DatePickerDialog.OnDateSetListener { datePicker, y, m, d ->
-//                birth[Calendar.YEAR] = y
-//                birth[Calendar.MONTH] = m
-//                birth[Calendar.DAY_OF_MONTH] = d
-//                binding.etInputBirth.setText(Utils.dateSlideFormat.format(birth.timeInMillis))
-//            }, birth[Calendar.YEAR], birth[Calendar.MONTH] + 1, birth[Calendar.DAY_OF_MONTH]
-//        )
-//
-//        datePicker.datePicker.calendarViewShown = false
-//        datePicker.window!!.setBackgroundDrawableResource(android.R.color.transparent)
-//        datePicker.show()
-//    }
-
-    private fun openBirthTimePicker() {
-        val timePicker = TimePickerDialog(
-            this@CalendarInputActivity,
-            android.R.style.Theme_Holo_Light_Dialog_MinWidth,
-            TimePickerDialog.OnTimeSetListener { timePicker, h, m ->
-                birth[Calendar.HOUR_OF_DAY] = h
-                birth[Calendar.MINUTE] = m
-                binding.etInputBirthTime.setText(Utils.timeFormat.format(birth.timeInMillis))
-            }, birth[Calendar.HOUR_OF_DAY], birth[Calendar.MINUTE], false
-        )
-        timePicker.window!!.setBackgroundDrawableResource(android.R.color.transparent)
-        timePicker.show()
     }
 
     private fun openBirthPlacePicker() {

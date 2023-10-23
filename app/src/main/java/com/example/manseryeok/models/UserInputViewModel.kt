@@ -2,6 +2,7 @@ package com.example.manseryeok.models
 
 import android.R
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,8 +18,11 @@ class UserInputViewModel : ViewModel() {
     var year = MutableLiveData<Int>(-1)
     var month = MutableLiveData<Int>(-1)
     var day = MutableLiveData<Int>(-1)
+    var hour = MutableLiveData<Int>(-1)
+    var minute = MutableLiveData<Int>(-1)
 
     var birthLabel = MutableLiveData<String>("")
+    var birthTimeLabel = MutableLiveData<String>("")
     var isIncludeTime = MutableLiveData<Boolean>(false)
 
 
@@ -54,6 +58,25 @@ class UserInputViewModel : ViewModel() {
         ).apply {
             datePicker.calendarViewShown = false
             window!!.setBackgroundDrawableResource(R.color.transparent)
+            show()
+        }
+    }
+
+    fun openBirthTimePicker(view: View) {
+        val context = view.context
+
+        TimePickerDialog(
+            context,
+            R.style.Theme_Holo_Light_Dialog_MinWidth,
+            TimePickerDialog.OnTimeSetListener { timePicker, h, m ->
+                hour.value = h
+                minute.value = m
+
+                val time = String.format("%02d", hour.value) + " : " + String.format("%02d", minute.value)
+                birthTimeLabel.value = time
+            }, hour.value!!, minute.value!!, false
+        ).apply {
+            window!!.setBackgroundDrawableResource(android.R.color.transparent)
             show()
         }
     }
