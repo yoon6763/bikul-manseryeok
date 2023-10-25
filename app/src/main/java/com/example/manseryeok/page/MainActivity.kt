@@ -103,7 +103,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             when (p0?.id) {
                 clCalendar.id -> {
                     val intent = Intent(this@MainActivity, CalendarInputActivity::class.java)
-                    intent.putExtra(Utils.INTENT_EXTRAS_INFO_TYPE, Utils.InfoType.CREATE)
+                    intent.putExtra(Utils.INTENT_EXTRAS_INFO_TYPE, Utils.InfoType.CREATE.value)
                     startActivity(intent)
                 }
                 clCompass.id -> startActivity(Intent(this@MainActivity, CompassActivity::class.java))

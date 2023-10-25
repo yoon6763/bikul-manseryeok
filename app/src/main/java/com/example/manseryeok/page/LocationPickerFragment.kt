@@ -11,7 +11,8 @@ import com.example.manseryeok.databinding.FragmentLocationPickerBinding
 class LocationPickerFragment : DialogFragment() {
     private val binding by lazy { FragmentLocationPickerBinding.inflate(layoutInflater) }
     private val locations = TimeDiffConstants.timeZones
-    val adapter by lazy { LocationAdapter(requireActivity(), locations) }
+    private val adapter by lazy { LocationAdapter(requireActivity(), locations) }
+
     lateinit var onLocationClickListener: LocationAdapter.OnLocationClickListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,7 +20,6 @@ class LocationPickerFragment : DialogFragment() {
 
         binding.rvLocation.adapter = adapter
         adapter.onLocationClickListener = onLocationClickListener
-
     }
 
     override fun onStart() {
@@ -37,12 +37,7 @@ class LocationPickerFragment : DialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        binding.run {
-            adapter.notifyDataSetChanged()
-        }
-
-
+        adapter.notifyDataSetChanged()
         return binding.root
     }
 }

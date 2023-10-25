@@ -253,7 +253,7 @@
                         android:editable="false"
                         android:focusable="false"
                         android:gravity="center"
-                        android:text="대한민국 (-30분)" />
+                        android:text="@{viewModel.birthPlaceLabel}"/>
                 </LinearLayout>
 
                 <CheckBox
@@ -262,6 +262,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:buttonTint="@color/green"
+                    android:checked="@{viewModel.useSummerTime}"
                     android:text="서머타임 적용" />
 
                 <TextView
@@ -274,6 +275,7 @@
                 <CheckBox
                     android:id="@+id/cb_use_tokyo"
                     android:layout_width="wrap_content"
+                    android:checked="@{viewModel.useTokyoTime}"
                     android:layout_height="wrap_content"
                     android:buttonTint="@color/green"
                     android:text="동경시 사용" />

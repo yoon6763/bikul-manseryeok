@@ -22,6 +22,7 @@ data class User(
     var birthPlace: String?,
     var timeDiff: Int,
 
+    // 0 - 사용안함, 1 - 사용
     var useSummerTime: Int,
     var useTokyoTime: Int,
 
