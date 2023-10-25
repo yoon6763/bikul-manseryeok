@@ -68,15 +68,19 @@ class UserInputViewModel : ViewModel() {
         TimePickerDialog(
             context,
             R.style.Theme_Holo_Light_Dialog_MinWidth,
-            TimePickerDialog.OnTimeSetListener { timePicker, h, m ->
+            { timePicker, h, m ->
                 hour.value = h
                 minute.value = m
 
-                val time = String.format("%02d", hour.value) + " : " + String.format("%02d", minute.value)
-                birthTimeLabel.value = time
+                birthTimeLabel.value = Utils.timeFormat.format(
+                    Calendar.getInstance().apply {
+                        set(Calendar.HOUR_OF_DAY, hour.value!!)
+                        set(Calendar.MINUTE, minute.value!!)
+                    }.timeInMillis
+                )
             }, hour.value!!, minute.value!!, false
         ).apply {
-            window!!.setBackgroundDrawableResource(android.R.color.transparent)
+            window!!.setBackgroundDrawableResource(R.color.transparent)
             show()
         }
     }
