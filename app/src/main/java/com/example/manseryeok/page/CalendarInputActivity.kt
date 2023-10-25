@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.example.manseryeok.R
@@ -18,7 +17,6 @@ import com.example.manseryeok.utils.ParentActivity
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import java.util.Calendar
 
 
 class CalendarInputActivity : ParentActivity() {
@@ -41,8 +39,6 @@ class CalendarInputActivity : ParentActivity() {
             viewModel = userInputViewModel
         }
 
-        toolbarSetting()
-
         binding.run {
             etInputBirthPlace.setOnClickListener { openBirthPlacePicker() }
             btnNameInputFinish.setOnClickListener { nextPage(NextPageType.NAME) }
@@ -50,6 +46,7 @@ class CalendarInputActivity : ParentActivity() {
             btnEditFinish.setOnClickListener { saveUpdatedUser() }
         }
 
+        toolbarSetting()
         setMode()
     }
 
@@ -57,13 +54,7 @@ class CalendarInputActivity : ParentActivity() {
         if (!userInputViewModel.isValid(applicationContext)) return
 
         val userId = intent.getLongExtra(Utils.INTENT_EXTRAS_USER_ID, -1)
-
-        var user: User? = null
-        runBlocking {
-            launch(IO) {
-                user = userDao.getUser(userId)
-            }
-        }
+        val user = getUserFromDB(userId)
 
         if(user == null) {
             showShortToast("유저 정보를 불러오는데 실패했습니다")
@@ -105,20 +96,14 @@ class CalendarInputActivity : ParentActivity() {
 
             Utils.InfoType.EDIT.value -> {
                 binding.containerNextPage.visibility = View.GONE
-                editSetting()
+                initEditMode()
             }
         }
     }
 
-    private fun editSetting() {
+    private fun initEditMode() {
         val userId = intent.getLongExtra(Utils.INTENT_EXTRAS_USER_ID, -1)
-        var user: User? = null
-
-        runBlocking {
-            launch(IO) {
-                user = userDao.getUser(userId)
-            }
-        }
+        val user = getUserFromDB(userId)
 
         if (user == null) {
             showShortToast("유저 정보를 불러오는데 실패했습니다")
@@ -158,6 +143,16 @@ class CalendarInputActivity : ParentActivity() {
         intent.putExtra(Utils.INTENT_EXTRAS_USER_ID, user.id)
         startActivity(intent)
         finish()
+    }
+
+    private fun getUserFromDB(userId: Long): User? {
+        var user: User? = null
+        runBlocking {
+            launch(IO) {
+                user = userDao.getUser(userId)
+            }
+        }
+        return user
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
