@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center_horizontal"
     android:background="@drawable/box_navy"
+    android:id="@+id/widget_calendar_container"
     android:gravity="center"
     android:orientation="vertical"
     android:theme="@style/Theme.Manseryeok.AppWidgetContainer">
