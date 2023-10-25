@@ -57,29 +57,17 @@ class InquiryActivity : ParentActivity() {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
                     hideProgress()
-                    Toast.makeText(
-                        applicationContext,
-                        getString(R.string.msg_send_inquiry_complete),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    showShortToast(R.string.msg_send_inquiry_complete)
                     finish()
                 } else {
                     hideProgress()
-                    Toast.makeText(
-                        applicationContext,
-                        getString(R.string.msg_send_inquiry_fail),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    showShortToast(R.string.msg_send_inquiry_fail)
                 }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 hideProgress()
-                Toast.makeText(
-                    applicationContext,
-                    getString(R.string.msg_send_inquiry_fail),
-                    Toast.LENGTH_SHORT
-                ).show()
+                showShortToast(R.string.msg_send_inquiry_fail)
             }
         })
     }
