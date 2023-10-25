@@ -9,7 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.manseryeok.R
-import com.example.manseryeok.adapter.decorator.RvDecorator
+import com.example.manseryeok.adapter.decorator.RecyclerViewDecorator
 import com.example.manseryeok.databinding.ItemDbListBinding
 import com.example.manseryeok.databinding.ItemGroupBinding
 
@@ -41,7 +41,7 @@ class GroupListAdapter(
         holder.binding.run {
             tvGroupName.text = "${group.groupName} (${group.users.size}명)"
             rvGroupMemberList.adapter = userListAdapters[position]
-            rvGroupMemberList.addItemDecoration(RvDecorator(1, Color.parseColor("#EDEDED")))
+            rvGroupMemberList.addItemDecoration(RecyclerViewDecorator(1, Color.parseColor("#EDEDED")))
 
             //changeVisibility(holder.binding, selectedItems.get(position))
         }

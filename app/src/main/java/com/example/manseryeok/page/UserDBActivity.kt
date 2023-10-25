@@ -4,7 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.MenuItem
-import com.example.manseryeok.adapter.decorator.RvDecorator
+import com.example.manseryeok.adapter.decorator.RecyclerViewDecorator
 import com.example.manseryeok.adapter.userlist.GroupItem
 import com.example.manseryeok.adapter.userlist.GroupListAdapter
 import com.example.manseryeok.adapter.userlist.OnUserMenuClickListener
@@ -89,7 +89,7 @@ class UserDBActivity : ParentActivity() {
 
         binding.run {
             groupListAdapter = GroupListAdapter(this@UserDBActivity, groupList)
-            rvDbList.addItemDecoration(RvDecorator(30, Color.parseColor("#d9d9d9")))
+            rvDbList.addItemDecoration(RecyclerViewDecorator(30, Color.parseColor("#d9d9d9")))
             groupListAdapter.notifyDataSetChanged()
             rvDbList.adapter = groupListAdapter
         }

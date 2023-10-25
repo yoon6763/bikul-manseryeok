@@ -7,7 +7,7 @@ import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 
-class RvDecorator(
+class RecyclerViewDecorator(
     //그릴 divider의 높이와 색상을 받는다
     private val dividerHeight: Int,
     private val dividerColor: Int = Color.TRANSPARENT
