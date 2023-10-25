@@ -44,10 +44,26 @@ class CalendarInputActivity : ParentActivity() {
             etInputBirthPlace.setOnClickListener { openBirthPlacePicker() }
             btnNameInputFinish.setOnClickListener { nextPage(NextPageType.NAME) }
             btnCalenderInputFinish.setOnClickListener { nextPage(NextPageType.CALENDAR) }
-            btnEditFinish.setOnClickListener { }
+            btnEditFinish.setOnClickListener { saveUpdatedUser() }
         }
 
         setMode()
+    }
+
+    private fun saveUpdatedUser() {
+        if(!userInputViewModel.isValid(applicationContext)) return
+
+        val userId = intent.getLongExtra(Utils.INTENT_EXTRAS_USER_ID, -1)
+        val user = userInputViewModel.toUserEntity()
+        user.id = userId
+
+        runBlocking {
+            launch(IO) {
+                userDao.update(user)
+            }
+        }
+
+        finish()
     }
 
     private fun openBirthPlacePicker() {
@@ -87,23 +103,12 @@ class CalendarInputActivity : ParentActivity() {
             }
         }
 
-        showShortToast("수정모드 진입")
-        showShortToast(user?.firstName + user?.lastName)
-
         if (user == null) {
             showShortToast("유저 정보를 불러오는데 실패했습니다")
             finish()
         }
 
-        binding.run {
-            etFirstName.setText(user?.firstName)
-            etName.setText(user?.lastName)
-            etInputBirth.setText(Utils.dateSlideFormat.format(user?.getBirthCalculated()?.timeInMillis))
-
-            if (user?.includeTime!!) {
-                etInputBirthTime.setText(Utils.timeFormat.format(user?.getBirthCalculated()?.timeInMillis))
-            }
-        }
+        userInputViewModel.updateViewModel(user!!)
     }
 
     private fun toolbarSetting() {

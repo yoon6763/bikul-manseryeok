@@ -8,10 +8,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.room.PrimaryKey
-import com.example.manseryeok.adapter.LocationAdapter
 import com.example.manseryeok.models.user.User
-import com.example.manseryeok.page.LocationPickerFragment
 import com.example.manseryeok.utils.Utils
 import java.util.Calendar
 
@@ -59,14 +56,7 @@ class UserInputViewModel : ViewModel() {
                 year.value = y
                 month.value = m + 1
                 day.value = d
-
-                val calendar = Calendar.getInstance().apply {
-                    set(Calendar.YEAR, year.value!!)
-                    set(Calendar.MONTH, month.value!! - 1)
-                    set(Calendar.DAY_OF_MONTH, day.value!!)
-                }
-
-                birthLabel.value = Utils.dateSlideFormat.format(calendar.timeInMillis)
+                birthLabel.value = getBirthLabel()
             }, year.value!!, month.value!! - 1, day.value!!
         ).apply {
             datePicker.calendarViewShown = false
@@ -84,18 +74,30 @@ class UserInputViewModel : ViewModel() {
             { timePicker, h, m ->
                 hour.value = h
                 minute.value = m
-
-                birthTimeLabel.value = Utils.timeFormat.format(
-                    Calendar.getInstance().apply {
-                        set(Calendar.HOUR_OF_DAY, hour.value!!)
-                        set(Calendar.MINUTE, minute.value!!)
-                    }.timeInMillis
-                )
+                birthTimeLabel.value = getTimeLabel()
             }, hour.value!!, minute.value!!, false
         ).apply {
             window!!.setBackgroundDrawableResource(R.color.transparent)
             show()
         }
+    }
+
+    private fun getBirthLabel(): String {
+        return Utils.dateSlideFormat.format(Calendar.getInstance().apply {
+            set(Calendar.YEAR, year.value!!)
+            set(Calendar.MONTH, month.value!! - 1)
+            set(Calendar.DAY_OF_MONTH, day.value!!)
+        }.timeInMillis)
+    }
+
+
+    private fun getTimeLabel(): String {
+        return Utils.timeFormat.format(
+            Calendar.getInstance().apply {
+                set(Calendar.HOUR_OF_DAY, hour.value!!)
+                set(Calendar.MINUTE, minute.value!!)
+            }.timeInMillis
+        )
     }
 
     fun isValid(context: Context): Boolean {
@@ -124,10 +126,6 @@ class UserInputViewModel : ViewModel() {
             return false
         }
 
-
-        Toast.makeText(context, "유효성 검사 통과", Toast.LENGTH_SHORT).show()
-
-
         return true
     }
 
@@ -149,5 +147,27 @@ class UserInputViewModel : ViewModel() {
             useTokyoTime = if (useTokyoTime.value!!) 1 else 0,
             memo = ""
         )
+    }
+
+    fun updateViewModel(user: User) {
+        firstName.value = user.firstName
+        lastName.value = user.lastName
+        gender.value = gender.value
+        year.value = user.birthYear
+        month.value = user.birthMonth
+        day.value = user.birthDay
+        isIncludeTime.value = user.includeTime
+        hour.value = user.birthHour
+        minute.value = user.birthMinute
+        birthPlace.value = user.birthPlace
+        timeDiff.value = user.timeDiff
+        useSummerTime.value = user.useSummerTime == 1
+        useTokyoTime.value = user.useTokyoTime == 1
+
+
+        birthLabel.value = Utils.dateSlideFormat.format(user.getBirthCalculated().timeInMillis)
+        if (isIncludeTime.value!!) birthTimeLabel.value =
+            Utils.timeFormat.format(user.getBirthCalculated().timeInMillis)
+        birthPlaceLabel.value = "${user.birthPlace} (${user.timeDiff}분)"
     }
 }

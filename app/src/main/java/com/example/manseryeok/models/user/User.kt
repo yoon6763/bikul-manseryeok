@@ -29,12 +29,12 @@ data class User(
     var memo: String?
 ) {
 
-    fun getBirthOrigin()=Calendar.getInstance().apply {
+    fun getBirthOrigin() = Calendar.getInstance().apply {
         set(Calendar.YEAR, birthYear)
         set(Calendar.MONTH, birthMonth - 1)
         set(Calendar.DAY_OF_MONTH, birthDay)
 
-        if(includeTime) {
+        if (includeTime) {
             set(Calendar.HOUR_OF_DAY, birthHour)
             set(Calendar.MINUTE, birthMinute)
         }
@@ -56,7 +56,10 @@ data class User(
             if (useTokyoTime == 1) calendar.add(Calendar.MINUTE, 30)
 
             // 23:30 이후면 다음날로 침
-            if (includeTime && birthHour == 23 && birthMinute >= 30) calendar.add(Calendar.HOUR_OF_DAY, 1)
+            if (includeTime && birthHour == 23 && birthMinute >= 30) calendar.add(
+                Calendar.HOUR_OF_DAY,
+                1
+            )
         }
 
         return calendar
