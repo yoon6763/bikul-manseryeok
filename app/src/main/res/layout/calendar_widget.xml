@@ -15,6 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:textColor="@color/white"
+        android:text="2023년 1월 1일"
         android:textSize="15sp" />
 
     <TextView

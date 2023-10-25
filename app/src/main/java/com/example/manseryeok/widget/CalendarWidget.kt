@@ -70,7 +70,7 @@ internal fun updateAppWidget(
 
     val intent = Intent(TedPermissionProvider.context, MainActivity::class.java) //실행할 액티비티의 클래스
 
-    val pendingIntent = PendingIntent.getActivity(TedPermissionProvider.context, 0, intent, 0)
+    val pendingIntent = PendingIntent.getActivity(TedPermissionProvider.context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
     views.setOnClickPendingIntent(R.id.widget_calendar_container, pendingIntent)
 
     appWidgetManager.updateAppWidget(appWidgetId, views)
