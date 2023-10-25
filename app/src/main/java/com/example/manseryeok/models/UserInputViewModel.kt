@@ -75,6 +75,8 @@ class UserInputViewModel : ViewModel() {
                 hour.value = h
                 minute.value = m
                 birthTimeLabel.value = getTimeLabel()
+
+                Toast.makeText(context, "$h 시  $m 분", Toast.LENGTH_SHORT).show()
             }, hour.value!!, minute.value!!, false
         ).apply {
             window!!.setBackgroundDrawableResource(R.color.transparent)
@@ -166,8 +168,7 @@ class UserInputViewModel : ViewModel() {
 
 
         birthLabel.value = Utils.dateSlideFormat.format(user.getBirthCalculated().timeInMillis)
-        if (isIncludeTime.value!!) birthTimeLabel.value =
-            Utils.timeFormat.format(user.getBirthCalculated().timeInMillis)
+        if (isIncludeTime.value!!) birthTimeLabel.value = getTimeLabel()
         birthPlaceLabel.value = "${user.birthPlace} (${user.timeDiff}분)"
     }
 }
