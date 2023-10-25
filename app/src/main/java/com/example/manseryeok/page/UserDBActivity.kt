@@ -126,7 +126,7 @@ class UserDBActivity : ParentActivity() {
             override fun onEditClick(id: Long, position: Int) {
                 val intent = Intent(this@UserDBActivity, CalendarInputActivity::class.java).apply {
                     putExtra(Utils.INTENT_EXTRAS_USER_ID, id)
-                    putExtra(Utils.INTENT_EXTRAS_INFO_TYPE, Utils.InfoType.EDIT)
+                    putExtra(Utils.INTENT_EXTRAS_INFO_TYPE, Utils.InfoType.EDIT.value)
                 }
                 startActivity(intent)
             }

@@ -87,6 +87,9 @@ class CalendarInputActivity : ParentActivity() {
             }
         }
 
+        showShortToast("수정모드 진입")
+        showShortToast(user?.firstName + user?.lastName)
+
         if (user == null) {
             showShortToast("유저 정보를 불러오는데 실패했습니다")
             finish()

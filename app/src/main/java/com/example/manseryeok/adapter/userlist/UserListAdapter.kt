@@ -123,6 +123,13 @@ class UserListAdapter(
                 )
             }
 
+            binding.btnItemDbEdit.setOnClickListener {
+                onUserMenuClickListener?.onEditClick(
+                    items[adapterPosition].id,
+                    adapterPosition
+                )
+            }
+
 
             itemView.setOnClickListener {
                 if (selectedItems.get(adapterPosition)) {
