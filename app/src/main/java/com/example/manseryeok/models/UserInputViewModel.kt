@@ -66,6 +66,8 @@ class UserInputViewModel : ViewModel() {
     }
 
     fun openBirthTimePicker(view: View) {
+        if(!isIncludeTime.value!!) return
+
         val context = view.context
 
         TimePickerDialog(
@@ -75,8 +77,6 @@ class UserInputViewModel : ViewModel() {
                 hour.value = h
                 minute.value = m
                 birthTimeLabel.value = getTimeLabel()
-
-                Toast.makeText(context, "$h 시  $m 분", Toast.LENGTH_SHORT).show()
             }, hour.value!!, minute.value!!, false
         ).apply {
             window!!.setBackgroundDrawableResource(R.color.transparent)
@@ -100,6 +100,14 @@ class UserInputViewModel : ViewModel() {
                 set(Calendar.MINUTE, minute.value!!)
             }.timeInMillis
         )
+    }
+
+    fun clearBirthTimeInfo(isChecked: Boolean) {
+        if(isChecked) {
+            hour.value = -1
+            minute.value = -1
+            birthTimeLabel.value = ""
+        }
     }
 
     fun isValid(context: Context): Boolean {

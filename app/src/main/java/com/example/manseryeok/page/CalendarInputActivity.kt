@@ -33,7 +33,10 @@ class CalendarInputActivity : ParentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         userInputViewModel = ViewModelProvider(this)[UserInputViewModel::class.java]
-        binding = DataBindingUtil.setContentView<ActivityCalendarInputBinding?>(this, R.layout.activity_calendar_input).apply {
+        binding = DataBindingUtil.setContentView<ActivityCalendarInputBinding?>(
+            this,
+            R.layout.activity_calendar_input
+        ).apply {
             lifecycleOwner = this@CalendarInputActivity
             viewModel = userInputViewModel
         }
@@ -51,15 +54,27 @@ class CalendarInputActivity : ParentActivity() {
     }
 
     private fun saveUpdatedUser() {
-        if(!userInputViewModel.isValid(applicationContext)) return
+        if (!userInputViewModel.isValid(applicationContext)) return
 
         val userId = intent.getLongExtra(Utils.INTENT_EXTRAS_USER_ID, -1)
-        val user = userInputViewModel.toUserEntity()
-        user.id = userId
+
+        var user: User? = null
+        runBlocking {
+            launch(IO) {
+                user = userDao.getUser(userId)
+            }
+        }
+
+        if(user == null) {
+            showShortToast("유저 정보를 불러오는데 실패했습니다")
+            finish()
+        }
+
+        user?.updateFromViewModel(userInputViewModel)
 
         runBlocking {
             launch(IO) {
-                userDao.update(user)
+                userDao.update(user!!)
             }
         }
 
@@ -69,14 +84,15 @@ class CalendarInputActivity : ParentActivity() {
     private fun openBirthPlacePicker() {
         val locationPickerFragment = LocationPickerFragment()
 
-        locationPickerFragment.onLocationClickListener = object : LocationAdapter.OnLocationClickListener {
-            override fun onLocationClick(location: String, timeDiff: Int) {
-                userInputViewModel.birthPlace.value = location
-                userInputViewModel.timeDiff.value = timeDiff
-                userInputViewModel.birthPlaceLabel.value = "$location (${timeDiff}분)"
-                locationPickerFragment.dismiss()
+        locationPickerFragment.onLocationClickListener =
+            object : LocationAdapter.OnLocationClickListener {
+                override fun onLocationClick(location: String, timeDiff: Int) {
+                    userInputViewModel.birthPlace.value = location
+                    userInputViewModel.timeDiff.value = timeDiff
+                    userInputViewModel.birthPlaceLabel.value = "$location (${timeDiff}분)"
+                    locationPickerFragment.dismiss()
+                }
             }
-        }
 
         locationPickerFragment.show(supportFragmentManager, "LocationPicker")
     }
@@ -86,6 +102,7 @@ class CalendarInputActivity : ParentActivity() {
             Utils.InfoType.CREATE.value -> {
                 binding.containerEdit.visibility = View.GONE
             }
+
             Utils.InfoType.EDIT.value -> {
                 binding.containerNextPage.visibility = View.GONE
                 editSetting()
@@ -120,7 +137,7 @@ class CalendarInputActivity : ParentActivity() {
     }
 
     private fun nextPage(type: NextPageType) = with(binding) {
-        if(!viewModel!!.isValid(applicationContext)) return@with
+        if (!viewModel!!.isValid(applicationContext)) return@with
         val user = viewModel!!.toUserEntity()
 
         runBlocking {
@@ -132,7 +149,10 @@ class CalendarInputActivity : ParentActivity() {
 
         val intent = when (type) {
             NextPageType.NAME -> Intent(this@CalendarInputActivity, NameActivity::class.java)
-            NextPageType.CALENDAR -> Intent(this@CalendarInputActivity, CalendarActivity::class.java)
+            NextPageType.CALENDAR -> Intent(
+                this@CalendarInputActivity,
+                CalendarActivity::class.java
+            )
         }
 
         intent.putExtra(Utils.INTENT_EXTRAS_USER_ID, user.id)

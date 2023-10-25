@@ -2,6 +2,7 @@ package com.example.manseryeok.models.user
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.manseryeok.models.UserInputViewModel
 import java.util.Calendar
 
 @Entity
@@ -63,5 +64,29 @@ data class User(
         }
 
         return calendar
+    }
+
+    fun updateFromViewModel(userInputViewModel: UserInputViewModel) {
+        this.firstName = userInputViewModel.firstName.value
+        this.lastName = userInputViewModel.lastName.value
+        this.gender = userInputViewModel.gender.value!!
+        this.birthYear = userInputViewModel.year.value!!
+        this.birthMonth = userInputViewModel.month.value!!
+        this.birthDay = userInputViewModel.day.value!!
+        this.includeTime = userInputViewModel.isIncludeTime.value!!
+
+        if(this.includeTime) {
+            this.birthHour = userInputViewModel.hour.value!!
+            this.birthMinute = userInputViewModel.minute.value!!
+        } else {
+            this.birthHour = -1
+            this.birthMinute = -1
+        }
+
+        this.birthPlace = userInputViewModel.birthPlace.value
+        this.timeDiff = userInputViewModel.timeDiff.value!!
+
+        this.useSummerTime = if(userInputViewModel.useSummerTime.value!!) 1 else 0
+        this.useTokyoTime = if(userInputViewModel.useTokyoTime.value!!) 1 else 0
     }
 }

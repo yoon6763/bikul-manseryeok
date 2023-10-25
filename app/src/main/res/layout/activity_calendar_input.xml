@@ -227,6 +227,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:buttonTint="@color/green"
+                        android:onCheckedChanged="@{(v, b) -> viewModel.clearBirthTimeInfo(b)}"
                         android:checked="@={!viewModel.isIncludeTime}"
                         android:text="@string/obj_input_birth_time_unknown" />
 
