@@ -22,8 +22,8 @@ import kotlinx.coroutines.runBlocking
 class UserDBActivity : ParentActivity() {
     private val binding by lazy { ActivityDbactivityBinding.inflate(layoutInflater) }
     private val userDao by lazy { AppDatabase.getInstance(applicationContext).userDao() }
-    private val userTagDao by lazy { AppDatabase.getInstance(applicationContext).userTagDao() }
-    private val groupTagDao by lazy { AppDatabase.getInstance(applicationContext).groupTagDao() }
+    private val userGroupDAO by lazy { AppDatabase.getInstance(applicationContext).userGroupDAO() }
+    private val groupGroupDao by lazy { AppDatabase.getInstance(applicationContext).groupDao() }
     private val groupList = ArrayList<GroupItem>()
     private lateinit var groupListAdapter: GroupListAdapter
 
@@ -54,9 +54,9 @@ class UserDBActivity : ParentActivity() {
         runBlocking {
             launch(IO) {
 
-                val allTags = groupTagDao.getAllTags()
-                allTags.forEach { tag ->
-                    val users = userTagDao.getUsersByTag(tag.id) as ArrayList<User>
+                val allGroups = groupGroupDao.getAllGroups()
+                allGroups.forEach { group ->
+                    val users = userGroupDAO.getUsersByGroup(group.id) as ArrayList<User>
                     val manseryeokList = ArrayList<Manseryeok>()
                     users.forEach { user ->
                         manseryeokList.add(
@@ -67,10 +67,10 @@ class UserDBActivity : ParentActivity() {
                             )
                         )
                     }
-                    groupList.add(GroupItem(tag.name, users, manseryeokList))
+                    groupList.add(GroupItem(group.name, users, manseryeokList))
                 }
 
-                val notGroupUsers = userTagDao.getUsersWithoutTag() as ArrayList<User>
+                val notGroupUsers = userGroupDAO.getUsersWithoutGroup() as ArrayList<User>
                 val notGroupManseryeokList = ArrayList<Manseryeok>()
 
                 notGroupUsers.forEach { user ->

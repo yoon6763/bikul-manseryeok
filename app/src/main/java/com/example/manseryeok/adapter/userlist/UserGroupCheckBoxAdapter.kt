@@ -6,15 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.manseryeok.R
-import com.example.manseryeok.databinding.ItemGroupBinding
 import com.example.manseryeok.databinding.ItemGroupChecklistBinding
-import com.example.manseryeok.models.user.GroupTag
+import com.example.manseryeok.models.user.Group
 
-class UserTagCheckBoxAdapter(
+class UserGroupCheckBoxAdapter(
     private val context: Context,
-    private val groupTags: List<GroupTag>,
-    private val selectedTags: HashSet<Long>
-) : RecyclerView.Adapter<UserTagCheckBoxAdapter.Holder>() {
+    private val groups: List<Group>,
+    private val selectedGroups: HashSet<Long>
+) : RecyclerView.Adapter<UserGroupCheckBoxAdapter.Holder>() {
 
     var onGroupCheckListener: OnGroupCheckListener? = null
 
@@ -30,13 +29,13 @@ class UserTagCheckBoxAdapter(
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.binding.run {
-            cbGroup.text = groupTags[position].name
-            cbGroup.isChecked = groupTags[position].id in selectedTags
+            cbGroup.text = groups[position].name
+            cbGroup.isChecked = groups[position].id in selectedGroups
         }
     }
 
     override fun getItemCount(): Int {
-        return groupTags.size
+        return groups.size
     }
 
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -45,15 +44,15 @@ class UserTagCheckBoxAdapter(
         init {
             binding.cbGroup.setOnCheckedChangeListener { buttonView, isChecked ->
                 if (buttonView.isPressed) {
-                    onGroupCheckListener?.onGroupCheck(groupTags[adapterPosition].id, isChecked)
+                    onGroupCheckListener?.onGroupCheck(groups[adapterPosition].id, isChecked)
                 }
             }
         }
     }
 
     fun uncheckAll() {
-        for (element in groupTags) {
-            selectedTags.remove(element.id)
+        for (element in groups) {
+            selectedGroups.remove(element.id)
         }
         notifyDataSetChanged()
     }

@@ -2,8 +2,8 @@ package com.example.manseryeok.models.user
 
 import androidx.room.Entity
 
-@Entity(primaryKeys = ["userId", "tagId"])
-data class UserTag(
+@Entity(primaryKeys = ["userId", "groupId"])
+data class UserGroup(
     val userId: Long,
-    val tagId: Long
+    val groupId: Long
 )

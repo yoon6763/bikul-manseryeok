@@ -1,15 +1,15 @@
 package com.example.manseryeok.page
 
 import android.os.Bundle
-import com.example.manseryeok.adapter.userlist.UserTagCheckBoxAdapter
+import com.example.manseryeok.adapter.userlist.UserGroupCheckBoxAdapter
 import com.example.manseryeok.databinding.ActivityGroupBinding
 import com.example.manseryeok.models.AppDatabase
-import com.example.manseryeok.models.dao.GroupTagDAO
+import com.example.manseryeok.models.dao.GroupDAO
 import com.example.manseryeok.models.dao.UserDAO
-import com.example.manseryeok.models.dao.UserTagDAO
-import com.example.manseryeok.models.user.GroupTag
+import com.example.manseryeok.models.dao.UserGroupDAO
+import com.example.manseryeok.models.user.Group
 import com.example.manseryeok.models.user.User
-import com.example.manseryeok.models.user.UserTag
+import com.example.manseryeok.models.user.UserGroup
 import com.example.manseryeok.utils.ParentActivity
 import com.example.manseryeok.utils.Utils
 import kotlinx.coroutines.Dispatchers.IO
@@ -21,23 +21,23 @@ class GroupActivity : ParentActivity() {
     private val appDatabase by lazy { AppDatabase.getInstance(applicationContext) }
     private lateinit var userModel: User
     private lateinit var userDAO: UserDAO
-    private lateinit var groupTagDAO: GroupTagDAO
-    private lateinit var userTagDAO: UserTagDAO
-    private lateinit var userTagCheckBoxAdapter: UserTagCheckBoxAdapter
-    private val groupTags = ArrayList<GroupTag>()
-    private val selectedTags = HashSet<Long>()
+    private lateinit var groupDAO: GroupDAO
+    private lateinit var userGroupDAO: UserGroupDAO
+    private lateinit var userGroupCheckBoxAdapter: UserGroupCheckBoxAdapter
+    private val groups = ArrayList<Group>()
+    private val selectedGroups = HashSet<Long>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
         userDAO = appDatabase.userDao()
-        groupTagDAO = appDatabase.groupTagDao()
-        userTagDAO = appDatabase.userTagDao()
+        groupDAO = appDatabase.groupDao()
+        userGroupDAO = appDatabase.userGroupDAO()
 
         toolbarSetting()
         loadUser()
-        loadGroupTag()
+        loadGroups()
         groupAddSetting()
         usernameSetting()
         groupAdapterSetting()
@@ -56,38 +56,38 @@ class GroupActivity : ParentActivity() {
 
             runBlocking {
                 launch(IO) {
-                    val groupTag = GroupTag(0, groupName)
-                    val insertedTagId = groupTagDAO.insertTag(groupTag)
-                    groupTag.id = insertedTagId
-                    groupTags.add(groupTag)
+                    val group = Group(0, groupName)
+                    val insertedGroupId = groupDAO.insertGroup(group)
+                    group.id = insertedGroupId
+                    groups.add(group)
                 }
             }
 
-            userTagCheckBoxAdapter.notifyDataSetChanged()
+            userGroupCheckBoxAdapter.notifyDataSetChanged()
         }
     }
 
     private fun groupAdapterSetting() = with(binding) {
-        userTagCheckBoxAdapter = UserTagCheckBoxAdapter(this@GroupActivity, groupTags, selectedTags)
-        rvGroup.adapter = userTagCheckBoxAdapter
+        userGroupCheckBoxAdapter = UserGroupCheckBoxAdapter(this@GroupActivity, groups, selectedGroups)
+        rvGroup.adapter = userGroupCheckBoxAdapter
 
-        userTagCheckBoxAdapter.onGroupCheckListener = object : UserTagCheckBoxAdapter.OnGroupCheckListener {
+        userGroupCheckBoxAdapter.onGroupCheckListener = object : UserGroupCheckBoxAdapter.OnGroupCheckListener {
             override fun onGroupCheck(groupId: Long, check: Boolean) {
                 runBlocking {
                     launch(IO) {
                         if (check) {
-                            selectedTags.add(groupId)
-                            userTagDAO.insertUserTag(UserTag(userModel.id, groupId))
+                            selectedGroups.add(groupId)
+                            userGroupDAO.insertUserGroup(UserGroup(userModel.id, groupId))
                         } else {
-                            selectedTags.remove(groupId)
-                            userTagDAO.deleteUserTag(UserTag(userModel.id, groupId))
+                            selectedGroups.remove(groupId)
+                            userGroupDAO.deleteUserGroup(UserGroup(userModel.id, groupId))
                         }
                     }
                 }
             }
         }
 
-        userTagCheckBoxAdapter.notifyDataSetChanged()
+        userGroupCheckBoxAdapter.notifyDataSetChanged()
     }
 
     private fun usernameSetting() = with(binding) {
@@ -96,16 +96,16 @@ class GroupActivity : ParentActivity() {
         tvUsername.text = username
     }
 
-    private fun loadGroupTag() {
+    private fun loadGroups() {
         runBlocking {
             launch(IO) {
-                groupTagDAO.getAllTags().forEach {
-                    groupTags.add(it)
+                groupDAO.getAllGroups().forEach {
+                    groups.add(it)
                 }
 
-                val userTags = userTagDAO.getTagsByUser(userModel.id)
-                userTags.forEach { userTag ->
-                    selectedTags.add(userTag.tagId)
+                val userGroups = userGroupDAO.getGroupsByUser(userModel.id)
+                userGroups.forEach { userGroup ->
+                    selectedGroups.add(userGroup.groupId)
                 }
             }
         }
