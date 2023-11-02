@@ -1,11 +1,11 @@
-package com.example.manseryeok.models.dao
+package com.example.manseryeok.models.dao.group
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.example.manseryeok.models.user.User
-import com.example.manseryeok.models.user.UserGroup
+import com.example.manseryeok.models.user.groups.UserGroup
 
 @Dao
 interface UserGroupDAO {

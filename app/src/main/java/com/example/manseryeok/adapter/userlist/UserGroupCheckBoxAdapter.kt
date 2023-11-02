@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.manseryeok.R
 import com.example.manseryeok.databinding.ItemGroupChecklistBinding
-import com.example.manseryeok.models.user.Group
+import com.example.manseryeok.models.user.groups.Group
 
 class UserGroupCheckBoxAdapter(
     private val context: Context,

@@ -4,12 +4,12 @@ import android.os.Bundle
 import com.example.manseryeok.adapter.userlist.UserGroupCheckBoxAdapter
 import com.example.manseryeok.databinding.ActivityGroupBinding
 import com.example.manseryeok.models.AppDatabase
-import com.example.manseryeok.models.dao.GroupDAO
+import com.example.manseryeok.models.dao.group.GroupDAO
 import com.example.manseryeok.models.dao.UserDAO
-import com.example.manseryeok.models.dao.UserGroupDAO
-import com.example.manseryeok.models.user.Group
+import com.example.manseryeok.models.dao.group.UserGroupDAO
+import com.example.manseryeok.models.user.groups.Group
 import com.example.manseryeok.models.user.User
-import com.example.manseryeok.models.user.UserGroup
+import com.example.manseryeok.models.user.groups.UserGroup
 import com.example.manseryeok.utils.ParentActivity
 import com.example.manseryeok.utils.Utils
 import kotlinx.coroutines.Dispatchers.IO
