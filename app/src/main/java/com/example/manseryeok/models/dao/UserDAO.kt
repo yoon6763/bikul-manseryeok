@@ -24,4 +24,8 @@ interface UserDAO {
 
     @Query("SELECT * FROM user WHERE id = :id")
     fun getUser(id: Long): User
+
+    @Query("SELECT * FROM User WHERE firstName || ' ' || lastName LIKE '%' || :searchQuery || '%'")
+    fun searchUserByName(searchQuery: String):List<User>
+
 }
