@@ -88,8 +88,10 @@
                 android:layout_height="@dimen/btn_half_height"
                 android:layout_margin="2dp"
                 android:layout_weight="1"
+                android:autoSizeTextType="uniform"
                 android:background="@drawable/box_sky"
                 android:foreground="?attr/selectableItemBackground"
+                android:padding="5dp"
                 android:text="편집"
                 android:textColor="@color/black" />
 
@@ -99,10 +101,12 @@
                 android:layout_width="0dp"
                 android:layout_height="@dimen/btn_half_height"
                 android:layout_margin="2dp"
-                android:layout_weight="1"
+                android:layout_weight="1.5"
+                android:autoSizeTextType="uniform"
                 android:background="@drawable/box_yellow"
                 android:foreground="?attr/selectableItemBackground"
-                android:text="그룹 지정"
+                android:padding="5dp"
+                android:text="그룹/태그 지정"
                 android:textColor="@color/black" />
 
             <androidx.appcompat.widget.AppCompatButton
@@ -111,8 +115,10 @@
                 android:layout_height="@dimen/btn_half_height"
                 android:layout_margin="2dp"
                 android:layout_weight="1"
+                android:autoSizeTextType="uniform"
                 android:background="@drawable/box_red"
                 android:foreground="?attr/selectableItemBackground"
+                android:padding="5dp"
                 android:text="@string/glb_delete" />
         </LinearLayout>
 

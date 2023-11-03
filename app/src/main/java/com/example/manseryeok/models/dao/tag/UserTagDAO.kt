@@ -10,7 +10,7 @@ import com.example.manseryeok.models.user.tags.UserTag
 @Dao
 interface UserTagDAO {
     @Insert
-    fun insertUserTga(userTag: UserTag)
+    fun insertUserTag(userTag: UserTag)
 
     @Delete
     fun deleteUserTag(userTag: UserTag)

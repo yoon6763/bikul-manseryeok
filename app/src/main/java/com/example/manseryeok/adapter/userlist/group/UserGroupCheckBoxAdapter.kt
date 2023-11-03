@@ -1,4 +1,4 @@
-package com.example.manseryeok.adapter.userlist
+package com.example.manseryeok.adapter.userlist.group
 
 import android.content.Context
 import android.view.LayoutInflater

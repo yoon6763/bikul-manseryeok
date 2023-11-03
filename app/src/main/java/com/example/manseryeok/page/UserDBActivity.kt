@@ -5,8 +5,8 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.MenuItem
 import com.example.manseryeok.adapter.decorator.RecyclerViewDecorator
-import com.example.manseryeok.adapter.userlist.GroupItem
-import com.example.manseryeok.adapter.userlist.GroupListAdapter
+import com.example.manseryeok.adapter.userlist.group.GroupItem
+import com.example.manseryeok.adapter.userlist.group.GroupListAdapter
 import com.example.manseryeok.adapter.userlist.OnUserMenuClickListener
 import com.example.manseryeok.utils.Utils
 import com.example.manseryeok.databinding.ActivityDbactivityBinding

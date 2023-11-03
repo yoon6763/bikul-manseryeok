@@ -1,4 +1,4 @@
-package com.example.manseryeok.adapter.userlist
+package com.example.manseryeok.adapter.userlist.group
 
 import android.animation.ValueAnimator
 import android.content.Context
@@ -10,6 +10,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.manseryeok.R
 import com.example.manseryeok.adapter.decorator.RecyclerViewDecorator
+import com.example.manseryeok.adapter.userlist.OnUserMenuClickListener
+import com.example.manseryeok.adapter.userlist.UserListAdapter
 import com.example.manseryeok.databinding.ItemDbListBinding
 import com.example.manseryeok.databinding.ItemGroupBinding
 

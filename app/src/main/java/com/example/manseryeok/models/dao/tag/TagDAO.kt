@@ -21,4 +21,14 @@ interface TagDAO {
 
     @Query("SELECT * FROM tag")
     fun getAllTags(): List<Tag>
+
+    @Query("SELECT * FROM tag WHERE name = :tagName")
+    fun getTagByName(tagName: String): Tag?
+
+    @Query("SELECT * FROM tag WHERE id = :tagId")
+    fun getTagById(tagId: Long): Tag?
+
+    fun isTagExist(tagName: String): Boolean {
+        return getTagByName(tagName) != null
+    }
 }
