@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context=".page.GroupActivity">
+    tools:context=".page.user.GroupActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_group"
@@ -65,7 +65,7 @@
                     android:layout_height="@dimen/btn_full_height"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:background="@drawable/et_box_gray"
+                    android:background="@drawable/et_box_gray_outlined"
                     android:hint="추가할 그룹명을 입력하세요"
                     android:paddingHorizontal="10dp"
                     android:textColorHint="@color/gray" />
@@ -118,7 +118,7 @@
                         android:layout_height="@dimen/btn_full_height"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
-                        android:background="@drawable/et_box_gray"
+                        android:background="@drawable/et_box_gray_outlined"
                         android:hint="추가할 태그를 입력하세요"
                         android:paddingHorizontal="10dp"
                         android:textColorHint="@color/gray" />

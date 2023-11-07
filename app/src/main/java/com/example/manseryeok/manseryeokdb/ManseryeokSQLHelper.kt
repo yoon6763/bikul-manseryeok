@@ -47,8 +47,7 @@ class ManseryeokSQLHelper(val context: Context) {
     fun getDayData(year: Int, month: Int, day: Int): Manseryeok {
         try {
             // Table 이름
-            val sql =
-                "SELECT * FROM $TABLE_NAME WHERE cd_sy = $year AND cd_sm = $month AND cd_sd = $day;"
+            val sql = "SELECT * FROM $TABLE_NAME WHERE cd_sy = $year AND cd_sm = $month AND cd_sd = $day;"
 
             // 모델 넣을 리스트 생성
             val manList = ArrayList<Manseryeok>()

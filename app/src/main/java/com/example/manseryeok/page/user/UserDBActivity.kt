@@ -1,4 +1,4 @@
-package com.example.manseryeok.page
+package com.example.manseryeok.page.user
 
 import android.content.Intent
 import android.graphics.Color
@@ -14,6 +14,9 @@ import com.example.manseryeok.manseryeokdb.ManseryeokSQLHelper
 import com.example.manseryeok.models.AppDatabase
 import com.example.manseryeok.models.Manseryeok
 import com.example.manseryeok.models.user.User
+import com.example.manseryeok.page.CalendarActivity
+import com.example.manseryeok.page.CalendarInputActivity
+import com.example.manseryeok.page.NameActivity
 import com.example.manseryeok.utils.ParentActivity
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
@@ -40,6 +43,10 @@ class UserDBActivity : ParentActivity() {
             // 앱 바 뒤로가기 버튼 설정
             setDisplayHomeAsUpEnabled(true)
         }
+
+        binding.icSearchButton.setOnClickListener {
+            startActivity(Intent(this@UserDBActivity, UserSearchActivity::class.java))
+        }
     }
 
     override fun onStart() {
@@ -59,13 +66,7 @@ class UserDBActivity : ParentActivity() {
                     val users = userGroupDAO.getUsersByGroup(group.id) as ArrayList<User>
                     val manseryeokList = ArrayList<Manseryeok>()
                     users.forEach { user ->
-                        manseryeokList.add(
-                            manseryeokSQLHelper.getDayData(
-                                user.birthYear,
-                                user.birthMonth,
-                                user.birthDay
-                            )
-                        )
+                        manseryeokList.add(manseryeokSQLHelper.getDayData(user.birthYear, user.birthMonth, user.birthDay))
                     }
                     groupList.add(GroupItem(group.name, users, manseryeokList))
                 }

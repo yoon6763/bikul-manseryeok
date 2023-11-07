@@ -1,4 +1,4 @@
-package com.example.manseryeok.page
+package com.example.manseryeok.page.user
 
 import android.os.Bundle
 import com.example.manseryeok.adapter.userlist.group.UserGroupCheckBoxAdapter

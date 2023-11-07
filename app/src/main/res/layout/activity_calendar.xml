@@ -683,7 +683,7 @@
                     android:layout_marginHorizontal="20dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="50dp"
-                    android:background="@drawable/et_box_gray"
+                    android:background="@drawable/et_box_gray_outlined"
                     android:hint="메모를 입력하세요"
                     android:minHeight="60dp"
                     android:padding="10dp"
