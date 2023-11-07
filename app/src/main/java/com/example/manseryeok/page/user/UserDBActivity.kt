@@ -3,9 +3,10 @@ package com.example.manseryeok.page.user
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import com.example.manseryeok.adapter.decorator.RecyclerViewDecorator
-import com.example.manseryeok.adapter.userlist.group.GroupItem
+import com.example.manseryeok.adapter.userlist.group.UserRecyclerViewItem
 import com.example.manseryeok.adapter.userlist.group.GroupListAdapter
 import com.example.manseryeok.adapter.userlist.OnUserMenuClickListener
 import com.example.manseryeok.utils.Utils
@@ -27,7 +28,7 @@ class UserDBActivity : ParentActivity() {
     private val userDao by lazy { AppDatabase.getInstance(applicationContext).userDao() }
     private val userGroupDAO by lazy { AppDatabase.getInstance(applicationContext).userGroupDAO() }
     private val groupGroupDao by lazy { AppDatabase.getInstance(applicationContext).groupDao() }
-    private val groupList = ArrayList<GroupItem>()
+    private val groupList = ArrayList<UserRecyclerViewItem>()
     private lateinit var groupListAdapter: GroupListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,7 +61,6 @@ class UserDBActivity : ParentActivity() {
 
         runBlocking {
             launch(IO) {
-
                 val allGroups = groupGroupDao.getAllGroups()
                 allGroups.forEach { group ->
                     val users = userGroupDAO.getUsersByGroup(group.groupId) as ArrayList<User>
@@ -74,7 +74,7 @@ class UserDBActivity : ParentActivity() {
                             )
                         )
                     }
-                    groupList.add(GroupItem(group.name, users, manseryeokList))
+                    groupList.add(UserRecyclerViewItem(group.name, users, manseryeokList))
                 }
 
                 val notGroupUsers = userGroupDAO.getUsersWithoutGroup() as ArrayList<User>
@@ -90,7 +90,7 @@ class UserDBActivity : ParentActivity() {
                     )
                 }
 
-                groupList.add(GroupItem("미분류", notGroupUsers, notGroupManseryeokList))
+                groupList.add(UserRecyclerViewItem("미분류", notGroupUsers, notGroupManseryeokList))
             }
         }
 

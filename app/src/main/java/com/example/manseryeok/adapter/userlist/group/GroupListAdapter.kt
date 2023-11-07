@@ -17,7 +17,7 @@ import com.example.manseryeok.databinding.ItemGroupBinding
 
 class GroupListAdapter(
     private val context: Context,
-    private val groupList: ArrayList<GroupItem>
+    private val groupList: ArrayList<UserRecyclerViewItem>
 ) :
     RecyclerView.Adapter<GroupListAdapter.Holder>() {
     private var selectedItems: SparseBooleanArray = SparseBooleanArray()

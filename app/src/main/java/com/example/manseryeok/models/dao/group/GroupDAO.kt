@@ -23,5 +23,4 @@ interface GroupDAO {
 
     @Query("SELECT * FROM `group` WHERE name = :groupName")
     fun getGroupByName(groupName: String): Group?
-
 }

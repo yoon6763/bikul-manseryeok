@@ -4,10 +4,9 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import androidx.room.Transaction
 import androidx.room.Update
 import com.example.manseryeok.models.user.User
-import com.example.manseryeok.models.user.UserGroupTag
+import com.example.manseryeok.models.user.join.UserWithGroupAndTag
 
 @Dao
 interface UserDAO {
@@ -31,9 +30,9 @@ interface UserDAO {
     fun searchUserByName(searchQuery: String): List<User>
 
     @Query("SELECT * FROM user")
-    fun getAllUserGroupTag(): List<UserGroupTag>
+    fun getAllUserGroupTag(): List<UserWithGroupAndTag>
 
     @Query("SELECT * FROM user WHERE userId = :id")
-    fun getUserGroupTag(id: Long): UserGroupTag
+    fun getUserGroupTag(id: Long): UserWithGroupAndTag
 
 }

@@ -1,13 +1,14 @@
-package com.example.manseryeok.models.user
+package com.example.manseryeok.models.user.join
 
 import androidx.room.Embedded
 import androidx.room.Relation
+import com.example.manseryeok.models.user.User
 import com.example.manseryeok.models.user.groups.Group
 import com.example.manseryeok.models.user.groups.UserGroup
 import com.example.manseryeok.models.user.tags.Tag
 import com.example.manseryeok.models.user.tags.UserTag
 
-data class UserGroupTag(
+data class UserWithGroupAndTag(
 
     @Embedded val user: User,
 
