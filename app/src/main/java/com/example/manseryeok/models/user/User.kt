@@ -8,7 +8,7 @@ import java.util.Calendar
 @Entity
 data class User(
     @PrimaryKey(autoGenerate = true)
-    var id: Long,
+    var userId: Long,
     var firstName: String?,
     var lastName: String?,
     var gender: Int, // 0 - 남자, 1 - 여자

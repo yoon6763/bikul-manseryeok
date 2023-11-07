@@ -95,7 +95,7 @@ class CalendarActivity : ParentActivity() {
             binding.run {
                 btnGotoName.setOnClickListener {
                     val intent = Intent(this@CalendarActivity, NameActivity::class.java)
-                    intent.putExtra(Utils.INTENT_EXTRAS_USER_ID, userModel.id)
+                    intent.putExtra(Utils.INTENT_EXTRAS_USER_ID, userModel.userId)
                     startActivity(intent)
                     finish()
                 }

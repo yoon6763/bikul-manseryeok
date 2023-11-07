@@ -128,7 +128,7 @@ class CalendarInputActivity : ParentActivity() {
         runBlocking {
             launch(IO) {
                 val savedUserId = userDao.insert(user)
-                user.id = savedUserId
+                user.userId = savedUserId
             }
         }
 
@@ -140,7 +140,7 @@ class CalendarInputActivity : ParentActivity() {
             )
         }
 
-        intent.putExtra(Utils.INTENT_EXTRAS_USER_ID, user.id)
+        intent.putExtra(Utils.INTENT_EXTRAS_USER_ID, user.userId)
         startActivity(intent)
         finish()
     }

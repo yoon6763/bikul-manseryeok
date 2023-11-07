@@ -77,10 +77,10 @@ class GroupActivity : ParentActivity() {
                     if (!tagDAO.isTagExist(tagName)) {
                         val tag = Tag(0, tagName)
                         val insertedTagId = tagDAO.insertTag(tag)
-                        tag.id = insertedTagId
+                        tag.tagId = insertedTagId
                     }
 
-                    userTagDAO.insertUserTag(UserTag(userModel.id, tagDAO.getTagByName(tagName)!!.id))
+                    userTagDAO.insertUserTag(UserTag(userModel.userId, tagDAO.getTagByName(tagName)!!.tagId))
 
                     tags.add(tagDAO.getTagByName(tagName)!!)
                 }
@@ -93,7 +93,7 @@ class GroupActivity : ParentActivity() {
     private fun loadTags() {
         runBlocking {
             launch(IO) {
-                userTagDAO.getTagsByUser(userModel.id).forEach { userTag ->
+                userTagDAO.getTagsByUser(userModel.userId).forEach { userTag ->
                     val foundTag = tagDAO.getTagById(userTag.tagId)
                     if (foundTag != null) {
                         tags.add(foundTag)
@@ -144,7 +144,7 @@ class GroupActivity : ParentActivity() {
                 launch(IO) {
                     val group = Group(0, groupName)
                     val insertedGroupId = groupDAO.insertGroup(group)
-                    group.id = insertedGroupId
+                    group.groupId = insertedGroupId
                     groups.add(group)
                 }
             }
@@ -165,10 +165,10 @@ class GroupActivity : ParentActivity() {
                         launch(IO) {
                             if (check) {
                                 selectedGroups.add(groupId)
-                                userGroupDAO.insertUserGroup(UserGroup(userModel.id, groupId))
+                                userGroupDAO.insertUserGroup(UserGroup(userModel.userId, groupId))
                             } else {
                                 selectedGroups.remove(groupId)
-                                userGroupDAO.deleteUserGroup(UserGroup(userModel.id, groupId))
+                                userGroupDAO.deleteUserGroup(UserGroup(userModel.userId, groupId))
                             }
                         }
                     }
@@ -191,7 +191,7 @@ class GroupActivity : ParentActivity() {
                     groups.add(it)
                 }
 
-                val userGroups = userGroupDAO.getGroupsByUser(userModel.id)
+                val userGroups = userGroupDAO.getGroupsByUser(userModel.userId)
                 userGroups.forEach { userGroup ->
                     selectedGroups.add(userGroup.groupId)
                 }

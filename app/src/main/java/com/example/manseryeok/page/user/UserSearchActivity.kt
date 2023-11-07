@@ -20,6 +20,8 @@ class UserSearchActivity : ParentActivity() {
     private val userDAO by lazy { AppDatabase.getInstance(applicationContext).userDao() }
     private val userGroupDAO by lazy { AppDatabase.getInstance(applicationContext).userGroupDAO() }
     private val groupDAO by lazy { AppDatabase.getInstance(applicationContext).groupDao() }
+    private val userTagDAO by lazy { AppDatabase.getInstance(applicationContext).userTagDAO() }
+    private val tagDAO by lazy { AppDatabase.getInstance(applicationContext).tagDao() }
 
     private val userList = ArrayList<User>()
     private val manseryeokList = ArrayList<Manseryeok>()
@@ -53,7 +55,11 @@ class UserSearchActivity : ParentActivity() {
                 val users = userDAO.searchUserByName(keyword)
                 users.forEach {
                     userList.add(it)
-                    manseryeokList.add(manseryeokSQLHelper.getDayData(it.birthYear, it.birthMonth, it.birthDay))
+                    manseryeokList.add(
+                        manseryeokSQLHelper.getDayData(
+                            it.birthYear, it.birthMonth, it.birthDay
+                        )
+                    )
                 }
             }
         }

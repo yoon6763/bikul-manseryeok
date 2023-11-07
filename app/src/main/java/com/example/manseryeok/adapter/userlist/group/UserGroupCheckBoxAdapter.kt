@@ -30,7 +30,7 @@ class UserGroupCheckBoxAdapter(
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.binding.run {
             cbGroup.text = groups[position].name
-            cbGroup.isChecked = groups[position].id in selectedGroups
+            cbGroup.isChecked = groups[position].groupId in selectedGroups
         }
     }
 
@@ -44,7 +44,7 @@ class UserGroupCheckBoxAdapter(
         init {
             binding.cbGroup.setOnCheckedChangeListener { buttonView, isChecked ->
                 if (buttonView.isPressed) {
-                    onGroupCheckListener?.onGroupCheck(groups[adapterPosition].id, isChecked)
+                    onGroupCheckListener?.onGroupCheck(groups[adapterPosition].groupId, isChecked)
                 }
             }
         }
@@ -52,7 +52,7 @@ class UserGroupCheckBoxAdapter(
 
     fun uncheckAll() {
         for (element in groups) {
-            selectedGroups.remove(element.id)
+            selectedGroups.remove(element.groupId)
         }
         notifyDataSetChanged()
     }

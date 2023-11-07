@@ -15,12 +15,12 @@ interface UserGroupDAO {
     @Delete
     fun deleteUserGroup(userGroup: UserGroup)
 
-    @Query("SELECT * FROM user WHERE id IN (SELECT userId FROM usergroup WHERE groupId = :groupId)")
+    @Query("SELECT * FROM user WHERE userId IN (SELECT userId FROM usergroup WHERE groupId = :groupId)")
     fun getUsersByGroup(groupId: Long): List<User>
 
     @Query("SELECT * FROM usergroup WHERE userId = :userId")
     fun getGroupsByUser(userId: Long): List<UserGroup>
 
-    @Query("SELECT * FROM user WHERE id NOT IN (SELECT userId FROM usergroup)")
+    @Query("SELECT * FROM user WHERE userId NOT IN (SELECT userId FROM usergroup)")
     fun getUsersWithoutGroup(): List<User>
 }

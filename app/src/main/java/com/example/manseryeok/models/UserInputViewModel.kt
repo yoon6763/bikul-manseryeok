@@ -141,7 +141,7 @@ class UserInputViewModel : ViewModel() {
 
     fun toUserEntity(): User {
         return User(
-            id = 0,
+            userId = 0,
             firstName = firstName.value!!,
             lastName = lastName.value!!,
             gender = gender.value!!,

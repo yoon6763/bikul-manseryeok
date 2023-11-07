@@ -15,12 +15,12 @@ interface UserTagDAO {
     @Delete
     fun deleteUserTag(userTag: UserTag)
 
-    @Query("SELECT * FROM user WHERE id IN (SELECT userId FROM usertag WHERE tagId = :tagId)")
+    @Query("SELECT * FROM user WHERE userId IN (SELECT userId FROM usertag WHERE tagId = :tagId)")
     fun getUsersByTag(tagId: Long): List<User>
 
     @Query("SELECT * FROM usertag WHERE userId = :userId")
     fun getTagsByUser(userId: Long): List<UserTag>
 
-    @Query("SELECT * FROM user WHERE id NOT IN (SELECT userId FROM usertag)")
+    @Query("SELECT * FROM user WHERE userId NOT IN (SELECT userId FROM usertag)")
     fun getUsersWithoutTag(): List<User>
 }

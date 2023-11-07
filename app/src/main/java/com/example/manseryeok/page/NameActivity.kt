@@ -50,7 +50,7 @@ class NameActivity : ParentActivity() {
 
             btnGotoManseryeok.setOnClickListener {
                 val intent = Intent(this@NameActivity, CalendarActivity::class.java)
-                intent.putExtra(Utils.INTENT_EXTRAS_USER_ID, userModel.id)
+                intent.putExtra(Utils.INTENT_EXTRAS_USER_ID, userModel.userId)
                 startActivity(intent)
                 finish()
             }

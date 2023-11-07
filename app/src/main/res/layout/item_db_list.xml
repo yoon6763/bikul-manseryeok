@@ -65,6 +65,13 @@
             android:text="丁 戊 己 庚\n辰 巳 午 未" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/tv_item_db_tag"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        tools:text="#태그1 #태그2 #태그3" />
+
     <LinearLayout
         android:id="@+id/ll_item_db_bottom_panel"
         android:layout_width="match_parent"

@@ -63,10 +63,16 @@ class UserDBActivity : ParentActivity() {
 
                 val allGroups = groupGroupDao.getAllGroups()
                 allGroups.forEach { group ->
-                    val users = userGroupDAO.getUsersByGroup(group.id) as ArrayList<User>
+                    val users = userGroupDAO.getUsersByGroup(group.groupId) as ArrayList<User>
                     val manseryeokList = ArrayList<Manseryeok>()
                     users.forEach { user ->
-                        manseryeokList.add(manseryeokSQLHelper.getDayData(user.birthYear, user.birthMonth, user.birthDay))
+                        manseryeokList.add(
+                            manseryeokSQLHelper.getDayData(
+                                user.birthYear,
+                                user.birthMonth,
+                                user.birthDay
+                            )
+                        )
                     }
                     groupList.add(GroupItem(group.name, users, manseryeokList))
                 }

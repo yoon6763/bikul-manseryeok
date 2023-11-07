@@ -97,35 +97,35 @@ class UserListAdapter(
         init {
             binding.btnItemDbSearchCalendar.setOnClickListener {
                 onUserMenuClickListener?.onManseryeokView(
-                    items[adapterPosition].id,
+                    items[adapterPosition].userId,
                     adapterPosition
                 )
             }
 
             binding.btnItemDbSearchName.setOnClickListener {
                 onUserMenuClickListener?.onNameView(
-                    items[adapterPosition].id,
+                    items[adapterPosition].userId,
                     adapterPosition
                 )
             }
 
             binding.btnItemDbDelete.setOnClickListener {
                 onUserMenuClickListener?.onDeleteClick(
-                    items[adapterPosition].id,
+                    items[adapterPosition].userId,
                     adapterPosition
                 )
             }
 
             binding.btnItemDbGroup.setOnClickListener {
                 onUserMenuClickListener?.onGroupClick(
-                    items[adapterPosition].id,
+                    items[adapterPosition].userId,
                     adapterPosition
                 )
             }
 
             binding.btnItemDbEdit.setOnClickListener {
                 onUserMenuClickListener?.onEditClick(
-                    items[adapterPosition].id,
+                    items[adapterPosition].userId,
                     adapterPosition
                 )
             }

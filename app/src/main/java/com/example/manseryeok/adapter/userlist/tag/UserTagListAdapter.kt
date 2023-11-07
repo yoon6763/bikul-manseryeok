@@ -41,7 +41,7 @@ class UserTagListAdapter(
 
         init {
             binding.ivRemove.setOnClickListener {
-                onRemoveClickListener?.onRemoveClick(adapterPosition, tags[adapterPosition].id)
+                onRemoveClickListener?.onRemoveClick(adapterPosition, tags[adapterPosition].tagId)
             }
         }
     }
