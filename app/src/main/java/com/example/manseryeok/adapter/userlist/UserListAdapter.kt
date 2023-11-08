@@ -2,6 +2,10 @@ package com.example.manseryeok.adapter.userlist
 
 import android.animation.ValueAnimator
 import android.content.Context
+import android.graphics.Color
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
@@ -23,6 +27,8 @@ class UserListAdapter(
     private var selectedItems: SparseBooleanArray = SparseBooleanArray()
     private val TAG = "DBListAdapter"
     private var prePosition = -1
+    var useKeywordHighlight = false
+    var highlightKeyword = ""
 
     var onUserMenuClickListener: OnUserMenuClickListener? = null
 
@@ -63,20 +69,64 @@ class UserListAdapter(
             ganji.append(monthGanji[1])
             ganji.append(yearGanji[1])
 
-            tvItemDbName.text = "${user.firstName}${user.lastName}"
+
+            val username = user.firstName + user.lastName
+
+            if (useKeywordHighlight) {
+                tvItemDbName.text = highlightKeywords(username, highlightKeyword)
+            } else {
+                tvItemDbName.text = username
+            }
+
             tvItemDbBirthSum.text = "(양) ${Utils.dateDotFormat.format(user.getBirthOrigin().timeInMillis)}"
             tvItemDbBirthMoon.text = "(음) ${Utils.dateDotFormat.format(Utils.convertSolarToLunar(birth))}"
             tvItemDbGanji.text = ganji.toString()
-            tvItemDbTag.text = items[position].tags.joinToString("\n") { "#${it.name}" }
 
-            if (user.gender == 0)
+
+            val tags = items[position].tags.map { "#${it.name}\n" }
+
+            tvItemDbTag.text = if(useKeywordHighlight) {
+                highlightKeywords(tags.joinToString(""), highlightKeyword)
+            } else {
+                tags.joinToString("")
+            }
+
+            if (user.gender == 0) {
                 ivItemDbGender.setImageResource(R.drawable.ic_male)
-            else
+            } else {
                 ivItemDbGender.setImageResource(R.drawable.ic_female)
+            }
 
             changeVisibility(holder.binding, selectedItems.get(position))
         }
     }
+
+
+    private fun highlightKeywords(originalText: String?, keyword: String?): SpannableString {
+        val spannableString = SpannableString(originalText)
+
+        if (!originalText.isNullOrBlank() && !keyword.isNullOrBlank()) {
+            var startIndex = originalText.toLowerCase().indexOf(keyword.toLowerCase())
+            var endIndex: Int
+
+            var currentStartIndex = startIndex
+            while (startIndex != -1) {
+                endIndex = startIndex + keyword.length
+                val colorSpan = ForegroundColorSpan(Color.RED)
+                spannableString.setSpan(colorSpan, startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+                currentStartIndex = originalText.toLowerCase().indexOf(keyword.toLowerCase(), endIndex)
+                if (currentStartIndex != -1) {
+                    startIndex = currentStartIndex
+                } else {
+                    break
+                }
+            }
+        }
+
+        return spannableString
+    }
+
 
     override fun getItemCount(): Int {
         return items.size

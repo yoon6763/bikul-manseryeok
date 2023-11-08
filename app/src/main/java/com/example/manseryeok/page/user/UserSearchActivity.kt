@@ -39,6 +39,8 @@ class UserSearchActivity : ParentActivity() {
 
             userListAdapter = UserListAdapter(this@UserSearchActivity, userRvItems)
             rvSearchList.adapter = userListAdapter
+
+            userListAdapter.useKeywordHighlight = true
         }
     }
 
@@ -74,6 +76,8 @@ class UserSearchActivity : ParentActivity() {
                 }
             }
         }
+
+        userListAdapter.highlightKeyword = keyword
 
         userListAdapter.notifyDataSetChanged()
     }
