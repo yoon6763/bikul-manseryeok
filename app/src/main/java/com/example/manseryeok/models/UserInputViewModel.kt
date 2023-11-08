@@ -25,7 +25,7 @@ class UserInputViewModel : ViewModel() {
 
     var birthLabel = MutableLiveData<String>("")
     var birthTimeLabel = MutableLiveData<String>("")
-    var isIncludeTime = MutableLiveData<Boolean>(false)
+    var isIncludeTime = MutableLiveData<Boolean>(true)
 
     var birthPlace = MutableLiveData<String>("대한민국")
     var timeDiff = MutableLiveData<Int>(-30)
