@@ -3,17 +3,18 @@ package com.example.manseryeok.page.user
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import com.example.manseryeok.adapter.decorator.RecyclerViewDecorator
-import com.example.manseryeok.adapter.userlist.group.UserRecyclerViewItem
+import com.example.manseryeok.adapter.userlist.item.UserRVItem
 import com.example.manseryeok.adapter.userlist.group.GroupListAdapter
 import com.example.manseryeok.adapter.userlist.OnUserMenuClickListener
+import com.example.manseryeok.adapter.userlist.item.GroupRVItem
 import com.example.manseryeok.utils.Utils
 import com.example.manseryeok.databinding.ActivityDbactivityBinding
 import com.example.manseryeok.manseryeokdb.ManseryeokSQLHelper
 import com.example.manseryeok.models.AppDatabase
 import com.example.manseryeok.models.Manseryeok
+import com.example.manseryeok.models.dao.tag.UserTagDAO
 import com.example.manseryeok.models.user.User
 import com.example.manseryeok.page.CalendarActivity
 import com.example.manseryeok.page.CalendarInputActivity
@@ -28,7 +29,8 @@ class UserDBActivity : ParentActivity() {
     private val userDao by lazy { AppDatabase.getInstance(applicationContext).userDao() }
     private val userGroupDAO by lazy { AppDatabase.getInstance(applicationContext).userGroupDAO() }
     private val groupGroupDao by lazy { AppDatabase.getInstance(applicationContext).groupDao() }
-    private val groupList = ArrayList<UserRecyclerViewItem>()
+    private val userTagDAO by lazy { AppDatabase.getInstance(applicationContext).userTagDAO() }
+    private val groupRvItems = ArrayList<GroupRVItem>()
     private lateinit var groupListAdapter: GroupListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,7 +54,7 @@ class UserDBActivity : ParentActivity() {
 
     override fun onStart() {
         super.onStart()
-        groupList.clear()
+        groupRvItems.clear()
 
         // 유저의 생일 - 1년 부터 + 100년까지의 정보
         val manseryeokSQLHelper = ManseryeokSQLHelper(this)
@@ -62,40 +64,45 @@ class UserDBActivity : ParentActivity() {
         runBlocking {
             launch(IO) {
                 val allGroups = groupGroupDao.getAllGroups()
+
                 allGroups.forEach { group ->
-                    val users = userGroupDAO.getUsersByGroup(group.groupId) as ArrayList<User>
-                    val manseryeokList = ArrayList<Manseryeok>()
-                    users.forEach { user ->
-                        manseryeokList.add(
-                            manseryeokSQLHelper.getDayData(
-                                user.birthYear,
-                                user.birthMonth,
-                                user.birthDay
-                            )
-                        )
+
+                    val groupRVItem = GroupRVItem(group.name, ArrayList<UserRVItem>())
+
+                    val usersInThisGroup = userGroupDAO.getUsersByGroup(group.groupId)
+
+                    usersInThisGroup.forEach { user ->
+                        val manseryeok = manseryeokSQLHelper.getDayData(user.birthYear, user.birthMonth, user.birthDay)
+                        val tags = userTagDAO.getTagsByUser(user.userId)
+
+                        val userRVItem = UserRVItem(user, manseryeok, tags)
+
+                        groupRVItem.userRVItemList.add(userRVItem)
                     }
-                    groupList.add(UserRecyclerViewItem(group.name, users, manseryeokList))
+
+                    groupRvItems.add(groupRVItem)
                 }
 
-                val notGroupUsers = userGroupDAO.getUsersWithoutGroup() as ArrayList<User>
-                val notGroupManseryeokList = ArrayList<Manseryeok>()
+
+
+                val notGroupRVItem = GroupRVItem("미분류", ArrayList<UserRVItem>())
+                val notGroupUsers = userGroupDAO.getUsersWithoutGroup()
 
                 notGroupUsers.forEach { user ->
-                    notGroupManseryeokList.add(
-                        manseryeokSQLHelper.getDayData(
-                            user.birthYear,
-                            user.birthMonth,
-                            user.birthDay
-                        )
-                    )
+                    val manseryeok = manseryeokSQLHelper.getDayData(user.birthYear, user.birthMonth, user.birthDay)
+                    val tags = userTagDAO.getTagsByUser(user.userId)
+
+                    val userRVItem = UserRVItem(user, manseryeok, tags)
+
+                    notGroupRVItem.userRVItemList.add(userRVItem)
                 }
 
-                groupList.add(UserRecyclerViewItem("미분류", notGroupUsers, notGroupManseryeokList))
+                groupRvItems.add(notGroupRVItem)
             }
         }
 
         binding.run {
-            groupListAdapter = GroupListAdapter(this@UserDBActivity, groupList)
+            groupListAdapter = GroupListAdapter(this@UserDBActivity, groupRvItems.toList())
             rvDbList.addItemDecoration(RecyclerViewDecorator(30, Color.parseColor("#d9d9d9")))
             groupListAdapter.notifyDataSetChanged()
             rvDbList.adapter = groupListAdapter

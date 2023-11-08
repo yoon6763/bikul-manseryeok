@@ -2,25 +2,22 @@ package com.example.manseryeok.adapter.userlist
 
 import android.animation.ValueAnimator
 import android.content.Context
-import android.util.Log
 import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.manseryeok.R
+import com.example.manseryeok.adapter.userlist.item.UserRVItem
 import com.example.manseryeok.utils.Utils
 import com.example.manseryeok.databinding.ItemDbListBinding
-import com.example.manseryeok.models.Manseryeok
-import com.example.manseryeok.models.user.User
 import java.lang.StringBuilder
 import java.util.Calendar
 
 
 class UserListAdapter(
     private val context: Context,
-    private val items: ArrayList<User>,
-    private val manseryeokList: ArrayList<Manseryeok>
+    private val items: List<UserRVItem>,
 ) :
     RecyclerView.Adapter<UserListAdapter.Holder>() {
     private var selectedItems: SparseBooleanArray = SparseBooleanArray()
@@ -39,9 +36,9 @@ class UserListAdapter(
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.binding.run {
-            val user = items[position]
+            val user = items[position].user
             val birth = user.getBirthCalculated()
-            val manseryeok = manseryeokList[position]
+            val manseryeok = items[position].manseryeok
 
             var hourGanji = ""
             val yearGanji = manseryeok.cd_hyganjee!!
@@ -50,33 +47,27 @@ class UserListAdapter(
 
             val ganji = StringBuilder()
 
-            if (user.birthHour != -1) {
-                Log.d(TAG, "yearGanji: $yearGanji")
-                Log.d(TAG, "monthGanji: $monthGanji")
-                Log.d(TAG, "dayGanji: $dayGanji")
+            if (user.includeTime) {
                 hourGanji = Utils.getTimeGanji(dayGanji[0], birth[Calendar.HOUR_OF_DAY])
-                Log.d(TAG, "hourGanji: $hourGanji")
                 ganji.append(hourGanji[0])
             }
+
             ganji.append(dayGanji[0])
             ganji.append(monthGanji[0])
             ganji.append(yearGanji[0])
 
             ganji.append("\n")
 
-            if (user.birthHour != -1) ganji.append(hourGanji[1])
+            if (user.includeTime) ganji.append(hourGanji[1])
             ganji.append(dayGanji[1])
             ganji.append(monthGanji[1])
             ganji.append(yearGanji[1])
 
-            val sunBirth = "${user.birthYear}.${user.birthMonth}.${user.birthDay}"
-
-
             tvItemDbName.text = "${user.firstName}${user.lastName}"
-            tvItemDbBirthSum.text = "(양) $sunBirth"
-            tvItemDbBirthMoon.text =
-                "(음) ${Utils.dateDotFormat.format(Utils.convertSolarToLunar(birth))}"
+            tvItemDbBirthSum.text = "(양) ${Utils.dateDotFormat.format(user.getBirthOrigin().timeInMillis)}"
+            tvItemDbBirthMoon.text = "(음) ${Utils.dateDotFormat.format(Utils.convertSolarToLunar(birth))}"
             tvItemDbGanji.text = ganji.toString()
+            tvItemDbTag.text = items[position].tags.joinToString("\n") { "#${it.name}" }
 
             if (user.gender == 0)
                 ivItemDbGender.setImageResource(R.drawable.ic_male)
@@ -97,35 +88,35 @@ class UserListAdapter(
         init {
             binding.btnItemDbSearchCalendar.setOnClickListener {
                 onUserMenuClickListener?.onManseryeokView(
-                    items[adapterPosition].userId,
+                    items[adapterPosition].user.userId,
                     adapterPosition
                 )
             }
 
             binding.btnItemDbSearchName.setOnClickListener {
                 onUserMenuClickListener?.onNameView(
-                    items[adapterPosition].userId,
+                    items[adapterPosition].user.userId,
                     adapterPosition
                 )
             }
 
             binding.btnItemDbDelete.setOnClickListener {
                 onUserMenuClickListener?.onDeleteClick(
-                    items[adapterPosition].userId,
+                    items[adapterPosition].user.userId,
                     adapterPosition
                 )
             }
 
             binding.btnItemDbGroup.setOnClickListener {
                 onUserMenuClickListener?.onGroupClick(
-                    items[adapterPosition].userId,
+                    items[adapterPosition].user.userId,
                     adapterPosition
                 )
             }
 
             binding.btnItemDbEdit.setOnClickListener {
                 onUserMenuClickListener?.onEditClick(
-                    items[adapterPosition].userId,
+                    items[adapterPosition].user.userId,
                     adapterPosition
                 )
             }
@@ -144,17 +135,6 @@ class UserListAdapter(
                 }
                 notifyItemChanged(adapterPosition)
                 prePosition = adapterPosition
-
-//                if (selectedItems.get(adapterPosition)) {
-//                    // VISIBLE -> INVISIBLE
-//                    selectedItems.delete(adapterPosition)
-//
-//                    binding.llItemDbBottomPanel.visibility = View.GONE
-//                } else {
-//                    // INVISIBLE -> VISIBLE
-//                    selectedItems.put(adapterPosition, true)
-//                    binding.llItemDbBottomPanel.visibility = View.VISIBLE
-//                }
             }
         }
     }
@@ -167,6 +147,7 @@ class UserListAdapter(
 
         // ValueAnimator.ofInt(int... values)는 View가 변할 값을 지정, 인자는 int 배열
         val va = if (isExpanded) ValueAnimator.ofInt(0, height) else ValueAnimator.ofInt(height, 0)
+
         // Animation이 실행되는 시간, n/1000초
         va.duration = 200
         va.addUpdateListener { animation -> // value는 height 값
@@ -177,6 +158,7 @@ class UserListAdapter(
             // imageView가 실제로 사라지게하는 부분
             binding.llItemDbBottomPanel.visibility = if (isExpanded) View.VISIBLE else View.GONE
         }
+
         // Animation start
         va.start()
     }

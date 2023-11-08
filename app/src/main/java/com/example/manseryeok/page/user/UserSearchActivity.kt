@@ -37,7 +37,7 @@ class UserSearchActivity : ParentActivity() {
                 userSearch(it.toString())
             }
 
-            userListAdapter = UserListAdapter(this@UserSearchActivity, userList, manseryeokList)
+            //userListAdapter = UserListAdapter(this@UserSearchActivity, userList, manseryeokList)
             rvSearchList.adapter = userListAdapter
         }
     }
