@@ -112,7 +112,7 @@ class UserListAdapter(
             var currentStartIndex = startIndex
             while (startIndex != -1) {
                 endIndex = startIndex + keyword.length
-                val colorSpan = ForegroundColorSpan(Color.RED)
+                val colorSpan = ForegroundColorSpan(Color.BLUE)
                 spannableString.setSpan(colorSpan, startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 
                 currentStartIndex = originalText.toLowerCase().indexOf(keyword.toLowerCase(), endIndex)
