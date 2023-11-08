@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import com.example.manseryeok.models.user.User
 import com.example.manseryeok.models.user.groups.Group
 import com.example.manseryeok.models.user.tags.Tag
 
@@ -31,4 +32,7 @@ interface TagDAO {
     fun isTagExist(tagName: String): Boolean {
         return getTagByName(tagName) != null
     }
+
+    @Query("SELECT * FROM tag WHERE name LIKE '%' || :keyword || '%'")
+    fun findTagIncludeKeyword(keyword: String): List<Tag>
 }

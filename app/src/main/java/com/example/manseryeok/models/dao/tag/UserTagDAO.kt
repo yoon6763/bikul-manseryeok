@@ -24,4 +24,7 @@ interface UserTagDAO {
 
     @Query("SELECT * FROM user WHERE userId NOT IN (SELECT userId FROM usertag)")
     fun getUsersWithoutTag(): List<User>
+
+    @Query("SELECT * FROM user WHERE userId IN (SELECT userId FROM usertag WHERE tagId IN (:tagIds))")
+    fun getUsersByTags(tagIds: List<Long>): List<User>
 }

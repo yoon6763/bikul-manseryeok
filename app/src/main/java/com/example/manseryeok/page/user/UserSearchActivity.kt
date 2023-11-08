@@ -1,9 +1,9 @@
 package com.example.manseryeok.page.user
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.widget.addTextChangedListener
 import com.example.manseryeok.adapter.userlist.UserListAdapter
+import com.example.manseryeok.adapter.userlist.item.UserRVItem
 import com.example.manseryeok.databinding.ActivityUserSearchBinding
 import com.example.manseryeok.manseryeokdb.ManseryeokSQLHelper
 import com.example.manseryeok.models.AppDatabase
@@ -23,7 +23,7 @@ class UserSearchActivity : ParentActivity() {
     private val userTagDAO by lazy { AppDatabase.getInstance(applicationContext).userTagDAO() }
     private val tagDAO by lazy { AppDatabase.getInstance(applicationContext).tagDao() }
 
-    private val userList = ArrayList<User>()
+    private val userRvItems = ArrayList<UserRVItem>()
     private val manseryeokList = ArrayList<Manseryeok>()
 
     private lateinit var userListAdapter: UserListAdapter
@@ -37,13 +37,18 @@ class UserSearchActivity : ParentActivity() {
                 userSearch(it.toString())
             }
 
-            //userListAdapter = UserListAdapter(this@UserSearchActivity, userList, manseryeokList)
+            userListAdapter = UserListAdapter(this@UserSearchActivity, userRvItems)
             rvSearchList.adapter = userListAdapter
         }
     }
 
     private fun userSearch(keyword: String) {
-        userList.clear()
+        userRvItems.clear()
+
+        if(keyword.isEmpty()) {
+            userListAdapter.notifyDataSetChanged()
+            return
+        }
 
         runBlocking {
             launch(IO) {
@@ -52,14 +57,20 @@ class UserSearchActivity : ParentActivity() {
                 manseryeokSQLHelper.createDataBase()
                 manseryeokSQLHelper.open()
 
-                val users = userDAO.searchUserByName(keyword)
-                users.forEach {
-                    userList.add(it)
-                    manseryeokList.add(
-                        manseryeokSQLHelper.getDayData(
-                            it.birthYear, it.birthMonth, it.birthDay
-                        )
-                    )
+
+                val foundUsers = HashSet<User>()
+
+                val foundUsersForName = userDAO.searchUserByName(keyword)
+                foundUsers.addAll(foundUsersForName)
+
+                val foundTags = tagDAO.findTagIncludeKeyword(keyword)
+                val foundUsersForTag = userTagDAO.getUsersByTags(foundTags.map { it.tagId })
+                foundUsers.addAll(foundUsersForTag)
+
+                foundUsers.forEach { user ->
+                    val userTags = userTagDAO.getTagsByUser(user.userId)
+                    val userRVItem = UserRVItem(user, manseryeokSQLHelper.getDayData(user.birthYear, user.birthMonth, user.birthDay), userTags)
+                    userRvItems.add(userRVItem)
                 }
             }
         }
