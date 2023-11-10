@@ -145,6 +145,7 @@
                             android:background="@drawable/radio_button_background"
                             android:button="@null"
                             android:checked="true"
+                            android:onClick="@{(v) -> viewModel.onBirthTypeButtonClick(0)}"
                             android:gravity="center"
                             android:text="@string/obj_cal_type_sun"
                             android:textColor="@drawable/radio_text" />
@@ -158,6 +159,7 @@
                             android:button="@null"
                             android:gravity="center"
                             android:text="@string/obj_cal_type_moon"
+                            android:onClick="@{(v) -> viewModel.onBirthTypeButtonClick(1)}"
                             android:textColor="@drawable/radio_text" />
 
                         <RadioButton
@@ -168,6 +170,7 @@
                             android:background="@drawable/radio_button_background"
                             android:button="@null"
                             android:gravity="center"
+                            android:onClick="@{(v) -> viewModel.onBirthTypeButtonClick(2)}"
                             android:text="@string/obj_cal_type_moon_leap"
                             android:textColor="@drawable/radio_text" />
                     </RadioGroup>

@@ -4,6 +4,7 @@ import android.R
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
@@ -34,6 +35,8 @@ class UserInputViewModel : ViewModel() {
     var useSummerTime = MutableLiveData<Boolean>(false)
     var useTokyoTime = MutableLiveData<Boolean>(false)
 
+    var birthType = MutableLiveData<Int>(0)
+
 
     init {
         val today = Calendar.getInstance()
@@ -44,6 +47,10 @@ class UserInputViewModel : ViewModel() {
 
     fun onGenderButtonClick(value: Int) {
         gender.value = value
+    }
+
+    fun onBirthTypeButtonClick(value: Int) {
+        birthType.value = value
     }
 
     fun openBirthPicker(view: View) {
@@ -140,14 +147,33 @@ class UserInputViewModel : ViewModel() {
     }
 
     fun toUserEntity(): User {
+
+        var birthYear = 0
+        var birthMonth = 0
+        var birthDay = 0
+
+        if(birthType.value == 0) {
+            birthYear = year.value!!
+            birthMonth = month.value!!
+            birthDay = day.value!!
+        } else {
+            val lunar = Utils.convertLunarToSolar(year.value!!, month.value!!, day.value!!)
+            birthYear = lunar[Calendar.YEAR]
+            birthMonth = lunar[Calendar.MONTH] + 1
+            birthDay = lunar[Calendar.DAY_OF_MONTH]
+        }
+
+
+        Log.d("UserInputViewModel", "생일 : $birthYear, $birthMonth, $birthDay")
+
         return User(
             userId = 0,
             firstName = firstName.value!!,
             lastName = lastName.value!!,
             gender = gender.value!!,
-            birthYear = year.value!!,
-            birthMonth = month.value!!,
-            birthDay = day.value!!,
+            birthYear = birthYear,
+            birthMonth = birthMonth,
+            birthDay = birthDay,
             includeTime = isIncludeTime.value!!,
             birthHour = hour.value!!,
             birthMinute = minute.value!!,

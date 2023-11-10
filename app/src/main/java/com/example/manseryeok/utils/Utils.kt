@@ -509,6 +509,16 @@ object Utils {
         return cal.timeInMillis
     }
 
+    fun convertLunarToSolar(year: Int, month: Int, day: Int): Calendar {
+        val cc = ChineseCalendar()
+        val cal = Calendar.getInstance()
+        cc[ChineseCalendar.EXTENDED_YEAR] = year + 2637
+        cc[ChineseCalendar.MONTH] = month - 1
+        cc[ChineseCalendar.DAY_OF_MONTH] = day
+        cal.timeInMillis = cc.timeInMillis
+        return cal
+    }
+
     /***
      * 양력날짜를 음력날짜로 변환* @param 양력날짜 (yyyyMMdd)* @return 음력날짜 (yyyyMMdd)
      * */
