@@ -6,6 +6,7 @@ import android.os.Handler
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.manseryeok.R
@@ -493,32 +494,21 @@ class CalendarActivity : ParentActivity() {
 
     private fun setUserBirth() {
         binding.run {
-            tvCalSun.text = Utils.dateKorFormat.format(userBirth.timeInMillis)
+            tvCalSun.text = Utils.dateKorFormat.format(userModel.getBirthOrigin().timeInMillis)
             tvCalMoon.text = Utils.dateKorFormat.format(Utils.convertSolarToLunar(userBirth))
         }
     }
 
-    // SQLite 불러오기
     private fun initLoadDB() {
-        // 유저 생일 가져오기
-
         userBirth = userModel.getBirthCalculated()
-
-        Log.d(TAG, "[유저 생일] ${Utils.dateTimeKorFormat.format(userBirth.timeInMillis)}")
-        Log.d(TAG, "[시차] ${userModel.timeDiff}")
-
-        userBirth.add(Calendar.MINUTE, userModel.timeDiff)
-        Log.d(TAG, "[유저 생일] ${Utils.dateTimeKorFormat.format(userBirth.timeInMillis)}")
-
-        isTimeInclude = userModel.birthHour != -1
+        isTimeInclude = userModel.includeTime
 
         val mDBHelper = ManseryeokSQLHelper(applicationContext)
         mDBHelper.createDataBase()
         mDBHelper.open()
 
         // 유저의 생일 - 1년 부터 + 100년까지의 정보
-        userCalendar =
-            mDBHelper.getTableData(userBirth[Calendar.YEAR] - 1, userBirth[Calendar.YEAR] + 100)!!
+        userCalendar = mDBHelper.getTableData(userBirth[Calendar.YEAR] - 1, userBirth[Calendar.YEAR] + 100)!!
 
         mDBHelper.close()
     }

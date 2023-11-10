@@ -217,9 +217,9 @@
                         android:layout_weight="1"
                         android:clickable="true"
                         android:focusable="false"
-                        android:text="@{viewModel.birthTimeLabel}"
+                        android:gravity="center"
                         android:onClick="@{(v) -> viewModel.openBirthTimePicker(v)}"
-                        android:gravity="center" />
+                        android:text="@{viewModel.birthTimeLabel}" />
 
                     <CheckBox
                         android:id="@+id/cb_input_birth_time"
@@ -227,8 +227,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:buttonTint="@color/green"
-                        android:onCheckedChanged="@{(v, b) -> viewModel.clearBirthTimeInfo(b)}"
                         android:checked="@={!viewModel.isIncludeTime}"
+                        android:onCheckedChanged="@{(v, b) -> viewModel.clearBirthTimeInfo(b)}"
                         android:text="@string/obj_input_birth_time_unknown" />
 
                 </LinearLayout>
@@ -254,7 +254,7 @@
                         android:editable="false"
                         android:focusable="false"
                         android:gravity="center"
-                        android:text="@{viewModel.birthPlaceLabel}"/>
+                        android:text="@{viewModel.birthPlaceLabel}" />
                 </LinearLayout>
 
                 <CheckBox
@@ -266,20 +266,20 @@
                     android:checked="@={viewModel.useSummerTime}"
                     android:text="서머타임 적용" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="※ 대한민국 표준시는 실제 경도보다 30분 느리며,\n 30분을 앞당겨 계산합니다.\n원하지 않을 경우 아래 옵션을 체크해주세요."
-                    android:textColor="@color/gray" />
-
                 <CheckBox
                     android:id="@+id/cb_use_tokyo"
                     android:layout_width="wrap_content"
-                    android:checked="@={viewModel.useTokyoTime}"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
                     android:buttonTint="@color/green"
+                    android:checked="@={viewModel.useTokyoTime}"
                     android:text="동경시 사용" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="※ 대한민국 표준시는 실제 경도보다 30분 느리며,\n 30분을 앞당겨 계산합니다.\n원하지 않을 경우 위 옵션을 체크해주세요."
+                    android:textColor="@color/gray" />
 
             </LinearLayout>
         </ScrollView>

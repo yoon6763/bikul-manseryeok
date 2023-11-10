@@ -51,7 +51,7 @@ data class User(
         if (includeTime) {
             calendar.set(Calendar.HOUR_OF_DAY, birthHour)
             calendar.set(Calendar.MINUTE, birthMinute)
-            calendar.add(Calendar.MINUTE, timeDiff)
+            calendar.add(Calendar.MINUTE, timeDiff) // 시차 적용
 
             if (useSummerTime == 1) calendar.add(Calendar.HOUR_OF_DAY, 1)
             if (useTokyoTime == 1) calendar.add(Calendar.MINUTE, 30)
@@ -75,7 +75,7 @@ data class User(
         this.birthDay = userInputViewModel.day.value!!
         this.includeTime = userInputViewModel.isIncludeTime.value!!
 
-        if(this.includeTime) {
+        if (this.includeTime) {
             this.birthHour = userInputViewModel.hour.value!!
             this.birthMinute = userInputViewModel.minute.value!!
         } else {
@@ -86,7 +86,7 @@ data class User(
         this.birthPlace = userInputViewModel.birthPlace.value
         this.timeDiff = userInputViewModel.timeDiff.value!!
 
-        this.useSummerTime = if(userInputViewModel.useSummerTime.value!!) 1 else 0
-        this.useTokyoTime = if(userInputViewModel.useTokyoTime.value!!) 1 else 0
+        this.useSummerTime = if (userInputViewModel.useSummerTime.value!!) 1 else 0
+        this.useTokyoTime = if (userInputViewModel.useTokyoTime.value!!) 1 else 0
     }
 }
