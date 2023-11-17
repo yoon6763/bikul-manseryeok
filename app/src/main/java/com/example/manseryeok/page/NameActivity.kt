@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.widget.NumberPicker
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import com.example.manseryeok.manseryeokdb.ManseryeokSQLHelper
@@ -17,6 +18,7 @@ import com.example.manseryeok.utils.Utils
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import java.time.LocalDate
 
 class NameActivity : ParentActivity() {
     private val TAG = "NameActivity"
@@ -24,11 +26,12 @@ class NameActivity : ParentActivity() {
     private lateinit var userModel: User // 유저의 정보 DTO
 
     private val binding by lazy { ActivityNameBinding.inflate(layoutInflater) }
-
     private val userDao by lazy { AppDatabase.getInstance(applicationContext).userDao() }
 
     private var yearGanji = ""
     private var monthGanji = ""
+
+    private var searchDate = LocalDate.now()
 
     private val nameItems = ArrayList<NameScoreItem>()
     private val nameAdapter by lazy { NameScoreAdapter(this@NameActivity, nameItems) }
@@ -57,6 +60,47 @@ class NameActivity : ParentActivity() {
 
             setUpMemo()
         }
+
+        setYearAndMonthPicker()
+
+    }
+
+    private fun setYearAndMonthPicker() = with(binding) {
+        etYear.setOnClickListener {
+            val yearPickerDialog = NumberPickerDialog(this@NameActivity)
+            yearPickerDialog.maxValue = 2100
+            yearPickerDialog.minValue = 1900
+            yearPickerDialog.initialValue = searchDate.year
+            yearPickerDialog.onConfirmListener = object : NumberPickerDialog.OnConfirmListener {
+                override fun onConfirm(number: Int) {
+                    searchDate = searchDate.withYear(number)
+                    importGanji()
+                    setUpGanji()
+
+                    etYear.setText(number.toString())
+                }
+            }
+
+            yearPickerDialog.show()
+        }
+
+        etMonth.setOnClickListener {
+            val monthPickerDialog = NumberPickerDialog(this@NameActivity)
+            monthPickerDialog.maxValue = 12
+            monthPickerDialog.minValue = 1
+            monthPickerDialog.initialValue = searchDate.monthValue
+            monthPickerDialog.onConfirmListener = object : NumberPickerDialog.OnConfirmListener {
+                override fun onConfirm(number: Int) {
+                    searchDate = searchDate.withMonth(number)
+                    importGanji()
+                    setUpGanji()
+
+                    etMonth.setText(number.toString())
+                }
+            }
+
+            monthPickerDialog.show()
+        }
     }
 
     private fun loadUserModel() {
@@ -66,6 +110,11 @@ class NameActivity : ParentActivity() {
                 val userId = intent.getLongExtra(Utils.INTENT_EXTRAS_USER_ID, -1L)
                 userModel = userDao.getUser(userId)
                 name = userModel.firstName + userModel.lastName
+
+                searchDate = LocalDate.of(userModel.birthYear, userModel.birthMonth, userModel.birthDay)
+
+                binding.etYear.setText(userModel.birthYear.toString())
+                binding.etMonth.setText(userModel.birthMonth.toString())
             }
         }
     }
@@ -105,11 +154,82 @@ class NameActivity : ParentActivity() {
         */
 
         // 초성
-        val initialSound = arrayOf('ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ')
+        val initialSound = arrayOf(
+            'ㄱ',
+            'ㄲ',
+            'ㄴ',
+            'ㄷ',
+            'ㄸ',
+            'ㄹ',
+            'ㅁ',
+            'ㅂ',
+            'ㅃ',
+            'ㅅ',
+            'ㅆ',
+            'ㅇ',
+            'ㅈ',
+            'ㅉ',
+            'ㅊ',
+            'ㅋ',
+            'ㅌ',
+            'ㅍ',
+            'ㅎ'
+        )
         // 중성
-        val middleSound = arrayOf('ㅏ', 'ㅐ', 'ㅑ', 'ㅒ', 'ㅓ', 'ㅔ', 'ㅕ', 'ㅖ', 'ㅗ', 'ㅘ', 'ㅙ', 'ㅚ', 'ㅛ', 'ㅜ', 'ㅝ', 'ㅞ', 'ㅟ', 'ㅠ', 'ㅡ', 'ㅢ', 'ㅣ')
+        val middleSound = arrayOf(
+            'ㅏ',
+            'ㅐ',
+            'ㅑ',
+            'ㅒ',
+            'ㅓ',
+            'ㅔ',
+            'ㅕ',
+            'ㅖ',
+            'ㅗ',
+            'ㅘ',
+            'ㅙ',
+            'ㅚ',
+            'ㅛ',
+            'ㅜ',
+            'ㅝ',
+            'ㅞ',
+            'ㅟ',
+            'ㅠ',
+            'ㅡ',
+            'ㅢ',
+            'ㅣ'
+        )
         // 종성, 종성이 없는 경우도 있기에 "" 값 포함
-        val finalSound = arrayOf(' ', 'ㄱ', 'ㄲ', 'ㄳ', 'ㄴ', 'ㄵ', 'ㄶ', 'ㄷ', 'ㄹ', 'ㄺ', 'ㄻ', 'ㄼ', 'ㄽ', 'ㄾ', 'ㄿ', 'ㅀ', 'ㅁ', 'ㅂ', 'ㅄ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ')
+        val finalSound = arrayOf(
+            ' ',
+            'ㄱ',
+            'ㄲ',
+            'ㄳ',
+            'ㄴ',
+            'ㄵ',
+            'ㄶ',
+            'ㄷ',
+            'ㄹ',
+            'ㄺ',
+            'ㄻ',
+            'ㄼ',
+            'ㄽ',
+            'ㄾ',
+            'ㄿ',
+            'ㅀ',
+            'ㅁ',
+            'ㅂ',
+            'ㅄ',
+            'ㅅ',
+            'ㅆ',
+            'ㅇ',
+            'ㅈ',
+            'ㅊ',
+            'ㅋ',
+            'ㅌ',
+            'ㅍ',
+            'ㅎ'
+        )
 
         val scoreHashMap = HashMap<Char, Int>()
         scoreHashMap[' '] = 0
@@ -194,7 +314,8 @@ class NameActivity : ParentActivity() {
             }
 
             // 홀수면 +(true) 양수면 -(false)
-            val sign = (scoreHashMap[initialVal]!! + scoreHashMap[middleVal]!! + scoreHashMap[finalVal]!!) % 2 != 0
+            val sign =
+                (scoreHashMap[initialVal]!! + scoreHashMap[middleVal]!! + scoreHashMap[finalVal]!!) % 2 != 0
 
             val ganji = when (property) {
                 0 -> if (sign) '甲' else '乙'
@@ -243,12 +364,12 @@ class NameActivity : ParentActivity() {
         mDBHelper.createDataBase()
         mDBHelper.open()
 
-        val year = userModel.birthYear
-        val month = userModel.birthMonth
-        val day = userModel.birthDay
-
         // 유저의 생일 - 1년 부터 + 100년까지의 정보
-        val userManseryeok = mDBHelper.getDayData(year, month, day)
+        val userManseryeok = mDBHelper.getDayData(
+            searchDate.year,
+            searchDate.monthValue,
+            searchDate.dayOfMonth
+        )
 
         mDBHelper.close()
 
