@@ -1,4 +1,4 @@
-package com.example.manseryeok.page
+package com.example.manseryeok.page.compass
 
 import android.Manifest
 import android.content.Context

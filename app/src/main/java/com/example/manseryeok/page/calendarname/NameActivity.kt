@@ -1,10 +1,9 @@
-package com.example.manseryeok.page
+package com.example.manseryeok.page.calendarname
 
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import android.widget.NumberPicker
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import com.example.manseryeok.manseryeokdb.ManseryeokSQLHelper
@@ -13,6 +12,7 @@ import com.example.manseryeok.databinding.ActivityNameBinding
 import com.example.manseryeok.models.AppDatabase
 import com.example.manseryeok.models.NameScoreItem
 import com.example.manseryeok.models.user.User
+import com.example.manseryeok.page.calendarname.popup.NumberPickerDialog
 import com.example.manseryeok.utils.ParentActivity
 import com.example.manseryeok.utils.Utils
 import kotlinx.coroutines.Dispatchers.IO

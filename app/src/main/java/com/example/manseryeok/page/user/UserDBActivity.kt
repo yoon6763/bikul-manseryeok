@@ -13,12 +13,9 @@ import com.example.manseryeok.utils.Utils
 import com.example.manseryeok.databinding.ActivityDbactivityBinding
 import com.example.manseryeok.manseryeokdb.ManseryeokSQLHelper
 import com.example.manseryeok.models.AppDatabase
-import com.example.manseryeok.models.Manseryeok
-import com.example.manseryeok.models.dao.tag.UserTagDAO
-import com.example.manseryeok.models.user.User
-import com.example.manseryeok.page.CalendarActivity
-import com.example.manseryeok.page.CalendarInputActivity
-import com.example.manseryeok.page.NameActivity
+import com.example.manseryeok.page.calendarname.CalendarActivity
+import com.example.manseryeok.page.calendarname.CalendarInputActivity
+import com.example.manseryeok.page.calendarname.NameActivity
 import com.example.manseryeok.utils.ParentActivity
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch

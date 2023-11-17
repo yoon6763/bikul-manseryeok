@@ -14,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.manseryeok.R
 import com.example.manseryeok.manseryeokdb.ManseryeokSQLHelper
 import com.example.manseryeok.databinding.ActivityMainBinding
+import com.example.manseryeok.page.calendarname.CalendarInputActivity
+import com.example.manseryeok.page.compass.CompassActivity
 import com.example.manseryeok.page.user.UserDBActivity
 import com.example.manseryeok.utils.Utils
 import java.security.MessageDigest

@@ -1,12 +1,10 @@
-package com.example.manseryeok.page
+package com.example.manseryeok.page.calendarname
 
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.manseryeok.R

@@ -1,4 +1,4 @@
-package com.example.manseryeok.page
+package com.example.manseryeok.page.calendarname
 
 import android.content.Intent
 import android.os.Bundle
@@ -13,6 +13,7 @@ import com.example.manseryeok.databinding.ActivityCalendarInputBinding
 import com.example.manseryeok.models.AppDatabase
 import com.example.manseryeok.models.UserInputViewModel
 import com.example.manseryeok.models.user.User
+import com.example.manseryeok.page.calendarname.popup.LocationPickerFragment
 import com.example.manseryeok.utils.ParentActivity
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch

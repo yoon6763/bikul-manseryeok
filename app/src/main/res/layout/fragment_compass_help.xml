@@ -6,7 +6,7 @@
     android:background="@color/white"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".page.CompassHelpFragment">
+    tools:context=".page.compass.CompassHelpFragment">
 
     <TextView
         android:id="@+id/tv_compass_help_title"

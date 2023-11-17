@@ -16,7 +16,7 @@
         android:layout_height="match_parent"
         android:background="@color/white"
         android:orientation="vertical"
-        tools:context=".page.CalendarInputActivity">
+        tools:context=".page.calendarname.CalendarInputActivity">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar_calendar_input"
