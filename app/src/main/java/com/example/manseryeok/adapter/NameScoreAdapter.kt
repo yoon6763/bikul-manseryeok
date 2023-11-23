@@ -27,14 +27,34 @@ class NameScoreAdapter(
         holder.binding.run {
             val item = items[position]
 
-            tvItemYearGanjiTop.text = item.ganjiYearTop
-            tvItemMonthGanjiTop.text = item.ganjiMonthTop
-            tvItemYearGanjiBottom.text = item.ganjiYearBottom
-            tvItemMonthGanjiBottom.text = item.ganjiMonthBottom
+//            tvItemYearGanjiTop.text = item.ganjiYearTop
+//            tvItemMonthGanjiTop.text = item.ganjiMonthTop
+//            tvItemYearGanjiBottom.text = item.ganjiYearBottom
+//            tvItemMonthGanjiBottom.text = item.ganjiMonthBottom
+//
+//            tvItemNameKor.text = item.name
+//            tvItemNameHan.text = item.nameHan
 
-            tvItemNameKor.text = item.name
-            tvItemNameHan.text = item.nameHan
+            tvItemName.text = item.name
+            tvItemNameHanInitial.text = item.nameHanInitial
+            tvItemYearGanjiTopInitial.text = item.ganjiYearTopInitial
+            tvItemMonthGanjiTopInitial.text = item.ganjiMonthTopInitial
+            tvItemMonthGanjiBottomInitial.text = item.ganjiMonthBottomInitial
+            tvItemYearGanjiBottomInitial.text = item.ganjiYearBottomInitial
+            tvItemNameKorInitial.text = item.nameKorInitial
 
+
+            if (item.nameHanFinal == null) {
+                llItemNameFinal.visibility = View.GONE
+            } else {
+                llItemNameFinal.visibility = View.VISIBLE
+                tvItemNameKorFinal.text = item.nameKorFinal
+                tvItemYearGanjiTopFinal.text = item.ganjiYearTopFinal
+                tvItemYearGanjiBottomFinal.text = item.ganjiYearBottomFinal
+                tvItemNameHanFinal.text = item.nameHanFinal
+                tvItemMonthGanjiTopFinal.text = item.ganjiMonthTopFinal
+                tvItemMonthGanjiBottomFinal.text = item.ganjiMonthBottomFinal
+            }
 //            "甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"
 //            "갑", "을", "병", "정", "무", "기", "경", "신", "임", "계"
 //            "목", "목", "화", "화", "토", "토", "금", "금", "수", "수"
