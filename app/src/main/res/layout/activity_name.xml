@@ -40,10 +40,11 @@
 
                 <EditText
                     android:id="@+id/et_year"
-                    android:layout_width="80dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:focusable="false"
                     android:gravity="center"
+                    android:paddingHorizontal="10dp"
                     android:textSize="25sp"
                     tools:text="2023" />
 
@@ -56,11 +57,12 @@
 
                 <EditText
                     android:id="@+id/et_month"
-                    android:layout_width="40dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:focusable="false"
                     android:gravity="center"
-                    android:text="3"
+                    android:paddingHorizontal="10dp"
+                    android:text="03"
                     android:textSize="25sp" />
 
                 <TextView

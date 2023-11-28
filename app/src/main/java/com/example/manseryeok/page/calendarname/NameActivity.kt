@@ -95,6 +95,10 @@ class NameActivity : ParentActivity() {
                     importGanji()
                     setUpGanji()
 
+                    if (number < 10) {
+                        etMonth.setText("0$number")
+                        return
+                    }
                     etMonth.setText(number.toString())
                 }
             }
@@ -328,7 +332,7 @@ class NameActivity : ParentActivity() {
                 monthGanji[1].toString(),
             )
 
-            if(finalVal == ' ') {
+            if (finalVal == ' ') {
                 nameItems.add(
                     NameScoreItem(
                         element.toString(),
