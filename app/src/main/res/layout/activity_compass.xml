@@ -98,7 +98,7 @@
                     android:drawableStart="@drawable/ic_phone_rotation_small"
                     android:drawablePadding="@dimen/gap_line"
                     android:drawableTint="@drawable/radio_text"
-                    android:paddingHorizontal="@dimen/gap_horizontal"
+                    android:paddingHorizontal="10dp"
                     android:paddingVertical="@dimen/gap_line"
                     android:text="@string/obj_rotation"
                     android:textColor="@drawable/radio_text" />
@@ -114,7 +114,7 @@
                     android:drawableEnd="@drawable/ic_phone_rotation_lock_small"
                     android:drawablePadding="@dimen/gap_line"
                     android:drawableTint="@drawable/radio_text"
-                    android:paddingHorizontal="@dimen/gap_horizontal"
+                    android:paddingHorizontal="10dp"
                     android:paddingVertical="@dimen/gap_line"
                     android:text="@string/obj_rotation_fix"
                     android:textColor="@drawable/radio_text" />
