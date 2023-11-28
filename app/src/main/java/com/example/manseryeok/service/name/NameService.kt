@@ -50,70 +50,38 @@ class NameService(val context: Context, var name: String) {
 
     fun calcYearGanji(year: Int, month: Int, day: Int): List<NameScoreItem> {
         val manseryeok = importCalendar(year, month, day)
-        val nameScoreItems = ArrayList<NameScoreItem>()
         val yearGanji = manseryeok.cd_hyganjee!!
 
-        nameComponents.forEach { nameCharComponent ->
-            val parity = nameCharComponent.score % 2 // 짝수 or 홀수
-
-            val nameScoreItem = NameScoreItem(nameCharComponent.name)
-
-            val initialGanji = getNameGanji(nameCharComponent.initialSound, parity)
-            val initialGanjiYearTopLabel = Utils.getPillarLabel(initialGanji.toString(), yearGanji[0].toString())
-            val initialGanjiYearBottomLabel = Utils.getPillarLabel(initialGanji.toString(), yearGanji[1].toString())
-
-            nameScoreItem.nameScoreChildItems.add(NameScoreChildItem(initialGanji.toString(), initialGanjiYearTopLabel, initialGanjiYearBottomLabel,))
-
-            if(nameCharComponent.finalSound != null &&
-                nameCharComponent.finalSound != ' ') {
-                val finalGanji = getNameGanji(nameCharComponent.finalSound, parity)
-                val finialGanjiYearTopLabel = Utils.getPillarLabel(finalGanji.toString(), yearGanji[0].toString())
-                val finialGanjiYearBottomLabel = Utils.getPillarLabel(finalGanji.toString(), yearGanji[1].toString())
-
-                nameScoreItem.nameScoreChildItems.add(
-                    NameScoreChildItem(
-                        finalGanji.toString(),
-                        finialGanjiYearTopLabel,
-                        finialGanjiYearBottomLabel,
-                    )
-                )
-            }
-
-            nameScoreItems.add(nameScoreItem)
-        }
-
-        return nameScoreItems
+        return calcGanji(yearGanji)
     }
 
     fun calcMonthGanji(year: Int, month: Int, day: Int): List<NameScoreItem> {
         val manseryeok = importCalendar(year, month, day)
-        val nameScoreItems = ArrayList<NameScoreItem>()
         val monthGanji = manseryeok.cd_hmganjee!!
+
+        return calcGanji(monthGanji)
+    }
+
+    private fun calcGanji(dateGanji: String): List<NameScoreItem> {
+        val nameScoreItems = ArrayList<NameScoreItem>()
 
         nameComponents.forEach { nameCharComponent ->
             val parity = nameCharComponent.score % 2 // 짝수 or 홀수
-
             val nameScoreItem = NameScoreItem(nameCharComponent.name)
+            val initialAndFinalSound = arrayListOf(nameCharComponent.initialSound)
 
-            val initialGanji = getNameGanji(nameCharComponent.initialSound, parity)
-            val initialGanjiYearTopLabel = Utils.getPillarLabel(initialGanji.toString(), monthGanji[0].toString())
-            val initialGanjiYearBottomLabel = Utils.getPillarLabel(initialGanji.toString(), monthGanji[1].toString())
+            if (nameCharComponent.finalSound != null &&
+                nameCharComponent.finalSound != ' '
+            ) {
+                initialAndFinalSound.add(nameCharComponent.finalSound)
+            }
 
-            nameScoreItem.nameScoreChildItems.add(NameScoreChildItem(initialGanji.toString(), initialGanjiYearTopLabel, initialGanjiYearBottomLabel,))
+            initialAndFinalSound.forEach { sound ->
+                val soundGanji = getNameGanji(sound, parity)
+                val ganjiYearTopLabel = Utils.getPillarLabel(soundGanji.toString(), dateGanji[0].toString())
+                val ganjiYearBottomLabel = Utils.getPillarLabel(soundGanji.toString(), dateGanji[1].toString())
 
-            if(nameCharComponent.finalSound != null &&
-                nameCharComponent.finalSound != ' ') {
-                val finalGanji = getNameGanji(nameCharComponent.finalSound, parity)
-                val finialGanjiYearTopLabel = Utils.getPillarLabel(finalGanji.toString(), monthGanji[0].toString())
-                val finialGanjiYearBottomLabel = Utils.getPillarLabel(finalGanji.toString(), monthGanji[1].toString())
-
-                nameScoreItem.nameScoreChildItems.add(
-                    NameScoreChildItem(
-                        finalGanji.toString(),
-                        finialGanjiYearTopLabel,
-                        finialGanjiYearBottomLabel,
-                    )
-                )
+                nameScoreItem.nameScoreChildItems.add(NameScoreChildItem(soundGanji.toString(), ganjiYearTopLabel, ganjiYearBottomLabel))
             }
 
             nameScoreItems.add(nameScoreItem)

@@ -53,7 +53,6 @@ class NameActivity : ParentActivity() {
         binding.run {
             rvNameScore.adapter = nameAdapter
 
-            setUpGanji(NameService.YEAR)
             setUpYearMonthRadioButton()
 
             btnGotoManseryeok.setOnClickListener {
@@ -71,10 +70,7 @@ class NameActivity : ParentActivity() {
 
     private fun setUpYearMonthRadioButton() = with(binding) {
         rgBirthType.setOnCheckedChangeListener { radioGroup, id ->
-            when (id) {
-                rbYear.id -> setUpGanji(NameService.YEAR)
-                rbMonth.id -> setUpGanji(NameService.MONTH)
-            }
+            setUpGanji()
         }
 
         rgBirthType.check(rbYear.id)
@@ -90,7 +86,7 @@ class NameActivity : ParentActivity() {
             yearPickerDialog.onConfirmListener = object : NumberPickerDialog.OnConfirmListener {
                 override fun onConfirm(number: Int) {
                     searchDate = searchDate.withYear(number)
-                    setUpGanji(NameService.YEAR)
+                    setUpGanji()
 
                     etYear.setText(number.toString())
                 }
@@ -107,7 +103,7 @@ class NameActivity : ParentActivity() {
             monthPickerDialog.onConfirmListener = object : NumberPickerDialog.OnConfirmListener {
                 override fun onConfirm(number: Int) {
                     searchDate = searchDate.withMonth(number)
-                    setUpGanji(NameService.MONTH)
+                    setUpGanji()
 
                     if (number < 10) {
                         etMonth.setText("0$number")
@@ -129,8 +125,7 @@ class NameActivity : ParentActivity() {
                 userModel = userDao.getUser(userId)
                 name = userModel.firstName + userModel.lastName
 
-                searchDate =
-                    LocalDate.of(userModel.birthYear, userModel.birthMonth, userModel.birthDay)
+                searchDate = LocalDate.of(userModel.birthYear, userModel.birthMonth, userModel.birthDay)
 
                 binding.etYear.setText(userModel.birthYear.toString())
                 binding.etMonth.setText(userModel.birthMonth.toString())
@@ -146,9 +141,9 @@ class NameActivity : ParentActivity() {
         }
     }
 
-    private fun setUpMemo() {
-        binding.etMemo.setText(userModel.memo)
-        binding.etMemo.addTextChangedListener {
+    private fun setUpMemo() = with(binding) {
+        etMemo.setText(userModel.memo)
+        etMemo.addTextChangedListener {
             userModel.memo = it.toString()
             runBlocking {
                 launch(IO) {
@@ -158,11 +153,14 @@ class NameActivity : ParentActivity() {
         }
     }
 
-    private fun setUpGanji(type: Int) {
-        val nameScoreItems = if (type == NameService.YEAR) {
-            nameService.calcYearGanji(searchDate.year, searchDate.monthValue, searchDate.dayOfMonth)
-        } else {
-            nameService.calcMonthGanji(searchDate.year, searchDate.monthValue, searchDate.dayOfMonth)
+    private fun setUpGanji() =with(binding){
+        val nameScoreItems = when (rgBirthType.checkedRadioButtonId) {
+            rbYear.id -> nameService.calcYearGanji(searchDate.year, searchDate.monthValue, searchDate.dayOfMonth)
+            rbMonth.id -> nameService.calcMonthGanji(searchDate.year, searchDate.monthValue, searchDate.dayOfMonth)
+            else -> {
+                Toast.makeText(applicationContext, "잘못된 타입입니다.", Toast.LENGTH_SHORT).show()
+                return
+            }
         }
 
         nameItems.clear()
@@ -343,10 +341,12 @@ class NameActivity : ParentActivity() {
 //            val initialGanji = getNameGanji(initialVal, signType)
 //
 //            val ganjiYearTopInitialLabel = Utils.getPillarLabel(
-//                initialGanji.toString(), yearGanji[0].toString()
+//                initialGanji.toString(),
+//                yearGanji[0].toString()
 //            )
 //            val ganjiYearBottomInitialLabel = Utils.getPillarLabel(
-//                initialGanji.toString(), yearGanji[1].toString()
+//                initialGanji.toString(),
+//                yearGanji[1].toString()
 //            )
 //            val ganjiMonthTopInitialLabel = Utils.getPillarLabel(
 //                monthGanji[0].toString(),
