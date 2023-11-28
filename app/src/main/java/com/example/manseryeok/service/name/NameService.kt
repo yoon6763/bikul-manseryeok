@@ -90,6 +90,11 @@ class NameService(val context: Context, var name: String) {
         return nameScoreItems
     }
 
+    fun getGanjiLabel(year: Int, month: Int, day: Int, type: Int): String {
+        val manseryeok = importCalendar(year, month, day)
+        return if (type == YEAR) manseryeok.cd_hyganjee!! else manseryeok.cd_hmganjee!!
+    }
+
 
     private fun importCalendar(year: Int, month: Int, day: Int): Manseryeok {
         val dbHelper = ManseryeokSQLHelper(context)
