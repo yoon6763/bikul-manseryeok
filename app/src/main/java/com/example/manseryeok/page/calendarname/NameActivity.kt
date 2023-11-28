@@ -10,9 +10,10 @@ import com.example.manseryeok.manseryeokdb.ManseryeokSQLHelper
 import com.example.manseryeok.adapter.NameScoreAdapter
 import com.example.manseryeok.databinding.ActivityNameBinding
 import com.example.manseryeok.models.AppDatabase
-import com.example.manseryeok.models.NameScoreItem
+import com.example.manseryeok.models.name.NameScoreItem
 import com.example.manseryeok.models.user.User
 import com.example.manseryeok.page.calendarname.popup.NumberPickerDialog
+import com.example.manseryeok.service.name.NameService
 import com.example.manseryeok.utils.ParentActivity
 import com.example.manseryeok.utils.Utils
 import kotlinx.coroutines.Dispatchers.IO
@@ -38,6 +39,8 @@ class NameActivity : ParentActivity() {
 
     private var name = ""
 
+    private lateinit var nameService: NameService
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -45,11 +48,13 @@ class NameActivity : ParentActivity() {
         commonSetting()
         loadUserModel()
 
+        nameService = NameService(this, name)
+
         binding.run {
             rvNameScore.adapter = nameAdapter
 
-            importGanji()
-            setUpGanji()
+            setUpGanji(NameService.YEAR)
+            setUpYearMonthRadioButton()
 
             btnGotoManseryeok.setOnClickListener {
                 val intent = Intent(this@NameActivity, CalendarActivity::class.java)
@@ -62,8 +67,19 @@ class NameActivity : ParentActivity() {
         }
 
         setYearAndMonthPicker()
-
     }
+
+    private fun setUpYearMonthRadioButton() = with(binding) {
+        rgBirthType.setOnCheckedChangeListener { radioGroup, id ->
+            when (id) {
+                rbYear.id -> setUpGanji(NameService.YEAR)
+                rbMonth.id -> setUpGanji(NameService.MONTH)
+            }
+        }
+
+        rgBirthType.check(rbYear.id)
+    }
+
 
     private fun setYearAndMonthPicker() = with(binding) {
         etYear.setOnClickListener {
@@ -74,8 +90,7 @@ class NameActivity : ParentActivity() {
             yearPickerDialog.onConfirmListener = object : NumberPickerDialog.OnConfirmListener {
                 override fun onConfirm(number: Int) {
                     searchDate = searchDate.withYear(number)
-                    importGanji()
-                    setUpGanji()
+                    setUpGanji(NameService.YEAR)
 
                     etYear.setText(number.toString())
                 }
@@ -92,8 +107,7 @@ class NameActivity : ParentActivity() {
             monthPickerDialog.onConfirmListener = object : NumberPickerDialog.OnConfirmListener {
                 override fun onConfirm(number: Int) {
                     searchDate = searchDate.withMonth(number)
-                    importGanji()
-                    setUpGanji()
+                    setUpGanji(NameService.MONTH)
 
                     if (number < 10) {
                         etMonth.setText("0$number")
@@ -144,252 +158,261 @@ class NameActivity : ParentActivity() {
         }
     }
 
-    private fun setUpGanji() {
-        binding.run {
-            tvYearGanjiTop.text = yearGanji[0].toString()
-            tvYearGanjiBottom.text = yearGanji[1].toString()
-            tvMonthGanjiTop.text = monthGanji[0].toString()
-            tvMonthGanjiBottom.text = monthGanji[1].toString()
+    private fun setUpGanji(type: Int) {
+        val nameScoreItems = if (type == NameService.YEAR) {
+            nameService.calcYearGanji(searchDate.year, searchDate.monthValue, searchDate.dayOfMonth)
+        } else {
+            nameService.calcMonthGanji(searchDate.year, searchDate.monthValue, searchDate.dayOfMonth)
         }
-
-        /*
-                한글 유니코드 규칙 - (초성 * 21 + 중성) * 28 + 종성 + 0xAC00
-                전 -> ㅈ : 12, ㅓ : 4 ㄴ : 5
-                (12 * 21 + 4) * 28 + 5 + 0xAC00
-        */
-
-        // 초성
-        val initialSound = arrayOf(
-            'ㄱ',
-            'ㄲ',
-            'ㄴ',
-            'ㄷ',
-            'ㄸ',
-            'ㄹ',
-            'ㅁ',
-            'ㅂ',
-            'ㅃ',
-            'ㅅ',
-            'ㅆ',
-            'ㅇ',
-            'ㅈ',
-            'ㅉ',
-            'ㅊ',
-            'ㅋ',
-            'ㅌ',
-            'ㅍ',
-            'ㅎ'
-        )
-        // 중성
-        val middleSound = arrayOf(
-            'ㅏ',
-            'ㅐ',
-            'ㅑ',
-            'ㅒ',
-            'ㅓ',
-            'ㅔ',
-            'ㅕ',
-            'ㅖ',
-            'ㅗ',
-            'ㅘ',
-            'ㅙ',
-            'ㅚ',
-            'ㅛ',
-            'ㅜ',
-            'ㅝ',
-            'ㅞ',
-            'ㅟ',
-            'ㅠ',
-            'ㅡ',
-            'ㅢ',
-            'ㅣ'
-        )
-        // 종성, 종성이 없는 경우도 있기에 "" 값 포함
-        val finalSound = arrayOf(
-            ' ',
-            'ㄱ',
-            'ㄲ',
-            'ㄳ',
-            'ㄴ',
-            'ㄵ',
-            'ㄶ',
-            'ㄷ',
-            'ㄹ',
-            'ㄺ',
-            'ㄻ',
-            'ㄼ',
-            'ㄽ',
-            'ㄾ',
-            'ㄿ',
-            'ㅀ',
-            'ㅁ',
-            'ㅂ',
-            'ㅄ',
-            'ㅅ',
-            'ㅆ',
-            'ㅇ',
-            'ㅈ',
-            'ㅊ',
-            'ㅋ',
-            'ㅌ',
-            'ㅍ',
-            'ㅎ'
-        )
-
-        val scoreHashMap = HashMap<Char, Int>()
-        scoreHashMap[' '] = 0
-        scoreHashMap['ㄱ'] = 2
-        scoreHashMap['ㄲ'] = 4
-        scoreHashMap['ㄴ'] = 2
-        scoreHashMap['ㄷ'] = 3
-        scoreHashMap['ㄸ'] = 6
-        scoreHashMap['ㄹ'] = 5
-        scoreHashMap['ㅁ'] = 4
-        scoreHashMap['ㅂ'] = 4
-        scoreHashMap['ㅃ'] = 8
-        scoreHashMap['ㅅ'] = 2
-        scoreHashMap['ㅆ'] = 4
-        scoreHashMap['ㅇ'] = 1
-        scoreHashMap['ㅈ'] = 3
-        scoreHashMap['ㅉ'] = 6
-        scoreHashMap['ㅊ'] = 4
-        scoreHashMap['ㅋ'] = 3
-        scoreHashMap['ㅌ'] = 4
-        scoreHashMap['ㅍ'] = 4
-        scoreHashMap['ㅎ'] = 3
-        scoreHashMap['ㄳ'] = 4
-        scoreHashMap['ㄵ'] = 5
-        scoreHashMap['ㄶ'] = 5
-        scoreHashMap['ㄺ'] = 7
-        scoreHashMap['ㄻ'] = 9
-        scoreHashMap['ㄼ'] = 9
-        scoreHashMap['ㄽ'] = 7
-        scoreHashMap['ㄾ'] = 9
-        scoreHashMap['ㄿ'] = 9
-        scoreHashMap['ㅀ'] = 8
-        scoreHashMap['ㅄ'] = 6
-        scoreHashMap['ㅏ'] = 2
-        scoreHashMap['ㅐ'] = 3
-        scoreHashMap['ㅑ'] = 3
-        scoreHashMap['ㅒ'] = 4
-        scoreHashMap['ㅓ'] = 2
-        scoreHashMap['ㅔ'] = 3
-        scoreHashMap['ㅕ'] = 3
-        scoreHashMap['ㅖ'] = 4
-        scoreHashMap['ㅗ'] = 2
-        scoreHashMap['ㅘ'] = 4
-        scoreHashMap['ㅙ'] = 5
-        scoreHashMap['ㅚ'] = 3
-        scoreHashMap['ㅛ'] = 3
-        scoreHashMap['ㅜ'] = 2
-        scoreHashMap['ㅝ'] = 4
-        scoreHashMap['ㅞ'] = 5
-        scoreHashMap['ㅟ'] = 3
-        scoreHashMap['ㅠ'] = 3
-        scoreHashMap['ㅡ'] = 1
-        scoreHashMap['ㅢ'] = 2
-        scoreHashMap['ㅣ'] = 1
 
         nameItems.clear()
-
-        for (element in name) {
-            if (element.code !in 0xAC00..0xD79F) {
-                Toast.makeText(applicationContext, "한글이 아닙니다.", Toast.LENGTH_SHORT).show()
-                continue
-            }
-
-            val uniVal = element - 0xAC00
-
-            val initialVal = initialSound[(uniVal.code / 28 / 21)] // 초성
-            val middleVal = middleSound[(uniVal.code / 28 % 21)] // 중성
-            val finalVal = finalSound[(uniVal.code % 28)] // 종성 (받침)
-
-            Log.d(TAG, "setUpGanji: $element $initialVal $middleVal $finalVal")
-
-            // result += "$element" + "\n" +
-            //   "$initialVal : ${scoreHashMap[initialVal]}\t $middleVal : ${scoreHashMap[middleVal]}\t $finalVal : ${scoreHashMap[finalVal]}" + "\n\n"
-
-            // 홀수면 +(true) 양수면 -(false)
-            val signType =
-                (scoreHashMap[initialVal]!! + scoreHashMap[middleVal]!! + scoreHashMap[finalVal]!!) % 2 != 0
-
-            val initialGanji = getNameGanji(initialVal, signType)
-
-            val ganjiYearTopInitialLabel = Utils.getPillarLabel(
-                initialGanji.toString(),
-                yearGanji[0].toString()
-            )
-            val ganjiYearBottomInitialLabel = Utils.getPillarLabel(
-                initialGanji.toString(),
-                yearGanji[1].toString()
-            )
-            val ganjiMonthTopInitialLabel = Utils.getPillarLabel(
-                monthGanji[0].toString(),
-                initialGanji.toString(),
-            )
-            val ganjiMonthBottomInitialLabel = Utils.getPillarLabel(
-                initialGanji.toString(),
-                monthGanji[1].toString(),
-            )
-
-            if (finalVal == ' ') {
-                nameItems.add(
-                    NameScoreItem(
-                        element.toString(),
-                        initialVal.toString(),
-                        initialGanji.toString(),
-                        ganjiYearTopInitialLabel,
-                        ganjiYearBottomInitialLabel,
-                        ganjiMonthTopInitialLabel,
-                        ganjiMonthBottomInitialLabel
-                    )
-                )
-                continue
-            }
-
-            val finalGanji = getNameGanji(finalVal, signType)
-
-            val ganjiYearTopFinalLabel = Utils.getPillarLabel(
-                finalGanji.toString(),
-                yearGanji[0].toString()
-            )
-
-            val ganjiYearBottomFinalLabel = Utils.getPillarLabel(
-                finalGanji.toString(),
-                yearGanji[1].toString()
-            )
-
-            val ganjiMonthTopFinalLabel = Utils.getPillarLabel(
-                monthGanji[0].toString(),
-                finalGanji.toString(),
-            )
-
-            val ganjiMonthBottomFinalLabel = Utils.getPillarLabel(
-                finalGanji.toString(),
-                monthGanji[1].toString(),
-            )
-
-
-            nameItems.add(
-                NameScoreItem(
-                    element.toString(),
-                    initialGanji.toString(),
-                    ganjiYearTopInitialLabel,
-                    ganjiYearBottomInitialLabel,
-                    ganjiMonthTopInitialLabel,
-                    ganjiMonthBottomInitialLabel,
-                    finalVal.toString(),
-                    finalGanji.toString(),
-                    ganjiYearTopFinalLabel,
-                    ganjiYearBottomFinalLabel,
-                    ganjiMonthTopFinalLabel,
-                    ganjiMonthBottomFinalLabel,
-                )
-            )
-        }
+        nameItems.addAll(nameScoreItems)
 
         nameAdapter.notifyDataSetChanged()
     }
+
+//    private fun setUpGanji() {
+//        binding.run {
+//            tvYearGanjiTop.text = yearGanji[0].toString()
+//            tvYearGanjiBottom.text = yearGanji[1].toString()
+//            tvMonthGanjiTop.text = monthGanji[0].toString()
+//            tvMonthGanjiBottom.text = monthGanji[1].toString()
+//        }
+//
+//        /*
+//                한글 유니코드 규칙 - (초성 * 21 + 중성) * 28 + 종성 + 0xAC00
+//                전 -> ㅈ : 12, ㅓ : 4 ㄴ : 5
+//                (12 * 21 + 4) * 28 + 5 + 0xAC00
+//        */
+//
+//        // 초성
+//        val initialSound = arrayOf(
+//            'ㄱ',
+//            'ㄲ',
+//            'ㄴ',
+//            'ㄷ',
+//            'ㄸ',
+//            'ㄹ',
+//            'ㅁ',
+//            'ㅂ',
+//            'ㅃ',
+//            'ㅅ',
+//            'ㅆ',
+//            'ㅇ',
+//            'ㅈ',
+//            'ㅉ',
+//            'ㅊ',
+//            'ㅋ',
+//            'ㅌ',
+//            'ㅍ',
+//            'ㅎ'
+//        )
+//        // 중성
+//        val middleSound = arrayOf(
+//            'ㅏ',
+//            'ㅐ',
+//            'ㅑ',
+//            'ㅒ',
+//            'ㅓ',
+//            'ㅔ',
+//            'ㅕ',
+//            'ㅖ',
+//            'ㅗ',
+//            'ㅘ',
+//            'ㅙ',
+//            'ㅚ',
+//            'ㅛ',
+//            'ㅜ',
+//            'ㅝ',
+//            'ㅞ',
+//            'ㅟ',
+//            'ㅠ',
+//            'ㅡ',
+//            'ㅢ',
+//            'ㅣ'
+//        )
+//        // 종성, 종성이 없는 경우도 있기에 "" 값 포함
+//        val finalSound = arrayOf(
+//            ' ',
+//            'ㄱ',
+//            'ㄲ',
+//            'ㄳ',
+//            'ㄴ',
+//            'ㄵ',
+//            'ㄶ',
+//            'ㄷ',
+//            'ㄹ',
+//            'ㄺ',
+//            'ㄻ',
+//            'ㄼ',
+//            'ㄽ',
+//            'ㄾ',
+//            'ㄿ',
+//            'ㅀ',
+//            'ㅁ',
+//            'ㅂ',
+//            'ㅄ',
+//            'ㅅ',
+//            'ㅆ',
+//            'ㅇ',
+//            'ㅈ',
+//            'ㅊ',
+//            'ㅋ',
+//            'ㅌ',
+//            'ㅍ',
+//            'ㅎ'
+//        )
+//
+//        val scoreHashMap = HashMap<Char, Int>()
+//        scoreHashMap[' '] = 0
+//        scoreHashMap['ㄱ'] = 2
+//        scoreHashMap['ㄲ'] = 4
+//        scoreHashMap['ㄴ'] = 2
+//        scoreHashMap['ㄷ'] = 3
+//        scoreHashMap['ㄸ'] = 6
+//        scoreHashMap['ㄹ'] = 5
+//        scoreHashMap['ㅁ'] = 4
+//        scoreHashMap['ㅂ'] = 4
+//        scoreHashMap['ㅃ'] = 8
+//        scoreHashMap['ㅅ'] = 2
+//        scoreHashMap['ㅆ'] = 4
+//        scoreHashMap['ㅇ'] = 1
+//        scoreHashMap['ㅈ'] = 3
+//        scoreHashMap['ㅉ'] = 6
+//        scoreHashMap['ㅊ'] = 4
+//        scoreHashMap['ㅋ'] = 3
+//        scoreHashMap['ㅌ'] = 4
+//        scoreHashMap['ㅍ'] = 4
+//        scoreHashMap['ㅎ'] = 3
+//        scoreHashMap['ㄳ'] = 4
+//        scoreHashMap['ㄵ'] = 5
+//        scoreHashMap['ㄶ'] = 5
+//        scoreHashMap['ㄺ'] = 7
+//        scoreHashMap['ㄻ'] = 9
+//        scoreHashMap['ㄼ'] = 9
+//        scoreHashMap['ㄽ'] = 7
+//        scoreHashMap['ㄾ'] = 9
+//        scoreHashMap['ㄿ'] = 9
+//        scoreHashMap['ㅀ'] = 8
+//        scoreHashMap['ㅄ'] = 6
+//        scoreHashMap['ㅏ'] = 2
+//        scoreHashMap['ㅐ'] = 3
+//        scoreHashMap['ㅑ'] = 3
+//        scoreHashMap['ㅒ'] = 4
+//        scoreHashMap['ㅓ'] = 2
+//        scoreHashMap['ㅔ'] = 3
+//        scoreHashMap['ㅕ'] = 3
+//        scoreHashMap['ㅖ'] = 4
+//        scoreHashMap['ㅗ'] = 2
+//        scoreHashMap['ㅘ'] = 4
+//        scoreHashMap['ㅙ'] = 5
+//        scoreHashMap['ㅚ'] = 3
+//        scoreHashMap['ㅛ'] = 3
+//        scoreHashMap['ㅜ'] = 2
+//        scoreHashMap['ㅝ'] = 4
+//        scoreHashMap['ㅞ'] = 5
+//        scoreHashMap['ㅟ'] = 3
+//        scoreHashMap['ㅠ'] = 3
+//        scoreHashMap['ㅡ'] = 1
+//        scoreHashMap['ㅢ'] = 2
+//        scoreHashMap['ㅣ'] = 1
+//
+//        nameItems.clear()
+//
+//        for (element in name) {
+//            if (element.code !in 0xAC00..0xD79F) {
+//                Toast.makeText(applicationContext, "한글이 아닙니다.", Toast.LENGTH_SHORT).show()
+//                continue
+//            }
+//
+//            val uniVal = element - 0xAC00
+//
+//            val initialVal = initialSound[(uniVal.code / 28 / 21)] // 초성
+//            val middleVal = middleSound[(uniVal.code / 28 % 21)] // 중성
+//            val finalVal = finalSound[(uniVal.code % 28)] // 종성 (받침)
+//
+//            Log.d(TAG, "setUpGanji: $element $initialVal $middleVal $finalVal")
+//
+//            // result += "$element" + "\n" +
+//            //   "$initialVal : ${scoreHashMap[initialVal]}\t $middleVal : ${scoreHashMap[middleVal]}\t $finalVal : ${scoreHashMap[finalVal]}" + "\n\n"
+//
+//            // 홀수면 +(true) 양수면 -(false)
+//            val signType =
+//                (scoreHashMap[initialVal]!! + scoreHashMap[middleVal]!! + scoreHashMap[finalVal]!!) % 2 != 0
+//
+//            val initialGanji = getNameGanji(initialVal, signType)
+//
+//            val ganjiYearTopInitialLabel = Utils.getPillarLabel(
+//                initialGanji.toString(), yearGanji[0].toString()
+//            )
+//            val ganjiYearBottomInitialLabel = Utils.getPillarLabel(
+//                initialGanji.toString(), yearGanji[1].toString()
+//            )
+//            val ganjiMonthTopInitialLabel = Utils.getPillarLabel(
+//                monthGanji[0].toString(),
+//                initialGanji.toString(),
+//            )
+//            val ganjiMonthBottomInitialLabel = Utils.getPillarLabel(
+//                initialGanji.toString(),
+//                monthGanji[1].toString(),
+//            )
+//
+//            if (finalVal == ' ') {
+//                nameItems.add(
+//                    NameScoreItem(
+//                        element.toString(),
+//                        initialVal.toString(),
+//                        initialGanji.toString(),
+//                        ganjiYearTopInitialLabel,
+//                        ganjiYearBottomInitialLabel,
+//                        ganjiMonthTopInitialLabel,
+//                        ganjiMonthBottomInitialLabel
+//                    )
+//                )
+//                continue
+//            }
+//
+//            val finalGanji = getNameGanji(finalVal, signType)
+//
+//            val ganjiYearTopFinalLabel = Utils.getPillarLabel(
+//                finalGanji.toString(), yearGanji[0].toString()
+//            )
+//
+//            val ganjiYearBottomFinalLabel = Utils.getPillarLabel(
+//                finalGanji.toString(), yearGanji[1].toString()
+//            )
+//
+//            val ganjiMonthTopFinalLabel = Utils.getPillarLabel(
+//                monthGanji[0].toString(),
+//                finalGanji.toString(),
+//            )
+//
+//            val ganjiMonthBottomFinalLabel = Utils.getPillarLabel(
+//                finalGanji.toString(),
+//                monthGanji[1].toString(),
+//            )
+//
+//
+//            nameItems.add(
+//                NameScoreItem(
+//                    element.toString(),
+//                    initialGanji.toString(),
+//                    ganjiYearTopInitialLabel,
+//                    ganjiYearBottomInitialLabel,
+//                    ganjiMonthTopInitialLabel,
+//                    ganjiMonthBottomInitialLabel,
+//                    finalVal.toString(),
+//                    finalGanji.toString(),
+//                    ganjiYearTopFinalLabel,
+//                    ganjiYearBottomFinalLabel,
+//                    ganjiMonthTopFinalLabel,
+//                    ganjiMonthBottomFinalLabel,
+//                )
+//            )
+//        }
+//
+//        nameAdapter.notifyDataSetChanged()
+//    }
 
     private fun importGanji() {
         val mDBHelper = ManseryeokSQLHelper(applicationContext)
@@ -398,9 +421,7 @@ class NameActivity : ParentActivity() {
 
         // 유저의 생일 - 1년 부터 + 100년까지의 정보
         val userManseryeok = mDBHelper.getDayData(
-            searchDate.year,
-            searchDate.monthValue,
-            searchDate.dayOfMonth
+            searchDate.year, searchDate.monthValue, searchDate.dayOfMonth
         )
 
         mDBHelper.close()
@@ -421,23 +442,23 @@ class NameActivity : ParentActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun getProperty(sound: Char): Int {
-        return when (sound) {
-            'ㄱ', 'ㅋ' -> 0 // 목
-            'ㄴ', 'ㄷ', 'ㄹ', 'ㅌ' -> 1 // 화
-            'ㅇ', 'ㅎ' -> 2 // 토
-            'ㅅ', 'ㅈ', 'ㅊ' -> 3 // 금
-            'ㅁ', 'ㅂ', 'ㅍ' -> 4 // 수
-            else -> -1
-        }
-    }
-
-    private fun getNameGanji(sound: Char, signType: Boolean): Char = when (getProperty(sound)) {
-        0 -> if (signType) '甲' else '乙'
-        1 -> if (signType) '丙' else '丁'
-        2 -> if (signType) '戊' else '己'
-        3 -> if (signType) '庚' else '辛'
-        4 -> if (signType) '壬' else '癸'
-        else -> ' '
-    }
+//    private fun getProperty(sound: Char): Int {
+//        return when (sound) {
+//            'ㄱ', 'ㅋ' -> 0 // 목
+//            'ㄴ', 'ㄷ', 'ㄹ', 'ㅌ' -> 1 // 화
+//            'ㅇ', 'ㅎ' -> 2 // 토
+//            'ㅅ', 'ㅈ', 'ㅊ' -> 3 // 금
+//            'ㅁ', 'ㅂ', 'ㅍ' -> 4 // 수
+//            else -> -1
+//        }
+//    }
+//
+//    private fun getNameGanji(sound: Char, signType: Boolean): Char = when (getProperty(sound)) {
+//        0 -> if (signType) '甲' else '乙'
+//        1 -> if (signType) '丙' else '丁'
+//        2 -> if (signType) '戊' else '己'
+//        3 -> if (signType) '庚' else '辛'
+//        4 -> if (signType) '壬' else '癸'
+//        else -> ' '
+//    }
 }

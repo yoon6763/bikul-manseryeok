@@ -22,38 +22,85 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:orientation="vertical">
+
+            <RadioGroup
+                android:id="@+id/rg_birth_type"
+                android:layout_width="200dp"
+                android:layout_height="@dimen/btn_full_height"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginVertical="40dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/radio_group_background"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb_year"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:autoSizeTextType="uniform"
+                    android:background="@drawable/radio_button_background"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="년"
+                    android:textColor="@drawable/radio_text"
+                    tools:checked="true" />
+
+                <RadioButton
+                    android:id="@+id/rb_month"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:autoSizeTextType="uniform"
+                    android:background="@drawable/radio_button_background"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="월"
+                    android:textColor="@drawable/radio_text" />
+
+
+            </RadioGroup>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
                 android:gravity="center"
                 android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
                     android:text="출생년월 : "
                     android:textSize="25sp" />
 
-                <EditText
-                    android:id="@+id/et_year"
+                <LinearLayout
+                    android:id="@+id/ll_year"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:focusable="false"
-                    android:gravity="center"
-                    android:paddingHorizontal="10dp"
-                    android:textSize="25sp"
-                    tools:text="2023" />
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="20dp"
-                    android:text="년"
-                    android:textSize="25sp" />
+                    <EditText
+                        android:id="@+id/et_year"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:gravity="center"
+                        android:paddingHorizontal="10dp"
+                        android:textSize="25sp"
+                        tools:text="2023" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20dp"
+                        android:text="년"
+                        android:textSize="25sp" />
+                </LinearLayout>
 
                 <EditText
                     android:id="@+id/et_month"
@@ -75,62 +122,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/gap_vertical"
-                android:layout_marginBottom="@dimen/gap_line_double"
                 android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="월" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="년" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="년" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="월" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/tv_month_ganji_top"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:textSize="@dimen/title_size"
-                    tools:text="卯" />
 
                 <TextView
                     android:id="@+id/tv_year_ganji_top"
@@ -147,22 +139,6 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:textSize="@dimen/title_size" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:textSize="@dimen/title_size" />
-
-                <TextView
-                    android:id="@+id/tv_year_ganji_bottom"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:textSize="@dimen/title_size"
-                    tools:text="卯" />
 
                 <TextView
                     android:id="@+id/tv_month_ganji_bottom"
