@@ -369,7 +369,6 @@ class NameActivity : ParentActivity() {
             nameItems.add(
                 NameScoreItem(
                     element.toString(),
-                    initialVal.toString(),
                     initialGanji.toString(),
                     ganjiYearTopInitialLabel,
                     ganjiYearBottomInitialLabel,

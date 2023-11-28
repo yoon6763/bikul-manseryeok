@@ -41,14 +41,12 @@ class NameScoreAdapter(
             tvItemMonthGanjiTopInitial.text = item.ganjiMonthTopInitial
             tvItemMonthGanjiBottomInitial.text = item.ganjiMonthBottomInitial
             tvItemYearGanjiBottomInitial.text = item.ganjiYearBottomInitial
-            tvItemNameKorInitial.text = item.nameKorInitial
 
 
             if (item.nameHanFinal == null) {
                 llItemNameFinal.visibility = View.GONE
             } else {
                 llItemNameFinal.visibility = View.VISIBLE
-                tvItemNameKorFinal.text = item.nameKorFinal
                 tvItemYearGanjiTopFinal.text = item.ganjiYearTopFinal
                 tvItemYearGanjiBottomFinal.text = item.ganjiYearBottomFinal
                 tvItemNameHanFinal.text = item.nameHanFinal

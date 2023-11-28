@@ -3,7 +3,6 @@ package com.example.manseryeok.models
 data class NameScoreItem(
     val name: String,
 
-    val nameKorInitial: String,
     val nameHanInitial: String,
     val ganjiYearTopInitial: String,
     val ganjiYearBottomInitial: String,

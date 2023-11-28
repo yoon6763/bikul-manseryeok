@@ -43,15 +43,6 @@
             tools:text="정재" />
 
         <TextView
-            android:id="@+id/tv_item_name_kor_initial"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textSize="20sp"
-            tools:text="ㅈ" />
-
-        <TextView
             android:id="@+id/tv_item_name_han_initial"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -104,15 +95,6 @@
             android:gravity="center"
             android:textSize="20sp"
             tools:text="정재" />
-
-        <TextView
-            android:id="@+id/tv_item_name_kor_final"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textSize="20sp"
-            tools:text="ㄴ" />
 
         <TextView
             android:id="@+id/tv_item_name_han_final"
