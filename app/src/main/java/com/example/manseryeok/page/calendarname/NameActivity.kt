@@ -60,9 +60,48 @@ class NameActivity : ParentActivity() {
             }
 
             setUpMemo()
+            btnShare.setOnClickListener { shareNameResult() }
         }
 
         setYearAndMonthPicker()
+    }
+
+    private fun shareNameResult() {
+        val content = StringBuilder()
+        content.appendLine("${name}님의 이름풀이 결과입니다.\n")
+        content.appendLine("기준년월: ${searchDate.year}년 ${searchDate.monthValue}월\n")
+
+
+        val yearGanji = nameService.calcYearGanji(searchDate.year, searchDate.monthValue, searchDate.dayOfMonth)
+        val monthGanji = nameService.calcMonthGanji(searchDate.year, searchDate.monthValue, searchDate.dayOfMonth)
+
+        content.appendLine("년 간지 정보\n")
+        yearGanji.forEach {
+            content.appendLine("${it.name}")
+
+            it.nameScoreChildItems.forEach { childItem ->
+                content.appendLine("${childItem.ganjiTop} ${childItem.nameHan} ${childItem.ganjiBottom}")
+            }
+
+            content.appendLine()
+        }
+
+        content.appendLine("\n\n\n월 간지 정보\n")
+        monthGanji.forEach {
+            content.appendLine("${it.name}")
+
+            it.nameScoreChildItems.forEach { childItem ->
+                content.appendLine("${childItem.ganjiTop} ${childItem.nameHan} ${childItem.ganjiBottom}")
+            }
+
+            content.appendLine()
+        }
+
+
+        val shareIntent = Intent(Intent.ACTION_SEND)
+        shareIntent.type = "text/plain"
+        shareIntent.putExtra(Intent.EXTRA_TEXT, content.toString())
+        startActivity(Intent.createChooser(shareIntent, "이름풀이 결과 공유하기"))
     }
 
     private fun setUpYearMonthRadioButton() = with(binding) {
