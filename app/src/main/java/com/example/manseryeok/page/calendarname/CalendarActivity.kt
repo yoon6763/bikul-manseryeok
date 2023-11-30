@@ -1,10 +1,12 @@
 package com.example.manseryeok.page.calendarname
 
+import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.manseryeok.R
@@ -17,6 +19,7 @@ import com.example.manseryeok.models.SixtyHorizontalItem
 import com.example.manseryeok.models.user.User
 import com.example.manseryeok.models.AppDatabase
 import com.example.manseryeok.utils.ParentActivity
+import com.example.manseryeok.utils.SharedPreferenceHelper
 import com.example.manseryeok.utils.Sinsal
 import com.example.manseryeok.utils.Utils
 import kotlinx.coroutines.Dispatchers.IO
@@ -28,6 +31,13 @@ import kotlin.collections.HashSet
 
 
 class CalendarActivity : ParentActivity() {
+
+    companion object {
+        const val SINSAL_EXPAND = 0
+        const val SINSAL_COLLAPSE = 1
+        const val SINSAL_EXPAND_DURATION = 200L
+    }
+
     private val binding by lazy { ActivityCalendarBinding.inflate(layoutInflater) }
     private val tenArray by lazy { resources.getStringArray(R.array.ten_array) }
     private val twelveArray by lazy { resources.getStringArray(R.array.twelve_array) }
@@ -86,6 +96,7 @@ class CalendarActivity : ParentActivity() {
             setRecyclerViewClickEvent() // 년주 리사이클러뷰 클릭 이벤트 처리
             setUpLuckRecyclerView() // 대운 리사이클러뷰
             setUpMemo()
+            setSinsalVisibility()
 
             currentTime = System.currentTimeMillis()
 
@@ -102,6 +113,27 @@ class CalendarActivity : ParentActivity() {
                 btnCalendarShare.setOnClickListener { shareResult() }
             }
         }, 1000)
+    }
+
+    private fun setSinsalVisibility() = with(binding) {
+        when (SharedPreferenceHelper.isExpandSinsal(applicationContext)) {
+            true -> setSinsalExpandOrCollapse(SINSAL_EXPAND)
+            false -> setSinsalExpandOrCollapse(SINSAL_COLLAPSE)
+        }
+
+        llSinsalExpand.setOnClickListener {
+            when (SharedPreferenceHelper.isExpandSinsal(applicationContext)) {
+                true -> {
+                    setSinsalExpandOrCollapse(SINSAL_COLLAPSE)
+                    SharedPreferenceHelper.setExpandSinsal(applicationContext, false)
+                }
+                false -> {
+                    setSinsalExpandOrCollapse(SINSAL_EXPAND)
+                    SharedPreferenceHelper.setExpandSinsal(applicationContext, true)
+                }
+            }
+            true
+        }
     }
 
     private fun loadUserModel() {
@@ -206,7 +238,11 @@ class CalendarActivity : ParentActivity() {
         未 午 巳 辰 卯 寅 丑 子
          */
         var sendContent = "${userModel.firstName}${userModel.lastName}\n" +
-                "${if (isTimeInclude) Utils.dateTimeKorFormat.format(userBirth.timeInMillis) else Utils.dateKorFormat.format(userBirth.timeInMillis)}\n" + "\n"
+                "${
+                    if (isTimeInclude) Utils.dateTimeKorFormat.format(userBirth.timeInMillis) else Utils.dateKorFormat.format(
+                        userBirth.timeInMillis
+                    )
+                }\n" + "\n"
 
         if (isTimeInclude) {
             sendContent += "시 일 월 년\n"
@@ -506,7 +542,8 @@ class CalendarActivity : ParentActivity() {
         mDBHelper.open()
 
         // 유저의 생일 - 1년 부터 + 100년까지의 정보
-        userCalendar = mDBHelper.getTableData(userBirth[Calendar.YEAR] - 1, userBirth[Calendar.YEAR] + 100)!!
+        userCalendar =
+            mDBHelper.getTableData(userBirth[Calendar.YEAR] - 1, userBirth[Calendar.YEAR] + 100)!!
 
         mDBHelper.close()
     }
@@ -589,6 +626,27 @@ class CalendarActivity : ParentActivity() {
         }
     }
 
+    private fun setSinsalExpandOrCollapse(type: Int) = with(binding) {
+        when (type) {
+            SINSAL_EXPAND -> {
+                llSinsal.visibility = View.VISIBLE
+                tvSinsalExpand.text = "신살 접기"
+                val animator = ObjectAnimator.ofFloat(ivSinsalExpand, "rotation", 180f, 0f)
+                animator.duration = SINSAL_EXPAND_DURATION
+                animator.start()
+            }
+
+            SINSAL_COLLAPSE -> {
+                llSinsal.visibility = View.GONE
+                tvSinsalExpand.text = "신살 보기"
+                val animator = ObjectAnimator.ofFloat(ivSinsalExpand, "rotation", 0f, 180f)
+                animator.duration = SINSAL_EXPAND_DURATION
+                animator.start()
+            }
+        }
+    }
+
+
     // 년주 월주 리사이클러뷰 세팅
     private fun setUpYearAndMonthPillar() {
         binding.run {
@@ -609,7 +667,6 @@ class CalendarActivity : ParentActivity() {
             }
         }
     }
-
 
     private fun setRecyclerViewClickEvent() {
         binding.run {
@@ -661,6 +718,7 @@ class CalendarActivity : ParentActivity() {
             monthAdapter.notifyDataSetChanged()
         }
     }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // 앱 바 클릭 이벤트
