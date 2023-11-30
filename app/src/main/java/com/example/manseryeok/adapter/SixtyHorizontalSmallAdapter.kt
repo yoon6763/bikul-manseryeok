@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.manseryeok.R
+import com.example.manseryeok.databinding.ItemSixtyHorizonBinding
 import com.example.manseryeok.utils.Utils
 import com.example.manseryeok.databinding.ItemSixtyHorizonSmallBinding
 import com.example.manseryeok.models.SixtyHorizontalItem
@@ -28,7 +29,7 @@ class SixtyHorizontalSmallAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val view: View = inflater.inflate(R.layout.item_sixty_horizon_small, parent, false)
+        val view: View = inflater.inflate(R.layout.item_sixty_horizon, parent, false)
 
         return Holder(view)
     }
@@ -42,9 +43,11 @@ class SixtyHorizontalSmallAdapter(
             tvItemSixtyBottom.text = item.bottom
 
             if(selectedItemPos == position) {
-                tvItemSixtyLabel.setBackgroundResource(R.drawable.box_light_gray)
+                tvItemSixtyLabel.setTextColor(context.getColor(R.color.white))
+                llItemSixty.setBackgroundResource(R.drawable.box_dark_gray)
             } else {
-                tvItemSixtyLabel.background = null
+                tvItemSixtyLabel.setTextColor(context.getColor(R.color.black))
+                llItemSixty.background = null
             }
 
 //            "甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"
@@ -94,7 +97,7 @@ class SixtyHorizontalSmallAdapter(
     }
 
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val binding = ItemSixtyHorizonSmallBinding.bind(itemView)
+        val binding = ItemSixtyHorizonBinding.bind(itemView)
 
         init {
             itemView.setOnClickListener {

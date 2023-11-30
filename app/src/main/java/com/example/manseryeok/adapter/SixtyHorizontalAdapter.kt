@@ -21,7 +21,7 @@ class SixtyHorizontalAdapter(
         fun onItemClick(age: Int, pos:Int)
     }
 
-    var selectedItemPos = -1
+    private var selectedItemPos = -1
     var onItemClickListener: OnItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -39,9 +39,11 @@ class SixtyHorizontalAdapter(
             tvItemSixtyBottom.text = item.bottom
 
             if(selectedItemPos == position) {
-                tvItemSixtyLabel.setBackgroundResource(R.drawable.box_light_gray)
+                tvItemSixtyLabel.setTextColor(context.getColor(R.color.white))
+                llItemSixty.setBackgroundResource(R.drawable.box_dark_gray)
             } else {
-                tvItemSixtyLabel.background = null
+                tvItemSixtyLabel.setTextColor(context.getColor(R.color.black))
+                llItemSixty.background = null
             }
 
 //            "甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"
@@ -77,14 +79,6 @@ class SixtyHorizontalAdapter(
 
     fun itemClicked(binding: ItemSixtyHorizonBinding, position: Int) {
         selectedItemPos = position
-
-        // 이전 선택한 라벨의 배경 제거
-//            tvOldLabel?.background = null
-//            // OldLabel 최신화
-//            tvOldLabel = binding.tvItemSixtyLabel
-//            // 클릭한 라벨 배경 처리
-//            binding.tvItemSixtyLabel.setBackgroundResource(R.drawable.box_light_gray)
-        // 리스너 발동
         onItemClickListener?.onItemClick(binding.tvItemSixtyLabel.text.toString().toInt(), position)
     }
 
