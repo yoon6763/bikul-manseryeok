@@ -26,9 +26,9 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:animateLayoutChanges="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:animateLayoutChanges="true"
                 android:background="@drawable/container_top"
                 android:orientation="vertical"
                 android:paddingVertical="@dimen/gap_vertical">
@@ -118,10 +118,45 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/ll_pillar_top_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/gap_vertical"
+                    android:divider="@drawable/empty_divider"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:showDividers="middle">
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        tools:text="시" />
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        tools:text="일" />
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        tools:text="월" />
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        tools:text="년" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_pillar_top_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:divider="@drawable/empty_divider"
                     android:gravity="center"
                     android:orientation="horizontal"
@@ -395,8 +430,8 @@
                     android:id="@+id/ll_sinsal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:animateLayoutChanges="true"
                     android:layout_marginHorizontal="@dimen/gap_horizontal"
+                    android:animateLayoutChanges="true"
                     android:background="@drawable/box_navy"
                     android:divider="@drawable/vertical_empty_divider"
                     android:orientation="vertical"
