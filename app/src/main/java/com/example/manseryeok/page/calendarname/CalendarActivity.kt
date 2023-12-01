@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.core.view.children
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.manseryeok.R
@@ -754,7 +755,7 @@ class CalendarActivity : ParentActivity() {
         birthOrderSelectPopup.onBirthDisplayAscBottomFragmentListener = object :
             BirthOrderBottomFragment.OnBirthDisplayAscBottomFragmentListener {
             override fun onOrderSelect(isAsc: Boolean) {
-                Toast.makeText(applicationContext, "순서가 ${if (isAsc) "오름차순" else "내림차순"}으로 변경되었습니다.", Toast.LENGTH_SHORT).show()
+                birthDisplayReverse()
             }
         }
 
@@ -768,6 +769,23 @@ class CalendarActivity : ParentActivity() {
         startActivityForResult(intent, REQUEST_CODE_USER_DB_EDIT)
     }
 
+    private fun birthDisplayReverse() = with(binding) {
+        Toast.makeText(this@CalendarActivity, "생일 순서가 변경되었습니다.", Toast.LENGTH_SHORT).show()
+        val containers = arrayOf(
+            llContainerBirthLabel,
+            llPillarTopLabel,
+            llPillarTop,
+            llPillarBottom,
+            llPillarBottomLabel
+        )
+
+        containers.forEach {
+            it.layoutDirection = if (it.layoutDirection == View.LAYOUT_DIRECTION_LTR) View.LAYOUT_DIRECTION_RTL else View.LAYOUT_DIRECTION_LTR
+            it.invalidate()
+        }
+
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -775,5 +793,4 @@ class CalendarActivity : ParentActivity() {
             recreate()
         }
     }
-
 }

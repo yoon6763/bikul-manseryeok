@@ -124,6 +124,7 @@
                     android:layout_marginTop="@dimen/gap_vertical"
                     android:divider="@drawable/empty_divider"
                     android:gravity="center"
+                    android:layoutDirection="ltr"
                     android:orientation="horizontal"
                     android:showDividers="middle">
 
@@ -160,6 +161,7 @@
                     android:layout_marginTop="10dp"
                     android:divider="@drawable/empty_divider"
                     android:gravity="center"
+                    android:layoutDirection="ltr"
                     android:orientation="horizontal"
                     android:showDividers="middle">
 
@@ -200,6 +202,7 @@
                     android:layout_marginTop="@dimen/gap_line"
                     android:divider="@drawable/empty_divider"
                     android:gravity="center"
+                    android:layoutDirection="ltr"
                     android:showDividers="middle">
 
                     <TextView
@@ -251,6 +254,7 @@
                     android:layout_marginTop="@dimen/gap_line"
                     android:divider="@drawable/empty_divider"
                     android:gravity="center"
+                    android:layoutDirection="ltr"
                     android:showDividers="middle">
 
                     <TextView
@@ -302,6 +306,7 @@
                     android:layout_marginTop="@dimen/gap_line"
                     android:divider="@drawable/empty_divider"
                     android:gravity="center"
+                    android:layoutDirection="ltr"
                     android:orientation="horizontal"
                     android:showDividers="middle">
 
