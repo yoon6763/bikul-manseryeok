@@ -16,6 +16,7 @@ import com.example.manseryeok.models.AppDatabase
 import com.example.manseryeok.page.calendarname.CalendarActivity
 import com.example.manseryeok.page.calendarname.CalendarInputActivity
 import com.example.manseryeok.page.calendarname.NameActivity
+import com.example.manseryeok.utils.Extras
 import com.example.manseryeok.utils.ParentActivity
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
@@ -108,13 +109,13 @@ class UserDBActivity : ParentActivity() {
         groupListAdapter.setUserMenuClickListener(object : OnUserMenuClickListener {
             override fun onManseryeokView(id: Long, position: Int) {
                 val intent = Intent(this@UserDBActivity, CalendarActivity::class.java)
-                intent.putExtra(Utils.INTENT_EXTRAS_USER_ID, id)
+                intent.putExtra(Extras.INTENT_EXTRAS_USER_ID, id)
                 startActivity(intent)
             }
 
             override fun onNameView(id: Long, position: Int) {
                 val intent = Intent(this@UserDBActivity, NameActivity::class.java)
-                intent.putExtra(Utils.INTENT_EXTRAS_USER_ID, id)
+                intent.putExtra(Extras.INTENT_EXTRAS_USER_ID, id)
                 startActivity(intent)
             }
 
@@ -130,14 +131,14 @@ class UserDBActivity : ParentActivity() {
 
             override fun onGroupClick(id: Long, position: Int) {
                 val intent = Intent(this@UserDBActivity, GroupActivity::class.java)
-                intent.putExtra(Utils.INTENT_EXTRAS_USER_ID, id)
+                intent.putExtra(Extras.INTENT_EXTRAS_USER_ID, id)
                 startActivity(intent)
             }
 
             override fun onEditClick(id: Long, position: Int) {
                 val intent = Intent(this@UserDBActivity, CalendarInputActivity::class.java).apply {
-                    putExtra(Utils.INTENT_EXTRAS_USER_ID, id)
-                    putExtra(Utils.INTENT_EXTRAS_INFO_TYPE, Utils.InfoType.EDIT.value)
+                    putExtra(Extras.INTENT_EXTRAS_USER_ID, id)
+                    putExtra(Extras.INTENT_EXTRAS_INFO_TYPE, Utils.InfoType.EDIT.value)
                 }
                 startActivity(intent)
             }

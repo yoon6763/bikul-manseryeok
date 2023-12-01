@@ -17,6 +17,7 @@ import com.example.manseryeok.databinding.ActivityMainBinding
 import com.example.manseryeok.page.calendarname.CalendarInputActivity
 import com.example.manseryeok.page.compass.CompassActivity
 import com.example.manseryeok.page.user.UserDBActivity
+import com.example.manseryeok.utils.Extras
 import com.example.manseryeok.utils.Utils
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
@@ -106,7 +107,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             when (p0?.id) {
                 clCalendar.id -> {
                     val intent = Intent(this@MainActivity, CalendarInputActivity::class.java)
-                    intent.putExtra(Utils.INTENT_EXTRAS_INFO_TYPE, Utils.InfoType.CREATE.value)
+                    intent.putExtra(Extras.INTENT_EXTRAS_INFO_TYPE, Utils.InfoType.CREATE.value)
                     startActivity(intent)
                 }
                 clCompass.id -> startActivity(Intent(this@MainActivity, CompassActivity::class.java))

@@ -14,6 +14,7 @@ import com.example.manseryeok.models.name.NameScoreItem
 import com.example.manseryeok.models.user.User
 import com.example.manseryeok.page.calendarname.popup.NumberPickerDialog
 import com.example.manseryeok.service.name.NameService
+import com.example.manseryeok.utils.Extras
 import com.example.manseryeok.utils.ParentActivity
 import com.example.manseryeok.utils.Utils
 import kotlinx.coroutines.Dispatchers.IO
@@ -54,7 +55,7 @@ class NameActivity : ParentActivity() {
 
             btnGotoManseryeok.setOnClickListener {
                 val intent = Intent(this@NameActivity, CalendarActivity::class.java)
-                intent.putExtra(Utils.INTENT_EXTRAS_USER_ID, userModel.userId)
+                intent.putExtra(Extras.INTENT_EXTRAS_USER_ID, userModel.userId)
                 startActivity(intent)
                 finish()
             }
@@ -156,7 +157,7 @@ class NameActivity : ParentActivity() {
         runBlocking {
             launch(IO) {
                 val userDao = AppDatabase.getInstance(applicationContext).userDao()
-                val userId = intent.getLongExtra(Utils.INTENT_EXTRAS_USER_ID, -1L)
+                val userId = intent.getLongExtra(Extras.INTENT_EXTRAS_USER_ID, -1L)
                 userModel = userDao.getUser(userId)
                 name = userModel.firstName + userModel.lastName
 

@@ -10,6 +10,7 @@ import com.example.manseryeok.models.user.User
 import com.example.manseryeok.models.user.groups.UserGroup
 import com.example.manseryeok.models.user.tags.Tag
 import com.example.manseryeok.models.user.tags.UserTag
+import com.example.manseryeok.utils.Extras
 import com.example.manseryeok.utils.ParentActivity
 import com.example.manseryeok.utils.Utils
 import kotlinx.coroutines.Dispatchers.IO
@@ -200,7 +201,7 @@ class GroupActivity : ParentActivity() {
     }
 
     private fun loadUser() {
-        val userId = intent.getLongExtra(Utils.INTENT_EXTRAS_USER_ID, 0)
+        val userId = intent.getLongExtra(Extras.INTENT_EXTRAS_USER_ID, 0)
 
         runBlocking {
             launch(IO) {

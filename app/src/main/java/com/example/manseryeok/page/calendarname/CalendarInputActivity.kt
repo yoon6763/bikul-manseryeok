@@ -14,6 +14,7 @@ import com.example.manseryeok.models.AppDatabase
 import com.example.manseryeok.models.UserInputViewModel
 import com.example.manseryeok.models.user.User
 import com.example.manseryeok.page.calendarname.popup.LocationPickerFragment
+import com.example.manseryeok.utils.Extras
 import com.example.manseryeok.utils.ParentActivity
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
@@ -54,7 +55,7 @@ class CalendarInputActivity : ParentActivity() {
     private fun saveUpdatedUser() {
         if (!userInputViewModel.isValid(applicationContext)) return
 
-        val userId = intent.getLongExtra(Utils.INTENT_EXTRAS_USER_ID, -1)
+        val userId = intent.getLongExtra(Extras.INTENT_EXTRAS_USER_ID, -1)
         val user = getUserFromDB(userId)
 
         if(user == null) {
@@ -90,7 +91,7 @@ class CalendarInputActivity : ParentActivity() {
     }
 
     private fun setMode() {
-        when (intent.getStringExtra(Utils.INTENT_EXTRAS_INFO_TYPE)) {
+        when (intent.getStringExtra(Extras.INTENT_EXTRAS_INFO_TYPE)) {
             Utils.InfoType.CREATE.value -> {
                 binding.containerEdit.visibility = View.GONE
             }
@@ -103,7 +104,7 @@ class CalendarInputActivity : ParentActivity() {
     }
 
     private fun initEditMode() {
-        val userId = intent.getLongExtra(Utils.INTENT_EXTRAS_USER_ID, -1)
+        val userId = intent.getLongExtra(Extras.INTENT_EXTRAS_USER_ID, -1)
         val user = getUserFromDB(userId)
 
         if (user == null) {
@@ -141,7 +142,7 @@ class CalendarInputActivity : ParentActivity() {
             )
         }
 
-        intent.putExtra(Utils.INTENT_EXTRAS_USER_ID, user.userId)
+        intent.putExtra(Extras.INTENT_EXTRAS_USER_ID, user.userId)
         startActivity(intent)
         finish()
     }

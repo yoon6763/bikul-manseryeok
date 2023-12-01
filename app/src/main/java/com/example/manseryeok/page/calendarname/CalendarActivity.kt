@@ -19,6 +19,7 @@ import com.example.manseryeok.models.Manseryeok
 import com.example.manseryeok.models.SixtyHorizontalItem
 import com.example.manseryeok.models.user.User
 import com.example.manseryeok.models.AppDatabase
+import com.example.manseryeok.utils.Extras
 import com.example.manseryeok.utils.ParentActivity
 import com.example.manseryeok.utils.SharedPreferenceHelper
 import com.example.manseryeok.utils.Sinsal
@@ -106,7 +107,7 @@ class CalendarActivity : ParentActivity() {
             binding.run {
                 btnGotoName.setOnClickListener {
                     val intent = Intent(this@CalendarActivity, NameActivity::class.java)
-                    intent.putExtra(Utils.INTENT_EXTRAS_USER_ID, userModel.userId)
+                    intent.putExtra(Extras.INTENT_EXTRAS_USER_ID, userModel.userId)
                     startActivity(intent)
                     finish()
                 }
@@ -139,7 +140,7 @@ class CalendarActivity : ParentActivity() {
     }
 
     private fun loadUserModel() {
-        val userId = intent.getLongExtra(Utils.INTENT_EXTRAS_USER_ID, -1L)
+        val userId = intent.getLongExtra(Extras.INTENT_EXTRAS_USER_ID, -1L)
 
         runBlocking {
             launch(IO) {
@@ -731,11 +732,15 @@ class CalendarActivity : ParentActivity() {
                 finish()
                 return true
             }
+
             R.id.toolbar_item_setting -> {
                 Toast.makeText(this, "설정", Toast.LENGTH_SHORT).show()
+                return true
             }
+
             R.id.toolbar_item_edit -> {
                 Toast.makeText(this, "수정", Toast.LENGTH_SHORT).show()
+                return true
             }
         }
         return super.onOptionsItemSelected(item)

@@ -13,6 +13,7 @@ import com.example.manseryeok.models.user.User
 import com.example.manseryeok.page.calendarname.CalendarActivity
 import com.example.manseryeok.page.calendarname.CalendarInputActivity
 import com.example.manseryeok.page.calendarname.NameActivity
+import com.example.manseryeok.utils.Extras
 import com.example.manseryeok.utils.ParentActivity
 import com.example.manseryeok.utils.Utils
 import kotlinx.coroutines.Dispatchers.IO
@@ -51,13 +52,13 @@ class UserSearchActivity : ParentActivity() {
         userListAdapter.onUserMenuClickListener = object : OnUserMenuClickListener {
             override fun onManseryeokView(id: Long, position: Int) {
                 val intent = Intent(this@UserSearchActivity, CalendarActivity::class.java)
-                intent.putExtra(Utils.INTENT_EXTRAS_USER_ID, id)
+                intent.putExtra(Extras.INTENT_EXTRAS_USER_ID, id)
                 startActivity(intent)
             }
 
             override fun onNameView(id: Long, position: Int) {
                 val intent = Intent(this@UserSearchActivity, NameActivity::class.java)
-                intent.putExtra(Utils.INTENT_EXTRAS_USER_ID, id)
+                intent.putExtra(Extras.INTENT_EXTRAS_USER_ID, id)
                 startActivity(intent)
             }
 
@@ -73,14 +74,14 @@ class UserSearchActivity : ParentActivity() {
 
             override fun onGroupClick(id: Long, position: Int) {
                 val intent = Intent(this@UserSearchActivity, GroupActivity::class.java)
-                intent.putExtra(Utils.INTENT_EXTRAS_USER_ID, id)
+                intent.putExtra(Extras.INTENT_EXTRAS_USER_ID, id)
                 startActivity(intent)
             }
 
             override fun onEditClick(id: Long, position: Int) {
                 val intent = Intent(this@UserSearchActivity, CalendarInputActivity::class.java).apply {
-                    putExtra(Utils.INTENT_EXTRAS_USER_ID, id)
-                    putExtra(Utils.INTENT_EXTRAS_INFO_TYPE, Utils.InfoType.EDIT.value)
+                    putExtra(Extras.INTENT_EXTRAS_USER_ID, id)
+                    putExtra(Extras.INTENT_EXTRAS_INFO_TYPE, Utils.InfoType.EDIT.value)
                 }
                 startActivity(intent)
             }
