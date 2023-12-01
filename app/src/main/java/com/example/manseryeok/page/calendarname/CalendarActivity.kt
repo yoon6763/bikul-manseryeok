@@ -736,6 +736,7 @@ class CalendarActivity : ParentActivity() {
             }
 
             R.id.toolbar_item_setting -> {
+                openBirthOrderSelectPopup()
                 return true
             }
 
@@ -745,6 +746,19 @@ class CalendarActivity : ParentActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun openBirthOrderSelectPopup() {
+        val birthOrderSelectPopup = BirthOrderBottomFragment()
+
+        birthOrderSelectPopup.onBirthDisplayAscBottomFragmentListener = object :
+            BirthOrderBottomFragment.OnBirthDisplayAscBottomFragmentListener {
+            override fun onOrderSelect(isAsc: Boolean) {
+                Toast.makeText(applicationContext, "순서가 ${if (isAsc) "오름차순" else "내림차순"}으로 변경되었습니다.", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        birthOrderSelectPopup.show(supportFragmentManager, "BirthOrderSelectPopup")
     }
 
     private fun openUserEdit() {
@@ -757,10 +771,9 @@ class CalendarActivity : ParentActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if(requestCode == REQUEST_CODE_USER_DB_EDIT && resultCode == RESULT_OK) {
+        if (requestCode == REQUEST_CODE_USER_DB_EDIT && resultCode == RESULT_OK) {
             recreate()
         }
     }
-
 
 }

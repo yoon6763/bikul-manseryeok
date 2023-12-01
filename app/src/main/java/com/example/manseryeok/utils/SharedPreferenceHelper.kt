@@ -9,6 +9,7 @@ object SharedPreferenceHelper {
 
     private const val useSatelliteMap = "SP_USE_SATELLITE_MAP" // boolean
     private const val expandSinsal = "SP_EXPAND_SINSAL" // boolean
+    private const val useBirthDisplayASC = "SP_USE_BIRTH_DISPLAY_ASC" // boolean
 
     fun setSatelliteMapEnable(context: Context, isEnable: Boolean) {
         val pref: SharedPreferences = context.getSharedPreferences(PREF_APP, MODE_PRIVATE)
@@ -32,5 +33,17 @@ object SharedPreferenceHelper {
     fun isExpandSinsal(context: Context): Boolean {
         val pref: SharedPreferences = context.getSharedPreferences(PREF_APP, MODE_PRIVATE)
         return pref.getBoolean(expandSinsal, false)
+    }
+
+    fun setBirthDisplayASC(context: Context, isEnable: Boolean) {
+        val pref: SharedPreferences = context.getSharedPreferences(PREF_APP, MODE_PRIVATE)
+        val editor = pref.edit()
+        editor.putBoolean(useBirthDisplayASC, isEnable)
+        editor.apply()
+    }
+
+    fun isBirthDisplayASC(context: Context): Boolean {
+        val pref: SharedPreferences = context.getSharedPreferences(PREF_APP, MODE_PRIVATE)
+        return pref.getBoolean(useBirthDisplayASC, false)
     }
 }
