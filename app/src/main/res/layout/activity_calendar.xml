@@ -118,6 +118,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_container_birth_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/gap_vertical"
@@ -136,8 +137,9 @@
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:textColor="@color/black"
-                        android:text="일" /
+                        android:text="일"
+                        android:textColor="@color/black" />
+
                     <TextView
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
