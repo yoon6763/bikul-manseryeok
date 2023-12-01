@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="15dp"
-        android:text="년월일시 순서"
+        android:text="생년월일 표시 순서"
         android:textSize="25sp"
         android:textStyle="bold" />
 
