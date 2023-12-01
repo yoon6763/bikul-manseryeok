@@ -130,26 +130,25 @@
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        tools:text="시" />
+                        android:text="시" />
 
                     <TextView
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:textColor="@color/black"
-                        tools:text="일" />
+                        android:text="일" /
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="월" />
 
                     <TextView
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        tools:text="월" />
-
-                    <TextView
-                        android:layout_width="80dp"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        tools:text="년" />
+                        android:text="년" />
                 </LinearLayout>
 
                 <LinearLayout
