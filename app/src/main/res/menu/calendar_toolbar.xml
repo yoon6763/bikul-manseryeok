@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/toolbar_item_edit"
+        android:icon="@drawable/ic_edit"
+        android:title="수정"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/toolbar_item_setting"
+        android:icon="@drawable/ic_setting"
+        android:title="설정"
+        app:showAsAction="always" />
+</menu>

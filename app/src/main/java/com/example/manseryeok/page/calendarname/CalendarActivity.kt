@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
@@ -71,7 +72,7 @@ class CalendarActivity : ParentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        commonSetting()
+        toolbarSetting()
         showProgress(this@CalendarActivity, "잠시만 기다려주세요")
 
         loadUserModel()
@@ -127,6 +128,7 @@ class CalendarActivity : ParentActivity() {
                     setSinsalExpandOrCollapse(SINSAL_COLLAPSE)
                     SharedPreferenceHelper.setExpandSinsal(applicationContext, false)
                 }
+
                 false -> {
                     setSinsalExpandOrCollapse(SINSAL_EXPAND)
                     SharedPreferenceHelper.setExpandSinsal(applicationContext, true)
@@ -147,18 +149,8 @@ class CalendarActivity : ParentActivity() {
         }
     }
 
-    private fun commonSetting() {
-        setSupportActionBar(binding.toolbarCalendar)
-        supportActionBar?.run {
-            // 앱 바 뒤로가기 버튼 설정
-            setDisplayHomeAsUpEnabled(true)
-        }
-    }
-
-
     private fun setUpMemo() {
         binding.etMemo.setText(userModel.memo)
-
         binding.etMemo.addTextChangedListener {
             userModel.memo = it.toString()
             runBlocking {
@@ -719,6 +711,18 @@ class CalendarActivity : ParentActivity() {
         }
     }
 
+    private fun toolbarSetting() {
+        setSupportActionBar(binding.toolbarCalendar)
+        supportActionBar?.run {
+            // 앱 바 뒤로가기 버튼 설정
+            setDisplayHomeAsUpEnabled(true)
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.calendar_toolbar, menu)
+        return true
+    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // 앱 바 클릭 이벤트
@@ -726,6 +730,12 @@ class CalendarActivity : ParentActivity() {
             android.R.id.home -> {
                 finish()
                 return true
+            }
+            R.id.toolbar_item_setting -> {
+                Toast.makeText(this, "설정", Toast.LENGTH_SHORT).show()
+            }
+            R.id.toolbar_item_edit -> {
+                Toast.makeText(this, "수정", Toast.LENGTH_SHORT).show()
             }
         }
         return super.onOptionsItemSelected(item)
