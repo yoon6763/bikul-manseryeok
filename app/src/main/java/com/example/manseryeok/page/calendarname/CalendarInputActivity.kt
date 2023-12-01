@@ -71,6 +71,7 @@ class CalendarInputActivity : ParentActivity() {
             }
         }
 
+        setResult(RESULT_OK)
         finish()
     }
 

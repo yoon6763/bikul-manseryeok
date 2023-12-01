@@ -38,6 +38,8 @@ class CalendarActivity : ParentActivity() {
         const val SINSAL_EXPAND = 0
         const val SINSAL_COLLAPSE = 1
         const val SINSAL_EXPAND_DURATION = 200L
+
+        const val REQUEST_CODE_USER_DB_EDIT = 100
     }
 
     private val binding by lazy { ActivityCalendarBinding.inflate(layoutInflater) }
@@ -734,15 +736,31 @@ class CalendarActivity : ParentActivity() {
             }
 
             R.id.toolbar_item_setting -> {
-                Toast.makeText(this, "설정", Toast.LENGTH_SHORT).show()
                 return true
             }
 
             R.id.toolbar_item_edit -> {
-                Toast.makeText(this, "수정", Toast.LENGTH_SHORT).show()
+                openUserEdit()
                 return true
             }
         }
         return super.onOptionsItemSelected(item)
     }
+
+    private fun openUserEdit() {
+        val intent = Intent(this, CalendarInputActivity::class.java)
+        intent.putExtra(Extras.INTENT_EXTRAS_USER_ID, userModel.userId)
+        intent.putExtra(Extras.INTENT_EXTRAS_INFO_TYPE, Utils.InfoType.EDIT.value)
+        startActivityForResult(intent, REQUEST_CODE_USER_DB_EDIT)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if(requestCode == REQUEST_CODE_USER_DB_EDIT && resultCode == RESULT_OK) {
+            recreate()
+        }
+    }
+
+
 }
