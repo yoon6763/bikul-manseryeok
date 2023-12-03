@@ -7,8 +7,6 @@ import android.os.Handler
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
-import androidx.core.view.children
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.manseryeok.R
@@ -101,7 +99,8 @@ class CalendarActivity : ParentActivity() {
             setRecyclerViewClickEvent() // 년주 리사이클러뷰 클릭 이벤트 처리
             setUpLuckRecyclerView() // 대운 리사이클러뷰
             setUpMemo()
-            setSinsalVisibility()
+            setSinsalVisibility() // 신살 확장 여부
+            setBirthDisplayOrder() // 생일 표시 순서
 
             currentTime = System.currentTimeMillis()
 
@@ -118,6 +117,11 @@ class CalendarActivity : ParentActivity() {
                 btnCalendarShare.setOnClickListener { shareResult() }
             }
         }, 1000)
+    }
+
+    private fun setBirthDisplayOrder() {
+        val isAsc = SharedPreferenceHelper.isBirthDisplayASC(applicationContext)
+        sortBirthDisplay(isAsc)
     }
 
     private fun setSinsalVisibility() = with(binding) {
@@ -755,7 +759,8 @@ class CalendarActivity : ParentActivity() {
         birthOrderSelectPopup.onBirthDisplayAscBottomFragmentListener = object :
             BirthOrderBottomFragment.OnBirthDisplayAscBottomFragmentListener {
             override fun onOrderSelect(isAsc: Boolean) {
-                birthDisplayReverse(isAsc)
+                sortBirthDisplay(isAsc)
+                SharedPreferenceHelper.setBirthDisplayASC(applicationContext, isAsc)
             }
         }
 
@@ -769,7 +774,7 @@ class CalendarActivity : ParentActivity() {
         startActivityForResult(intent, REQUEST_CODE_USER_DB_EDIT)
     }
 
-    private fun birthDisplayReverse(isAsc: Boolean) = with(binding) {
+    private fun sortBirthDisplay(isAsc: Boolean) = with(binding) {
         val containers = arrayOf(
             llContainerBirthLabel,
             llPillarTopLabel,
