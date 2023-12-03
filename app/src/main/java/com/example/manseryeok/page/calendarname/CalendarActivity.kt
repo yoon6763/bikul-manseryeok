@@ -755,7 +755,7 @@ class CalendarActivity : ParentActivity() {
         birthOrderSelectPopup.onBirthDisplayAscBottomFragmentListener = object :
             BirthOrderBottomFragment.OnBirthDisplayAscBottomFragmentListener {
             override fun onOrderSelect(isAsc: Boolean) {
-                birthDisplayReverse()
+                birthDisplayReverse(isAsc)
             }
         }
 
@@ -769,8 +769,7 @@ class CalendarActivity : ParentActivity() {
         startActivityForResult(intent, REQUEST_CODE_USER_DB_EDIT)
     }
 
-    private fun birthDisplayReverse() = with(binding) {
-        Toast.makeText(this@CalendarActivity, "생일 순서가 변경되었습니다.", Toast.LENGTH_SHORT).show()
+    private fun birthDisplayReverse(isAsc: Boolean) = with(binding) {
         val containers = arrayOf(
             llContainerBirthLabel,
             llPillarTopLabel,
@@ -780,7 +779,7 @@ class CalendarActivity : ParentActivity() {
         )
 
         containers.forEach {
-            it.layoutDirection = if (it.layoutDirection == View.LAYOUT_DIRECTION_LTR) View.LAYOUT_DIRECTION_RTL else View.LAYOUT_DIRECTION_LTR
+            it.layoutDirection = if (isAsc) View.LAYOUT_DIRECTION_LTR else View.LAYOUT_DIRECTION_RTL
             it.invalidate()
         }
 

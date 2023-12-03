@@ -25,20 +25,6 @@ class BirthOrderBottomFragment : BottomSheetDialogFragment() {
 
         binding?.run {
 
-            rgBirthDisplayAscBottom.setOnCheckedChangeListener { radioGroup, i ->
-                when (i) {
-                    rbBirthDisplayAsc.id -> {
-                        onBirthDisplayAscBottomFragmentListener?.onOrderSelect(true)
-                        dismiss()
-                    }
-
-                    rbBirthDisplayDesc.id -> {
-                        onBirthDisplayAscBottomFragmentListener?.onOrderSelect(false)
-                        dismiss()
-                    }
-                }
-            }
-
             rbBirthDisplayAsc.setOnClickListener {
                 onBirthDisplayAscBottomFragmentListener?.onOrderSelect(true)
                 dismiss()

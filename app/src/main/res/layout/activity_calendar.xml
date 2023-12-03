@@ -126,7 +126,7 @@
                     android:gravity="center"
                     android:layoutDirection="ltr"
                     android:orientation="horizontal"
-                    android:showDividers="middle">
+                    android:showDividers="middle|beginning|end">
 
                     <TextView
                         android:layout_width="80dp"
@@ -163,7 +163,7 @@
                     android:gravity="center"
                     android:layoutDirection="ltr"
                     android:orientation="horizontal"
-                    android:showDividers="middle">
+                    android:showDividers="middle|beginning|end">
 
                     <TextView
                         android:id="@+id/tv_pillar_time_top_label"
@@ -203,7 +203,7 @@
                     android:divider="@drawable/empty_divider"
                     android:gravity="center"
                     android:layoutDirection="ltr"
-                    android:showDividers="middle">
+                    android:showDividers="middle|beginning|end">
 
                     <TextView
                         android:id="@+id/tv_pillar_time_top"
@@ -255,7 +255,7 @@
                     android:divider="@drawable/empty_divider"
                     android:gravity="center"
                     android:layoutDirection="ltr"
-                    android:showDividers="middle">
+                    android:showDividers="middle|beginning|end">
 
                     <TextView
                         android:id="@+id/tv_pillar_time_bottom"
@@ -308,7 +308,7 @@
                     android:gravity="center"
                     android:layoutDirection="ltr"
                     android:orientation="horizontal"
-                    android:showDividers="middle">
+                    android:showDividers="middle|beginning|end">
 
                     <TextView
                         android:id="@+id/tv_pillar_time_bottom_label"
