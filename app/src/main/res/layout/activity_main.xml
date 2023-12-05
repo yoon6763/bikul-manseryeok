@@ -32,10 +32,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.100000024">
+        app:layout_constraintVertical_bias="0.1">
 
 
         <LinearLayout
+            android:id="@+id/ll_today"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_row="0"
@@ -48,38 +49,47 @@
             android:orientation="vertical">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="@dimen/gap_line_double"
+                android:layout_weight="1"
+                android:autoSizeTextType="uniform"
+                android:gravity="center"
+                android:padding="20dp"
                 android:text="@string/obj_today"
                 android:textSize="@dimen/middle_title_size"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tv_today"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:layout_gravity="center"
+                android:layout_weight="2"
+                android:autoSizeTextType="uniform"
                 android:gravity="center"
                 android:lineSpacingExtra="5dp"
+                android:padding="20dp"
                 android:text="丁 戊 己\n辰 巳 午"
                 android:textSize="@dimen/title_size"
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:id="@+id/cl_calendar"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:background="@drawable/box_round_2"
-            android:foreground="?attr/selectableItemBackground">
+            android:foreground="?attr/selectableItemBackground"
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:layout_gravity="center"
+                android:layout_weight="2"
+                android:padding="10dp"
                 android:src="@drawable/ic_calendar"
                 app:layout_constraintBottom_toTopOf="@id/tv_widget_calendar"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -88,29 +98,34 @@
 
             <TextView
                 android:id="@+id/tv_widget_calendar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:autoSizeTextType="uniform"
+                android:gravity="center"
+                android:padding="5dp"
                 android:text="@string/obj_calendar"
                 android:textColor="@color/main_background"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView" />
+                app:layout_constraintStart_toStartOf="parent" />
+        </LinearLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:id="@+id/cl_database"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:background="@drawable/box_round_2"
-            android:foreground="?attr/selectableItemBackground">
+            android:foreground="?attr/selectableItemBackground"
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/iv_database"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:layout_gravity="center"
+                android:layout_weight="2"
+                android:padding="10dp"
                 android:src="@drawable/ic_database"
                 app:layout_constraintBottom_toTopOf="@id/tv_database"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -119,8 +134,12 @@
 
             <TextView
                 android:id="@+id/tv_database"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:autoSizeTextType="uniform"
+                android:gravity="center"
+                android:padding="5dp"
                 android:text="@string/obj_database"
                 android:textColor="@color/main_background"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -128,22 +147,23 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/iv_database" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
-        /
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:id="@+id/cl_compass"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:background="@drawable/box_round_2"
-            android:foreground="?attr/selectableItemBackground">
+            android:foreground="?attr/selectableItemBackground"
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/iv_compass"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:layout_gravity="center"
+                android:layout_weight="2"
+                android:padding="10dp"
                 android:src="@drawable/ic_compass"
                 app:layout_constraintBottom_toTopOf="@id/tv_compass"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -152,8 +172,12 @@
 
             <TextView
                 android:id="@+id/tv_compass"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:autoSizeTextType="uniform"
+                android:gravity="center"
+                android:padding="5dp"
                 android:text="@string/obj_compass"
                 android:textColor="@color/main_background"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -161,21 +185,24 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/iv_compass" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:id="@+id/cl_question"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:background="@drawable/box_round_2"
-            android:foreground="?attr/selectableItemBackground">
+            android:foreground="?attr/selectableItemBackground"
+            android:orientation="vertical">
 
 
             <ImageView
                 android:id="@+id/iv_question"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:layout_gravity="center"
+                android:layout_weight="2"
+                android:padding="10dp"
                 android:src="@drawable/ic_question"
                 app:layout_constraintBottom_toTopOf="@id/tv_question"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -184,8 +211,12 @@
 
             <TextView
                 android:id="@+id/tv_question"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:autoSizeTextType="uniform"
+                android:gravity="center"
+                android:padding="5dp"
                 android:text="@string/obj_question"
                 android:textColor="@color/main_background"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -193,22 +224,23 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/iv_question" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
-        /
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:id="@+id/cl_media"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:background="@drawable/box_round_3"
-            android:foreground="?attr/selectableItemBackground">
+            android:foreground="?attr/selectableItemBackground"
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/iv_media"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:layout_gravity="center"
+                android:layout_weight="2"
+                android:padding="10dp"
                 android:src="@drawable/ic_media"
                 app:layout_constraintBottom_toTopOf="@id/tv_media"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -217,8 +249,12 @@
 
             <TextView
                 android:id="@+id/tv_media"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:autoSizeTextType="uniform"
+                android:gravity="center"
+                android:padding="5dp"
                 android:text="@string/obj_media"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -226,6 +262,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/iv_media" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
     </GridLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

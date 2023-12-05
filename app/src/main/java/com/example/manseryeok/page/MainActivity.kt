@@ -11,6 +11,7 @@ import android.view.View
 import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.forEach
 import com.example.manseryeok.R
 import com.example.manseryeok.manseryeokdb.ManseryeokSQLHelper
 import com.example.manseryeok.databinding.ActivityMainBinding
@@ -42,9 +43,26 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
         setStatusBar()
         setDayLuck()
+        setGridDisplaySize()
 
         // getHashKey()
     }
+
+    private fun setGridDisplaySize() {
+        val displayMetrics = resources.displayMetrics
+        val dpWidth = displayMetrics.widthPixels.toDouble() * 0.7 / 3
+
+        binding.glButtonSet.forEach { view ->
+            if (view.id == binding.llToday.id) {
+                view.layoutParams.width = dpWidth.toInt() * 2
+                view.layoutParams.height = dpWidth.toInt() * 2
+            } else {
+                view.layoutParams.width = dpWidth.toInt()
+                view.layoutParams.height = dpWidth.toInt()
+            }
+        }
+    }
+
 
     private fun setDayLuck() {
         val today = Calendar.getInstance()
@@ -110,10 +128,30 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     intent.putExtra(Extras.INTENT_EXTRAS_INFO_TYPE, Utils.InfoType.CREATE.value)
                     startActivity(intent)
                 }
-                clCompass.id -> startActivity(Intent(this@MainActivity, CompassActivity::class.java))
-                clQuestion.id -> startActivity(Intent(this@MainActivity, InquiryActivity::class.java))
-                clDatabase.id -> startActivity(Intent(this@MainActivity, UserDBActivity::class.java))
-                clMedia.id -> Toast.makeText(applicationContext, "곧 오픈 예정입니다", Toast.LENGTH_SHORT).show()
+
+                clCompass.id -> startActivity(
+                    Intent(
+                        this@MainActivity,
+                        CompassActivity::class.java
+                    )
+                )
+
+                clQuestion.id -> startActivity(
+                    Intent(
+                        this@MainActivity,
+                        InquiryActivity::class.java
+                    )
+                )
+
+                clDatabase.id -> startActivity(
+                    Intent(
+                        this@MainActivity,
+                        UserDBActivity::class.java
+                    )
+                )
+
+                clMedia.id -> Toast.makeText(applicationContext, "곧 오픈 예정입니다", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
     }
