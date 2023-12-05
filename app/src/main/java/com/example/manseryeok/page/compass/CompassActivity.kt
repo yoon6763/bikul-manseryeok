@@ -292,27 +292,21 @@ class CompassActivity : ParentActivity(), SensorEventListener, OnMapReadyCallbac
         }
     }
 
-    private fun updateSinsalBangwhi(rotation: Double) {
+    private fun updateSinsalBangwhi(rotation: Double) = with(binding) {
         if (userSelectedIndex == -1) return
 
         val user = users[userSelectedIndex]
-        var sinsalname = usernames[userSelectedIndex]
-
 
         val birthYear = user.birthYear
 
-        sinsalname +=
-            " | (회두극 방향) " +
-                    CompassDirectionLabel.huiduguk(birthYear) +
-                    " | " +
-                    CompassDirectionLabel.bonmyeonggung(birthYear)[user.gender]
-
-        binding.tvSinsalName.text = sinsalname
+        tvCompassSatek.visibility = View.VISIBLE
+        tvCompassSatek.text = "${CompassDirectionLabel.huiduguk(birthYear)}\n${CompassDirectionLabel.bonmyeonggung(birthYear)[user.gender]}"
+        tvSinsalName.text = CompassDirectionLabel.bonmyeonggung(birthYear)[user.gender]
 
         val sinsal = CompassDirectionLabel.directionSinsal(birthYear, rotation.toInt())
         val content = CompassDirectionLabel.directionSinsalTheory(sinsal)
 
-        binding.tvSinsalContent.text = content[0]
+        tvSinsalContent.text = content[0]
 
     }
 

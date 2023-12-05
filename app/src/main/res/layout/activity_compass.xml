@@ -58,6 +58,20 @@
             android:tint="@color/white"
             app:backgroundTint="@color/navy" />
 
+        <TextView
+            android:id="@+id/tv_compass_satek"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|bottom"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="35dp"
+            android:background="@drawable/box_navy"
+            android:padding="8dp"
+            android:textColor="@color/white"
+            android:visibility="invisible"
+            tools:text="북동\n동사택"
+            tools:visibility="visible" />
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_compass_info"
             android:layout_width="wrap_content"
