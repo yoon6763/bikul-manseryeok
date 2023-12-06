@@ -7,6 +7,7 @@ import android.os.Handler
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.core.view.forEach
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.manseryeok.R
@@ -73,6 +74,7 @@ class CalendarActivity : ParentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        setGanjiBoxDisplaySize()
 
         toolbarSetting()
         showProgress(this@CalendarActivity, "잠시만 기다려주세요")
@@ -117,6 +119,30 @@ class CalendarActivity : ParentActivity() {
                 btnCalendarShare.setOnClickListener { shareResult() }
             }
         }, 1000)
+    }
+
+    private fun setGanjiBoxDisplaySize() = with(binding) {
+        val displayMetrics = resources.displayMetrics
+        val dpWidth = displayMetrics.widthPixels.toDouble() * 0.9 / 4
+
+        llContainerBirthLabel.forEach { view ->
+            view.layoutParams.width = dpWidth.toInt()
+        }
+        llPillarTopLabel.forEach { view ->
+            view.layoutParams.width = dpWidth.toInt()
+        }
+        llPillarBottomLabel.forEach { view ->
+            view.layoutParams.width = dpWidth.toInt()
+        }
+
+        llPillarTop.forEach { view ->
+            view.layoutParams.width = dpWidth.toInt()
+            view.layoutParams.height = dpWidth.toInt()
+        }
+        llPillarBottom.forEach { view ->
+            view.layoutParams.width = dpWidth.toInt()
+            view.layoutParams.height = dpWidth.toInt()
+        }
     }
 
     private fun setBirthDisplayOrder() {
