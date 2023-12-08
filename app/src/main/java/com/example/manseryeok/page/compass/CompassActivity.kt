@@ -301,7 +301,7 @@ class CompassActivity : ParentActivity(), SensorEventListener, OnMapReadyCallbac
 
         tvCompassSatek.visibility = View.VISIBLE
         tvCompassSatek.text = "${CompassDirectionLabel.huiduguk(birthYear)}\n${CompassDirectionLabel.bonmyeonggung(birthYear)[user.gender]}"
-        tvSinsalName.text = CompassDirectionLabel.bonmyeonggung(birthYear)[user.gender]
+        tvUserName.text = "${user.firstName}${user.lastName} (${user.birthYear})"
 
         val sinsal = CompassDirectionLabel.directionSinsal(birthYear, rotation.toInt())
         val content = CompassDirectionLabel.directionSinsalTheory(sinsal)

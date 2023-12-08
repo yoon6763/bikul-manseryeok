@@ -140,6 +140,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
+                android:background="@drawable/box_white"
+                android:paddingVertical="5dp"
+                android:paddingHorizontal="10dp"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -274,7 +277,7 @@
                         android:textSize="15sp" />
 
                     <TextView
-                        android:id="@+id/tv_sinsal_name"
+                        android:id="@+id/tv_user_name"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_gravity="center_horizontal"
