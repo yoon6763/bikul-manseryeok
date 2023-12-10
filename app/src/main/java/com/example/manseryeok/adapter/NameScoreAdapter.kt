@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.manseryeok.R
 import com.example.manseryeok.databinding.ItemNameBinding
+import com.example.manseryeok.models.name.NameScoreChildItem
 import com.example.manseryeok.models.name.NameScoreItem
 import java.time.format.TextStyle
 import java.util.*
@@ -46,9 +47,11 @@ class NameScoreAdapter(
                 }
 
                 for (element in listOf(
+                    nameScoreChildItem.luckTop,
                     nameScoreChildItem.ganjiTop,
                     nameScoreChildItem.nameHan,
-                    nameScoreChildItem.ganjiBottom
+                    nameScoreChildItem.ganjiBottom,
+                    nameScoreChildItem.luckBottom,
                 )) {
                     val tvItem = TextView(context).apply {
                         text = element
@@ -75,11 +78,6 @@ class NameScoreAdapter(
 
     override fun getItemCount(): Int {
         return items.size
-    }
-
-    private fun Int.dpToPx(context: Context): Int {
-        val metrics = context.resources.displayMetrics
-        return (this * (metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT))
     }
 
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {

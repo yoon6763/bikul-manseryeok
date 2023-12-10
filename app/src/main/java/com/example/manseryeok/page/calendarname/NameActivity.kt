@@ -46,7 +46,7 @@ class NameActivity : ParentActivity() {
         commonSetting()
         loadUserModel()
 
-        nameService = NameService(this, name)
+        nameService = NameService(this, name, userModel)
 
         binding.run {
             rvNameScore.adapter = nameAdapter
@@ -73,8 +73,13 @@ class NameActivity : ParentActivity() {
         content.appendLine("기준년월: ${searchDate.year}년 ${searchDate.monthValue}월\n")
 
 
-        val yearGanji = nameService.calcYearGanji(searchDate.year, searchDate.monthValue, searchDate.dayOfMonth)
-        val monthGanji = nameService.calcMonthGanji(searchDate.year, searchDate.monthValue, searchDate.dayOfMonth)
+        val yearGanji =
+            nameService.calcYearGanji(searchDate.year, searchDate.monthValue, searchDate.dayOfMonth)
+        val monthGanji = nameService.calcMonthGanji(
+            searchDate.year,
+            searchDate.monthValue,
+            searchDate.dayOfMonth
+        )
 
         content.appendLine("년 간지 정보\n")
         yearGanji.forEach {
@@ -161,7 +166,8 @@ class NameActivity : ParentActivity() {
                 userModel = userDao.getUser(userId)
                 name = userModel.firstName + userModel.lastName
 
-                searchDate = LocalDate.of(userModel.birthYear, userModel.birthMonth, userModel.birthDay)
+                searchDate =
+                    LocalDate.of(userModel.birthYear, userModel.birthMonth, userModel.birthDay)
 
                 binding.etYear.setText(userModel.birthYear.toString())
                 var monthLabel = userModel.birthMonth.toString()
@@ -193,7 +199,7 @@ class NameActivity : ParentActivity() {
         }
     }
 
-    private fun setUpGanji() =with(binding){
+    private fun setUpGanji() = with(binding) {
         val type = when (rgBirthType.checkedRadioButtonId) {
             rbYear.id -> NameService.YEAR
             rbMonth.id -> NameService.MONTH
@@ -204,8 +210,18 @@ class NameActivity : ParentActivity() {
         }
 
         val nameScoreItems = when (type) {
-            NameService.YEAR -> nameService.calcYearGanji(searchDate.year, searchDate.monthValue, searchDate.dayOfMonth)
-            NameService.MONTH -> nameService.calcMonthGanji(searchDate.year, searchDate.monthValue, searchDate.dayOfMonth)
+            NameService.YEAR -> nameService.calcYearGanji(
+                searchDate.year,
+                searchDate.monthValue,
+                searchDate.dayOfMonth
+            )
+
+            NameService.MONTH -> nameService.calcMonthGanji(
+                searchDate.year,
+                searchDate.monthValue,
+                searchDate.dayOfMonth
+            )
+
             else -> {
                 Toast.makeText(applicationContext, "잘못된 타입입니다.", Toast.LENGTH_SHORT).show()
                 return
@@ -217,7 +233,12 @@ class NameActivity : ParentActivity() {
 
         nameAdapter.notifyDataSetChanged()
 
-        val ganji = nameService.getGanjiLabel(searchDate.year, searchDate.monthValue, searchDate.dayOfMonth, type)
+        val ganji = nameService.getGanjiLabel(
+            searchDate.year,
+            searchDate.monthValue,
+            searchDate.dayOfMonth,
+            type
+        )
         tvGanjiTop.text = ganji[0].toString()
         tvGanjiBottom.text = ganji[1].toString()
     }

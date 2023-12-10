@@ -6,9 +6,19 @@ import com.example.manseryeok.manseryeokdb.ManseryeokSQLHelper
 import com.example.manseryeok.models.Manseryeok
 import com.example.manseryeok.models.name.NameScoreChildItem
 import com.example.manseryeok.models.name.NameScoreItem
+import com.example.manseryeok.models.user.User
 import com.example.manseryeok.utils.Utils
 
-class NameService(val context: Context, var name: String) {
+class NameService(
+    val context: Context, var name: String, private val userModel: User
+) {
+    private val userManseryeok by lazy {
+        importCalendar(
+            userModel.birthYear,
+            userModel.birthMonth,
+            userModel.birthDay
+        )
+    }
 
     companion object {
         const val EVEN = 0
@@ -51,18 +61,28 @@ class NameService(val context: Context, var name: String) {
     fun calcYearGanji(year: Int, month: Int, day: Int): List<NameScoreItem> {
         val manseryeok = importCalendar(year, month, day)
         val yearGanji = manseryeok.cd_hyganjee!!
+        val userYearGanji = userManseryeok.cd_hyganjee!!
 
-        return calcGanji(yearGanji)
+        return calcGanji(yearGanji, userYearGanji)
     }
 
     fun calcMonthGanji(year: Int, month: Int, day: Int): List<NameScoreItem> {
         val manseryeok = importCalendar(year, month, day)
         val monthGanji = manseryeok.cd_hmganjee!!
+        val userMonthGanji = userManseryeok.cd_hmganjee!!
 
-        return calcGanji(monthGanji)
+        return calcGanji(monthGanji, userMonthGanji)
     }
 
-    private fun calcGanji(dateGanji: String): List<NameScoreItem> {
+    fun calcDayGanji(year: Int, month: Int, day: Int): List<NameScoreItem> {
+        val manseryeok = importCalendar(year, month, day)
+        val dayGanji = manseryeok.cd_hdganjee!!
+        val userDayGanji = userManseryeok.cd_hdganjee!!
+
+        return calcGanji(dayGanji, userDayGanji)
+    }
+
+    private fun calcGanji(luckGanji: String, birthGanji: String): List<NameScoreItem> {
         val nameScoreItems = ArrayList<NameScoreItem>()
 
         nameComponents.forEach { nameCharComponent ->
@@ -78,10 +98,25 @@ class NameService(val context: Context, var name: String) {
 
             initialAndFinalSound.forEach { sound ->
                 val soundGanji = getNameGanji(sound, parity)
-                val ganjiYearTopLabel = Utils.getPillarLabel(soundGanji.toString(), dateGanji[0].toString())
-                val ganjiYearBottomLabel = Utils.getPillarLabel(soundGanji.toString(), dateGanji[1].toString())
+                val ganjiTopLabel =
+                    Utils.getPillarLabel(soundGanji.toString(), birthGanji[0].toString())
+                val ganjiBottomLabel =
+                    Utils.getPillarLabel(soundGanji.toString(), birthGanji[1].toString())
 
-                nameScoreItem.nameScoreChildItems.add(NameScoreChildItem(soundGanji.toString(), ganjiYearTopLabel, ganjiYearBottomLabel))
+                val ganjiLuckTopLabel =
+                    Utils.getPillarLabel(luckGanji[0].toString(), soundGanji.toString())
+                val ganjiLuckBottomLabel =
+                    Utils.getPillarLabel(luckGanji[0].toString(), soundGanji.toString())
+
+                nameScoreItem.nameScoreChildItems.add(
+                    NameScoreChildItem(
+                        soundGanji.toString(),
+                        ganjiTopLabel,
+                        ganjiBottomLabel,
+                        ganjiLuckTopLabel,
+                        ganjiLuckBottomLabel
+                    )
+                )
             }
 
             nameScoreItems.add(nameScoreItem)
