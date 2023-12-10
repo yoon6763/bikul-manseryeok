@@ -343,7 +343,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/gap_horizontal"
-                    android:layout_marginTop="@dimen/gap_vertical"
+                    android:layout_marginTop="10dp"
                     android:divider="@drawable/empty_divider"
                     android:orientation="horizontal"
                     android:showDividers="middle">
@@ -406,7 +406,6 @@
                     android:layout_height="match_parent"
                     android:layout_marginHorizontal="@dimen/gap_horizontal"
                     android:layout_marginTop="@dimen/gap_line"
-                    android:paddingVertical="10dp"
                     android:text="공망 : ?(월) ?(일)" />
 
                 <LinearLayout
@@ -414,7 +413,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="30dp"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="5dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -627,18 +626,15 @@
 
                     </LinearLayout>
                 </LinearLayout>
-
-
             </LinearLayout>
-
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/gap_vertical"
+                android:layout_marginTop="15dp"
                 android:background="@drawable/container_middle"
                 android:orientation="vertical"
-                android:paddingVertical="@dimen/gap_vertical">
+                android:paddingVertical="15dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -663,10 +659,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/gap_vertical"
+                android:layout_marginTop="15dp"
                 android:background="@drawable/container_middle"
                 android:orientation="vertical"
-                android:paddingVertical="@dimen/gap_horizontal">
+                android:paddingVertical="15dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -692,10 +688,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/gap_vertical"
+                android:layout_marginTop="15dp"
                 android:background="@drawable/container_bottom"
                 android:orientation="vertical"
-                android:paddingVertical="@dimen/gap_vertical">
+                android:paddingVertical="15dp">
 
                 <TextView
                     android:layout_width="match_parent"
