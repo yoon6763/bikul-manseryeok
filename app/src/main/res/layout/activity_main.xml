@@ -273,7 +273,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="40dp"
-        app:cardBackgroundColor="#50FFFFFF"
+        app:cardBackgroundColor="#20253A"
         app:cardCornerRadius="15dp"
         app:cardElevation="2dp">
 

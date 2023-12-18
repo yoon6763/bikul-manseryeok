@@ -2,7 +2,12 @@ package com.example.manseryeok.adapter
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
+import android.renderscript.Allocation
+import android.renderscript.Element
+import android.renderscript.RenderScript
+import android.renderscript.ScriptIntrinsicBlur
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.manseryeok.R
 import com.example.manseryeok.models.notion.AdvertiseSliderModel
+
 
 class ImageSliderAdapter(
     private val context: Context,
@@ -38,7 +44,10 @@ class ImageSliderAdapter(
             ivAd = itemView.findViewById(R.id.iv_ad)
             ivAd.setOnClickListener {
                 // open browser
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(sliderModels[bindingAdapterPosition].siteUrl))
+                val intent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(sliderModels[bindingAdapterPosition].siteUrl)
+                )
                 context.startActivity(intent)
             }
         }
