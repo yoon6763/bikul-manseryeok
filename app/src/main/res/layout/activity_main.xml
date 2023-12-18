@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_background"
+    android:orientation="vertical"
     tools:context=".page.MainActivity">
 
     <TextView
@@ -13,6 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/gap_horizontal"
         android:layout_marginTop="@dimen/gap_vertical"
+        android:layout_marginBottom="15dp"
         android:text="@string/Manseryeok"
         android:textColor="@color/white"
         android:textSize="@dimen/title_size"
@@ -24,6 +26,7 @@
         android:id="@+id/gl_button_set"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:columnCount="3"
         android:orientation="horizontal"
         android:rowCount="4"
@@ -265,12 +268,24 @@
         </LinearLayout>
     </GridLayout>
 
-<!--    <androidx.viewpager2.widget.ViewPager2-->
-<!--        android:id="@+id/vp_ad"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent" />-->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_ad"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="40dp"
+        app:cardBackgroundColor="#50FFFFFF"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="2dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/vp_ad"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.cardview.widget.CardView>
+
+
+</LinearLayout>

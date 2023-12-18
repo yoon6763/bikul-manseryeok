@@ -1,10 +1,18 @@
 package com.example.manseryeok.page
 
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.os.Bundle
+import android.renderscript.Allocation
+import android.renderscript.Element
+import android.renderscript.RenderScript
+import android.renderscript.ScriptIntrinsicBlur
 import android.util.Base64
 import android.util.Log
 import android.view.View
@@ -17,6 +25,7 @@ import com.example.manseryeok.R
 import com.example.manseryeok.adapter.ImageSliderAdapter
 import com.example.manseryeok.manseryeokdb.ManseryeokSQLHelper
 import com.example.manseryeok.databinding.ActivityMainBinding
+import com.example.manseryeok.models.notion.AdvertiseSliderModel
 import com.example.manseryeok.models.notion.request.AdvertiseRequestDTO
 import com.example.manseryeok.models.notion.request.Filter
 import com.example.manseryeok.page.calendarname.CalendarInputActivity
@@ -58,7 +67,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setStatusBar()
         setDayLuck()
         setGridDisplaySize()
-
+        setAdvertiseCardView()
 
         CoroutineScope(Dispatchers.Main).launch {
             setAdvertise()
@@ -67,47 +76,46 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         // getHashKey()
     }
 
+    private fun setAdvertiseCardView() = with(binding) {
+//        val bitmap = Bitmap.createBitmap(cvAd.width, cvAd.height, Bitmap.Config.ARGB_8888)
+//        val canvas = Canvas(bitmap)
+//        cvAd.draw(canvas)
+//        val blurredBitmap = blurBitmap(applicationContext, bitmap, 25f)
+//        cvAd.background = BitmapDrawable(resources, blurredBitmap)
+    }
+
     private suspend fun setAdvertise() {
-        val advertiseRequestBody = AdvertiseRequestDTO(
-            filter = Filter(
-                "Status",
-                com.example.manseryeok.models.notion.request.Status(
-                    "게시 중"
+        try {
+            val advertiseRequestBody = AdvertiseRequestDTO(
+                filter = Filter(
+                    "Status",
+                    com.example.manseryeok.models.notion.request.Status(
+                        "게시 중"
+                    )
                 )
             )
-        )
 
-        val advertiseCall = notionAPI.getAdvertiseInfo(
-            notionVersion = NotionAPI.NOTION_API_VERSION,
-            token = SecretConstants.NOTION_TOKEN,
-            databaseId = SecretConstants.NOTION_ADVERTISE_DB_ID,
-            advertiseRequestDTO = advertiseRequestBody
-        ).awaitResponse()
+            val advertiseCall = notionAPI.getAdvertiseInfo(
+                notionVersion = NotionAPI.NOTION_API_VERSION,
+                token = SecretConstants.NOTION_TOKEN,
+                databaseId = SecretConstants.NOTION_ADVERTISE_DB_ID,
+                advertiseRequestDTO = advertiseRequestBody
+            ).awaitResponse()
 
-        val imageSliderUrls = ArrayList<String>()
+            val imageSliderUrls = ArrayList<AdvertiseSliderModel>()
 
-        if (advertiseCall.isSuccessful) {
-            val advertiseResponseBody = advertiseCall.body()!!
+            if (advertiseCall.isSuccessful) {
+                val advertiseResponseBody = advertiseCall.body()!!
 
-            advertiseResponseBody.results.forEach { result ->
-                Log.d(TAG, "setAdvertise: title = ${result.properties.Title.title[0].plain_text}")
-                Log.d(TAG, "setAdvertise: url link = ${result.properties.Link.url}")
-
-                Log.d(TAG, "setAdvertise: image files size = ${result.properties.Image.files.size}")
-
-                Toast.makeText(applicationContext, result.properties.Title.title[0].plain_text, Toast.LENGTH_SHORT).show()
-
-                result.properties.Image.files.forEach { file ->
-                    Log.d(TAG, "setAdvertise: ${file.file.url}")
-                    imageSliderUrls.add(file.file.url)
+                advertiseResponseBody.results.forEach { result ->
+                    result.properties.Image.files.forEach { file -> imageSliderUrls.add(AdvertiseSliderModel(result.properties.Link.url, file.file.url)) }
                 }
             }
+
+            binding.vpAd.adapter = ImageSliderAdapter(this@MainActivity, imageSliderUrls)
+        } catch (e: Exception) {
+            Log.e(TAG, "setAdvertise: ${e.message}")
         }
-
-        Toast.makeText(applicationContext, imageSliderUrls.size.toString(), Toast.LENGTH_SHORT).show()
-
-//        binding.vpAd.offscreenPageLimit = 3
-//        binding.vpAd.adapter = ImageSliderAdapter(this@MainActivity, imageSliderUrls)
     }
 
     private fun setGridDisplaySize() {
@@ -124,8 +132,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
 
-        val vpHeight = displayMetrics.heightPixels.toDouble() - dpWidth.toDouble()
-        // binding.vpAd.layoutParams.height = vpHeight.toInt()
+//        binding.cvAd.layoutParams.width = displayMetrics.widthPixels * 7
     }
 
 
@@ -219,5 +226,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     .show()
             }
         }
+    }
+
+    fun blurBitmap(context: Context, bitmap: Bitmap, blurRadius: Float): Bitmap {
+        val rs = RenderScript.create(context)
+        val input = Allocation.createFromBitmap(rs, bitmap)
+        val output = Allocation.createTyped(rs, input.type)
+        val script = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs))
+        script.setRadius(blurRadius)
+        script.setInput(input)
+        script.forEach(output)
+        output.copyTo(bitmap)
+        return bitmap
     }
 }

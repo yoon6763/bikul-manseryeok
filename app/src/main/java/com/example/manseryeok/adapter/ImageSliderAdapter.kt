@@ -1,6 +1,8 @@
 package com.example.manseryeok.adapter
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,9 +10,12 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.manseryeok.R
+import com.example.manseryeok.models.notion.AdvertiseSliderModel
 
-
-class ImageSliderAdapter(private val context: Context, private val sliderImageUrls: ArrayList<String>) :
+class ImageSliderAdapter(
+    private val context: Context,
+    private val sliderModels: ArrayList<AdvertiseSliderModel>
+) :
     RecyclerView.Adapter<ImageSliderAdapter.MyViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view: View =
@@ -19,11 +24,11 @@ class ImageSliderAdapter(private val context: Context, private val sliderImageUr
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.bindSliderImage(sliderImageUrls[position])
+        holder.bindSliderImage(sliderModels[position].imageUrl)
     }
 
     override fun getItemCount(): Int {
-        return sliderImageUrls.size
+        return sliderModels.size
     }
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -31,6 +36,11 @@ class ImageSliderAdapter(private val context: Context, private val sliderImageUr
 
         init {
             ivAd = itemView.findViewById(R.id.iv_ad)
+            ivAd.setOnClickListener {
+                // open browser
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(sliderModels[bindingAdapterPosition].siteUrl))
+                context.startActivity(intent)
+            }
         }
 
         fun bindSliderImage(imageURL: String?) {
