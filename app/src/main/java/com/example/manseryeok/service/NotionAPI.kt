@@ -1,6 +1,8 @@
-package com.example.manseryeok.utils.notionAPI
+package com.example.manseryeok.service
 
-import com.example.manseryeok.utils.notionAPI.responseDTO.InquiryRequestDTO
+import com.example.manseryeok.models.notion.request.AdvertiseRequestDTO
+import com.example.manseryeok.models.notion.response.advertise.AdvertiseResponseDTO
+import com.example.manseryeok.models.notion.response.inquery.InquiryRequestDTO
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -28,4 +30,13 @@ interface NotionAPI {
         @Header("Authorization") token: String,
         @Body inquiryRequestDTO: InquiryRequestDTO
     ): Call<ResponseBody>
+
+
+    @POST("v1/databases/{id}/query")
+    fun getAdvertiseInfo(
+        @Header("Notion-Version") notionVersion: String,
+        @Header("Authorization") token: String,
+        @Path("id") databaseId: String,
+        @Body advertiseRequestDTO: AdvertiseRequestDTO
+    ): Call<AdvertiseResponseDTO>
 }

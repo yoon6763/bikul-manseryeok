@@ -12,20 +12,34 @@ import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.forEach
+import com.bumptech.glide.Glide
 import com.example.manseryeok.R
+import com.example.manseryeok.adapter.ImageSliderAdapter
 import com.example.manseryeok.manseryeokdb.ManseryeokSQLHelper
 import com.example.manseryeok.databinding.ActivityMainBinding
+import com.example.manseryeok.models.notion.request.AdvertiseRequestDTO
+import com.example.manseryeok.models.notion.request.Filter
 import com.example.manseryeok.page.calendarname.CalendarInputActivity
 import com.example.manseryeok.page.compass.CompassActivity
 import com.example.manseryeok.page.user.UserDBActivity
+import com.example.manseryeok.service.NotionAPI
 import com.example.manseryeok.utils.Extras
+import com.example.manseryeok.utils.SecretConstants
 import com.example.manseryeok.utils.Utils
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import retrofit2.awaitResponse
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
+
+    private val TAG = "MainActivityDev"
+    private val notionAPI = NotionAPI.create()
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,7 +59,55 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setDayLuck()
         setGridDisplaySize()
 
+
+        CoroutineScope(Dispatchers.Main).launch {
+            setAdvertise()
+        }
+
         // getHashKey()
+    }
+
+    private suspend fun setAdvertise() {
+        val advertiseRequestBody = AdvertiseRequestDTO(
+            filter = Filter(
+                "Status",
+                com.example.manseryeok.models.notion.request.Status(
+                    "게시 중"
+                )
+            )
+        )
+
+        val advertiseCall = notionAPI.getAdvertiseInfo(
+            notionVersion = NotionAPI.NOTION_API_VERSION,
+            token = SecretConstants.NOTION_TOKEN,
+            databaseId = SecretConstants.NOTION_ADVERTISE_DB_ID,
+            advertiseRequestDTO = advertiseRequestBody
+        ).awaitResponse()
+
+        val imageSliderUrls = ArrayList<String>()
+
+        if (advertiseCall.isSuccessful) {
+            val advertiseResponseBody = advertiseCall.body()!!
+
+            advertiseResponseBody.results.forEach { result ->
+                Log.d(TAG, "setAdvertise: title = ${result.properties.Title.title[0].plain_text}")
+                Log.d(TAG, "setAdvertise: url link = ${result.properties.Link.url}")
+
+                Log.d(TAG, "setAdvertise: image files size = ${result.properties.Image.files.size}")
+
+                Toast.makeText(applicationContext, result.properties.Title.title[0].plain_text, Toast.LENGTH_SHORT).show()
+
+                result.properties.Image.files.forEach { file ->
+                    Log.d(TAG, "setAdvertise: ${file.file.url}")
+                    imageSliderUrls.add(file.file.url)
+                }
+            }
+        }
+
+        Toast.makeText(applicationContext, imageSliderUrls.size.toString(), Toast.LENGTH_SHORT).show()
+
+//        binding.vpAd.offscreenPageLimit = 3
+//        binding.vpAd.adapter = ImageSliderAdapter(this@MainActivity, imageSliderUrls)
     }
 
     private fun setGridDisplaySize() {
@@ -61,6 +123,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 view.layoutParams.height = dpWidth.toInt()
             }
         }
+
+        val vpHeight = displayMetrics.heightPixels.toDouble() - dpWidth.toDouble()
+        // binding.vpAd.layoutParams.height = vpHeight.toInt()
     }
 
 

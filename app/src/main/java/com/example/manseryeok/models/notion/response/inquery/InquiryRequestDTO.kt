@@ -1,4 +1,4 @@
-package com.example.manseryeok.utils.notionAPI.responseDTO
+package com.example.manseryeok.models.notion.response.inquery
 
 data class InquiryRequestDTO(
     val children: List<Children>,

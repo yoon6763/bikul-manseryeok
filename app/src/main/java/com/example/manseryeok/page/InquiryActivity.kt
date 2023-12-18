@@ -2,12 +2,19 @@ package com.example.manseryeok.page
 
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.Toast
 import com.example.manseryeok.R
-import com.example.manseryeok.utils.notionAPI.NotionAPI
-import com.example.manseryeok.utils.notionAPI.responseDTO.*
+import com.example.manseryeok.service.NotionAPI
 import com.example.manseryeok.utils.SecretConstants
 import com.example.manseryeok.databinding.ActivityInquiryBinding
+import com.example.manseryeok.models.notion.response.inquery.Children
+import com.example.manseryeok.models.notion.response.inquery.InquiryRequestDTO
+import com.example.manseryeok.models.notion.response.inquery.Paragraph
+import com.example.manseryeok.models.notion.response.inquery.Parent
+import com.example.manseryeok.models.notion.response.inquery.Properties
+import com.example.manseryeok.models.notion.response.inquery.RichText
+import com.example.manseryeok.models.notion.response.inquery.Text
+import com.example.manseryeok.models.notion.response.inquery.Title
+import com.example.manseryeok.models.notion.response.inquery.TitleX
 import com.example.manseryeok.utils.ParentActivity
 import okhttp3.ResponseBody
 import retrofit2.Call
