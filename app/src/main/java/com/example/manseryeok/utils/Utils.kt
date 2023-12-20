@@ -153,6 +153,17 @@ object Utils {
         return sibgan[0][sibganIdx] + sibiji[0][sibijiIdx]
     }
 
+    fun isLeapYear(year: Int) = if (year % 4 == 0) {
+        if (year % 100 == 0) {
+            year % 400 == 0
+        } else {
+            true
+        }
+    } else {
+        false
+    }
+
+
     fun getTimeGanji(day: Char, hour: Int): String {
         val dayIdx = when (day) {
             '甲', '己' -> 0

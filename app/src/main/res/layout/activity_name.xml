@@ -62,6 +62,18 @@
                     android:text="월"
                     android:textColor="@drawable/radio_text" />
 
+                <RadioButton
+                    android:id="@+id/rb_day"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:autoSizeTextType="uniform"
+                    android:background="@drawable/radio_button_background"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="일"
+                    android:textColor="@drawable/radio_text" />
 
             </RadioGroup>
 
@@ -96,7 +108,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="20dp"
+                        android:layout_marginRight="15dp"
                         android:text="년"
                         android:textSize="25sp" />
                 </LinearLayout>
@@ -115,6 +127,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="월"
+                    android:textSize="25sp" />
+
+                <EditText
+                    android:layout_marginLeft="15dp"
+                    android:id="@+id/et_day"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:gravity="center"
+                    android:paddingHorizontal="10dp"
+                    android:text="03"
+                    android:textSize="25sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="일"
                     android:textSize="25sp" />
             </LinearLayout>
 

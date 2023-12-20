@@ -13,6 +13,7 @@ import com.example.manseryeok.models.AppDatabase
 import com.example.manseryeok.models.name.NameScoreItem
 import com.example.manseryeok.models.user.User
 import com.example.manseryeok.page.calendarname.popup.NumberPickerDialog
+import com.example.manseryeok.service.calendar.CalendarService
 import com.example.manseryeok.service.name.NameService
 import com.example.manseryeok.utils.Extras
 import com.example.manseryeok.utils.ParentActivity
@@ -21,6 +22,7 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 class NameActivity : ParentActivity() {
     private val TAG = "NameActivity"
@@ -31,6 +33,7 @@ class NameActivity : ParentActivity() {
     private val userDao by lazy { AppDatabase.getInstance(applicationContext).userDao() }
 
     private var searchDate = LocalDate.now()
+    private lateinit var userBirth : LocalDateTime
 
     private val nameItems = ArrayList<NameScoreItem>()
     private val nameAdapter by lazy { NameScoreAdapter(this@NameActivity, nameItems) }
@@ -38,6 +41,10 @@ class NameActivity : ParentActivity() {
     private var name = ""
 
     private lateinit var nameService: NameService
+
+    private lateinit var userCalendarService : CalendarService
+    private lateinit var luckyCalendarService : CalendarService
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +54,9 @@ class NameActivity : ParentActivity() {
         loadUserModel()
 
         nameService = NameService(this, name, userModel)
+        userBirth = userModel.getBirthCalculatedLocalDateTime()
+        userCalendarService = CalendarService(this@NameActivity, userBirth, userModel.includeTime)
+        luckyCalendarService = CalendarService(this@NameActivity, LocalDateTime.now(), userModel.includeTime)
 
         binding.run {
             rvNameScore.adapter = nameAdapter
@@ -156,6 +166,29 @@ class NameActivity : ParentActivity() {
 
             monthPickerDialog.show()
         }
+
+        val maxDayOfEachMonth = arrayOf(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
+
+        etDay.setOnClickListener {
+            val dayPickerDialog = NumberPickerDialog(this@NameActivity)
+            dayPickerDialog.maxValue = maxDayOfEachMonth[searchDate.monthValue - 1]
+            dayPickerDialog.minValue = 1
+            dayPickerDialog.initialValue = searchDate.dayOfMonth
+            dayPickerDialog.onConfirmListener = object : NumberPickerDialog.OnConfirmListener {
+                override fun onConfirm(number: Int) {
+                    searchDate = searchDate.withDayOfMonth(number)
+                    setUpGanji()
+
+                    if (number < 10) {
+                        etDay.setText("0$number")
+                        return
+                    }
+                    etDay.setText(number.toString())
+                }
+            }
+
+            dayPickerDialog.show()
+        }
     }
 
     private fun loadUserModel() {
@@ -203,6 +236,7 @@ class NameActivity : ParentActivity() {
         val type = when (rgBirthType.checkedRadioButtonId) {
             rbYear.id -> NameService.YEAR
             rbMonth.id -> NameService.MONTH
+            rbDay.id -> NameService.DAY
             else -> {
                 Toast.makeText(applicationContext, "잘못된 타입입니다.", Toast.LENGTH_SHORT).show()
                 return
@@ -217,6 +251,12 @@ class NameActivity : ParentActivity() {
             )
 
             NameService.MONTH -> nameService.calcMonthGanji(
+                searchDate.year,
+                searchDate.monthValue,
+                searchDate.dayOfMonth
+            )
+
+            NameService.DAY -> nameService.calcDayGanji(
                 searchDate.year,
                 searchDate.monthValue,
                 searchDate.dayOfMonth

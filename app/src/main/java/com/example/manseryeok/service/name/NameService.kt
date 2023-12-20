@@ -24,6 +24,7 @@ class NameService(val context: Context, var name: String, private val userModel:
 
         const val YEAR = 0
         const val MONTH = 1
+        const val DAY = 2
     }
 
     /*₩
