@@ -45,45 +45,25 @@ class Season24SQLHelper(val context: Context) {
         dbHelper?.close()
     }
 
-    fun sqlTest() {
-        Log.d(TAG, "sqlTest: point1")
-        try {
-            val sql = "SELECT * FROM $TABLE_NAME"
-            Log.d(TAG, "sqlTest: ${db!!.isOpen}")
-
-            val cur: Cursor = db!!.rawQuery(sql, null)
-            Log.d(TAG, "sqlTest: sdfdfgdsfghsfdgh")
-            Log.d(TAG, "sqlTest: ${cur.count}")
-
-            while (cur.moveToNext()) {
-                Log.d(TAG, "sqlTest: ${cur.getString(0)} ${cur.getString(1)} ${cur.getString(2)}")
-            }
-
-        } catch (mSQLException: SQLException) {
-            Log.e(TAG, "getTestData >>$mSQLException")
-            throw mSQLException
-        }
-    }
 
     // 입춘을 넘겼는가
     fun isReachSpring(date: LocalDateTime): Boolean {
         try {
             // 2월의 첫 번째 시즌이 입춘
-            val sql =
-                "SELECT * FROM $TABLE_NAME WHERE YEAR = ${date.year} AND MONTH = 2 ORDER BY DAY ASC LIMIT 1;"
+            val sql = "SELECT * FROM $TABLE_NAME " +
+                    "WHERE YEAR = ${date.year} AND MONTH = 2 " +
+                    "ORDER BY DAY ASC LIMIT 1;"
 
             val cur: Cursor = db!!.rawQuery(sql, null)
-            if (cur != null) {
-                while (cur.moveToNext()) {
-                    val year = cur.getInt(1)
-                    val month = cur.getInt(2)
-                    val day = cur.getInt(3)
-                    val hour = cur.getInt(4)
-                    val minute = cur.getInt(5)
+            while (cur.moveToNext()) {
+                val year = cur.getInt(1)
+                val month = cur.getInt(2)
+                val day = cur.getInt(3)
+                val hour = cur.getInt(4)
+                val minute = cur.getInt(5)
 
-                    val springDate = LocalDateTime.of(year, month, day, hour, minute,0)
-                    return date.isAfter(springDate)
-                }
+                val springDate = LocalDateTime.of(year, month, day, hour, minute, 0)
+                return date.isAfter(springDate)
             }
         } catch (mSQLException: SQLException) {
             Log.e(TAG, "getTestData >>$mSQLException")
@@ -95,27 +75,70 @@ class Season24SQLHelper(val context: Context) {
     // 해당 월을 넘겼는가
     fun isReachMonth(date: LocalDateTime): Boolean {
         try {
-            val sql =
-                "SELECT * FROM $TABLE_NAME WHERE YEAR = ${date.year} AND MONTH = ${date.monthValue} ORDER BY DAY ASC LIMIT 1;"
+            val sql = "SELECT * FROM $TABLE_NAME " +
+                    "WHERE YEAR = ${date.year} AND MONTH = ${date.monthValue}" +
+                    " ORDER BY DAY ASC LIMIT 1;"
 
             val cur: Cursor = db!!.rawQuery(sql, null)
-            if (cur != null) {
-                while (cur.moveToNext()) {
-                    val year = cur.getInt(1)
-                    val month = cur.getInt(2)
-                    val day = cur.getInt(3)
-                    val hour = cur.getInt(4)
-                    val minute = cur.getInt(5)
+            while (cur.moveToNext()) {
+                val year = cur.getInt(1)
+                val month = cur.getInt(2)
+                val day = cur.getInt(3)
+                val hour = cur.getInt(4)
+                val minute = cur.getInt(5)
 
-                    val monthDate = LocalDateTime.of(year, month, day, hour, minute,0)
-                    return date.isAfter(monthDate)
-                }
+                val monthDate = LocalDateTime.of(year, month, day, hour, minute, 0)
+                return date.isAfter(monthDate)
             }
         } catch (mSQLException: SQLException) {
             Log.e(TAG, "getTestData >>$mSQLException")
             throw mSQLException
         }
         return false
+    }
+
+    fun getSeason(date: LocalDateTime): Season {
+        try {
+            val sql = "SELECT * " +
+                    "FROM $TABLE_NAME " +
+                    "WHERE YEAR = ${date.year} OR YEAR = ${date.year + 1} OR YEAR = ${date.year - 1} " +
+                    "ORDER BY YEAR ASC, MONTH ASC, DAY ASC;"
+
+            val cur: Cursor = db!!.rawQuery(sql, null)
+
+            var preSeasonLabel = ""
+            var preSeasonDate: LocalDateTime = LocalDateTime.of(0, 0, 0, 0, 0, 0)
+
+            while (cur.moveToNext()) {
+                val season = cur.getString(0)
+                val year = cur.getInt(1)
+                val month = cur.getInt(2)
+                val day = cur.getInt(3)
+                val hour = cur.getInt(4)
+                val minute = cur.getInt(5)
+
+                val seasonDate = LocalDateTime.of(year, month, day, hour, minute, 0)
+
+                if (date.isBefore(seasonDate)) {
+                    return Season(
+                        preSeasonLabel,
+                        preSeasonDate.year,
+                        preSeasonDate.monthValue,
+                        preSeasonDate.dayOfMonth,
+                        preSeasonDate.hour,
+                        preSeasonDate.minute
+                    )
+                }
+
+                preSeasonLabel = season
+                preSeasonDate = seasonDate
+            }
+        } catch (mSQLException: SQLException) {
+            Log.e(TAG, "getTestData >>$mSQLException")
+            throw mSQLException
+        }
+
+        throw Exception("getSeason: season not found")
     }
 
 

@@ -16,7 +16,6 @@ import com.example.manseryeok.manseryeokdb.ManseryeokSQLHelper
 import com.example.manseryeok.adapter.SixtyHorizontalAdapter
 import com.example.manseryeok.adapter.SixtyHorizontalSmallAdapter
 import com.example.manseryeok.databinding.ActivityCalendarBinding
-import com.example.manseryeok.manseryeokdb.Season24SQLHelper
 import com.example.manseryeok.models.Manseryeok
 import com.example.manseryeok.models.SixtyHorizontalItem
 import com.example.manseryeok.models.user.User
@@ -104,7 +103,7 @@ class CalendarActivity : ParentActivity() {
             setUserBirth()
             setUpPillar() // 기둥 세우기
             setUpPillarLabel() // 라벨
-            setUpEmpty() // 공망 설정
+            setUpGongmang() // 공망 설정
             setUpSeasonBirth() // 절기 설정
             setUpProperty() // 오행 - 화수목금토 개수 설정
             setUpPlusMinusFiveProperty() // 음양오행 - 해중금, 복등화 등등
@@ -327,27 +326,10 @@ class CalendarActivity : ParentActivity() {
             timePillar = calendarService.timeHanjaGanji
 
 
-            if (userBirthCalender.cd_hterms != "NULL" && isTimeInclude) {
-                val seasonTimeString = userBirthCalender.cd_terms_time.toString()
-
-                val seasonCalendar = Calendar.getInstance().apply {
-                    this[Calendar.YEAR] = seasonTimeString.substring(0, 4).toInt()
-                    this[Calendar.MONTH] = seasonTimeString.substring(4, 6).toInt() - 1
-                    this[Calendar.DAY_OF_MONTH] = seasonTimeString.substring(6, 8).toInt()
-                    this[Calendar.HOUR_OF_DAY] = seasonTimeString.substring(8, 10).toInt()
-                    this[Calendar.MINUTE] = seasonTimeString.substring(10, 12).toInt()
-                }
-
-                if (userBirthCalendar.timeInMillis < seasonCalendar.timeInMillis) {
-                    val targetDay = userCalendar.indexOf(userBirthCalender)
-                    yearPillar = userCalendar[targetDay - 1].cd_hyganjee!!
-                    monthPillar = userCalendar[targetDay - 1].cd_hmganjee!!
-                }
-            }
-
             // 년주
             tvPillarYearTop.text = yearPillar[0].toString()
             tvPillarYearBottom.text = yearPillar[1].toString()
+
             when (Utils.sibgan[0].indexOf(yearPillar[0].toString())) {
                 0, 1 -> tvPillarYearTop.setBackgroundResource(R.drawable.box_mint) // 목
                 2, 3 -> tvPillarYearTop.setBackgroundResource(R.drawable.box_red) // 화
@@ -454,9 +436,9 @@ class CalendarActivity : ParentActivity() {
         }
     }
 
-    private fun setUpEmpty() {
-        val yearEmpty = Utils.getEmptyGanji(yearPillar)
-        val dayEmpty = Utils.getEmptyGanji(dayPillar)
+    private fun setUpGongmang() {
+        val yearEmpty = calendarService.calcGongmang(yearPillar)
+        val dayEmpty = calendarService.calcGongmang(dayPillar)
 
         binding.tvEmpty.text = "공망 : $yearEmpty (년), $dayEmpty (일)"
     }
@@ -594,7 +576,7 @@ class CalendarActivity : ParentActivity() {
         mDBHelper.close()
     }
 
-    // 대운 리사이클러 뷰 세팅
+    // 대운 리사이클러뷰 세팅
     private fun setUpLuckRecyclerView() {
         var topPtr = tenArray.indexOf(monthPillar[0].toString())
         var bottomPtr = twelveArray.indexOf(monthPillar[1].toString())
