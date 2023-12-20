@@ -8,11 +8,19 @@ import android.util.Log
 import java.io.*
 import java.sql.SQLException
 
-class ManseryeokDBHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, 1) {
+class Season24DBHelper(val context: Context) : SQLiteOpenHelper(context, DB_NAME, null, 1) {
     private var mDataBase: SQLiteDatabase? = null
     private val mContext: Context
-    @Throws(IOException::class)
 
+    init {
+        DB_PATH =
+            if (Build.VERSION.SDK_INT >= 17) context.applicationInfo.dataDir + "/databases/"
+            else "/data/data/" + context.packageName + "/databases/"
+
+        mContext = context
+    }
+
+    @Throws(IOException::class)
     fun createDataBase() {
         //데이터베이스가 없으면 asset 폴더에서 복사해온다.
         val mDataBaseExist = checkDataBase()
@@ -37,7 +45,6 @@ class ManseryeokDBHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, 
     ///data/data/your package/databases/DB Name <-이 경로에서 데이터베이스가 존재하는지 확인한다
     private fun checkDataBase(): Boolean {
         val dbFile = File(DB_PATH + DB_NAME)
-        //Log.v("dbFile", dbFile + "   "+ dbFile.exists());
         return dbFile.exists()
     }
 
@@ -57,13 +64,10 @@ class ManseryeokDBHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, 
         mInput.close()
     }
 
-    //데이터베이스를 열어서 쿼리를 쓸수있게만든다.
     @Throws(SQLException::class)
     fun openDataBase(): Boolean {
         val mPath = DB_PATH + DB_NAME
-        //Log.v("mPath", mPath);
         mDataBase = SQLiteDatabase.openDatabase(mPath, null, SQLiteDatabase.CREATE_IF_NECESSARY)
-        //mDataBase = SQLiteDatabase.openDatabase(mPath, null, SQLiteDatabase.NO_LOCALIZED_COLLATORS);
         return mDataBase != null
     }
 
@@ -84,14 +88,6 @@ class ManseryeokDBHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, 
         private var DB_PATH = ""
 
         // assets 폴더에 있는 DB명 또는 별도의 데이터베이스 파일이름
-        private const val DB_NAME = "Manseryeok.db"
-    }
-
-    init {
-        DB_PATH =
-            if (Build.VERSION.SDK_INT >= 17) context.applicationInfo.dataDir + "/databases/"
-            else "/data/data/" + context.packageName + "/databases/"
-
-        mContext = context
+        private const val DB_NAME = "season-24.db"
     }
 }

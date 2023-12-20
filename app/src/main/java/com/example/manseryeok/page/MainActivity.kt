@@ -25,6 +25,7 @@ import com.example.manseryeok.R
 import com.example.manseryeok.adapter.ImageSliderAdapter
 import com.example.manseryeok.manseryeokdb.ManseryeokSQLHelper
 import com.example.manseryeok.databinding.ActivityMainBinding
+import com.example.manseryeok.manseryeokdb.Season24SQLHelper
 import com.example.manseryeok.models.notion.AdvertiseSliderModel
 import com.example.manseryeok.models.notion.request.AdvertiseRequestDTO
 import com.example.manseryeok.models.notion.request.Filter
@@ -67,21 +68,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setStatusBar()
         setDayLuck()
         setGridDisplaySize()
-        setAdvertiseCardView()
 
         CoroutineScope(Dispatchers.Main).launch {
             setAdvertise()
         }
 
         // getHashKey()
-    }
-
-    private fun setAdvertiseCardView() = with(binding) {
-//        val bitmap = Bitmap.createBitmap(cvAd.width, cvAd.height, Bitmap.Config.ARGB_8888)
-//        val canvas = Canvas(bitmap)
-//        cvAd.draw(canvas)
-//        val blurredBitmap = blurBitmap(applicationContext, bitmap, 25f)
-//        cvAd.background = BitmapDrawable(resources, blurredBitmap)
     }
 
     private suspend fun setAdvertise() {
@@ -138,6 +130,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun setDayLuck() {
         val today = Calendar.getInstance()
+        val mSeasonHelper = Season24SQLHelper(applicationContext)
+        mSeasonHelper.createDataBase()
+        mSeasonHelper.open()
+        mSeasonHelper.close()
 
         val mDBHelper = ManseryeokSQLHelper(applicationContext)
         mDBHelper.createDataBase()

@@ -23,14 +23,14 @@ object Utils {
     //const val DB_FILE_NAME = "Manseryeok.db"
 
 
-    val tenGan = arrayOf(
+    val sibgan = arrayOf(
         arrayOf("甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"),
         arrayOf("갑", "을", "병", "정", "무", "기", "경", "신", "임", "계"),
         arrayOf("목", "목", "화", "화", "토", "토", "금", "금", "수", "수")
     )
 
 
-    val twelveGan = arrayOf(
+    val sibiji = arrayOf(
         arrayOf("子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"),
         arrayOf("자", "축", "인", "묘", "진", "사", "오", "미", "신", "유", "술", "해"),
         arrayOf("수", "토", "목", "목", "토", "화", "화", "토", "금", "금", "토", "수")
@@ -100,7 +100,7 @@ object Utils {
 
     // 육친 속견표
     fun getPillarLabel(me: String, target: String): String {
-        val meIdx = tenGan[0].indexOf(me)
+        val meIdx = sibgan[0].indexOf(me)
         val targetIdx = when (target) {
             "壬", "亥" -> 0
             "癸", "子" -> 1
@@ -162,7 +162,7 @@ object Utils {
             sibijiIdx = (sibijiIdx + 1) % 12
         }
 
-        return tenGan[0][sibganIdx] + twelveGan[0][sibijiIdx]
+        return sibgan[0][sibganIdx] + sibiji[0][sibijiIdx]
     }
 
     fun getTimeGanji(day: Char, hour: Int): String {

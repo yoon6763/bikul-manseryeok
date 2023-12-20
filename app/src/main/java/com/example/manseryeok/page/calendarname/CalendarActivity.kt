@@ -7,6 +7,7 @@ import android.os.Handler
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.core.view.forEach
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,10 +16,12 @@ import com.example.manseryeok.manseryeokdb.ManseryeokSQLHelper
 import com.example.manseryeok.adapter.SixtyHorizontalAdapter
 import com.example.manseryeok.adapter.SixtyHorizontalSmallAdapter
 import com.example.manseryeok.databinding.ActivityCalendarBinding
+import com.example.manseryeok.manseryeokdb.Season24SQLHelper
 import com.example.manseryeok.models.Manseryeok
 import com.example.manseryeok.models.SixtyHorizontalItem
 import com.example.manseryeok.models.user.User
 import com.example.manseryeok.models.AppDatabase
+import com.example.manseryeok.service.calendar.CalendarService
 import com.example.manseryeok.utils.Extras
 import com.example.manseryeok.utils.ParentActivity
 import com.example.manseryeok.utils.SharedPreferenceHelper
@@ -27,6 +30,7 @@ import com.example.manseryeok.utils.Utils
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import java.time.LocalDateTime
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashSet
@@ -41,6 +45,7 @@ class CalendarActivity : ParentActivity() {
 
         const val REQUEST_CODE_USER_DB_EDIT = 100
     }
+
 
     private val binding by lazy { ActivityCalendarBinding.inflate(layoutInflater) }
     private val tenArray by lazy { resources.getStringArray(R.array.ten_array) }
@@ -57,11 +62,13 @@ class CalendarActivity : ParentActivity() {
 
     private var isTimeInclude = false
 
+    private lateinit var calendarService: CalendarService
     private lateinit var luckAdapter: SixtyHorizontalAdapter
     private lateinit var yearAdapter: SixtyHorizontalSmallAdapter
     private lateinit var monthAdapter: SixtyHorizontalSmallAdapter
     private lateinit var userModel: User // 유저의 정보 DTO
-    private lateinit var userBirth: Calendar // 유저의 생일 Calendar
+    private lateinit var userBirthCalendar: Calendar // 유저의 생일 Calendar
+    private lateinit var userBirthLocalDateTime : LocalDateTime // 유저의 생일 LocalDateTime
     private lateinit var userCalendar: List<Manseryeok> // 유저의 생일 -1년 ~ + 100년의 만세력 정보
     private lateinit var userBirthCalender: Manseryeok // 유저의 생일 당일의 만세력 정보
 
@@ -76,16 +83,23 @@ class CalendarActivity : ParentActivity() {
         setContentView(binding.root)
         setGanjiBoxDisplaySize()
 
+        val userId = intent.getLongExtra(Extras.INTENT_EXTRAS_USER_ID, -1L)
+        userModel = loadUserModel(userId)
+
+
         toolbarSetting()
         showProgress(this@CalendarActivity, "잠시만 기다려주세요")
 
-        loadUserModel()
+
 
         // 프로그래스바를 띄우기 위해 1초 딜레이
         Handler().postDelayed({
-            currentTime = System.currentTimeMillis()
-
             initLoadDB()
+
+            userBirthLocalDateTime = userModel.getBirthCalculatedLocalDateTime()
+            calendarService = CalendarService(this@CalendarActivity, userBirthLocalDateTime, isTimeInclude)
+
+            calendarService.calcGanji()
 
             setUserBirth()
             setUpPillar() // 기둥 세우기
@@ -104,7 +118,6 @@ class CalendarActivity : ParentActivity() {
             setSinsalVisibility() // 신살 확장 여부
             setBirthDisplayOrder() // 생일 표시 순서
 
-            currentTime = System.currentTimeMillis()
 
             hideProgress()
 
@@ -172,15 +185,23 @@ class CalendarActivity : ParentActivity() {
         }
     }
 
-    private fun loadUserModel() {
-        val userId = intent.getLongExtra(Extras.INTENT_EXTRAS_USER_ID, -1L)
+    private fun loadUserModel(userId:Long): User {
+        var loadedUserModel: User? = null
 
         runBlocking {
             launch(IO) {
                 val userDao = AppDatabase.getInstance(applicationContext).userDao()
                 userModel = userDao.getUser(userId)
+                loadedUserModel = userDao.getUser(userId)
             }
         }
+
+        if (loadedUserModel == null) {
+            Toast.makeText(this, "유저 정보를 불러오는데 실패했습니다.", Toast.LENGTH_SHORT).show()
+            finish()
+        }
+
+        return loadedUserModel!!
     }
 
     private fun setUpMemo() {
@@ -205,7 +226,7 @@ class CalendarActivity : ParentActivity() {
         // 생년 기준
         month.addAll(
             Sinsal.getYearBottom(
-                userBirth[Calendar.YEAR],
+                userBirthCalendar[Calendar.YEAR],
                 userModel.gender,
                 yearPillar[1],
                 monthPillar[1]
@@ -213,7 +234,7 @@ class CalendarActivity : ParentActivity() {
         )
         day.addAll(
             Sinsal.getYearBottom(
-                userBirth[Calendar.YEAR],
+                userBirthCalendar[Calendar.YEAR],
                 userModel.gender,
                 yearPillar[1],
                 dayPillar[1]
@@ -221,7 +242,7 @@ class CalendarActivity : ParentActivity() {
         )
         time.addAll(
             Sinsal.getYearBottom(
-                userBirth[Calendar.YEAR],
+                userBirthCalendar[Calendar.YEAR],
                 userModel.gender,
                 yearPillar[1],
                 timePillar[1]
@@ -265,8 +286,8 @@ class CalendarActivity : ParentActivity() {
          */
         var sendContent = "${userModel.firstName}${userModel.lastName}\n" +
                 "${
-                    if (isTimeInclude) Utils.dateTimeKorFormat.format(userBirth.timeInMillis) else Utils.dateKorFormat.format(
-                        userBirth.timeInMillis
+                    if (isTimeInclude) Utils.dateTimeKorFormat.format(userBirthCalendar.timeInMillis) else Utils.dateKorFormat.format(
+                        userBirthCalendar.timeInMillis
                     )
                 }\n" + "\n"
 
@@ -292,18 +313,18 @@ class CalendarActivity : ParentActivity() {
         binding.run {
 
             userBirthCalender = userCalendar.find {
-                it.cd_sy == userBirth[Calendar.YEAR] &&
-                        it.cd_sm == userBirth[Calendar.MONTH] + 1 &&
-                        it.cd_sd == userBirth[Calendar.DAY_OF_MONTH]
+                it.cd_sy == userBirthCalendar[Calendar.YEAR] &&
+                        it.cd_sm == userBirthCalendar[Calendar.MONTH] + 1 &&
+                        it.cd_sd == userBirthCalendar[Calendar.DAY_OF_MONTH]
             }!!
 
             // 正 생일
-            tvCal5.text = "${Utils.dateKorFormat.format(userBirth.timeInMillis)}"
+            tvCal5.text = "${Utils.dateKorFormat.format(userBirthCalendar.timeInMillis)}"
 
-            yearPillar = userBirthCalender.cd_hyganjee!!
-            monthPillar = userBirthCalender.cd_hmganjee!!
-            dayPillar = userBirthCalender.cd_hdganjee!!
-            timePillar = Utils.getTimeGanji(dayPillar[0], userBirth[Calendar.HOUR_OF_DAY])
+            yearPillar = calendarService.yearHanjaGanji
+            monthPillar = calendarService.monthHanjaGanji
+            dayPillar = calendarService.dayHanjaGanji
+            timePillar = calendarService.timeHanjaGanji
 
 
             if (userBirthCalender.cd_hterms != "NULL" && isTimeInclude) {
@@ -317,7 +338,7 @@ class CalendarActivity : ParentActivity() {
                     this[Calendar.MINUTE] = seasonTimeString.substring(10, 12).toInt()
                 }
 
-                if (userBirth.timeInMillis < seasonCalendar.timeInMillis) {
+                if (userBirthCalendar.timeInMillis < seasonCalendar.timeInMillis) {
                     val targetDay = userCalendar.indexOf(userBirthCalender)
                     yearPillar = userCalendar[targetDay - 1].cd_hyganjee!!
                     monthPillar = userCalendar[targetDay - 1].cd_hmganjee!!
@@ -327,7 +348,7 @@ class CalendarActivity : ParentActivity() {
             // 년주
             tvPillarYearTop.text = yearPillar[0].toString()
             tvPillarYearBottom.text = yearPillar[1].toString()
-            when (Utils.tenGan[0].indexOf(yearPillar[0].toString())) {
+            when (Utils.sibgan[0].indexOf(yearPillar[0].toString())) {
                 0, 1 -> tvPillarYearTop.setBackgroundResource(R.drawable.box_mint) // 목
                 2, 3 -> tvPillarYearTop.setBackgroundResource(R.drawable.box_red) // 화
                 4, 5 -> tvPillarYearTop.setBackgroundResource(R.drawable.box_yellow) // 토
@@ -335,7 +356,7 @@ class CalendarActivity : ParentActivity() {
                 8, 9 -> tvPillarYearTop.setBackgroundResource(R.drawable.box_sky) // 수
             }
 
-            when (Utils.twelveGan[0].indexOf(yearPillar[1].toString())) {
+            when (Utils.sibiji[0].indexOf(yearPillar[1].toString())) {
                 0, 11 -> tvPillarYearBottom.setBackgroundResource(R.drawable.box_sky) // 수
                 1, 4, 7, 10 -> tvPillarYearBottom.setBackgroundResource(R.drawable.box_yellow) // 토
                 2, 3 -> tvPillarYearBottom.setBackgroundResource(R.drawable.box_mint) // 목
@@ -347,7 +368,7 @@ class CalendarActivity : ParentActivity() {
             tvPillarMonthTop.text = monthPillar[0].toString()
             tvPillarMonthBottom.text = monthPillar[1].toString()
 
-            when (Utils.tenGan[0].indexOf(monthPillar[0].toString())) {
+            when (Utils.sibgan[0].indexOf(monthPillar[0].toString())) {
                 0, 1 -> tvPillarMonthTop.setBackgroundResource(R.drawable.box_mint) // 목
                 2, 3 -> tvPillarMonthTop.setBackgroundResource(R.drawable.box_red) // 화
                 4, 5 -> tvPillarMonthTop.setBackgroundResource(R.drawable.box_yellow) // 토
@@ -355,7 +376,7 @@ class CalendarActivity : ParentActivity() {
                 8, 9 -> tvPillarMonthTop.setBackgroundResource(R.drawable.box_sky) // 수
             }
 
-            when (Utils.twelveGan[0].indexOf(monthPillar[1].toString())) {
+            when (Utils.sibiji[0].indexOf(monthPillar[1].toString())) {
                 0, 11 -> tvPillarMonthBottom.setBackgroundResource(R.drawable.box_sky) // 수
                 1, 4, 7, 10 -> tvPillarMonthBottom.setBackgroundResource(R.drawable.box_yellow) // 토
                 2, 3 -> tvPillarMonthBottom.setBackgroundResource(R.drawable.box_mint) // 목
@@ -367,7 +388,7 @@ class CalendarActivity : ParentActivity() {
             tvPillarDayTop.text = dayPillar[0].toString()
             tvPillarDayBottom.text = dayPillar[1].toString()
 
-            when (Utils.tenGan[0].indexOf(dayPillar[0].toString())) {
+            when (Utils.sibgan[0].indexOf(dayPillar[0].toString())) {
                 0, 1 -> tvPillarDayTop.setBackgroundResource(R.drawable.box_mint) // 목
                 2, 3 -> tvPillarDayTop.setBackgroundResource(R.drawable.box_red) // 화
                 4, 5 -> tvPillarDayTop.setBackgroundResource(R.drawable.box_yellow) // 토
@@ -375,7 +396,7 @@ class CalendarActivity : ParentActivity() {
                 8, 9 -> tvPillarDayTop.setBackgroundResource(R.drawable.box_sky) // 수
             }
 
-            when (Utils.twelveGan[0].indexOf(dayPillar[1].toString())) {
+            when (Utils.sibiji[0].indexOf(dayPillar[1].toString())) {
                 0, 11 -> tvPillarDayBottom.setBackgroundResource(R.drawable.box_sky) // 수
                 1, 4, 7, 10 -> tvPillarDayBottom.setBackgroundResource(R.drawable.box_yellow) // 토
                 2, 3 -> tvPillarDayBottom.setBackgroundResource(R.drawable.box_mint) // 목
@@ -386,7 +407,7 @@ class CalendarActivity : ParentActivity() {
             // 시주
             if (isTimeInclude) {
                 // 시간 포함
-                timePillar = Utils.getTimeGanji(dayPillar[0], userBirth[Calendar.HOUR_OF_DAY])
+                timePillar = Utils.getTimeGanji(dayPillar[0], userBirthCalendar[Calendar.HOUR_OF_DAY])
                 tvPillarTimeTop.text = timePillar[0].toString()
                 tvPillarTimeBottom.text = timePillar[1].toString()
 
@@ -394,7 +415,7 @@ class CalendarActivity : ParentActivity() {
                 tvPillarTimeBottom.visibility = View.VISIBLE
 
 
-                when (Utils.tenGan[0].indexOf(timePillar[0].toString())) {
+                when (Utils.sibgan[0].indexOf(timePillar[0].toString())) {
                     0, 1 -> tvPillarTimeTop.setBackgroundResource(R.drawable.box_mint) // 목
                     2, 3 -> tvPillarTimeTop.setBackgroundResource(R.drawable.box_red) // 화
                     4, 5 -> tvPillarTimeTop.setBackgroundResource(R.drawable.box_yellow) // 토
@@ -402,7 +423,7 @@ class CalendarActivity : ParentActivity() {
                     8, 9 -> tvPillarTimeTop.setBackgroundResource(R.drawable.box_sky) // 수
                 }
 
-                when (Utils.twelveGan[0].indexOf(timePillar[1].toString())) {
+                when (Utils.sibiji[0].indexOf(timePillar[1].toString())) {
                     0, 11 -> tvPillarTimeBottom.setBackgroundResource(R.drawable.box_sky) // 수
                     1, 4, 7, 10 -> tvPillarTimeBottom.setBackgroundResource(R.drawable.box_yellow) // 토
                     2, 3 -> tvPillarTimeBottom.setBackgroundResource(R.drawable.box_mint) // 목
@@ -555,12 +576,12 @@ class CalendarActivity : ParentActivity() {
     private fun setUserBirth() {
         binding.run {
             tvCalSun.text = Utils.dateKorFormat.format(userModel.getBirthOrigin().timeInMillis)
-            tvCalMoon.text = Utils.dateKorFormat.format(Utils.convertSolarToLunar(userBirth))
+            tvCalMoon.text = Utils.dateKorFormat.format(Utils.convertSolarToLunar(userBirthCalendar))
         }
     }
 
     private fun initLoadDB() {
-        userBirth = userModel.getBirthCalculated()
+        userBirthCalendar = userModel.getBirthCalculated()
         isTimeInclude = userModel.includeTime
 
         val mDBHelper = ManseryeokSQLHelper(applicationContext)
@@ -568,8 +589,7 @@ class CalendarActivity : ParentActivity() {
         mDBHelper.open()
 
         // 유저의 생일 - 1년 부터 + 100년까지의 정보
-        userCalendar =
-            mDBHelper.getTableData(userBirth[Calendar.YEAR] - 1, userBirth[Calendar.YEAR] + 100)!!
+        userCalendar = mDBHelper.getTableData(userBirthCalendar[Calendar.YEAR] - 1, userBirthCalendar[Calendar.YEAR] + 100)!!
 
         mDBHelper.close()
     }
@@ -629,7 +649,7 @@ class CalendarActivity : ParentActivity() {
 
             repeat(12) {
                 val age = it * 10 + firstAge
-                val year = userBirth[Calendar.YEAR] + age - 1
+                val year = userBirthCalendar[Calendar.YEAR] + age - 1
 
                 if (direction == 1) {
                     topPtr++
@@ -682,10 +702,10 @@ class CalendarActivity : ParentActivity() {
             rvMonthPillar.adapter = monthAdapter
 
             for (i in 0..150) {
-                val yGanji = Utils.getYearGanji(userBirth[Calendar.YEAR] + i)
+                val yGanji = Utils.getYearGanji(userBirthCalendar[Calendar.YEAR] + i)
                 yearItems.add(
                     SixtyHorizontalItem(
-                        userBirth[Calendar.YEAR] + i,
+                        userBirthCalendar[Calendar.YEAR] + i,
                         yGanji[0].toString(),
                         yGanji[1].toString()
                     )
@@ -707,7 +727,7 @@ class CalendarActivity : ParentActivity() {
                 }
 
             val today = Calendar.getInstance()
-            var initialPos = today[Calendar.YEAR] - userBirth[Calendar.YEAR]
+            var initialPos = today[Calendar.YEAR] - userBirthCalendar[Calendar.YEAR]
             if (initialPos !in 0..100) initialPos = 0
 
             yearAdapter.selectedItemPos = initialPos
@@ -718,8 +738,8 @@ class CalendarActivity : ParentActivity() {
 
 
             var initialYear = today[Calendar.YEAR]
-            if (initialYear !in userBirth[Calendar.YEAR]..userBirth[Calendar.YEAR] + 100)
-                initialYear = userBirth[Calendar.YEAR]
+            if (initialYear !in userBirthCalendar[Calendar.YEAR]..userBirthCalendar[Calendar.YEAR] + 100)
+                initialYear = userBirthCalendar[Calendar.YEAR]
 
             setUpMonthPillar(yearPillar[0])
         }

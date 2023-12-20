@@ -6,33 +6,35 @@ import android.database.SQLException
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
 import com.example.manseryeok.models.Manseryeok
+import com.example.manseryeok.models.Season
 import java.io.IOException
+import java.time.LocalDateTime
 
 
-class ManseryeokSQLHelper(val context: Context) {
-    val TAG = "ManseryeokSQLAdapter"
-    val TABLE_NAME = "manseryeok"
-    var mDB: SQLiteDatabase? = null
-    var mDBHelper: ManseryeokDBHelper? = null
+class Season24SQLHelper(val context: Context) {
+    private val TAG = "Season24SQLHelper"
+    private val TABLE_NAME = "SEASON"
+    private var dbHelper: Season24DBHelper? = null
+    private var db: SQLiteDatabase? = null
 
     init {
-        mDBHelper = ManseryeokDBHelper(context)
+        dbHelper = Season24DBHelper(context)
     }
 
-    fun createDataBase(): ManseryeokSQLHelper {
+    fun createDataBase(): Season24SQLHelper {
         try {
-            mDBHelper?.createDataBase()
+            dbHelper?.createDataBase()
         } catch (e: IOException) {
             Log.d(TAG, e.message!!)
         }
         return this
     }
 
-    fun open(): ManseryeokSQLHelper {
+    fun open(): Season24SQLHelper {
         try {
-            mDBHelper?.openDataBase()
-            mDBHelper?.close()
-            mDB = mDBHelper?.readableDatabase
+            dbHelper?.openDataBase()
+            dbHelper?.close()
+            db = dbHelper?.readableDatabase
         } catch (e: IOException) {
             Log.d(TAG, e.message!!)
         }
@@ -40,20 +42,95 @@ class ManseryeokSQLHelper(val context: Context) {
     }
 
     fun close() {
-        mDBHelper?.close()
+        dbHelper?.close()
     }
+
+    fun sqlTest() {
+        Log.d(TAG, "sqlTest: point1")
+        try {
+            val sql = "SELECT * FROM $TABLE_NAME"
+            Log.d(TAG, "sqlTest: ${db!!.isOpen}")
+
+            val cur: Cursor = db!!.rawQuery(sql, null)
+            Log.d(TAG, "sqlTest: sdfdfgdsfghsfdgh")
+            Log.d(TAG, "sqlTest: ${cur.count}")
+
+            while (cur.moveToNext()) {
+                Log.d(TAG, "sqlTest: ${cur.getString(0)} ${cur.getString(1)} ${cur.getString(2)}")
+            }
+
+        } catch (mSQLException: SQLException) {
+            Log.e(TAG, "getTestData >>$mSQLException")
+            throw mSQLException
+        }
+    }
+
+    // 입춘을 넘겼는가
+    fun isReachSpring(date: LocalDateTime): Boolean {
+        try {
+            // 2월의 첫 번째 시즌이 입춘
+            val sql =
+                "SELECT * FROM $TABLE_NAME WHERE YEAR = ${date.year} AND MONTH = 2 ORDER BY DAY ASC LIMIT 1;"
+
+            val cur: Cursor = db!!.rawQuery(sql, null)
+            if (cur != null) {
+                while (cur.moveToNext()) {
+                    val year = cur.getInt(1)
+                    val month = cur.getInt(2)
+                    val day = cur.getInt(3)
+                    val hour = cur.getInt(4)
+                    val minute = cur.getInt(5)
+
+                    val springDate = LocalDateTime.of(year, month, day, hour, minute,0)
+                    return date.isAfter(springDate)
+                }
+            }
+        } catch (mSQLException: SQLException) {
+            Log.e(TAG, "getTestData >>$mSQLException")
+            throw mSQLException
+        }
+        return false
+    }
+
+    // 해당 월을 넘겼는가
+    fun isReachMonth(date: LocalDateTime): Boolean {
+        try {
+            val sql =
+                "SELECT * FROM $TABLE_NAME WHERE YEAR = ${date.year} AND MONTH = ${date.monthValue} ORDER BY DAY ASC LIMIT 1;"
+
+            val cur: Cursor = db!!.rawQuery(sql, null)
+            if (cur != null) {
+                while (cur.moveToNext()) {
+                    val year = cur.getInt(1)
+                    val month = cur.getInt(2)
+                    val day = cur.getInt(3)
+                    val hour = cur.getInt(4)
+                    val minute = cur.getInt(5)
+
+                    val monthDate = LocalDateTime.of(year, month, day, hour, minute,0)
+                    return date.isAfter(monthDate)
+                }
+            }
+        } catch (mSQLException: SQLException) {
+            Log.e(TAG, "getTestData >>$mSQLException")
+            throw mSQLException
+        }
+        return false
+    }
+
 
     fun getDayData(year: Int, month: Int, day: Int): Manseryeok {
         try {
             // Table 이름
-            val sql = "SELECT * FROM $TABLE_NAME WHERE cd_sy = $year AND cd_sm = $month AND cd_sd = $day;"
+            val sql =
+                "SELECT * FROM $TABLE_NAME WHERE cd_sy = $year AND cd_sm = $month AND cd_sd = $day;"
 
             // 모델 넣을 리스트 생성
             val manList = ArrayList<Manseryeok>()
 
             // TODO : 모델 선언
             var manseryeokModel: Manseryeok? = null
-            val mCur: Cursor = mDB!!.rawQuery(sql, null)
+            val mCur: Cursor = db!!.rawQuery(sql, null)
             if (mCur != null) {
                 // 칼럼의 마지막까지
                 while (mCur.moveToNext()) {
@@ -142,7 +219,7 @@ class ManseryeokSQLHelper(val context: Context) {
 
             // TODO : 모델 선언
             var manseryeokModel: Manseryeok? = null
-            val mCur: Cursor = mDB!!.rawQuery(sql, null)
+            val mCur: Cursor = db!!.rawQuery(sql, null)
             if (mCur != null) {
                 // 칼럼의 마지막까지
                 while (mCur.moveToNext()) {

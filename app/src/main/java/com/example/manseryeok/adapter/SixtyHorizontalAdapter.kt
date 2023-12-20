@@ -55,7 +55,7 @@ class SixtyHorizontalAdapter(
 //            "수", "토", "목", "목", "토", "화", "화", "토", "금", "금", "토", "수"
 
 
-            when(Utils.tenGan[0].indexOf(item.top)) {
+            when(Utils.sibgan[0].indexOf(item.top)) {
                 0, 1 -> tvItemSixtyTop.setBackgroundResource(R.drawable.box_mint) // 목
                 2, 3 -> tvItemSixtyTop.setBackgroundResource(R.drawable.box_red) // 화
                 4, 5 -> tvItemSixtyTop.setBackgroundResource(R.drawable.box_yellow) // 토
@@ -63,7 +63,7 @@ class SixtyHorizontalAdapter(
                 8, 9 -> tvItemSixtyTop.setBackgroundResource(R.drawable.box_sky) // 수
             }
 
-            when(Utils.twelveGan[0].indexOf(item.bottom)) {
+            when(Utils.sibiji[0].indexOf(item.bottom)) {
                 0, 11 -> tvItemSixtyBottom.setBackgroundResource(R.drawable.box_sky) // 수
                 1, 4, 7, 10 -> tvItemSixtyBottom.setBackgroundResource(R.drawable.box_yellow) // 토
                 2, 3 -> tvItemSixtyBottom.setBackgroundResource(R.drawable.box_mint) // 목

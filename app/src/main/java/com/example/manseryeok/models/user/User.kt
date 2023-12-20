@@ -3,6 +3,7 @@ package com.example.manseryeok.models.user
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.manseryeok.models.UserInputViewModel
+import java.time.LocalDateTime
 import java.util.Calendar
 
 @Entity
@@ -39,6 +40,23 @@ data class User(
             set(Calendar.HOUR_OF_DAY, birthHour)
             set(Calendar.MINUTE, birthMinute)
         }
+    }
+
+    fun getBirthCalculatedLocalDateTime() :LocalDateTime {
+        var userBirth = LocalDateTime.of(birthYear, birthMonth, birthDay, 0, 0, 0)
+        if(!includeTime) {
+            userBirth = userBirth.withHour(23)
+            userBirth = userBirth.withMinute(59)
+            return userBirth
+        }
+
+        userBirth = userBirth.withHour(birthHour)
+        userBirth = userBirth.withMinute(birthMinute)
+
+        if(useSummerTime == 1) userBirth = userBirth.plusHours(1)
+        if(useTokyoTime == 1) userBirth = userBirth.plusMinutes(30)
+
+        return userBirth
     }
 
     fun getBirthCalculated(): Calendar {
