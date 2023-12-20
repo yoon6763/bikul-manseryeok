@@ -16,11 +16,13 @@ import com.example.manseryeok.models.AppDatabase
 import com.example.manseryeok.page.calendarname.CalendarActivity
 import com.example.manseryeok.page.calendarname.CalendarInputActivity
 import com.example.manseryeok.page.calendarname.NameActivity
+import com.example.manseryeok.service.calendar.CalendarService
 import com.example.manseryeok.utils.Extras
 import com.example.manseryeok.utils.ParentActivity
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import java.time.LocalDateTime
 
 class UserDBActivity : ParentActivity() {
     private val binding by lazy { ActivityDbactivityBinding.inflate(layoutInflater) }
@@ -30,10 +32,13 @@ class UserDBActivity : ParentActivity() {
     private val userTagDAO by lazy { AppDatabase.getInstance(applicationContext).userTagDAO() }
     private val groupRvItems = ArrayList<GroupRVItem>()
     private lateinit var groupListAdapter: GroupListAdapter
+    private lateinit var calendarService: CalendarService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        calendarService = CalendarService(this, LocalDateTime.now(), false)
 
         toolbarSetting()
     }
@@ -100,7 +105,7 @@ class UserDBActivity : ParentActivity() {
         }
 
         binding.run {
-            groupListAdapter = GroupListAdapter(this@UserDBActivity, groupRvItems.toList())
+            groupListAdapter = GroupListAdapter(this@UserDBActivity, groupRvItems.toList(), calendarService)
             rvDbList.addItemDecoration(RecyclerViewDecorator(30, Color.parseColor("#d9d9d9")))
             groupListAdapter.notifyDataSetChanged()
             rvDbList.adapter = groupListAdapter

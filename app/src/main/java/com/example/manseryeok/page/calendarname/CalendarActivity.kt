@@ -67,15 +67,13 @@ class CalendarActivity : ParentActivity() {
     private lateinit var monthAdapter: SixtyHorizontalSmallAdapter
     private lateinit var userModel: User // 유저의 정보 DTO
     private lateinit var userBirthCalendar: Calendar // 유저의 생일 Calendar
-    private lateinit var userBirthLocalDateTime : LocalDateTime // 유저의 생일 LocalDateTime
+    private lateinit var userBirthLocalDateTime: LocalDateTime // 유저의 생일 LocalDateTime
     private lateinit var userCalendar: List<Manseryeok> // 유저의 생일 -1년 ~ + 100년의 만세력 정보
     private lateinit var userBirthCalender: Manseryeok // 유저의 생일 당일의 만세력 정보
 
     private val TAG = "CalendarActivity"
 
     private val userDao by lazy { AppDatabase.getInstance(applicationContext).userDao() }
-    private var currentTime = 0L
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,18 +83,20 @@ class CalendarActivity : ParentActivity() {
         val userId = intent.getLongExtra(Extras.INTENT_EXTRAS_USER_ID, -1L)
         userModel = loadUserModel(userId)
 
-
         toolbarSetting()
         showProgress(this@CalendarActivity, "잠시만 기다려주세요")
-
-
 
         // 프로그래스바를 띄우기 위해 1초 딜레이
         Handler().postDelayed({
             initLoadDB()
 
             userBirthLocalDateTime = userModel.getBirthCalculatedLocalDateTime()
-            calendarService = CalendarService(this@CalendarActivity, userBirthLocalDateTime, isTimeInclude)
+
+            calendarService = CalendarService(
+                this@CalendarActivity,
+                userBirthLocalDateTime,
+                isTimeInclude
+            )
 
             calendarService.calcGanji()
 
@@ -116,7 +116,6 @@ class CalendarActivity : ParentActivity() {
             setUpMemo()
             setSinsalVisibility() // 신살 확장 여부
             setBirthDisplayOrder() // 생일 표시 순서
-
 
             hideProgress()
 
@@ -184,7 +183,7 @@ class CalendarActivity : ParentActivity() {
         }
     }
 
-    private fun loadUserModel(userId:Long): User {
+    private fun loadUserModel(userId: Long): User {
         var loadedUserModel: User? = null
 
         runBlocking {
@@ -389,7 +388,6 @@ class CalendarActivity : ParentActivity() {
             // 시주
             if (isTimeInclude) {
                 // 시간 포함
-                timePillar = Utils.getTimeGanji(dayPillar[0], userBirthCalendar[Calendar.HOUR_OF_DAY])
                 tvPillarTimeTop.text = timePillar[0].toString()
                 tvPillarTimeBottom.text = timePillar[1].toString()
 
@@ -555,11 +553,9 @@ class CalendarActivity : ParentActivity() {
         }
     }
 
-    private fun setUserBirth() {
-        binding.run {
-            tvCalSun.text = Utils.dateKorFormat.format(userModel.getBirthOrigin().timeInMillis)
-            tvCalMoon.text = Utils.dateKorFormat.format(Utils.convertSolarToLunar(userBirthCalendar))
-        }
+    private fun setUserBirth() = with(binding) {
+        tvCalSun.text = Utils.dateKorFormat.format(userModel.getBirthOrigin().timeInMillis)
+        tvCalMoon.text = Utils.dateKorFormat.format(Utils.convertSolarToLunar(userBirthCalendar))
     }
 
     private fun initLoadDB() {
@@ -571,7 +567,10 @@ class CalendarActivity : ParentActivity() {
         mDBHelper.open()
 
         // 유저의 생일 - 1년 부터 + 100년까지의 정보
-        userCalendar = mDBHelper.getTableData(userBirthCalendar[Calendar.YEAR] - 1, userBirthCalendar[Calendar.YEAR] + 100)!!
+        userCalendar = mDBHelper.getTableData(
+            userBirthCalendar[Calendar.YEAR] - 1,
+            userBirthCalendar[Calendar.YEAR] + 100
+        )!!
 
         mDBHelper.close()
     }

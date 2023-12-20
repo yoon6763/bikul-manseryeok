@@ -9,8 +9,8 @@ import java.time.LocalDateTime
 // 시간은 있을 수도 있고 없을 수도 있음. 이 경우 23:59로 설정
 class CalendarService(
     private val context: Context,
-    private val userBirth: LocalDateTime,
-    private val isTimeInclude: Boolean
+    var userBirth: LocalDateTime,
+    var isTimeInclude: Boolean
 ) {
     private val TAG = "CalendarService"
 

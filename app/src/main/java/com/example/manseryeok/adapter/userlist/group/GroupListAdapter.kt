@@ -13,10 +13,12 @@ import com.example.manseryeok.adapter.userlist.OnUserMenuClickListener
 import com.example.manseryeok.adapter.userlist.UserListAdapter
 import com.example.manseryeok.adapter.userlist.item.GroupRVItem
 import com.example.manseryeok.databinding.ItemGroupBinding
+import com.example.manseryeok.service.calendar.CalendarService
 
 class GroupListAdapter(
     private val context: Context,
-    private val groupList: List<GroupRVItem>
+    private val groupList: List<GroupRVItem>,
+    private val calenderService: CalendarService
 ) :
     RecyclerView.Adapter<GroupListAdapter.Holder>() {
     private var selectedItems: SparseBooleanArray = SparseBooleanArray()
@@ -25,7 +27,7 @@ class GroupListAdapter(
 
     init {
         for (group in groupList) {
-            userListAdapters.add(UserListAdapter(context, group.userRVItemList))
+            userListAdapters.add(UserListAdapter(context, group.userRVItemList, calenderService))
         }
     }
 

@@ -15,6 +15,7 @@ import com.example.manseryeok.R
 import com.example.manseryeok.adapter.userlist.item.UserRVItem
 import com.example.manseryeok.utils.Utils
 import com.example.manseryeok.databinding.ItemDbListBinding
+import com.example.manseryeok.service.calendar.CalendarService
 import java.lang.StringBuilder
 import java.util.Calendar
 
@@ -22,6 +23,7 @@ import java.util.Calendar
 class UserListAdapter(
     private val context: Context,
     private val items: List<UserRVItem>,
+    private val calendarService: CalendarService
 ) :
     RecyclerView.Adapter<UserListAdapter.Holder>() {
     private var selectedItems: SparseBooleanArray = SparseBooleanArray()
@@ -44,17 +46,20 @@ class UserListAdapter(
         holder.binding.run {
             val user = items[position].user
             val birth = user.getBirthCalculated()
-            val manseryeok = items[position].manseryeok
 
+            calendarService.userBirth = user.getBirthCalculatedLocalDateTime()
+            calendarService.isTimeInclude = user.includeTime
+            calendarService.calcGanji()
+
+            val yearGanji = calendarService.yearHanjaGanji
+            val monthGanji = calendarService.monthHanjaGanji
+            val dayGanji = calendarService.dayHanjaGanji
             var hourGanji = ""
-            val yearGanji = manseryeok.cd_hyganjee!!
-            val monthGanji = manseryeok.cd_hmganjee!!
-            val dayGanji = manseryeok.cd_hdganjee!!
 
             val ganji = StringBuilder()
 
             if (user.includeTime) {
-                hourGanji = Utils.getTimeGanji(dayGanji[0], birth[Calendar.HOUR_OF_DAY])
+                hourGanji = calendarService.timeHanjaGanji
                 ganji.append(hourGanji[0])
             }
 

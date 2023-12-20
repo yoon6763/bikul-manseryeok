@@ -9,9 +9,7 @@ import com.example.manseryeok.models.name.NameScoreItem
 import com.example.manseryeok.models.user.User
 import com.example.manseryeok.utils.Utils
 
-class NameService(
-    val context: Context, var name: String, private val userModel: User
-) {
+class NameService(val context: Context, var name: String, private val userModel: User) {
     private val userManseryeok by lazy {
         importCalendar(
             userModel.birthYear,

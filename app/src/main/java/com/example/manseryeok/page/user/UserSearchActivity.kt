@@ -13,12 +13,14 @@ import com.example.manseryeok.models.user.User
 import com.example.manseryeok.page.calendarname.CalendarActivity
 import com.example.manseryeok.page.calendarname.CalendarInputActivity
 import com.example.manseryeok.page.calendarname.NameActivity
+import com.example.manseryeok.service.calendar.CalendarService
 import com.example.manseryeok.utils.Extras
 import com.example.manseryeok.utils.ParentActivity
 import com.example.manseryeok.utils.Utils
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import java.time.LocalDateTime
 
 class UserSearchActivity : ParentActivity() {
 
@@ -42,7 +44,9 @@ class UserSearchActivity : ParentActivity() {
                 userSearch(it.toString())
             }
 
-            userListAdapter = UserListAdapter(this@UserSearchActivity, userRvItems)
+            val calenderService = CalendarService(this@UserSearchActivity, LocalDateTime.now(), false)
+
+            userListAdapter = UserListAdapter(this@UserSearchActivity, userRvItems, calenderService)
             rvSearchList.adapter = userListAdapter
 
             userListAdapter.useKeywordHighlight = true
