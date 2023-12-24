@@ -110,6 +110,12 @@ class NameActivity : ParentActivity() {
             searchDate.dayOfMonth
         )
 
+        val dayGanji = nameService.calcDayGanji(
+            searchDate.year,
+            searchDate.monthValue,
+            searchDate.dayOfMonth
+        )
+
         content.appendLine("년 간지 정보\n")
         yearGanji.forEach {
             content.appendLine("${it.name}")
@@ -123,6 +129,17 @@ class NameActivity : ParentActivity() {
 
         content.appendLine("\n\n\n월 간지 정보\n")
         monthGanji.forEach {
+            content.appendLine("${it.name}")
+
+            it.nameScoreChildItems.forEach { childItem ->
+                content.appendLine("${childItem.ganjiTop} ${childItem.nameHan} ${childItem.ganjiBottom}")
+            }
+
+            content.appendLine()
+        }
+
+        content.appendLine("\n\n\n일 간지 정보\n")
+        dayGanji.forEach {
             content.appendLine("${it.name}")
 
             it.nameScoreChildItems.forEach { childItem ->
