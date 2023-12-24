@@ -1,23 +1,20 @@
 package com.example.manseryeok.page.calendarname
 
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
-import com.example.manseryeok.manseryeokdb.ManseryeokSQLHelper
 import com.example.manseryeok.adapter.NameScoreAdapter
 import com.example.manseryeok.databinding.ActivityNameBinding
 import com.example.manseryeok.models.AppDatabase
 import com.example.manseryeok.models.name.NameScoreItem
 import com.example.manseryeok.models.user.User
-import com.example.manseryeok.page.calendarname.popup.NumberPickerDialog
 import com.example.manseryeok.service.calendar.CalendarService
 import com.example.manseryeok.service.name.NameService
 import com.example.manseryeok.utils.Extras
 import com.example.manseryeok.utils.ParentActivity
-import com.example.manseryeok.utils.Utils
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -33,17 +30,16 @@ class NameActivity : ParentActivity() {
     private val userDao by lazy { AppDatabase.getInstance(applicationContext).userDao() }
 
     private var searchDate = LocalDate.now()
-    private lateinit var userBirth : LocalDateTime
 
     private val nameItems = ArrayList<NameScoreItem>()
     private val nameAdapter by lazy { NameScoreAdapter(this@NameActivity, nameItems) }
 
     private var name = ""
-
+    private lateinit var userBirth: LocalDateTime
     private lateinit var nameService: NameService
 
-    private lateinit var userCalendarService : CalendarService
-    private lateinit var luckyCalendarService : CalendarService
+    private lateinit var userCalendarService: CalendarService
+    private lateinit var luckyCalendarService: CalendarService
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,16 +48,14 @@ class NameActivity : ParentActivity() {
 
         commonSetting()
         loadUserModel()
-
         nameService = NameService(this, name, userModel)
         userBirth = userModel.getBirthCalculatedLocalDateTime()
-        userCalendarService = CalendarService(this@NameActivity, userBirth, userModel.includeTime)
-        luckyCalendarService = CalendarService(this@NameActivity, LocalDateTime.now(), userModel.includeTime)
+        luckyCalendarService = CalendarService(this@NameActivity, LocalDateTime.now(), false)
 
         binding.run {
             rvNameScore.adapter = nameAdapter
 
-            setUpYearMonthRadioButton()
+            setUpRadioButtonClickEvent()
 
             btnGotoManseryeok.setOnClickListener {
                 val intent = Intent(this@NameActivity, CalendarActivity::class.java)
@@ -74,14 +68,39 @@ class NameActivity : ParentActivity() {
             btnShare.setOnClickListener { shareNameResult() }
         }
 
-        setYearAndMonthPicker()
+        setUpNumberPickerEvent()
+        updatePage()
+    }
+
+    private fun updatePage(){
+        updateBirthLabel()
+        updateGanji()
+    }
+
+    private fun updateBirthLabel() = with(binding) {
+        val dateContent = StringBuilder()
+        dateContent.append("${searchDate.year}년  ")
+        var monthLabel = searchDate.monthValue.toString()
+        if (searchDate.monthValue < 10) {
+            monthLabel = "0$monthLabel"
+        }
+
+        dateContent.append("${monthLabel}월  ")
+
+        var dayLabel = searchDate.dayOfMonth.toString()
+        if (searchDate.dayOfMonth < 10) {
+            dayLabel = "0$dayLabel"
+        }
+
+        dateContent.append("${dayLabel}일")
+
+        etCalender.setText(dateContent.toString())
     }
 
     private fun shareNameResult() {
         val content = StringBuilder()
         content.appendLine("${name}님의 이름풀이 결과입니다.\n")
         content.appendLine("기준년월: ${searchDate.year}년 ${searchDate.monthValue}월\n")
-
 
         val yearGanji =
             nameService.calcYearGanji(searchDate.year, searchDate.monthValue, searchDate.dayOfMonth)
@@ -113,81 +132,31 @@ class NameActivity : ParentActivity() {
             content.appendLine()
         }
 
-
         val shareIntent = Intent(Intent.ACTION_SEND)
         shareIntent.type = "text/plain"
         shareIntent.putExtra(Intent.EXTRA_TEXT, content.toString())
         startActivity(Intent.createChooser(shareIntent, "이름풀이 결과 공유하기"))
     }
 
-    private fun setUpYearMonthRadioButton() = with(binding) {
+    private fun setUpRadioButtonClickEvent() = with(binding) {
         rgBirthType.setOnCheckedChangeListener { _, _ ->
-            setUpGanji()
+            updatePage()
         }
 
         rgBirthType.check(rbYear.id)
     }
 
+    private fun setUpNumberPickerEvent() = with(binding) {
+        etCalender.setOnClickListener {
 
-    private fun setYearAndMonthPicker() = with(binding) {
-        etYear.setOnClickListener {
-            val yearPickerDialog = NumberPickerDialog(this@NameActivity)
-            yearPickerDialog.maxValue = 2100
-            yearPickerDialog.minValue = 1900
-            yearPickerDialog.initialValue = searchDate.year
-            yearPickerDialog.onConfirmListener = object : NumberPickerDialog.OnConfirmListener {
-                override fun onConfirm(number: Int) {
-                    searchDate = searchDate.withYear(number)
-                    setUpGanji()
-                    etYear.setText(number.toString())
-                }
-            }
+            val dialog = DatePickerDialog(this@NameActivity, DatePickerDialog.THEME_HOLO_LIGHT,
+                DatePickerDialog.OnDateSetListener { datePicker, year, month, day ->
+                    searchDate = LocalDate.of(year, month + 1, day)
+                    updatePage()
+                }, searchDate.year, searchDate.monthValue - 1, searchDate.dayOfMonth
+            )
 
-            yearPickerDialog.show()
-        }
-
-        etMonth.setOnClickListener {
-            val monthPickerDialog = NumberPickerDialog(this@NameActivity)
-            monthPickerDialog.maxValue = 12
-            monthPickerDialog.minValue = 1
-            monthPickerDialog.initialValue = searchDate.monthValue
-            monthPickerDialog.onConfirmListener = object : NumberPickerDialog.OnConfirmListener {
-                override fun onConfirm(number: Int) {
-                    searchDate = searchDate.withMonth(number)
-                    setUpGanji()
-
-                    if (number < 10) {
-                        etMonth.setText("0$number")
-                        return
-                    }
-                    etMonth.setText(number.toString())
-                }
-            }
-
-            monthPickerDialog.show()
-        }
-
-        val maxDayOfEachMonth = arrayOf(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
-
-        etDay.setOnClickListener {
-            val dayPickerDialog = NumberPickerDialog(this@NameActivity)
-            dayPickerDialog.maxValue = maxDayOfEachMonth[searchDate.monthValue - 1]
-            dayPickerDialog.minValue = 1
-            dayPickerDialog.initialValue = searchDate.dayOfMonth
-            dayPickerDialog.onConfirmListener = object : NumberPickerDialog.OnConfirmListener {
-                override fun onConfirm(number: Int) {
-                    searchDate = searchDate.withDayOfMonth(number)
-                    setUpGanji()
-
-                    if (number < 10) {
-                        etDay.setText("0$number")
-                        return
-                    }
-                    etDay.setText(number.toString())
-                }
-            }
-
-            dayPickerDialog.show()
+            dialog.show()
         }
     }
 
@@ -199,15 +168,8 @@ class NameActivity : ParentActivity() {
                 userModel = userDao.getUser(userId)
                 name = userModel.firstName + userModel.lastName
 
-                searchDate =
-                    LocalDate.of(userModel.birthYear, userModel.birthMonth, userModel.birthDay)
-
-                binding.etYear.setText(userModel.birthYear.toString())
-                var monthLabel = userModel.birthMonth.toString()
-                if (userModel.birthMonth < 10) {
-                    monthLabel = "0$monthLabel"
-                }
-                binding.etMonth.setText(monthLabel)
+                userBirth = userModel.getBirthCalculatedLocalDateTime()
+                userCalendarService = CalendarService(this@NameActivity, userBirth, userModel.includeTime)
             }
         }
     }
@@ -232,7 +194,7 @@ class NameActivity : ParentActivity() {
         }
     }
 
-    private fun setUpGanji() = with(binding) {
+    private fun updateGanji() = with(binding) {
         val type = when (rgBirthType.checkedRadioButtonId) {
             rbYear.id -> NameService.YEAR
             rbMonth.id -> NameService.MONTH

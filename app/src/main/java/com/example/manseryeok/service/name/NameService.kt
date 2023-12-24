@@ -126,7 +126,12 @@ class NameService(val context: Context, var name: String, private val userModel:
 
     fun getGanjiLabel(year: Int, month: Int, day: Int, type: Int): String {
         val manseryeok = importCalendar(year, month, day)
-        return if (type == YEAR) manseryeok.cd_hyganjee!! else manseryeok.cd_hmganjee!!
+        return when (type) {
+            YEAR -> manseryeok.cd_hyganjee!!
+            MONTH -> manseryeok.cd_hmganjee!!
+            DAY -> manseryeok.cd_hdganjee!!
+            else -> throw Exception("잘못된 타입입니다.")
+        }
     }
 
 

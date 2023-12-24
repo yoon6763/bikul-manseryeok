@@ -89,61 +89,14 @@
                     android:text="세운 : "
                     android:textSize="25sp" />
 
-                <LinearLayout
-                    android:id="@+id/ll_year"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <EditText
-                        android:id="@+id/et_year"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:focusable="false"
-                        android:gravity="center"
-                        android:paddingHorizontal="10dp"
-                        android:textSize="25sp"
-                        tools:text="2023" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="15dp"
-                        android:text="년"
-                        android:textSize="25sp" />
-                </LinearLayout>
-
                 <EditText
-                    android:id="@+id/et_month"
+                    android:id="@+id/et_calender"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:focusable="false"
-                    android:gravity="center"
-                    android:paddingHorizontal="10dp"
-                    android:text="03"
-                    android:textSize="25sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="월"
-                    android:textSize="25sp" />
-
-                <EditText
-                    android:layout_marginLeft="15dp"
-                    android:id="@+id/et_day"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:focusable="false"
-                    android:gravity="center"
-                    android:paddingHorizontal="10dp"
-                    android:text="03"
-                    android:textSize="25sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="일"
+                    android:gravity="center_horizontal"
+                    android:paddingHorizontal="25dp"
+                    android:text="2020년  1월  1일"
                     android:textSize="25sp" />
             </LinearLayout>
 
