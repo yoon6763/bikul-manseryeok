@@ -72,7 +72,7 @@ class NameActivity : ParentActivity() {
         updatePage()
     }
 
-    private fun updatePage(){
+    private fun updatePage() {
         updateBirthLabel()
         updateGanji()
     }
@@ -166,7 +166,8 @@ class NameActivity : ParentActivity() {
     private fun setUpNumberPickerEvent() = with(binding) {
         etCalender.setOnClickListener {
 
-            val dialog = DatePickerDialog(this@NameActivity, DatePickerDialog.THEME_HOLO_LIGHT,
+            val dialog = DatePickerDialog(
+                this@NameActivity, DatePickerDialog.THEME_HOLO_LIGHT,
                 DatePickerDialog.OnDateSetListener { datePicker, year, month, day ->
                     searchDate = LocalDate.of(year, month + 1, day)
                     updatePage()
@@ -186,7 +187,8 @@ class NameActivity : ParentActivity() {
                 name = userModel.firstName + userModel.lastName
 
                 userBirth = userModel.getBirthCalculatedLocalDateTime()
-                userCalendarService = CalendarService(this@NameActivity, userBirth, userModel.includeTime)
+                userCalendarService =
+                    CalendarService(this@NameActivity, userBirth, userModel.includeTime)
             }
         }
     }

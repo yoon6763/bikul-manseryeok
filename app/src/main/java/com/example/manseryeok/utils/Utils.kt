@@ -102,11 +102,8 @@ object Utils {
             "辛", "酉" -> 9
             else -> -1
         }
-        return if (meIdx != -1 && targetIdx != -1) {
-            pillarLabelArr[targetIdx][meIdx]
-        } else {
-            "error"
-        }
+        if (meIdx == -1 || targetIdx == -1) return "error"
+        return pillarLabelArr[targetIdx][meIdx]
     }
 
     fun getYearGanji(year: Int): String {

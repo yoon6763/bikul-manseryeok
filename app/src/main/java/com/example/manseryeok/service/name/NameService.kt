@@ -68,20 +68,20 @@ class NameService(val context: Context, var name: String, private val userModel:
     fun calcMonthGanji(year: Int, month: Int, day: Int): List<NameScoreItem> {
         val manseryeok = importCalendar(year, month, day)
         val monthGanji = manseryeok.cd_hmganjee!!
-        val userMonthGanji = userManseryeok.cd_hmganjee!!
+        val userYearGanji = userManseryeok.cd_hyganjee!!
 
-        return calcGanji(monthGanji, userMonthGanji)
+        return calcGanji(monthGanji, userYearGanji)
     }
 
     fun calcDayGanji(year: Int, month: Int, day: Int): List<NameScoreItem> {
         val manseryeok = importCalendar(year, month, day)
         val dayGanji = manseryeok.cd_hdganjee!!
-        val userDayGanji = userManseryeok.cd_hdganjee!!
+        val userYearGanji = userManseryeok.cd_hyganjee!!
 
-        return calcGanji(dayGanji, userDayGanji)
+        return calcGanji(dayGanji, userYearGanji)
     }
 
-    private fun calcGanji(luckGanji: String, birthGanji: String): List<NameScoreItem> {
+    private fun calcGanji(luckGanji: String, birthYearGanji: String): List<NameScoreItem> {
         val nameScoreItems = ArrayList<NameScoreItem>()
 
         nameComponents.forEach { nameCharComponent ->
@@ -97,15 +97,11 @@ class NameService(val context: Context, var name: String, private val userModel:
 
             initialAndFinalSound.forEach { sound ->
                 val soundGanji = getNameGanji(sound, parity)
-                val ganjiTopLabel =
-                    Utils.getPillarLabel(soundGanji.toString(), birthGanji[0].toString())
-                val ganjiBottomLabel =
-                    Utils.getPillarLabel(soundGanji.toString(), birthGanji[1].toString())
+                val ganjiTopLabel = Utils.getPillarLabel(soundGanji.toString(), birthYearGanji[0].toString())
+                val ganjiBottomLabel = Utils.getPillarLabel(soundGanji.toString(), birthYearGanji[1].toString())
 
-                val ganjiLuckTopLabel =
-                    Utils.getPillarLabel(luckGanji[0].toString(), soundGanji.toString())
-                val ganjiLuckBottomLabel =
-                    Utils.getPillarLabel(luckGanji[0].toString(), soundGanji.toString())
+                val ganjiLuckTopLabel = Utils.getPillarLabel(luckGanji[0].toString(), soundGanji.toString())
+                val ganjiLuckBottomLabel = Utils.getPillarLabel(luckGanji[0].toString(), soundGanji.toString())
 
                 nameScoreItem.nameScoreChildItems.add(
                     NameScoreChildItem(
