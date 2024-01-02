@@ -38,7 +38,10 @@ import com.example.manseryeok.utils.SecretConstants
 import com.example.manseryeok.utils.Utils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import retrofit2.awaitResponse
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
@@ -49,8 +52,10 @@ import kotlin.collections.ArrayList
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private val TAG = "MainActivityDev"
+    private lateinit var sliderAdapter: ImageSliderAdapter
     private val notionAPI = NotionAPI.create()
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
+    private var sliderJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,9 +76,36 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         CoroutineScope(Dispatchers.Main).launch {
             setAdvertise()
+            startSlider()
         }
 
         // getHashKey()
+    }
+
+    private fun startSlider() {
+        sliderJob = CoroutineScope(Dispatchers.Main).launch {
+            while (true) {
+                delay(7000)
+                binding.vpAd.currentItem = (binding.vpAd.currentItem + 1) % sliderAdapter.itemCount
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (sliderJob?.isActive == false) {
+            startSlider()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        sliderJob?.cancel()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        sliderJob?.cancel()
     }
 
     private suspend fun setAdvertise() {
@@ -100,11 +132,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 val advertiseResponseBody = advertiseCall.body()!!
 
                 advertiseResponseBody.results.forEach { result ->
-                    result.properties.Image.files.forEach { file -> imageSliderUrls.add(AdvertiseSliderModel(result.properties.Link.url, file.file.url)) }
+                    result.properties.Image.files.forEach { file ->
+                        imageSliderUrls.add(
+                            AdvertiseSliderModel(result.properties.Link.url, file.file.url)
+                        )
+                    }
                 }
             }
 
-            binding.vpAd.adapter = ImageSliderAdapter(this@MainActivity, imageSliderUrls)
+            sliderAdapter = ImageSliderAdapter(this@MainActivity, imageSliderUrls)
+            binding.vpAd.adapter = sliderAdapter
         } catch (e: Exception) {
             Log.e(TAG, "setAdvertise: ${e.message}")
         }
