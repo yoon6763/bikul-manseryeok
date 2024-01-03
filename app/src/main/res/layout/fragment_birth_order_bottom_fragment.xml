@@ -27,17 +27,19 @@
             android:id="@+id/rb_birth_display_asc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:button="@null"
             android:foreground="?attr/selectableItemBackground"
-            android:paddingVertical="20dp"
-            android:text="년월일시 순" />
+            android:padding="20dp"
+            android:text="시일월년 순" />
 
         <RadioButton
             android:id="@+id/rb_birth_display_desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:button="@null"
             android:foreground="?attr/selectableItemBackground"
-            android:paddingVertical="20dp"
-            android:text="시일월년 순" />
+            android:padding="20dp"
+            android:text="년월일시 순" />
 
     </RadioGroup>
 
