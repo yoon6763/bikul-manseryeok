@@ -199,7 +199,7 @@ class CompassActivity : ParentActivity(), SensorEventListener, OnMapReadyCallbac
         }
 
         users.forEach { user ->
-            var usernameLabel = user.firstName + user.lastName
+            var usernameLabel = user.name!!
             usernameLabel += " (${user.birthYear})"
             usernames.add(usernameLabel)
         }
@@ -301,7 +301,7 @@ class CompassActivity : ParentActivity(), SensorEventListener, OnMapReadyCallbac
 
         tvCompassSatek.visibility = View.VISIBLE
         tvCompassSatek.text = "${CompassDirectionLabel.huiduguk(birthYear)}\n${CompassDirectionLabel.bonmyeonggung(birthYear)[user.gender]}"
-        tvUserName.text = "${user.firstName}${user.lastName} (${user.birthYear})"
+        tvUserName.text = "${user.name} (${user.birthYear})"
 
         val sinsal = CompassDirectionLabel.directionSinsal(birthYear, rotation.toInt())
         val content = CompassDirectionLabel.directionSinsalTheory(sinsal)

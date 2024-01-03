@@ -29,8 +29,6 @@ import com.example.manseryeok.utils.Utils
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import java.time.Duration
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
 import kotlin.collections.ArrayList
@@ -283,7 +281,7 @@ class CalendarActivity : ParentActivity() {
         辛 庚 己 戊 丁 丙 乙 甲
         未 午 巳 辰 卯 寅 丑 子
          */
-        var sendContent = "${userModel.firstName}${userModel.lastName}\n" +
+        var sendContent = "${userModel.name}\n" +
                 "${
                     if (isTimeInclude) Utils.dateTimeKorFormat.format(userBirthCalendar.timeInMillis) else Utils.dateKorFormat.format(
                         userBirthCalendar.timeInMillis

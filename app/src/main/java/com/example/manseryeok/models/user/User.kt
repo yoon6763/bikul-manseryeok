@@ -10,8 +10,7 @@ import java.util.Calendar
 data class User(
     @PrimaryKey(autoGenerate = true)
     var userId: Long,
-    var firstName: String?,
-    var lastName: String?,
+    var name: String?,
     var gender: Int, // 0 - 남자, 1 - 여자
 
     var birthYear: Int,
@@ -42,9 +41,9 @@ data class User(
         }
     }
 
-    fun getBirthCalculatedLocalDateTime() :LocalDateTime {
+    fun getBirthCalculatedLocalDateTime(): LocalDateTime {
         var userBirth = LocalDateTime.of(birthYear, birthMonth, birthDay, 0, 0, 0)
-        if(!includeTime) {
+        if (!includeTime) {
             userBirth = userBirth.withHour(23)
             userBirth = userBirth.withMinute(59)
             return userBirth
@@ -53,8 +52,8 @@ data class User(
         userBirth = userBirth.withHour(birthHour)
         userBirth = userBirth.withMinute(birthMinute)
 
-        if(useSummerTime == 1) userBirth = userBirth.plusHours(1)
-        if(useTokyoTime == 1) userBirth = userBirth.plusMinutes(30)
+        if (useSummerTime == 1) userBirth = userBirth.plusHours(1)
+        if (useTokyoTime == 1) userBirth = userBirth.plusMinutes(30)
 
         return userBirth
     }
@@ -85,8 +84,7 @@ data class User(
     }
 
     fun updateFromViewModel(userInputViewModel: UserInputViewModel) {
-        this.firstName = userInputViewModel.firstName.value
-        this.lastName = userInputViewModel.lastName.value
+        this.name = userInputViewModel.name.value
         this.gender = userInputViewModel.gender.value!!
         this.birthYear = userInputViewModel.year.value!!
         this.birthMonth = userInputViewModel.month.value!!

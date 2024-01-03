@@ -47,27 +47,14 @@
                         style="@style/styleInputText"
                         android:layout_width="@dimen/input_text_width"
                         android:layout_height="wrap_content"
-                        android:text="@string/obj_first_name" />
+                        android:text="이름" />
 
                     <EditText
                         android:id="@+id/et_first_name"
-                        android:layout_width="70dp"
-                        android:layout_height="wrap_content"
-                        android:text="@={viewModel.firstName}" />
-
-                    <TextView
-                        style="@style/styleInputText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="10dp"
-                        android:text="@string/obj_name" />
-
-                    <EditText
-                        android:id="@+id/et_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@={viewModel.lastName}" />
+                        android:text="@={viewModel.name}" />
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -145,8 +132,8 @@
                             android:background="@drawable/radio_button_background"
                             android:button="@null"
                             android:checked="true"
-                            android:onClick="@{(v) -> viewModel.onBirthTypeButtonClick(0)}"
                             android:gravity="center"
+                            android:onClick="@{(v) -> viewModel.onBirthTypeButtonClick(0)}"
                             android:text="@string/obj_cal_type_sun"
                             android:textColor="@drawable/radio_text" />
 
@@ -158,8 +145,8 @@
                             android:background="@drawable/radio_button_background"
                             android:button="@null"
                             android:gravity="center"
-                            android:text="@string/obj_cal_type_moon"
                             android:onClick="@{(v) -> viewModel.onBirthTypeButtonClick(1)}"
+                            android:text="@string/obj_cal_type_moon"
                             android:textColor="@drawable/radio_text" />
 
                         <RadioButton

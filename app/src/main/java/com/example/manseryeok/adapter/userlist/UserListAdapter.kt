@@ -17,7 +17,6 @@ import com.example.manseryeok.utils.Utils
 import com.example.manseryeok.databinding.ItemDbListBinding
 import com.example.manseryeok.service.calendar.CalendarService
 import java.lang.StringBuilder
-import java.util.Calendar
 
 
 class UserListAdapter(
@@ -75,7 +74,7 @@ class UserListAdapter(
             ganji.append(yearGanji[1])
 
 
-            val username = user.firstName + user.lastName
+            val username = user.name
 
             if (useKeywordHighlight) {
                 tvItemDbName.text = highlightKeywords(username, highlightKeyword)

@@ -14,8 +14,7 @@ import com.example.manseryeok.utils.Utils
 import java.util.Calendar
 
 class UserInputViewModel : ViewModel() {
-    var firstName = MutableLiveData<String>("")
-    var lastName = MutableLiveData<String>("")
+    var name = MutableLiveData<String>("")
     var gender = MutableLiveData<Int>(0)
 
     var year = MutableLiveData<Int>(-1)
@@ -118,13 +117,8 @@ class UserInputViewModel : ViewModel() {
     }
 
     fun isValid(context: Context): Boolean {
-        if (firstName.value!!.isEmpty()) {
+        if (name.value!!.isEmpty()) {
             Toast.makeText(context, "성을 입력해주세요", Toast.LENGTH_SHORT).show()
-            return false
-        }
-
-        if (lastName.value!!.isEmpty()) {
-            Toast.makeText(context, "이름을 입력해주세요", Toast.LENGTH_SHORT).show()
             return false
         }
 
@@ -168,8 +162,7 @@ class UserInputViewModel : ViewModel() {
 
         return User(
             userId = 0,
-            firstName = firstName.value!!,
-            lastName = lastName.value!!,
+            name = name.value!!,
             gender = gender.value!!,
             birthYear = birthYear,
             birthMonth = birthMonth,
@@ -186,8 +179,7 @@ class UserInputViewModel : ViewModel() {
     }
 
     fun updateViewModel(user: User) {
-        firstName.value = user.firstName
-        lastName.value = user.lastName
+        name.value = user.name
         gender.value = gender.value
         year.value = user.birthYear
         month.value = user.birthMonth

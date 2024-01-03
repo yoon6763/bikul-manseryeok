@@ -184,7 +184,7 @@ class NameActivity : ParentActivity() {
                 val userDao = AppDatabase.getInstance(applicationContext).userDao()
                 val userId = intent.getLongExtra(Extras.INTENT_EXTRAS_USER_ID, -1L)
                 userModel = userDao.getUser(userId)
-                name = userModel.firstName + userModel.lastName
+                name = userModel.name!!
 
                 userBirth = userModel.getBirthCalculatedLocalDateTime()
                 userCalendarService =

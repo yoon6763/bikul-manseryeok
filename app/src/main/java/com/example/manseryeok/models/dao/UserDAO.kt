@@ -26,8 +26,8 @@ interface UserDAO {
     @Query("SELECT * FROM user WHERE userId = :id")
     fun getUser(id: Long): User
 
-    // firstname과 lastname을 합친 이름에 searchQuery가 포함되어 있는 user를 검색
-    @Query("SELECT * FROM user WHERE firstname || lastname LIKE '%' || :searchQuery || '%'")
+    // name에 searchQuery가 포함되어 있는 user를 검색
+    @Query("SELECT * FROM user WHERE name LIKE '%' || :searchQuery || '%'")
     fun searchUserByName(searchQuery: String): List<User>
 
     @Query("SELECT * FROM user")
