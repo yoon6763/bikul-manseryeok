@@ -176,14 +176,56 @@
                         android:text="@string/obj_input_birth" />
 
                     <EditText
-                        android:id="@+id/et_input_birth"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:focusable="false"
+                        android:layout_weight="1"
                         android:gravity="center"
-                        android:onClick="@{(v) -> viewModel.openBirthPicker(v)}"
-                        android:text="@{viewModel.birthLabel}" />
+                        android:inputType="numberDecimal"
+                        android:text="@={viewModel.yearLabel}" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:text="년" />
+
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:inputType="numberDecimal"
+                        android:text="@={viewModel.monthLabel}" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:text="월" />
+
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:inputType="numberDecimal"
+                        android:text="@={viewModel.dayLabel}" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="일" />
+
+
+                    <!--                    <EditText-->
+                    <!--                        android:id="@+id/et_input_birth"-->
+                    <!--                        android:layout_width="match_parent"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        android:clickable="true"-->
+                    <!--                        android:focusable="false"-->
+                    <!--                        android:gravity="center"-->
+                    <!--                        android:onClick="@{(v) -> viewModel.openBirthPicker(v)}"-->
+                    <!--                        android:text="@{viewModel.birthLabel}" />-->
                 </LinearLayout>
 
 
@@ -200,24 +242,50 @@
                         android:text="@string/obj_input_birth_time" />
 
                     <EditText
-                        android:id="@+id/et_input_birth_time"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
                         android:layout_weight="1"
-                        android:clickable="true"
-                        android:focusable="false"
+                        android:enabled="@{viewModel.isIncludeTime}"
                         android:gravity="center"
-                        android:onClick="@{(v) -> viewModel.openBirthTimePicker(v)}"
-                        android:text="@{viewModel.birthTimeLabel}" />
+                        android:inputType="numberDecimal"
+                        android:text="@={viewModel.hourLabel}" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:text="시" />
+
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:enabled="@{viewModel.isIncludeTime}"
+                        android:gravity="center"
+                        android:inputType="numberDecimal"
+                        android:text="@={viewModel.minuteLabel}" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:text="분" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="일"
+                        android:visibility="invisible" />
 
                     <CheckBox
                         android:id="@+id/cb_input_birth_time"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
                         android:buttonTint="@color/green"
                         android:checked="@={!viewModel.isIncludeTime}"
+                        android:gravity="center"
                         android:onCheckedChanged="@{(v, b) -> viewModel.clearBirthTimeInfo(b)}"
                         android:text="@string/obj_input_birth_time_unknown" />
 

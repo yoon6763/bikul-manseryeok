@@ -1,29 +1,26 @@
 package com.example.manseryeok.models
 
-import android.R
-import android.app.DatePickerDialog
-import android.app.TimePickerDialog
 import android.content.Context
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.manseryeok.models.user.User
 import com.example.manseryeok.utils.Utils
+import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.Calendar
 
 class UserInputViewModel : ViewModel() {
     var name = MutableLiveData<String>("")
     var gender = MutableLiveData<Int>(0)
 
-    var year = MutableLiveData<Int>(-1)
-    var month = MutableLiveData<Int>(-1)
-    var day = MutableLiveData<Int>(-1)
-    var hour = MutableLiveData<Int>(-1)
-    var minute = MutableLiveData<Int>(-1)
+    var yearLabel = MutableLiveData<String>("")
+    var monthLabel = MutableLiveData<String>("")
+    var dayLabel = MutableLiveData<String>("")
+    var hourLabel = MutableLiveData<String>("")
+    var minuteLabel = MutableLiveData<String>("")
 
-    var birthLabel = MutableLiveData<String>("")
     var birthTimeLabel = MutableLiveData<String>("")
     var isIncludeTime = MutableLiveData<Boolean>(true)
 
@@ -36,14 +33,6 @@ class UserInputViewModel : ViewModel() {
 
     var birthType = MutableLiveData<Int>(0)
 
-
-    init {
-        val today = Calendar.getInstance()
-        year.value = today.get(Calendar.YEAR)
-        month.value = today.get(Calendar.MONTH) + 1
-        day.value = today.get(Calendar.DAY_OF_MONTH)
-    }
-
     fun onGenderButtonClick(value: Int) {
         gender.value = value
     }
@@ -52,84 +41,44 @@ class UserInputViewModel : ViewModel() {
         birthType.value = value
     }
 
-    fun openBirthPicker(view: View) {
-        val context = view.context
-
-        DatePickerDialog(
-            context,
-            R.style.Theme_Holo_Light_Dialog_MinWidth,
-            { datePicker, y, m, d ->
-                year.value = y
-                month.value = m + 1
-                day.value = d
-                birthLabel.value = getBirthLabel()
-            }, year.value!!, month.value!! - 1, day.value!!
-        ).apply {
-            datePicker.calendarViewShown = false
-            window!!.setBackgroundDrawableResource(R.color.transparent)
-            show()
-        }
-    }
-
-    fun openBirthTimePicker(view: View) {
-        if(!isIncludeTime.value!!) return
-
-        val context = view.context
-
-        TimePickerDialog(
-            context,
-            R.style.Theme_Holo_Light_Dialog_MinWidth,
-            { timePicker, h, m ->
-                hour.value = h
-                minute.value = m
-                birthTimeLabel.value = getTimeLabel()
-            }, hour.value!!, minute.value!!, false
-        ).apply {
-            window!!.setBackgroundDrawableResource(R.color.transparent)
-            show()
-        }
-    }
-
-    private fun getBirthLabel(): String {
-        return Utils.dateSlideFormat.format(Calendar.getInstance().apply {
-            set(Calendar.YEAR, year.value!!)
-            set(Calendar.MONTH, month.value!! - 1)
-            set(Calendar.DAY_OF_MONTH, day.value!!)
-        }.timeInMillis)
-    }
-
-
-    private fun getTimeLabel(): String {
-        return Utils.timeFormat.format(
-            Calendar.getInstance().apply {
-                set(Calendar.HOUR_OF_DAY, hour.value!!)
-                set(Calendar.MINUTE, minute.value!!)
-            }.timeInMillis
-        )
-    }
-
     fun clearBirthTimeInfo(isChecked: Boolean) {
-        if(isChecked) {
-            hour.value = -1
-            minute.value = -1
-            birthTimeLabel.value = ""
+        if (isChecked) {
+            hourLabel.value = ""
+            minuteLabel.value = ""
         }
     }
 
     fun isValid(context: Context): Boolean {
         if (name.value!!.isEmpty()) {
-            Toast.makeText(context, "성을 입력해주세요", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "이름을 입력해주세요", Toast.LENGTH_SHORT).show()
             return false
         }
 
-        if (birthLabel.value!!.isEmpty()) {
+        if (yearLabel.value!!.isEmpty() || monthLabel.value!!.isEmpty() || dayLabel.value!!.isEmpty()) {
             Toast.makeText(context, "생년월일을 입력해주세요", Toast.LENGTH_SHORT).show()
             return false
         }
 
-        if (isIncludeTime.value!! && birthTimeLabel.value!!.isEmpty()) {
-            Toast.makeText(context, "태어난 시간을 입력해주세요", Toast.LENGTH_SHORT).show()
+        if (!isValidDate()) {
+            Toast.makeText(context, "유효한 날짜가 아닙니다", Toast.LENGTH_SHORT).show()
             return false
+        }
+
+        if (yearLabel.value!!.toInt() !in 1900..2100) {
+            Toast.makeText(context, "1900년 ~ 2100년 사이의 날짜만 지원합니다.", Toast.LENGTH_SHORT).show()
+            return false
+        }
+
+        if(isIncludeTime.value!!) {
+            if ((hourLabel.value!!.isEmpty() || minuteLabel.value!!.isEmpty())) {
+                Toast.makeText(context, "태어난 시간을 입력해주세요", Toast.LENGTH_SHORT).show()
+                return false
+            }
+
+            if (!isValidTime()) {
+                Toast.makeText(context, "유효한 시간이 아닙니다", Toast.LENGTH_SHORT).show()
+                return false
+            }
         }
 
         if (birthPlace.value!!.isEmpty()) {
@@ -140,25 +89,52 @@ class UserInputViewModel : ViewModel() {
         return true
     }
 
-    fun toUserEntity(): User {
+    private fun isValidDate(): Boolean {
+        return try {
+            LocalDate.of(
+                yearLabel.value!!.toInt(),
+                monthLabel.value!!.toInt(),
+                dayLabel.value!!.toInt()
+            )
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
 
+    private fun isValidTime(): Boolean {
+        return hourLabel.value!!.toInt() in 0..23 && minuteLabel.value!!.toInt() in 0..59
+    }
+
+    fun toUserEntity(): User {
         var birthYear = 0
         var birthMonth = 0
         var birthDay = 0
+        var birthHour = 0
+        var birthMinute = 0
 
-        if(birthType.value == 0) {
-            birthYear = year.value!!
-            birthMonth = month.value!!
-            birthDay = day.value!!
+        if (birthType.value == 0) {
+            birthYear = yearLabel.value!!.toInt()
+            birthMonth = monthLabel.value!!.toInt()
+            birthDay = dayLabel.value!!.toInt()
         } else {
-            val lunar = Utils.convertLunarToSolar(year.value!!, month.value!!, day.value!!)
+            val lunar = Utils.convertLunarToSolar(
+                yearLabel.value!!.toInt(),
+                monthLabel.value!!.toInt(),
+                dayLabel.value!!.toInt()
+            )
             birthYear = lunar[Calendar.YEAR]
             birthMonth = lunar[Calendar.MONTH] + 1
             birthDay = lunar[Calendar.DAY_OF_MONTH]
         }
 
-
-        Log.d("UserInputViewModel", "생일 : $birthYear, $birthMonth, $birthDay")
+        if (isIncludeTime.value!!) {
+            birthHour = hourLabel.value!!.toInt()
+            birthMinute = minuteLabel.value!!.toInt()
+        } else {
+            birthHour = 0
+            birthMinute = 0
+        }
 
         return User(
             userId = 0,
@@ -168,8 +144,8 @@ class UserInputViewModel : ViewModel() {
             birthMonth = birthMonth,
             birthDay = birthDay,
             includeTime = isIncludeTime.value!!,
-            birthHour = hour.value!!,
-            birthMinute = minute.value!!,
+            birthHour = birthHour,
+            birthMinute = birthMinute,
             birthPlace = birthPlace.value!!,
             timeDiff = timeDiff.value!!,
             useSummerTime = if (useSummerTime.value!!) 1 else 0,
@@ -181,20 +157,22 @@ class UserInputViewModel : ViewModel() {
     fun updateViewModel(user: User) {
         name.value = user.name
         gender.value = gender.value
-        year.value = user.birthYear
-        month.value = user.birthMonth
-        day.value = user.birthDay
+        yearLabel.value = user.birthYear.toString()
+        monthLabel.value = user.birthMonth.toString()
+        dayLabel.value = user.birthDay.toString()
         isIncludeTime.value = user.includeTime
-        hour.value = user.birthHour
-        minute.value = user.birthMinute
+
+        if (user.includeTime) {
+            hourLabel.value = user.birthHour.toString()
+            minuteLabel.value = user.birthMinute.toString()
+        } else {
+            hourLabel.value = ""
+            minuteLabel.value = ""
+        }
+
         birthPlace.value = user.birthPlace
         timeDiff.value = user.timeDiff
         useSummerTime.value = user.useSummerTime == 1
         useTokyoTime.value = user.useTokyoTime == 1
-
-
-        birthLabel.value = Utils.dateSlideFormat.format(user.getBirthCalculated().timeInMillis)
-        if (isIncludeTime.value!!) birthTimeLabel.value = getTimeLabel()
-        birthPlaceLabel.value = "${user.birthPlace} (${user.timeDiff}분)"
     }
 }

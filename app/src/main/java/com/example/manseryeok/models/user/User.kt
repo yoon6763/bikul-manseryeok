@@ -86,14 +86,14 @@ data class User(
     fun updateFromViewModel(userInputViewModel: UserInputViewModel) {
         this.name = userInputViewModel.name.value
         this.gender = userInputViewModel.gender.value!!
-        this.birthYear = userInputViewModel.year.value!!
-        this.birthMonth = userInputViewModel.month.value!!
-        this.birthDay = userInputViewModel.day.value!!
+        this.birthYear = userInputViewModel.yearLabel.value!!.toInt()
+        this.birthMonth = userInputViewModel.monthLabel.value!!.toInt()
+        this.birthDay = userInputViewModel.dayLabel.value!!.toInt()
         this.includeTime = userInputViewModel.isIncludeTime.value!!
 
         if (this.includeTime) {
-            this.birthHour = userInputViewModel.hour.value!!
-            this.birthMinute = userInputViewModel.minute.value!!
+            this.birthHour = userInputViewModel.hourLabel!!.value!!.toInt()
+            this.birthMinute = userInputViewModel.minuteLabel!!.value!!.toInt()
         } else {
             this.birthHour = -1
             this.birthMinute = -1
