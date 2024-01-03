@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun startSlider() {
         sliderJob = CoroutineScope(Dispatchers.Main).launch {
             while (true) {
-                delay(7000)
+                delay(5000)
                 binding.vpAd.currentItem = (binding.vpAd.currentItem + 1) % sliderAdapter.itemCount
             }
         }
