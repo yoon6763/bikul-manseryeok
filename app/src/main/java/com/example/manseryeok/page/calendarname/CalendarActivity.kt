@@ -29,6 +29,8 @@ import com.example.manseryeok.utils.Utils
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import java.time.Duration
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
 import kotlin.collections.ArrayList
@@ -41,7 +43,6 @@ class CalendarActivity : ParentActivity() {
         const val SINSAL_EXPAND = 0
         const val SINSAL_COLLAPSE = 1
         const val SINSAL_EXPAND_DURATION = 200L
-
         const val REQUEST_CODE_USER_DB_EDIT = 100
     }
 
@@ -110,9 +111,9 @@ class CalendarActivity : ParentActivity() {
             setUpJiJiAmjangan() // 지지 암장간
             setUpShootingStar() // 십이운성
             setUpSinsal() // 신살
+            setUpLuckRecyclerView() // 대운 리사이클러뷰
             setUpYearAndMonthPillar() // 년주 리사이클러뷰
             setRecyclerViewClickEvent() // 년주 리사이클러뷰 클릭 이벤트 처리
-            setUpLuckRecyclerView() // 대운 리사이클러뷰
             setUpMemo()
             setSinsalVisibility() // 신살 확장 여부
             setBirthDisplayOrder() // 생일 표시 순서
@@ -607,15 +608,15 @@ class CalendarActivity : ParentActivity() {
             firstAge = (cnt / 3).toInt()
         }
 
+        var userAge = getRealAge()
+        var initialRvLuckPos = -1
+
         binding.run {
             luckAdapter = SixtyHorizontalAdapter(this@CalendarActivity, luckItems)
             rvLuck.adapter = luckAdapter
 
             luckAdapter.onItemClickListener = object : SixtyHorizontalAdapter.OnItemClickListener {
                 override fun onItemClick(age: Int, pos: Int) {
-//                    if(year == 0) return
-//                    rvYearPillar.findViewHolderForLayoutPosition(yearItems.find { it.label == year }!!.label)?.itemView?.performClick()
-//                    luckAdapter.notifyDataSetChanged()
                     luckAdapter.notifyDataSetChanged()
                     val yPos = pos * 10 + firstAge - 1
                     if (yPos >= 0) {
@@ -648,9 +649,17 @@ class CalendarActivity : ParentActivity() {
 
                 luckItems.add(SixtyHorizontalItem(age, tenArray[topPtr], twelveArray[bottomPtr]))
 
+                if (age <= userAge) {
+                    initialRvLuckPos = it
+                }
             }
             luckAdapter.notifyDataSetChanged()
+
         }
+
+
+        luckAdapter.performItemClick(initialRvLuckPos + 1)
+
     }
 
     private fun setSinsalExpandOrCollapse(type: Int) = with(binding) {
@@ -702,7 +711,6 @@ class CalendarActivity : ParentActivity() {
                 object : SixtyHorizontalSmallAdapter.OnItemClickListener {
                     override fun onItemClick(year: Int) {
                         yearAdapter.notifyDataSetChanged()
-
                         setUpMonthPillar(Utils.getYearGanji(year)[0])
                     }
                 }
@@ -814,7 +822,18 @@ class CalendarActivity : ParentActivity() {
             it.layoutDirection = if (isAsc) View.LAYOUT_DIRECTION_LTR else View.LAYOUT_DIRECTION_RTL
             it.invalidate()
         }
+    }
 
+    // 만 나이 계산
+    private fun getRealAge(): Int {
+        val today = LocalDateTime.now()
+        var age = today.year - userBirthCalendar[Calendar.YEAR]
+
+        if (today.isAfter(userBirthLocalDateTime)) {
+            age--
+        }
+
+        return age
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

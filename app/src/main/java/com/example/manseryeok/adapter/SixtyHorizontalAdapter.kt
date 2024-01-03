@@ -82,6 +82,11 @@ class SixtyHorizontalAdapter(
         onItemClickListener?.onItemClick(binding.tvItemSixtyLabel.text.toString().toInt(), position)
     }
 
+    fun performItemClick(position: Int) {
+        selectedItemPos = position
+        notifyDataSetChanged()
+    }
+
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val binding = ItemSixtyHorizonBinding.bind(itemView)
 
