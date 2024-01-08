@@ -170,7 +170,7 @@ class CompassActivity : ParentActivity(), SensorEventListener, OnMapReadyCallbac
     private fun setSatelliteMap() {
         val initialType = SharedPreferenceHelper.isSatelliteMapEnable(this)
         // satellite map
-        if(initialType) {
+        if (initialType) {
             naverMap.mapType = NaverMap.MapType.Satellite
             binding.btnMapTypeChange.setImageResource(R.drawable.ic_satellite_picture)
         } else {
@@ -217,25 +217,41 @@ class CompassActivity : ParentActivity(), SensorEventListener, OnMapReadyCallbac
         locationSource = FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
         mapFragment.getMapAsync(this)
 
-        binding.btnCompassLocation.setOnClickListener {
-            btnLocationSource =
-                FusedLocationSource(this@CompassActivity, LOCATION_PERMISSION_REQUEST_CODE)
+        binding.btnSearch.setOnClickListener {
+            val mapSearchFragment = MapSearchFragment.newInstance()
+            supportFragmentManager.beginTransaction()
+                .add(R.id.container_search, mapSearchFragment)
+                .commit()
 
-            naverMap.locationSource = btnLocationSource
+            Toast.makeText(this, "지도에서 검색할 위치를 선택해주세요", Toast.LENGTH_SHORT).show()
 
-            if (locationSource.lastLocation != null) {
-                val cameraPosition = CameraPosition(
-                    LatLng(
-                        locationSource.lastLocation!!.latitude,
-                        locationSource.lastLocation!!.longitude
-                    ),
-                    naverMap.cameraPosition.zoom,
-                    naverMap.cameraPosition.tilt,
-                    naverMap.cameraPosition.bearing
-                )
 
-                naverMap.cameraPosition = cameraPosition
+            mapSearchFragment.onSearchButtonClickListener = object : MapSearchFragment.OnSearchButtonClickListener {
+                override fun onSearchButtonClick(latitude: Double, longitude: Double) {
+                    Toast.makeText(this@CompassActivity, "위도: $latitude, 경도: $longitude", Toast.LENGTH_SHORT).show()
+                    supportFragmentManager.beginTransaction().remove(mapSearchFragment).commit()
+                }
             }
+
+
+//            btnLocationSource =
+//                FusedLocationSource(this@CompassActivity, LOCATION_PERMISSION_REQUEST_CODE)
+//
+//            naverMap.locationSource = btnLocationSource
+//
+//            if (locationSource.lastLocation != null) {
+//                val cameraPosition = CameraPosition(
+//                    LatLng(
+//                        locationSource.lastLocation!!.latitude,
+//                        locationSource.lastLocation!!.longitude
+//                    ),
+//                    naverMap.cameraPosition.zoom,
+//                    naverMap.cameraPosition.tilt,
+//                    naverMap.cameraPosition.bearing
+//                )
+//
+//                naverMap.cameraPosition = cameraPosition
+//            }
         }
 
     }
@@ -272,6 +288,7 @@ class CompassActivity : ParentActivity(), SensorEventListener, OnMapReadyCallbac
         naverMap.locationSource = locationSource
         naverMap.locationTrackingMode = LocationTrackingMode.Follow
         naverMap.uiSettings.isZoomControlEnabled = false
+        naverMap.uiSettings.isLocationButtonEnabled = true
 
         mapIsReady = true
         setSatelliteMap()
@@ -300,7 +317,9 @@ class CompassActivity : ParentActivity(), SensorEventListener, OnMapReadyCallbac
         val birthYear = user.birthYear
 
         tvCompassSatek.visibility = View.VISIBLE
-        tvCompassSatek.text = "${CompassDirectionLabel.huiduguk(birthYear)}\n${CompassDirectionLabel.bonmyeonggung(birthYear)[user.gender]}"
+        tvCompassSatek.text = "${CompassDirectionLabel.huiduguk(birthYear)}\n${
+            CompassDirectionLabel.bonmyeonggung(birthYear)[user.gender]
+        }"
         tvUserName.text = "${user.name} (${user.birthYear})"
 
         val sinsal = CompassDirectionLabel.directionSinsal(birthYear, rotation.toInt())
@@ -410,6 +429,17 @@ class CompassActivity : ParentActivity(), SensorEventListener, OnMapReadyCallbac
         }
         return super.onOptionsItemSelected(item)
     }
+
+    override fun onBackPressed() {
+        // 만약 검색 프래그먼트가 띄워져있다면
+        if (supportFragmentManager.findFragmentById(R.id.container_search) != null) {
+            supportFragmentManager.beginTransaction().remove(supportFragmentManager.findFragmentById(R.id.container_search)!!).commit()
+            return
+        } else {
+            super.onBackPressed()
+        }
+    }
+
 
     class GPSListener : LocationListener {
         override fun onLocationChanged(p0: Location) {

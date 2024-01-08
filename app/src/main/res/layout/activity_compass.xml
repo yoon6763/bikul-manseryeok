@@ -1,299 +1,309 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
-    android:orientation="vertical"
     tools:context=".page.compass.CompassActivity">
 
-    <FrameLayout
-        android:id="@+id/fl_container"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2.5"
-        android:elevation="0dp">
-
-
-        <fragment
-            android:id="@+id/frag_map"
-            android:name="com.naver.maps.map.MapFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:layout="@layout/activity_base" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/btn_map_type_change"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start|top"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="80dp"
-            android:elevation="3dp"
-            android:src="@drawable/ic_satellite"
-            android:tint="@color/navy"
-            app:backgroundTint="@color/white" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/btn_compass_question"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right|top"
-            android:layout_marginTop="80dp"
-            android:layout_marginRight="20dp"
-            android:elevation="3dp"
-            android:src="@drawable/ic_question_no_background"
-            android:tint="@color/navy"
-            app:backgroundTint="@color/white" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/btn_compass_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right|bottom"
-            android:layout_margin="20dp"
-            android:elevation="3dp"
-            android:src="@drawable/ic_my_location"
-            android:tint="@color/white"
-            app:backgroundTint="@color/navy" />
-
-        <TextView
-            android:id="@+id/tv_compass_satek"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left|bottom"
-            android:layout_marginLeft="20dp"
-            android:layout_marginBottom="35dp"
-            android:background="@drawable/box_navy"
-            android:padding="8dp"
-            android:textColor="@color/white"
-            android:visibility="invisible"
-            tools:text="북동\n동사택"
-            tools:visibility="visible" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_compass_info"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/btn_full_height"
-            android:layout_gravity="center_horizontal|bottom"
-            android:layout_marginBottom="@dimen/gap_line_double"
-            android:background="@drawable/btn_navy_10"
-            android:paddingHorizontal="@dimen/gap_line_double"
-            android:text="나경 | 방위 보기"
-            android:visibility="gone"
-            tools:visibility="visible" />
-
-        <LinearLayout
-            android:id="@+id/ll_radio_group"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <RadioGroup
-                android:id="@+id/rg_rotation"
-                android:layout_width="300dp"
-                android:layout_height="@dimen/btn_full_height"
-                android:layout_gravity="bottom|center_horizontal"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/radio_group_background"
-                android:elevation="2dp"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/rb_rotation"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/btn_full_height"
-                    android:layout_weight="1"
-                    android:autoSizeTextType="uniform"
-                    android:background="@drawable/radio_button_background"
-                    android:button="@null"
-                    android:checked="true"
-                    android:drawableStart="@drawable/ic_phone_rotation_small"
-                    android:drawablePadding="@dimen/gap_line"
-                    android:drawableTint="@drawable/radio_text"
-                    android:paddingHorizontal="10dp"
-                    android:paddingVertical="@dimen/gap_line"
-                    android:text="@string/obj_rotation"
-                    android:textColor="@drawable/radio_text" />
-
-                <RadioButton
-                    android:id="@+id/rb_rotation_fix"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/btn_full_height"
-                    android:layout_weight="1"
-                    android:autoSizeTextType="uniform"
-                    android:background="@drawable/radio_button_background"
-                    android:button="@null"
-                    android:drawableEnd="@drawable/ic_phone_rotation_lock_small"
-                    android:drawablePadding="@dimen/gap_line"
-                    android:drawableTint="@drawable/radio_text"
-                    android:paddingHorizontal="10dp"
-                    android:paddingVertical="@dimen/gap_line"
-                    android:text="@string/obj_rotation_fix"
-                    android:textColor="@drawable/radio_text" />
-
-            </RadioGroup>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/box_white"
-                android:paddingVertical="5dp"
-                android:paddingHorizontal="10dp"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="방위"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:id="@+id/tv_compass_degree"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/gap_line_double"
-                    android:textSize="15sp"
-                    tools:text="30" />
-            </LinearLayout>
-
-            <ImageView
-                android:id="@+id/iv_compass"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginHorizontal="@dimen/gap_line_double"
-                android:layout_marginBottom="80dp"
-                android:alpha="0.5"
-                app:srcCompat="@drawable/img_compass" />
-
-        </LinearLayout>
-
-    </FrameLayout>
-
     <LinearLayout
-        android:id="@+id/fl_compass_info"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_weight="1"
-        android:background="@color/white"
-        android:elevation="3dp"
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
         android:orientation="vertical">
 
         <FrameLayout
+            android:id="@+id/fl_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="0dp"
+            android:layout_weight="2.5"
+            android:elevation="0dp">
 
-            <RadioGroup
-                android:id="@+id/rg_info_type"
-                android:layout_width="300dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="@dimen/gap_line"
-                android:background="@drawable/radio_group_background"
-                android:orientation="horizontal">
 
-                <RadioButton
-                    android:id="@+id/rb_compass_nagyeong"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/radio_button_background"
-                    android:button="@null"
-                    android:checked="true"
-                    android:gravity="center"
-                    android:text="나경" />
+            <fragment
+                android:id="@+id/frag_map"
+                android:name="com.naver.maps.map.MapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:layout="@layout/activity_base" />
 
-                <RadioButton
-                    android:id="@+id/rb_compass_sinsal"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/radio_button_background"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="신살 방위" />
-            </RadioGroup>
-
-            <ImageView
-                android:id="@+id/iv_close"
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btn_map_type_change"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right|center_vertical"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/ic_close" />
+                android:layout_gravity="start|top"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="80dp"
+                android:elevation="3dp"
+                android:src="@drawable/ic_satellite"
+                android:tint="@color/navy"
+                app:backgroundTint="@color/white" />
 
-        </FrameLayout>
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_compass_info"
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btn_compass_question"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp"
-                android:background="@color/white"
-                android:foregroundGravity="center"
-                android:orientation="horizontal"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                tools:itemCount="30"
-                tools:listitem="@layout/item_idx_label"
-                tools:visibility="invisible" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|top"
+                android:layout_marginTop="80dp"
+                android:layout_marginRight="20dp"
+                android:elevation="3dp"
+                android:src="@drawable/ic_question_no_background"
+                android:tint="@color/navy"
+                app:backgroundTint="@color/white" />
 
-            <ScrollView
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btn_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|bottom"
+                android:layout_margin="20dp"
+                android:elevation="3dp"
+                android:src="@drawable/ic_search"
+                android:tint="@color/white"
+                app:backgroundTint="@color/navy" />
+
+            <TextView
+                android:id="@+id/tv_compass_satek"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|bottom"
+                android:layout_marginLeft="20dp"
+                android:layout_marginBottom="35dp"
+                android:background="@drawable/box_navy"
+                android:padding="8dp"
+                android:textColor="@color/white"
+                android:visibility="invisible"
+                tools:text="북동\n동사택"
+                tools:visibility="visible" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_compass_info"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/btn_full_height"
+                android:layout_gravity="center_horizontal|bottom"
+                android:layout_marginBottom="@dimen/gap_line_double"
+                android:background="@drawable/btn_navy_10"
+                android:paddingHorizontal="@dimen/gap_line_double"
+                android:text="나경 | 방위 보기"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <LinearLayout
+                android:id="@+id/ll_radio_group"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <RadioGroup
+                    android:id="@+id/rg_rotation"
+                    android:layout_width="300dp"
+                    android:layout_height="@dimen/btn_full_height"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/radio_group_background"
+                    android:elevation="2dp"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/rb_rotation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/btn_full_height"
+                        android:layout_weight="1"
+                        android:autoSizeTextType="uniform"
+                        android:background="@drawable/radio_button_background"
+                        android:button="@null"
+                        android:checked="true"
+                        android:drawableStart="@drawable/ic_phone_rotation_small"
+                        android:drawablePadding="@dimen/gap_line"
+                        android:drawableTint="@drawable/radio_text"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="@dimen/gap_line"
+                        android:text="@string/obj_rotation"
+                        android:textColor="@drawable/radio_text" />
+
+                    <RadioButton
+                        android:id="@+id/rb_rotation_fix"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/btn_full_height"
+                        android:layout_weight="1"
+                        android:autoSizeTextType="uniform"
+                        android:background="@drawable/radio_button_background"
+                        android:button="@null"
+                        android:drawableEnd="@drawable/ic_phone_rotation_lock_small"
+                        android:drawablePadding="@dimen/gap_line"
+                        android:drawableTint="@drawable/radio_text"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="@dimen/gap_line"
+                        android:text="@string/obj_rotation_fix"
+                        android:textColor="@drawable/radio_text" />
+
+                </RadioGroup>
 
                 <LinearLayout
-                    android:id="@+id/ll_sinsal"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:visibility="invisible"
-                    tools:visibility="visible">
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/box_white"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="5dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btn_select_from_db"
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/btn_navy_5"
-                        android:drawableLeft="@drawable/ic_save"
-                        android:drawablePadding="5dp"
-                        android:drawableTint="@color/white"
-                        android:foreground="?attr/selectableItemBackground"
-                        android:padding="6dp"
-                        android:text="데이터베이스에서 선택"
+                        android:text="방위"
                         android:textSize="15sp" />
 
                     <TextView
-                        android:id="@+id/tv_user_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="10dp"
-                        android:text="(선택된 정보가 없습니다)" />
-
-                    <TextView
-                        android:id="@+id/tv_sinsal_content"
+                        android:id="@+id/tv_compass_degree"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/gap_line"
-                        android:gravity="center_horizontal"
-                        android:text="" />
+                        android:layout_marginLeft="@dimen/gap_line_double"
+                        android:textSize="15sp"
+                        tools:text="30" />
                 </LinearLayout>
-            </ScrollView>
+
+                <ImageView
+                    android:id="@+id/iv_compass"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="@dimen/gap_line_double"
+                    android:layout_marginBottom="80dp"
+                    android:alpha="0.5"
+                    app:srcCompat="@drawable/img_compass" />
+
+            </LinearLayout>
+
         </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/fl_compass_info"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:elevation="3dp"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RadioGroup
+                    android:id="@+id/rg_info_type"
+                    android:layout_width="300dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="@dimen/gap_line"
+                    android:background="@drawable/radio_group_background"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/rb_compass_nagyeong"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/radio_button_background"
+                        android:button="@null"
+                        android:checked="true"
+                        android:gravity="center"
+                        android:text="나경" />
+
+                    <RadioButton
+                        android:id="@+id/rb_compass_sinsal"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/radio_button_background"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:text="신살 방위" />
+                </RadioGroup>
+
+                <ImageView
+                    android:id="@+id/iv_close"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|center_vertical"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/ic_close" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_compass_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/white"
+                    android:foregroundGravity="center"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    tools:itemCount="30"
+                    tools:listitem="@layout/item_idx_label"
+                    tools:visibility="invisible" />
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:id="@+id/ll_sinsal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:visibility="invisible"
+                        tools:visibility="visible">
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/btn_select_from_db"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/btn_navy_5"
+                            android:drawableLeft="@drawable/ic_save"
+                            android:drawablePadding="5dp"
+                            android:drawableTint="@color/white"
+                            android:foreground="?attr/selectableItemBackground"
+                            android:padding="6dp"
+                            android:text="데이터베이스에서 선택"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/tv_user_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="10dp"
+                            android:text="(선택된 정보가 없습니다)" />
+
+                        <TextView
+                            android:id="@+id/tv_sinsal_content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/gap_line"
+                            android:gravity="center_horizontal"
+                            android:text="" />
+                    </LinearLayout>
+                </ScrollView>
+            </FrameLayout>
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/container_search"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</FrameLayout>
