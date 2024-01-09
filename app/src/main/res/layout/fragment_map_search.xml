@@ -25,6 +25,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:id="@+id/rv_search"
+        tools:listitem="@layout/item_search_place"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 

@@ -30,6 +30,7 @@ import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
+import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.util.FusedLocationSource
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
@@ -223,13 +224,12 @@ class CompassActivity : ParentActivity(), SensorEventListener, OnMapReadyCallbac
                 .add(R.id.container_search, mapSearchFragment)
                 .commit()
 
-            Toast.makeText(this, "지도에서 검색할 위치를 선택해주세요", Toast.LENGTH_SHORT).show()
-
-
             mapSearchFragment.onSearchButtonClickListener = object : MapSearchFragment.OnSearchButtonClickListener {
-                override fun onSearchButtonClick(latitude: Double, longitude: Double) {
-                    Toast.makeText(this@CompassActivity, "위도: $latitude, 경도: $longitude", Toast.LENGTH_SHORT).show()
+                override fun onSearchButtonClick(lat: Double, lng: Double) {
                     supportFragmentManager.beginTransaction().remove(mapSearchFragment).commit()
+                    binding.ivCompass.focusable = View.FOCUSABLE
+
+                    naverMap.moveCamera(CameraUpdate.scrollTo(LatLng(lat, lng)))
                 }
             }
 
