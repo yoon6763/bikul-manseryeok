@@ -14,6 +14,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowInsetsController
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.GridLayoutManager
@@ -21,20 +22,26 @@ import com.example.manseryeok.R
 import com.example.manseryeok.adapter.MapLayerListAdapter
 import com.example.manseryeok.compassutils.CompassDirectionLabel
 import com.example.manseryeok.databinding.ActivityCompassBinding
-import com.example.manseryeok.models.user.User
 import com.example.manseryeok.models.AppDatabase
+import com.example.manseryeok.models.user.User
 import com.example.manseryeok.utils.ParentActivity
 import com.example.manseryeok.utils.SharedPreferenceHelper
 import com.example.manseryeok.utils.Utils
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
 import com.naver.maps.geometry.LatLng
-import com.naver.maps.map.*
-import com.naver.maps.map.overlay.Marker
+import com.naver.maps.map.CameraAnimation
+import com.naver.maps.map.CameraPosition
+import com.naver.maps.map.CameraUpdate
+import com.naver.maps.map.LocationTrackingMode
+import com.naver.maps.map.MapFragment
+import com.naver.maps.map.NaverMap
+import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.util.FusedLocationSource
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+
 
 class CompassActivity : ParentActivity(), SensorEventListener, OnMapReadyCallback {
     private val TAG = "CompassActivity"
@@ -172,8 +179,15 @@ class CompassActivity : ParentActivity(), SensorEventListener, OnMapReadyCallbac
         val initialType = SharedPreferenceHelper.isSatelliteMapEnable(this)
         // satellite map
         if (initialType) {
-            naverMap.mapType = NaverMap.MapType.Satellite
+            naverMap.mapType = NaverMap.MapType.Hybrid
             binding.btnMapTypeChange.setImageResource(R.drawable.ic_satellite_picture)
+
+            // 각 건물 정보등이 보이도록
+            naverMap.uiSettings.isIndoorLevelPickerEnabled = true
+            naverMap.isIndoorEnabled = true
+
+            // 각 건물 이름 등이 보이도록
+
         } else {
             naverMap.mapType = NaverMap.MapType.Basic
             binding.btnMapTypeChange.setImageResource(R.drawable.ic_satellite)
@@ -185,7 +199,7 @@ class CompassActivity : ParentActivity(), SensorEventListener, OnMapReadyCallbac
                 SharedPreferenceHelper.setSatelliteMapEnable(this, false)
                 binding.btnMapTypeChange.setImageResource(R.drawable.ic_satellite)
             } else {
-                naverMap.mapType = NaverMap.MapType.Satellite
+                naverMap.mapType = NaverMap.MapType.Hybrid
                 SharedPreferenceHelper.setSatelliteMapEnable(this, true)
                 binding.btnMapTypeChange.setImageResource(R.drawable.ic_satellite_picture)
             }
@@ -228,6 +242,12 @@ class CompassActivity : ParentActivity(), SensorEventListener, OnMapReadyCallbac
                 override fun onSearchButtonClick(lat: Double, lng: Double) {
                     supportFragmentManager.beginTransaction().remove(mapSearchFragment).commit()
                     binding.ivCompass.focusable = View.FOCUSABLE
+
+                    val manager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                    manager.hideSoftInputFromWindow(
+                        currentFocus!!.windowToken,
+                        InputMethodManager.HIDE_NOT_ALWAYS
+                    )
 
                     naverMap.moveCamera(CameraUpdate.scrollTo(LatLng(lat, lng)))
                 }
@@ -283,7 +303,6 @@ class CompassActivity : ParentActivity(), SensorEventListener, OnMapReadyCallbac
     }
 
     override fun onMapReady(p0: NaverMap) {
-
         naverMap = p0
         naverMap.locationSource = locationSource
         naverMap.locationTrackingMode = LocationTrackingMode.Follow
