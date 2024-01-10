@@ -53,6 +53,7 @@ class CompassActivity : ParentActivity(), SensorEventListener, OnMapReadyCallbac
     private var userSelectedIndex = -1
     private val usernames = ArrayList<String>()
     private lateinit var users: List<User>
+    private var currentPlaceInfoToastTime = 0L
 
     private lateinit var mapFragment: MapFragment
     private lateinit var naverMap: NaverMap
@@ -308,6 +309,14 @@ class CompassActivity : ParentActivity(), SensorEventListener, OnMapReadyCallbac
         naverMap.locationTrackingMode = LocationTrackingMode.Follow
         naverMap.uiSettings.isZoomControlEnabled = false
         naverMap.uiSettings.isLocationButtonEnabled = true
+
+        naverMap.addOnLocationChangeListener {
+            if(!isRotationFixed) {
+                if (System.currentTimeMillis() - currentPlaceInfoToastTime < 10000) return@addOnLocationChangeListener
+                currentPlaceInfoToastTime = System.currentTimeMillis()
+                Toast.makeText(this, "자동 회전 모드 중에는 현 위치로 이동이 잘 작동하지 않을 수 있습니다.", Toast.LENGTH_SHORT).show()
+            }
+        }
 
         mapIsReady = true
         setSatelliteMap()
