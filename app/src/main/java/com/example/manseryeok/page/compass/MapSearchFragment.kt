@@ -73,11 +73,10 @@ class MapSearchFragment : Fragment() {
         return binding.root
     }
 
-
     private suspend fun searchItem(keyword: String) {
         val response = naverSearchAPI.getSearchResult(
             SecretConstants.NAVER_CLIENT_ID,
-            SecretConstants.NAVER_CLIEND_SECRET,
+            SecretConstants.NAVER_CLIENT_SECRET,
             keyword,
         ).awaitResponse()
 

@@ -310,14 +310,6 @@ class CompassActivity : ParentActivity(), SensorEventListener, OnMapReadyCallbac
         naverMap.uiSettings.isZoomControlEnabled = false
         naverMap.uiSettings.isLocationButtonEnabled = true
 
-        naverMap.addOnLocationChangeListener {
-            if(!isRotationFixed) {
-                if (System.currentTimeMillis() - currentPlaceInfoToastTime < 10000) return@addOnLocationChangeListener
-                currentPlaceInfoToastTime = System.currentTimeMillis()
-                Toast.makeText(this, "자동 회전 모드 중에는 현 위치로 이동이 잘 작동하지 않을 수 있습니다.", Toast.LENGTH_SHORT).show()
-            }
-        }
-
         mapIsReady = true
         setSatelliteMap()
 
