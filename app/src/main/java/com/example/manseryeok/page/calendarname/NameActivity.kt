@@ -178,7 +178,7 @@ class NameActivity : ParentActivity() {
         }
     }
 
-    private fun loadUserModel() {
+    private fun loadUserModel() = with(binding) {
         runBlocking {
             launch(IO) {
                 val userDao = AppDatabase.getInstance(applicationContext).userDao()
@@ -187,8 +187,11 @@ class NameActivity : ParentActivity() {
                 name = userModel.name!!
 
                 userBirth = userModel.getBirthCalculatedLocalDateTime()
-                userCalendarService =
-                    CalendarService(this@NameActivity, userBirth, userModel.includeTime)
+                userCalendarService = CalendarService(this@NameActivity, userBirth, userModel.includeTime)
+                userCalendarService.calcGanji()
+
+                tvBirthGanjiTop.text = userCalendarService.yearHanjaGanji[0].toString()
+                tvBirthGanjiBottom.text = userCalendarService.yearHanjaGanji[1].toString()
             }
         }
     }

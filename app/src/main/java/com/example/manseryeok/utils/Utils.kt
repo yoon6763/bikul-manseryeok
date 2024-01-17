@@ -72,7 +72,7 @@ object Utils {
     }
 
     val pillarLabelArr = arrayOf(
-        //        甲     乙      丙      丁     戊      己      庚     辛      壬      癸
+        //        甲      乙      丙      丁      戊      己      庚     辛      壬      癸
         arrayOf("편인", "정인", "편관", "정관", "편재", "정재", "식신", "상관", "비견", "겁재"), // 壬, 亥
         arrayOf("정인", "편인", "정관", "편관", "정재", "편재", "상관", "식신", "겁재", "비견"), // 癸, 子
         arrayOf("비견", "겁재", "편인", "정인", "편관", "정관", "편재", "정재", "식신", "상관"), // 甲, 寅
@@ -102,7 +102,7 @@ object Utils {
             "辛", "酉" -> 9
             else -> -1
         }
-        if (meIdx == -1 || targetIdx == -1) return "error"
+        if (meIdx == -1 || targetIdx == -1) return "e${me}"
         return pillarLabelArr[targetIdx][meIdx]
     }
 
