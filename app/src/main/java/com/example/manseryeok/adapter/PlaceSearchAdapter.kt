@@ -7,11 +7,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.manseryeok.R
 import com.example.manseryeok.databinding.ItemSearchPlaceBinding
+import com.example.manseryeok.models.address.Juso
 import com.example.manseryeok.models.naversearch.NaverSearchItem
 
 class PlaceSearchAdapter(
     private val context: Context,
-    private val naverSearchItems: ArrayList<NaverSearchItem>,
+    private val naverSearchItems: ArrayList<Juso>,
 ) :
     RecyclerView.Adapter<PlaceSearchAdapter.Holder>() {
 
@@ -34,10 +35,9 @@ class PlaceSearchAdapter(
         holder.binding.run {
             val item = naverSearchItems[position]
 
-            tvAddress.text = item.address
-            tvTitle.text = item.title
-            tvAddressRoad.text = item.roadAddress
-            tvCategory.text = item.category
+            tvAddress.text = item.jibunAddr
+            tvZipcode.text = item.zipNo
+            tvAddressRoad.text = item.roadAddr
         }
     }
 

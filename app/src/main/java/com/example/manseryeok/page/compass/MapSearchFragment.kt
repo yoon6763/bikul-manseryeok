@@ -2,6 +2,7 @@ package com.example.manseryeok.page.compass
 
 import android.location.Geocoder
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,8 +11,9 @@ import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import com.example.manseryeok.adapter.PlaceSearchAdapter
 import com.example.manseryeok.databinding.FragmentMapSearchBinding
+import com.example.manseryeok.models.address.Juso
 import com.example.manseryeok.models.naversearch.NaverSearchItem
-import com.example.manseryeok.service.compass.NaverSearchAPI
+import com.example.manseryeok.service.compass.AddressSearchAPI
 import com.example.manseryeok.utils.SecretConstants
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -29,8 +31,8 @@ class MapSearchFragment : Fragment() {
     var onSearchButtonClickListener: OnSearchButtonClickListener? = null
 
     private lateinit var binding: FragmentMapSearchBinding
-    private val naverSearchAPI by lazy { NaverSearchAPI.create() }
-    private val placeSearchItems = ArrayList<NaverSearchItem>()
+    private val addressSearchAPI by lazy { AddressSearchAPI.create() }
+    private val placeSearchItems = ArrayList<Juso>()
     private lateinit var placeSearchAdapter: PlaceSearchAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,7 +64,7 @@ class MapSearchFragment : Fragment() {
         placeSearchAdapter.onItemClickListener = object : PlaceSearchAdapter.OnItemClickListener {
             override fun onItemClick(view: View, position: Int) {
                 val item = placeSearchItems[position]
-                val latLng = getLatLngFromAddress(item.address, item.roadAddress)
+                val latLng = getLatLngFromAddress(item.jibunAddr, item.roadAddr)
 
                 onSearchButtonClickListener?.onSearchButtonClick(latLng.first, latLng.second)
             }
@@ -74,10 +76,8 @@ class MapSearchFragment : Fragment() {
     }
 
     private suspend fun searchItem(keyword: String) {
-        val response = naverSearchAPI.getSearchResult(
-            SecretConstants.NAVER_CLIENT_ID,
-            SecretConstants.NAVER_CLIENT_SECRET,
-            keyword,
+        val response = addressSearchAPI.getSearchResult(
+            keyword = keyword,
         ).awaitResponse()
 
         if (!response.isSuccessful) {
@@ -85,10 +85,15 @@ class MapSearchFragment : Fragment() {
             return
         }
 
+        val errorMessage = response.body()?.results?.common?.errorMessage
+        if (errorMessage != "정상") {
+            Toast.makeText(context, errorMessage.toString(), Toast.LENGTH_SHORT).show()
+            return
+        }
+
         placeSearchItems.clear()
 
-        response.body()?.items?.forEach {
-            it.title = it.title.replace("</b>", "").replace("<b>", "")
+        response.body()?.results?.juso?.forEach {
             placeSearchItems.add(it)
         }
 
