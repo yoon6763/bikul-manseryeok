@@ -35,5 +35,4 @@ interface AddressSearchAPI {
         @Query("keyword") keyword: String,
         @Query("resultType") resultType: String = "json",
     ): Call<AddressSearchDto>
-
 }
