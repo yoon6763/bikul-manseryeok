@@ -86,6 +86,8 @@ class CalendarService(
         Log.d(TAG, "calcMonthGanji: ${season24SQLHelper.isReachMonth(userBirth)}")
         Log.d(TAG, "calcMonthGanji: monthIndex: $monthIndex")
         if (monthIndex == -1) monthIndex = 11
+        monthIndex--
+        if (monthIndex == -1) monthIndex = 11
 
         return monthGanjiList.split(" ")[monthIndex]
     }

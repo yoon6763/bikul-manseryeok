@@ -98,9 +98,9 @@ class NameService(val context: Context, var name: String, private val userModel:
             initialAndFinalSound.forEach { sound ->
                 val soundGanji = getNameGanji(sound, parity)
                 val ganjiTopLabel = Utils.getPillarLabel(birthYearGanji[0].toString(), soundGanji.toString())
-                val ganjiBottomLabel = Utils.getPillarLabel(soundGanji.toString(), birthYearGanji[1].toString())
+                val ganjiBottomLabel = Utils.getPillarLabel(birthYearGanji[1].toString(), soundGanji.toString())
 
-                val ganjiLuckTopLabel = Utils.getPillarLabel(luckGanji[0].toString(), soundGanji.toString())
+                val ganjiLuckTopLabel = Utils.getPillarLabel(soundGanji.toString(), luckGanji[0].toString())
                 val ganjiLuckBottomLabel = Utils.getPillarLabel(soundGanji.toString(), luckGanji[1].toString())
 
                 nameScoreItem.nameScoreChildItems.add(
