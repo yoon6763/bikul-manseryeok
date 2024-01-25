@@ -84,11 +84,12 @@ data class User(
     }
 
     fun updateFromViewModel(userInputViewModel: UserInputViewModel) {
+        val parsedUserEntity = userInputViewModel.toUserEntity()
         this.name = userInputViewModel.name.value
         this.gender = userInputViewModel.gender.value!!
-        this.birthYear = userInputViewModel.yearLabel.value!!.toInt()
-        this.birthMonth = userInputViewModel.monthLabel.value!!.toInt()
-        this.birthDay = userInputViewModel.dayLabel.value!!.toInt()
+        this.birthYear = parsedUserEntity.birthYear
+        this.birthMonth = parsedUserEntity.birthMonth
+        this.birthDay = parsedUserEntity.birthDay
         this.includeTime = userInputViewModel.isIncludeTime.value!!
 
         if (this.includeTime) {
