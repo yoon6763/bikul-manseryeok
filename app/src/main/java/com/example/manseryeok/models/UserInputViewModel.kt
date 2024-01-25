@@ -156,7 +156,7 @@ class UserInputViewModel : ViewModel() {
 
     fun updateViewModel(user: User) {
         name.value = user.name
-        gender.value = gender.value
+        gender.value = user.gender
         yearLabel.value = user.birthYear.toString()
         monthLabel.value = user.birthMonth.toString()
         dayLabel.value = user.birthDay.toString()

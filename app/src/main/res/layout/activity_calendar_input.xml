@@ -84,7 +84,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/radio_button_background"
                             android:button="@null"
-                            android:checked="true"
+                            android:checked="@{viewModel.gender == 0}"
                             android:gravity="center"
                             android:onClick="@{(v) -> viewModel.onGenderButtonClick(0)}"
                             android:text="@string/obj_gender_male"
@@ -98,6 +98,7 @@
                             android:background="@drawable/radio_button_background"
                             android:button="@null"
                             android:gravity="center"
+                            android:checked="@{viewModel.gender == 1}"
                             android:onClick="@{(v) -> viewModel.onGenderButtonClick(1)}"
                             android:text="@string/obj_gender_female"
                             android:textColor="@drawable/radio_text" />

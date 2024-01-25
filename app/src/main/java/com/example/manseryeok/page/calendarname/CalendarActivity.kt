@@ -33,6 +33,7 @@ import java.time.LocalDateTime
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashSet
+import kotlin.math.round
 
 
 class CalendarActivity : ParentActivity() {
@@ -43,7 +44,6 @@ class CalendarActivity : ParentActivity() {
         const val SINSAL_EXPAND_DURATION = 200L
         const val REQUEST_CODE_USER_DB_EDIT = 100
     }
-
 
     private val binding by lazy { ActivityCalendarBinding.inflate(layoutInflater) }
     private val tenArray by lazy { resources.getStringArray(R.array.ten_array) }
@@ -596,7 +596,7 @@ class CalendarActivity : ParentActivity() {
                 ptr++
                 cnt++
             }
-            firstAge = (cnt / 3).toInt()
+            firstAge = round(cnt.toDouble() / 3).toInt()
         } else {
             var cnt = 0
             var ptr = userCalendar.indexOf(userBirthCalender)
@@ -607,7 +607,7 @@ class CalendarActivity : ParentActivity() {
                 ptr--
                 cnt++
             }
-            firstAge = (cnt / 3).toInt()
+            firstAge = round(cnt.toDouble() / 3).toInt()
         }
 
         var userAge = getRealAge()
