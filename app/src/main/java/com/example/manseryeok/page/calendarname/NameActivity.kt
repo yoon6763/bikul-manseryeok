@@ -54,7 +54,6 @@ class NameActivity : ParentActivity() {
 
         binding.run {
             rvNameScore.adapter = nameAdapter
-
             setUpRadioButtonClickEvent()
 
             btnGotoManseryeok.setOnClickListener {
@@ -102,8 +101,7 @@ class NameActivity : ParentActivity() {
         content.appendLine("${name}님의 이름풀이 결과입니다.\n")
         content.appendLine("기준년월: ${searchDate.year}년 ${searchDate.monthValue}월\n")
 
-        val yearGanji =
-            nameService.calcYearGanji(searchDate.year, searchDate.monthValue, searchDate.dayOfMonth)
+        val yearGanji = nameService.calcYearGanji(searchDate.year, searchDate.monthValue, searchDate.dayOfMonth)
         val monthGanji = nameService.calcMonthGanji(
             searchDate.year,
             searchDate.monthValue,

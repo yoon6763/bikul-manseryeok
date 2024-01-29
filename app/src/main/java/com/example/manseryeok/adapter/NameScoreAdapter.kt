@@ -68,10 +68,8 @@ class NameScoreAdapter(
                     }
                     llContainer.addView(tvItem)
                 }
-
                 llItemNameContainer.addView(llContainer)
             }
-
             llItemNameContainer.invalidate()
         }
     }
@@ -83,5 +81,4 @@ class NameScoreAdapter(
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val binding = ItemNameBinding.bind(itemView)
     }
-
 }

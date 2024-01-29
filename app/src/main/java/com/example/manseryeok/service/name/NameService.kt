@@ -1,6 +1,7 @@
 package com.example.manseryeok.service.name
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import com.example.manseryeok.manseryeokdb.ManseryeokSQLHelper
 import com.example.manseryeok.models.Manseryeok
@@ -8,6 +9,7 @@ import com.example.manseryeok.models.name.NameScoreChildItem
 import com.example.manseryeok.models.name.NameScoreItem
 import com.example.manseryeok.models.user.User
 import com.example.manseryeok.utils.Utils
+import kotlin.math.log
 
 class NameService(val context: Context, var name: String, private val userModel: User) {
     private val userManseryeok by lazy {
@@ -97,19 +99,26 @@ class NameService(val context: Context, var name: String, private val userModel:
 
             initialAndFinalSound.forEach { sound ->
                 val soundGanji = getNameGanji(sound, parity)
-                val ganjiTopLabel = Utils.getPillarLabel(birthYearGanji[0].toString(), soundGanji.toString())
-                val ganjiBottomLabel = Utils.getPillarLabel(birthYearGanji[1].toString(), soundGanji.toString())
 
-                val ganjiLuckTopLabel = Utils.getPillarLabel(soundGanji.toString(), luckGanji[0].toString())
-                val ganjiLuckBottomLabel = Utils.getPillarLabel(soundGanji.toString(), luckGanji[1].toString())
+                // 바깥쪽꺼
+                val ganjiLuckTopLabel = Utils.getPillarLabel(luckGanji[0].toString(), soundGanji.toString(),)
+                val ganjiLuckBottomLabel = Utils.getPillarLabel(luckGanji[1].toString(), soundGanji.toString(),)
+
+                // 안쪽꺼
+                val ganjiTopLabel = Utils.getPillarLabel(soundGanji.toString(), birthYearGanji[0].toString(),)
+                val ganjiBottomLabel = Utils.getPillarLabel(soundGanji.toString(), birthYearGanji[1].toString(),)
+
+
+                Log.d("NameService", "luckGanji: $luckGanji   userYearGanji: $birthYearGanji  soundGanji: $soundGanji")
+                Log.d("NameService", "calcGanji: $ganjiTopLabel $ganjiBottomLabel $ganjiLuckTopLabel $ganjiLuckBottomLabel")
 
                 nameScoreItem.nameScoreChildItems.add(
                     NameScoreChildItem(
-                        soundGanji.toString(),
-                        ganjiTopLabel,
-                        ganjiBottomLabel,
-                        ganjiLuckTopLabel,
-                        ganjiLuckBottomLabel
+                        nameHan = soundGanji.toString(),
+                        ganjiTop = ganjiTopLabel,
+                        ganjiBottom = ganjiBottomLabel,
+                        luckTop = ganjiLuckTopLabel,
+                        luckBottom = ganjiLuckBottomLabel,
                     )
                 )
             }
