@@ -5,9 +5,9 @@
 
 
 ## 사용 기술
-개발 언어 : Kotlin
-Android SDK
-MVVM (Model - View - View Model) (일부 페이지 적용)
-Room DB
-Notion API
-Naver Map API
+* 개발 언어 : Kotlin <br>
+* Android SDK <br>
+* MVVM (Model - View - View Model) (일부 페이지 적용) <br>
+* Room DB <br>
+* Notion API <br>
+* Naver Map API <br>
