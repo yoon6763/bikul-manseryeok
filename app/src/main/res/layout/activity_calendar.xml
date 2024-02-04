@@ -36,7 +36,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/gap_horizontal"
+                    android:layout_marginHorizontal="10dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -53,7 +53,6 @@
                         android:layout_weight="1"
                         android:autoSizeTextType="uniform"
                         android:gravity="center"
-                        android:lines="1"
                         tools:text="1998년 12월 04일" />
 
                     <TextView
@@ -69,7 +68,6 @@
                         android:layout_weight="1"
                         android:autoSizeTextType="uniform"
                         android:gravity="center"
-                        android:lines="1"
                         tools:text="1992년 10월 16일" />
 
                 </LinearLayout>
@@ -77,7 +75,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/gap_horizontal"
+                    android:layout_marginHorizontal="10dp"
                     android:layout_marginTop="@dimen/gap_line"
                     android:orientation="horizontal">
 
@@ -95,7 +93,6 @@
                         android:layout_weight="1"
                         android:autoSizeTextType="uniform"
                         android:gravity="center"
-                        android:lines="1"
                         tools:text="1998년 12월 04일" />
 
                     <TextView
@@ -112,7 +109,6 @@
                         android:layout_weight="1"
                         android:autoSizeTextType="uniform"
                         android:gravity="center"
-                        android:lines="1"
                         tools:text="1992년 10월 16일" />
 
                 </LinearLayout>

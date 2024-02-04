@@ -41,8 +41,14 @@ data class User(
         }
     }
 
+    fun getBirthLocalDateTime(): LocalDateTime {
+        if (!includeTime) return LocalDateTime.of(birthYear, birthMonth, birthDay, 0, 0, 0)
+        return LocalDateTime.of(birthYear, birthMonth, birthDay, birthHour, birthMinute, 0)
+    }
+
     fun getBirthCalculatedLocalDateTime(): LocalDateTime {
         var userBirth = LocalDateTime.of(birthYear, birthMonth, birthDay, 0, 0, 0)
+
         if (!includeTime) {
             userBirth = userBirth.withHour(23)
             userBirth = userBirth.withMinute(59)

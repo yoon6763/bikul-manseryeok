@@ -30,6 +30,7 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashSet
@@ -306,130 +307,122 @@ class CalendarActivity : ParentActivity() {
     }
 
     // 기둥 세우기
-    private fun setUpPillar() {
-        binding.run {
+    private fun setUpPillar() = with(binding) {
+        userBirthCalender = userCalendar.find {
+            it.cd_sy == userBirthCalendar[Calendar.YEAR] &&
+                    it.cd_sm == userBirthCalendar[Calendar.MONTH] + 1 &&
+                    it.cd_sd == userBirthCalendar[Calendar.DAY_OF_MONTH]
+        }!!
 
-            userBirthCalender = userCalendar.find {
-                it.cd_sy == userBirthCalendar[Calendar.YEAR] &&
-                        it.cd_sm == userBirthCalendar[Calendar.MONTH] + 1 &&
-                        it.cd_sd == userBirthCalendar[Calendar.DAY_OF_MONTH]
-            }!!
-
-            // 正 생일
-            tvCal5.text = "${Utils.dateKorFormat.format(userBirthCalendar.timeInMillis)}"
-
-            yearPillar = calendarService.yearHanjaGanji
-            monthPillar = calendarService.monthHanjaGanji
-            dayPillar = calendarService.dayHanjaGanji
-            timePillar = calendarService.timeHanjaGanji
+        yearPillar = calendarService.yearHanjaGanji
+        monthPillar = calendarService.monthHanjaGanji
+        dayPillar = calendarService.dayHanjaGanji
+        timePillar = calendarService.timeHanjaGanji
 
 
-            // 년주
-            tvPillarYearTop.text = yearPillar[0].toString()
-            tvPillarYearBottom.text = yearPillar[1].toString()
+        // 년주
+        tvPillarYearTop.text = yearPillar[0].toString()
+        tvPillarYearBottom.text = yearPillar[1].toString()
 
-            when (Utils.sibgan[0].indexOf(yearPillar[0].toString())) {
-                0, 1 -> tvPillarYearTop.setBackgroundResource(R.drawable.box_mint) // 목
-                2, 3 -> tvPillarYearTop.setBackgroundResource(R.drawable.box_red) // 화
-                4, 5 -> tvPillarYearTop.setBackgroundResource(R.drawable.box_yellow) // 토
-                6, 7 -> tvPillarYearTop.setBackgroundResource(R.drawable.box_light_gray) // 금
-                8, 9 -> tvPillarYearTop.setBackgroundResource(R.drawable.box_sky) // 수
+        when (Utils.sibgan[0].indexOf(yearPillar[0].toString())) {
+            0, 1 -> tvPillarYearTop.setBackgroundResource(R.drawable.box_mint) // 목
+            2, 3 -> tvPillarYearTop.setBackgroundResource(R.drawable.box_red) // 화
+            4, 5 -> tvPillarYearTop.setBackgroundResource(R.drawable.box_yellow) // 토
+            6, 7 -> tvPillarYearTop.setBackgroundResource(R.drawable.box_light_gray) // 금
+            8, 9 -> tvPillarYearTop.setBackgroundResource(R.drawable.box_sky) // 수
+        }
+
+        when (Utils.sibiji[0].indexOf(yearPillar[1].toString())) {
+            0, 11 -> tvPillarYearBottom.setBackgroundResource(R.drawable.box_sky) // 수
+            1, 4, 7, 10 -> tvPillarYearBottom.setBackgroundResource(R.drawable.box_yellow) // 토
+            2, 3 -> tvPillarYearBottom.setBackgroundResource(R.drawable.box_mint) // 목
+            5, 6 -> tvPillarYearBottom.setBackgroundResource(R.drawable.box_red) // 화
+            8, 9 -> tvPillarYearBottom.setBackgroundResource(R.drawable.box_light_gray) // 금
+        }
+
+        // 월주
+        tvPillarMonthTop.text = monthPillar[0].toString()
+        tvPillarMonthBottom.text = monthPillar[1].toString()
+
+        when (Utils.sibgan[0].indexOf(monthPillar[0].toString())) {
+            0, 1 -> tvPillarMonthTop.setBackgroundResource(R.drawable.box_mint) // 목
+            2, 3 -> tvPillarMonthTop.setBackgroundResource(R.drawable.box_red) // 화
+            4, 5 -> tvPillarMonthTop.setBackgroundResource(R.drawable.box_yellow) // 토
+            6, 7 -> tvPillarMonthTop.setBackgroundResource(R.drawable.box_light_gray) // 금
+            8, 9 -> tvPillarMonthTop.setBackgroundResource(R.drawable.box_sky) // 수
+        }
+
+        when (Utils.sibiji[0].indexOf(monthPillar[1].toString())) {
+            0, 11 -> tvPillarMonthBottom.setBackgroundResource(R.drawable.box_sky) // 수
+            1, 4, 7, 10 -> tvPillarMonthBottom.setBackgroundResource(R.drawable.box_yellow) // 토
+            2, 3 -> tvPillarMonthBottom.setBackgroundResource(R.drawable.box_mint) // 목
+            5, 6 -> tvPillarMonthBottom.setBackgroundResource(R.drawable.box_red) // 화
+            8, 9 -> tvPillarMonthBottom.setBackgroundResource(R.drawable.box_light_gray) // 금
+        }
+
+        // 일주
+        tvPillarDayTop.text = dayPillar[0].toString()
+        tvPillarDayBottom.text = dayPillar[1].toString()
+
+        when (Utils.sibgan[0].indexOf(dayPillar[0].toString())) {
+            0, 1 -> tvPillarDayTop.setBackgroundResource(R.drawable.box_mint) // 목
+            2, 3 -> tvPillarDayTop.setBackgroundResource(R.drawable.box_red) // 화
+            4, 5 -> tvPillarDayTop.setBackgroundResource(R.drawable.box_yellow) // 토
+            6, 7 -> tvPillarDayTop.setBackgroundResource(R.drawable.box_light_gray) // 금
+            8, 9 -> tvPillarDayTop.setBackgroundResource(R.drawable.box_sky) // 수
+        }
+
+        when (Utils.sibiji[0].indexOf(dayPillar[1].toString())) {
+            0, 11 -> tvPillarDayBottom.setBackgroundResource(R.drawable.box_sky) // 수
+            1, 4, 7, 10 -> tvPillarDayBottom.setBackgroundResource(R.drawable.box_yellow) // 토
+            2, 3 -> tvPillarDayBottom.setBackgroundResource(R.drawable.box_mint) // 목
+            5, 6 -> tvPillarDayBottom.setBackgroundResource(R.drawable.box_red) // 화
+            8, 9 -> tvPillarDayBottom.setBackgroundResource(R.drawable.box_light_gray) // 금
+        }
+
+        // 시주
+        if (isTimeInclude) {
+            // 시간 포함
+            tvPillarTimeTop.text = timePillar[0].toString()
+            tvPillarTimeBottom.text = timePillar[1].toString()
+
+            tvPillarTimeTop.visibility = View.VISIBLE
+            tvPillarTimeBottom.visibility = View.VISIBLE
+
+
+            when (Utils.sibgan[0].indexOf(timePillar[0].toString())) {
+                0, 1 -> tvPillarTimeTop.setBackgroundResource(R.drawable.box_mint) // 목
+                2, 3 -> tvPillarTimeTop.setBackgroundResource(R.drawable.box_red) // 화
+                4, 5 -> tvPillarTimeTop.setBackgroundResource(R.drawable.box_yellow) // 토
+                6, 7 -> tvPillarTimeTop.setBackgroundResource(R.drawable.box_light_gray) // 금
+                8, 9 -> tvPillarTimeTop.setBackgroundResource(R.drawable.box_sky) // 수
             }
 
-            when (Utils.sibiji[0].indexOf(yearPillar[1].toString())) {
-                0, 11 -> tvPillarYearBottom.setBackgroundResource(R.drawable.box_sky) // 수
-                1, 4, 7, 10 -> tvPillarYearBottom.setBackgroundResource(R.drawable.box_yellow) // 토
-                2, 3 -> tvPillarYearBottom.setBackgroundResource(R.drawable.box_mint) // 목
-                5, 6 -> tvPillarYearBottom.setBackgroundResource(R.drawable.box_red) // 화
-                8, 9 -> tvPillarYearBottom.setBackgroundResource(R.drawable.box_light_gray) // 금
+            when (Utils.sibiji[0].indexOf(timePillar[1].toString())) {
+                0, 11 -> tvPillarTimeBottom.setBackgroundResource(R.drawable.box_sky) // 수
+                1, 4, 7, 10 -> tvPillarTimeBottom.setBackgroundResource(R.drawable.box_yellow) // 토
+                2, 3 -> tvPillarTimeBottom.setBackgroundResource(R.drawable.box_mint) // 목
+                5, 6 -> tvPillarTimeBottom.setBackgroundResource(R.drawable.box_red) // 화
+                8, 9 -> tvPillarTimeBottom.setBackgroundResource(R.drawable.box_light_gray) // 금
             }
-
-            // 월주
-            tvPillarMonthTop.text = monthPillar[0].toString()
-            tvPillarMonthBottom.text = monthPillar[1].toString()
-
-            when (Utils.sibgan[0].indexOf(monthPillar[0].toString())) {
-                0, 1 -> tvPillarMonthTop.setBackgroundResource(R.drawable.box_mint) // 목
-                2, 3 -> tvPillarMonthTop.setBackgroundResource(R.drawable.box_red) // 화
-                4, 5 -> tvPillarMonthTop.setBackgroundResource(R.drawable.box_yellow) // 토
-                6, 7 -> tvPillarMonthTop.setBackgroundResource(R.drawable.box_light_gray) // 금
-                8, 9 -> tvPillarMonthTop.setBackgroundResource(R.drawable.box_sky) // 수
-            }
-
-            when (Utils.sibiji[0].indexOf(monthPillar[1].toString())) {
-                0, 11 -> tvPillarMonthBottom.setBackgroundResource(R.drawable.box_sky) // 수
-                1, 4, 7, 10 -> tvPillarMonthBottom.setBackgroundResource(R.drawable.box_yellow) // 토
-                2, 3 -> tvPillarMonthBottom.setBackgroundResource(R.drawable.box_mint) // 목
-                5, 6 -> tvPillarMonthBottom.setBackgroundResource(R.drawable.box_red) // 화
-                8, 9 -> tvPillarMonthBottom.setBackgroundResource(R.drawable.box_light_gray) // 금
-            }
-
-            // 일주
-            tvPillarDayTop.text = dayPillar[0].toString()
-            tvPillarDayBottom.text = dayPillar[1].toString()
-
-            when (Utils.sibgan[0].indexOf(dayPillar[0].toString())) {
-                0, 1 -> tvPillarDayTop.setBackgroundResource(R.drawable.box_mint) // 목
-                2, 3 -> tvPillarDayTop.setBackgroundResource(R.drawable.box_red) // 화
-                4, 5 -> tvPillarDayTop.setBackgroundResource(R.drawable.box_yellow) // 토
-                6, 7 -> tvPillarDayTop.setBackgroundResource(R.drawable.box_light_gray) // 금
-                8, 9 -> tvPillarDayTop.setBackgroundResource(R.drawable.box_sky) // 수
-            }
-
-            when (Utils.sibiji[0].indexOf(dayPillar[1].toString())) {
-                0, 11 -> tvPillarDayBottom.setBackgroundResource(R.drawable.box_sky) // 수
-                1, 4, 7, 10 -> tvPillarDayBottom.setBackgroundResource(R.drawable.box_yellow) // 토
-                2, 3 -> tvPillarDayBottom.setBackgroundResource(R.drawable.box_mint) // 목
-                5, 6 -> tvPillarDayBottom.setBackgroundResource(R.drawable.box_red) // 화
-                8, 9 -> tvPillarDayBottom.setBackgroundResource(R.drawable.box_light_gray) // 금
-            }
-
-            // 시주
-            if (isTimeInclude) {
-                // 시간 포함
-                tvPillarTimeTop.text = timePillar[0].toString()
-                tvPillarTimeBottom.text = timePillar[1].toString()
-
-                tvPillarTimeTop.visibility = View.VISIBLE
-                tvPillarTimeBottom.visibility = View.VISIBLE
-
-
-                when (Utils.sibgan[0].indexOf(timePillar[0].toString())) {
-                    0, 1 -> tvPillarTimeTop.setBackgroundResource(R.drawable.box_mint) // 목
-                    2, 3 -> tvPillarTimeTop.setBackgroundResource(R.drawable.box_red) // 화
-                    4, 5 -> tvPillarTimeTop.setBackgroundResource(R.drawable.box_yellow) // 토
-                    6, 7 -> tvPillarTimeTop.setBackgroundResource(R.drawable.box_light_gray) // 금
-                    8, 9 -> tvPillarTimeTop.setBackgroundResource(R.drawable.box_sky) // 수
-                }
-
-                when (Utils.sibiji[0].indexOf(timePillar[1].toString())) {
-                    0, 11 -> tvPillarTimeBottom.setBackgroundResource(R.drawable.box_sky) // 수
-                    1, 4, 7, 10 -> tvPillarTimeBottom.setBackgroundResource(R.drawable.box_yellow) // 토
-                    2, 3 -> tvPillarTimeBottom.setBackgroundResource(R.drawable.box_mint) // 목
-                    5, 6 -> tvPillarTimeBottom.setBackgroundResource(R.drawable.box_red) // 화
-                    8, 9 -> tvPillarTimeBottom.setBackgroundResource(R.drawable.box_light_gray) // 금
-                }
-            } else {
-                tvPillarTimeTop.visibility = View.INVISIBLE
-                tvPillarTimeBottom.visibility = View.INVISIBLE
-            }
+        } else {
+            tvPillarTimeTop.visibility = View.INVISIBLE
+            tvPillarTimeBottom.visibility = View.INVISIBLE
         }
     }
 
-    private fun setUpPillarLabel() {
-        binding.run {
-            val me = dayPillar[0].toString()
-            tvPillarYearTopLabel.text = Utils.getPillarLabel(me, yearPillar[0].toString())
-            tvPillarYearBottomLabel.text = Utils.getPillarLabel(me, yearPillar[1].toString())
-            tvPillarMonthTopLabel.text = Utils.getPillarLabel(me, monthPillar[0].toString())
-            tvPillarMonthBottomLabel.text = Utils.getPillarLabel(me, monthPillar[1].toString())
-            tvPillarDayTopLabel.text = Utils.getPillarLabel(me, dayPillar[0].toString())
-            tvPillarDayBottomLabel.text = Utils.getPillarLabel(me, dayPillar[1].toString())
+    private fun setUpPillarLabel() = with(binding) {
+        val me = dayPillar[0].toString()
+        tvPillarYearTopLabel.text = Utils.getPillarLabel(me, yearPillar[0].toString())
+        tvPillarYearBottomLabel.text = Utils.getPillarLabel(me, yearPillar[1].toString())
+        tvPillarMonthTopLabel.text = Utils.getPillarLabel(me, monthPillar[0].toString())
+        tvPillarMonthBottomLabel.text = Utils.getPillarLabel(me, monthPillar[1].toString())
+        tvPillarDayTopLabel.text = Utils.getPillarLabel(me, dayPillar[0].toString())
+        tvPillarDayBottomLabel.text = Utils.getPillarLabel(me, dayPillar[1].toString())
 
-            if (isTimeInclude) {
-                tvPillarTimeTopLabel.text = Utils.getPillarLabel(me, timePillar[0].toString())
-                tvPillarTimeBottomLabel.text = Utils.getPillarLabel(me, timePillar[1].toString())
-            }
+        if (isTimeInclude) {
+            tvPillarTimeTopLabel.text = Utils.getPillarLabel(me, timePillar[0].toString())
+            tvPillarTimeBottomLabel.text = Utils.getPillarLabel(me, timePillar[1].toString())
         }
     }
 
@@ -440,7 +433,7 @@ class CalendarActivity : ParentActivity() {
         binding.tvEmpty.text = "공망 : $yearEmpty (년), $dayEmpty (일)"
     }
 
-    private fun isFirstSeaonOfEachMonth(label: String): Boolean {
+    private fun isFirstSeasonOfEachMonth(label: String): Boolean {
         return label in arrayOf(
             "입춘",
             "경칩",
@@ -502,7 +495,7 @@ class CalendarActivity : ParentActivity() {
 
             binding.run {
                 tvCalTermsTitle.text = seasonH
-                tvCalTerms.text = Utils.dateKorFormat.format(seasonCalendar.timeInMillis)
+                tvCalTerms.text = Utils.dateTimeKorFormat.format(seasonCalendar.timeInMillis)
             }
         }
     }
@@ -570,8 +563,15 @@ class CalendarActivity : ParentActivity() {
     }
 
     private fun setUserBirth() = with(binding) {
-        tvCalSun.text = Utils.dateKorFormat.format(userModel.getBirthOrigin().timeInMillis)
-        tvCalMoon.text = Utils.dateKorFormat.format(Utils.convertSolarToLunar(userBirthCalendar))
+        if (userModel.includeTime) {
+            tvCalSun.text = userModel.getBirthLocalDateTime().toDateTimeFormat()
+            tvCalMoon.text = Utils.dateTimeKorFormat.format(Utils.convertSolarToLunarCalendar(userBirthCalendar.apply { this[Calendar.MINUTE] += 30 }).timeInMillis)
+            tvCal5.text = userModel.getBirthCalculatedLocalDateTime().minusMinutes(30).toDateTimeFormat()
+        } else {
+            tvCalSun.text = userModel.getBirthLocalDateTime().toDateFormat()
+            tvCalMoon.text = Utils.dateKorFormat.format(Utils.convertSolarToLunarCalendar(userBirthCalendar).timeInMillis)
+            tvCal5.text = userModel.getBirthCalculatedLocalDateTime().toDateFormat()
+        }
     }
 
     private fun initLoadDB() {
@@ -605,9 +605,9 @@ class CalendarActivity : ParentActivity() {
             var cnt = 0
             var ptr = userCalendar.indexOf(userBirthCalender)
             while (true) {
-                if (userCalendar[ptr].cd_terms_time != null && userCalendar[ptr].cd_terms_time != 0L && isFirstSeaonOfEachMonth(
-                        userCalendar[ptr].cd_kterms!!
-                    )
+                if (userCalendar[ptr].cd_terms_time != null
+                    && userCalendar[ptr].cd_terms_time != 0L &&
+                    isFirstSeasonOfEachMonth(userCalendar[ptr].cd_kterms!!)
                 ) break
                 ptr++
                 cnt++
@@ -617,12 +617,11 @@ class CalendarActivity : ParentActivity() {
             var cnt = 0
             var ptr = userCalendar.indexOf(userBirthCalender)
             while (true) {
-                if (userCalendar[ptr].cd_terms_time != null && userCalendar[ptr].cd_terms_time != 0L && isFirstSeaonOfEachMonth(
-                        userCalendar[ptr].cd_kterms!!
-                    )
-                ) {
-                    break
-                }
+                if (userCalendar[ptr].cd_terms_time != null &&
+                    userCalendar[ptr].cd_terms_time != 0L &&
+                    isFirstSeasonOfEachMonth(userCalendar[ptr].cd_kterms!!)
+                ) break
+
                 ptr--
                 cnt++
             }
@@ -677,9 +676,7 @@ class CalendarActivity : ParentActivity() {
             luckAdapter.notifyDataSetChanged()
 
         }
-
         luckAdapter.performItemClick(maxOf(0, initialRvLuckPos))
-
     }
 
     private fun setSinsalExpandOrCollapse(type: Int) = with(binding) {
@@ -701,7 +698,6 @@ class CalendarActivity : ParentActivity() {
             }
         }
     }
-
 
     // 년주 월주 리사이클러뷰 세팅
     private fun setUpYearAndMonthPillar() {
@@ -727,8 +723,7 @@ class CalendarActivity : ParentActivity() {
     private fun setRecyclerViewClickEvent() {
         binding.run {
             yearAdapter.useItemClickEvent = true
-            yearAdapter.onItemClickListener =
-                object : SixtyHorizontalSmallAdapter.OnItemClickListener {
+            yearAdapter.onItemClickListener = object : SixtyHorizontalSmallAdapter.OnItemClickListener {
                     override fun onItemClick(year: Int) {
                         yearAdapter.notifyDataSetChanged()
                         setUpMonthPillar(Utils.getYearGanji(year)[0])
@@ -862,5 +857,15 @@ class CalendarActivity : ParentActivity() {
         if (requestCode == REQUEST_CODE_USER_DB_EDIT && resultCode == RESULT_OK) {
             recreate()
         }
+    }
+
+    private fun LocalDateTime.toDateTimeFormat(): String {
+        val formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH:mm")
+        return this.format(formatter)
+    }
+
+    private fun LocalDateTime.toDateFormat(): String {
+        val formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")
+        return this.format(formatter)
     }
 }

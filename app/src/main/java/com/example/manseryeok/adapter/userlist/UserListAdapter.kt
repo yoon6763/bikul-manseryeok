@@ -84,8 +84,8 @@ class UserListAdapter(
 
             tvItemDbBirthSum.text = "(양) ${Utils.dateDotFormat.format(user.getBirthOrigin().timeInMillis)}"
             tvItemDbBirthMoon.text = "(음) ${Utils.dateDotFormat.format(Utils.convertSolarToLunar(birth))}"
-            tvItemDbGanji.text = ganji.toString()
 
+            tvItemDbGanji.text = ganji.toString()
 
             val tags = items[position].tags.map { "#${it.name}\n" }
 
@@ -183,7 +183,6 @@ class UserListAdapter(
                     selectedItems.delete(prePosition)
                     selectedItems.put(adapterPosition, true)
                 }
-
                 if (prePosition != -1) {
                     notifyItemChanged(prePosition)
                 }

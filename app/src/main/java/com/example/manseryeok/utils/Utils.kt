@@ -676,6 +676,27 @@ object Utils {
         return dateSlideFormat.parse(ret.toString())!!.time
     }
 
+    fun convertSolarToLunarCalendar(date: Calendar): Calendar {
+        val cc = ChineseCalendar()
+        val cal = Calendar.getInstance()
+        cal[Calendar.YEAR] = date[Calendar.YEAR]
+        cal[Calendar.MONTH] = date[Calendar.MONTH]
+        cal[Calendar.DAY_OF_MONTH] = date[Calendar.DAY_OF_MONTH]
+        cc.timeInMillis = cal.timeInMillis
+        val y = cc[ChineseCalendar.EXTENDED_YEAR] - 2637
+        val m = cc[ChineseCalendar.MONTH] + 1
+        val d = cc[ChineseCalendar.DAY_OF_MONTH]
+
+        val ret = Calendar.getInstance()
+        ret[Calendar.YEAR] = y
+        ret[Calendar.MONTH] = m - 1
+        ret[Calendar.DAY_OF_MONTH] = d
+        ret[Calendar.HOUR_OF_DAY] = date[Calendar.HOUR_OF_DAY]
+        ret[Calendar.MINUTE] = date[Calendar.MINUTE]
+
+        return ret
+    }
+
     // 층과 각도가 주어짐
     fun calcBearing(layer: Int, degree: Int): String? {
         return when (layer) {

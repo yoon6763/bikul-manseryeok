@@ -81,10 +81,7 @@ class CalendarService(
         }
 
         var monthIndex = userBirth.monthValue - 1
-        Log.d(TAG, "calcMonthGanji: monthIndex: $monthIndex")
         if (!season24SQLHelper.isReachMonth(userBirth)) monthIndex--
-        Log.d(TAG, "calcMonthGanji: ${season24SQLHelper.isReachMonth(userBirth)}")
-        Log.d(TAG, "calcMonthGanji: monthIndex: $monthIndex")
         if (monthIndex == -1) monthIndex = 11
         monthIndex--
         if (monthIndex == -1) monthIndex = 11
