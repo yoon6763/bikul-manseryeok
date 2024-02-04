@@ -441,7 +441,20 @@ class CalendarActivity : ParentActivity() {
     }
 
     private fun isFirstSeaonOfEachMonth(label: String): Boolean {
-        return label in arrayOf("입춘", "경칩", "청명", "입하", "망종", "소서", "입추", "백로", "한로", "입동", "대설", "소한")
+        return label in arrayOf(
+            "입춘",
+            "경칩",
+            "청명",
+            "입하",
+            "망종",
+            "소서",
+            "입추",
+            "백로",
+            "한로",
+            "입동",
+            "대설",
+            "소한"
+        )
     }
 
     private fun setUpSeasonBirth() {
@@ -592,7 +605,10 @@ class CalendarActivity : ParentActivity() {
             var cnt = 0
             var ptr = userCalendar.indexOf(userBirthCalender)
             while (true) {
-                if (userCalendar[ptr].cd_terms_time != null && userCalendar[ptr].cd_terms_time != 0L && isFirstSeaonOfEachMonth(userCalendar[ptr].cd_kterms!!)) break
+                if (userCalendar[ptr].cd_terms_time != null && userCalendar[ptr].cd_terms_time != 0L && isFirstSeaonOfEachMonth(
+                        userCalendar[ptr].cd_kterms!!
+                    )
+                ) break
                 ptr++
                 cnt++
             }
@@ -601,7 +617,10 @@ class CalendarActivity : ParentActivity() {
             var cnt = 0
             var ptr = userCalendar.indexOf(userBirthCalender)
             while (true) {
-                if (userCalendar[ptr].cd_terms_time != null && userCalendar[ptr].cd_terms_time != 0L && isFirstSeaonOfEachMonth(userCalendar[ptr].cd_kterms!!)) {
+                if (userCalendar[ptr].cd_terms_time != null && userCalendar[ptr].cd_terms_time != 0L && isFirstSeaonOfEachMonth(
+                        userCalendar[ptr].cd_kterms!!
+                    )
+                ) {
                     break
                 }
                 ptr--
@@ -659,8 +678,7 @@ class CalendarActivity : ParentActivity() {
 
         }
 
-
-        luckAdapter.performItemClick(initialRvLuckPos + 1)
+        luckAdapter.performItemClick(maxOf(0, initialRvLuckPos))
 
     }
 
