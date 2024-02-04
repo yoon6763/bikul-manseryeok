@@ -5,8 +5,6 @@ import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.os.Bundle
 import android.renderscript.Allocation
@@ -20,7 +18,6 @@ import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.forEach
-import com.bumptech.glide.Glide
 import com.example.manseryeok.R
 import com.example.manseryeok.adapter.ImageSliderAdapter
 import com.example.manseryeok.manseryeokdb.ManseryeokSQLHelper
@@ -31,6 +28,8 @@ import com.example.manseryeok.models.notion.request.AdvertiseRequestDTO
 import com.example.manseryeok.models.notion.request.Filter
 import com.example.manseryeok.page.calendarname.CalendarInputActivity
 import com.example.manseryeok.page.compass.CompassActivity
+import com.example.manseryeok.page.terms.BusinessInfoDialogFragment
+import com.example.manseryeok.page.terms.TermsDialogFragment
 import com.example.manseryeok.page.user.UserDBActivity
 import com.example.manseryeok.service.NotionAPI
 import com.example.manseryeok.utils.Extras
@@ -42,7 +41,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import retrofit2.awaitResponse
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
@@ -74,6 +72,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setStatusBar()
         setDayLuck()
         setGridDisplaySize()
+        setBottomLayout()
 
         CoroutineScope(Dispatchers.Main).launch {
             setAdvertise()
@@ -85,6 +84,25 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         // getHashKey()
     }
 
+    private fun setBottomLayout() = with(binding) {
+        tvTerms.setOnClickListener {
+            val termsDialogFragment = TermsDialogFragment.newInstance()
+            termsDialogFragment.show(supportFragmentManager, "termsDialog")
+            termsDialogFragment.onDialogAgreeListener =
+                object : TermsDialogFragment.OnDialogAgreeListener {
+                    override fun onDialogAgree() {
+                        termsDialogFragment.dismiss()
+                    }
+                }
+        }
+
+        tvBusinessInfo.setOnClickListener {
+            val businessInfoDialogFragment = BusinessInfoDialogFragment.newInstance()
+            businessInfoDialogFragment.show(supportFragmentManager, "businessInfoDialog")
+        }
+
+    }
+
     private fun openTermsAgreeDialog() {
         if (SharedPreferenceHelper.isTermsAgree(applicationContext)) {
             return
@@ -94,12 +112,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         termsDialogFragment.show(supportFragmentManager, "termsDialog")
 
         termsDialogFragment.isCancelable = false
-        termsDialogFragment.onDialogAgreeListener = object : TermsDialogFragment.OnDialogAgreeListener {
-            override fun onDialogAgree() {
-                termsDialogFragment.dismiss()
-                SharedPreferenceHelper.setTermsAgree(applicationContext, true)
+        termsDialogFragment.onDialogAgreeListener =
+            object : TermsDialogFragment.OnDialogAgreeListener {
+                override fun onDialogAgree() {
+                    termsDialogFragment.dismiss()
+                    SharedPreferenceHelper.setTermsAgree(applicationContext, true)
+                }
             }
-        }
 
     }
 

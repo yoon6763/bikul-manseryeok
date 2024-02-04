@@ -1,4 +1,4 @@
-package com.example.manseryeok.page
+package com.example.manseryeok.page.terms
 
 import android.os.Bundle
 import android.view.LayoutInflater

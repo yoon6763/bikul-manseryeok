@@ -158,4 +158,11 @@
 이 메 일: kulholab@gmail.com\n
     </string>
 
+    <string name="business_info">
+        상호: 비결원\n
+        대표자: 안종희\n
+        주소: 충청남도 공주시 계룡면 성밑길 35-3\n
+        전화번호: 010-8451-6442\n
+    </string>
+
 </resources>
