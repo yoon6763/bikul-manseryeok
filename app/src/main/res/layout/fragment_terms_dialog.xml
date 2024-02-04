@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".page.TermsDialogFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/box_full_mint"
+                android:gravity="center"
+                android:paddingVertical="12dp"
+                android:text="위치기반서비스 이용약관"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:text="@string/terms_location" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/box_full_mint"
+                android:gravity="center"
+                android:paddingVertical="12dp"
+                android:text="개인정보취급방침"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:text="@string/terms_privacy" />
+
+            <Button
+                android:id="@+id/btn_agree"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/btn_full_height"
+                android:layout_marginTop="30dp"
+                android:autoSizeTextType="uniform"
+                android:background="@drawable/btn_navy"
+                android:padding="7dp"
+                android:foreground="?attr/selectableItemBackground"
+                android:text="상기 약관을 모두 읽었으며 이에 동의합니다" />
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

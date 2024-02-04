@@ -35,6 +35,7 @@ import com.example.manseryeok.page.user.UserDBActivity
 import com.example.manseryeok.service.NotionAPI
 import com.example.manseryeok.utils.Extras
 import com.example.manseryeok.utils.SecretConstants
+import com.example.manseryeok.utils.SharedPreferenceHelper
 import com.example.manseryeok.utils.Utils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -79,7 +80,27 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             startSlider()
         }
 
+        openTermsAgreeDialog()
+
         // getHashKey()
+    }
+
+    private fun openTermsAgreeDialog() {
+        if (SharedPreferenceHelper.isTermsAgree(applicationContext)) {
+            return
+        }
+
+        val termsDialogFragment = TermsDialogFragment.newInstance()
+        termsDialogFragment.show(supportFragmentManager, "termsDialog")
+
+        termsDialogFragment.isCancelable = false
+        termsDialogFragment.onDialogAgreeListener = object : TermsDialogFragment.OnDialogAgreeListener {
+            override fun onDialogAgree() {
+                termsDialogFragment.dismiss()
+                SharedPreferenceHelper.setTermsAgree(applicationContext, true)
+            }
+        }
+
     }
 
     private fun startSlider() {
