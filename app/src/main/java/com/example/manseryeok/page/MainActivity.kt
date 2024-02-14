@@ -15,6 +15,7 @@ import android.util.Base64
 import android.util.Log
 import android.view.View
 import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.forEach
@@ -88,6 +89,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         tvTerms.setOnClickListener {
             val termsDialogFragment = TermsDialogFragment.newInstance()
             termsDialogFragment.show(supportFragmentManager, "termsDialog")
+
             termsDialogFragment.onDialogAgreeListener =
                 object : TermsDialogFragment.OnDialogAgreeListener {
                     override fun onDialogAgree() {

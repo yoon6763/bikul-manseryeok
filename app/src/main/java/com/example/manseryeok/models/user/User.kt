@@ -59,7 +59,7 @@ data class User(
         userBirth = userBirth.withMinute(birthMinute)
 
         if (useSummerTime == 1) userBirth = userBirth.plusHours(1)
-        if (useTokyoTime == 1) userBirth = userBirth.plusMinutes(30)
+        if (useTokyoTime == 1) userBirth = userBirth.minusMinutes(30)
 
         return userBirth
     }
@@ -78,12 +78,6 @@ data class User(
 
             if (useSummerTime == 1) calendar.add(Calendar.HOUR_OF_DAY, 1)
             if (useTokyoTime == 1) calendar.add(Calendar.MINUTE, 30)
-
-            // 23:30 이후면 다음날로 침
-            if (includeTime && birthHour == 23 && birthMinute >= 30) calendar.add(
-                Calendar.HOUR_OF_DAY,
-                1
-            )
         }
 
         return calendar

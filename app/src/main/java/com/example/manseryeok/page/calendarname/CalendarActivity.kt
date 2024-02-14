@@ -566,10 +566,19 @@ class CalendarActivity : ParentActivity() {
         if (userModel.includeTime) {
             tvCalSun.text = userModel.getBirthLocalDateTime().toDateTimeFormat()
             tvCalMoon.text = Utils.dateTimeKorFormat.format(Utils.convertSolarToLunarCalendar(userBirthCalendar.apply { this[Calendar.MINUTE] += 30 }).timeInMillis)
-            tvCal5.text = userModel.getBirthCalculatedLocalDateTime().minusMinutes(30).toDateTimeFormat()
+
+            var correctedTime = userModel.getBirthCalculatedLocalDateTime()
+            if(userModel.useTokyoTime != 1) {
+                correctedTime = correctedTime.minusMinutes(30)
+            } else {
+                correctedTime = correctedTime.plusMinutes(30)
+            }
+
+            tvCal5.text = correctedTime.toDateTimeFormat()
         } else {
             tvCalSun.text = userModel.getBirthLocalDateTime().toDateFormat()
-            tvCalMoon.text = Utils.dateKorFormat.format(Utils.convertSolarToLunarCalendar(userBirthCalendar).timeInMillis)
+            tvCalMoon.text =
+                Utils.dateKorFormat.format(Utils.convertSolarToLunarCalendar(userBirthCalendar).timeInMillis)
             tvCal5.text = userModel.getBirthCalculatedLocalDateTime().toDateFormat()
         }
     }
@@ -606,8 +615,8 @@ class CalendarActivity : ParentActivity() {
             var ptr = userCalendar.indexOf(userBirthCalender)
             while (true) {
                 if (userCalendar[ptr].cd_terms_time != null
-                    && userCalendar[ptr].cd_terms_time != 0L &&
-                    isFirstSeasonOfEachMonth(userCalendar[ptr].cd_kterms!!)
+                    && userCalendar[ptr].cd_terms_time != 0L
+                    && isFirstSeasonOfEachMonth(userCalendar[ptr].cd_kterms!!)
                 ) break
                 ptr++
                 cnt++
@@ -723,7 +732,8 @@ class CalendarActivity : ParentActivity() {
     private fun setRecyclerViewClickEvent() {
         binding.run {
             yearAdapter.useItemClickEvent = true
-            yearAdapter.onItemClickListener = object : SixtyHorizontalSmallAdapter.OnItemClickListener {
+            yearAdapter.onItemClickListener =
+                object : SixtyHorizontalSmallAdapter.OnItemClickListener {
                     override fun onItemClick(year: Int) {
                         yearAdapter.notifyDataSetChanged()
                         setUpMonthPillar(Utils.getYearGanji(year)[0])

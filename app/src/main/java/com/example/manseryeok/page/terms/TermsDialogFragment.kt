@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.example.manseryeok.R
 import com.example.manseryeok.databinding.FragmentTermsDialogBinding
+import com.example.manseryeok.utils.SharedPreferenceHelper
 
 class TermsDialogFragment : DialogFragment() {
 
@@ -15,7 +16,7 @@ class TermsDialogFragment : DialogFragment() {
     }
 
     var onDialogAgreeListener: OnDialogAgreeListener? = null
-    private lateinit var binding: FragmentTermsDialogBinding
+    lateinit var binding: FragmentTermsDialogBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +39,12 @@ class TermsDialogFragment : DialogFragment() {
         super.onStart()
         val width = (resources.displayMetrics.widthPixels * 0.95).toInt()
         val height = (resources.displayMetrics.heightPixels * 0.95).toInt()
+
+        val termsAgree = SharedPreferenceHelper.isTermsAgree(requireContext())
+        if (termsAgree) {
+            binding.btnAgree.text = "닫기"
+        }
+
         dialog?.window?.setLayout(width, height)
     }
 
