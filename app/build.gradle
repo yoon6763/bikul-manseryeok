@@ -9,7 +9,7 @@ android {
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.example.manseryeok"
+        applicationId "com.bikulwon.manseryeok"
         minSdk 26
         targetSdk 32
         versionCode 1
@@ -37,7 +37,7 @@ android {
         viewBinding true
         dataBinding true
     }
-    namespace 'com.example.manseryeok'
+    namespace 'com.bikulwon.manseryeok'
 }
 
 dependencies {

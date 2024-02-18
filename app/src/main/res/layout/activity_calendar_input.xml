@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.manseryeok.models.UserInputViewModel" />
+            type="com.bikulwon.manseryeok.models.UserInputViewModel" />
     </data>
 
     <LinearLayout

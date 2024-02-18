@@ -18,3 +18,4 @@ local.properties
 app/src/main/java/com/example/manseryeok/Utils/SecretConstants.kt
 /.idea/
 /app/release/
+/app/src/main/java/com/bikulwon/manseryeok/utils/SecretConstants.kt
