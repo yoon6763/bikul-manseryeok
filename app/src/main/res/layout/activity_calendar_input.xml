@@ -1,11 +1,392 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".CalendarInputActivity">
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.bikulwon.manseryeok.models.UserInputViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical"
+        tools:context=".page.calendarname.CalendarInputActivity">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_calendar_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:elevation="3dp"
+            app:title="@string/obj_toolbar_calendar_input" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="15dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/styleInputText"
+                        android:layout_width="@dimen/input_text_width"
+                        android:layout_height="wrap_content"
+                        android:text="이름" />
+
+                    <EditText
+                        android:id="@+id/et_first_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@={viewModel.name}" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/gap_horizontal"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/styleInputText"
+                        android:layout_width="@dimen/input_text_width"
+                        android:layout_height="match_parent"
+                        android:text="@string/obj_gender" />
+
+                    <RadioGroup
+                        android:id="@+id/rg_gender"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/radio_height"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/radio_group_background"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/rb_gender_male"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/radio_height"
+                            android:layout_weight="1"
+                            android:background="@drawable/radio_button_background"
+                            android:button="@null"
+                            android:checked="@{viewModel.gender == 0}"
+                            android:gravity="center"
+                            android:onClick="@{(v) -> viewModel.onGenderButtonClick(0)}"
+                            android:text="@string/obj_gender_male"
+                            android:textColor="@drawable/radio_text" />
+
+                        <RadioButton
+                            android:id="@+id/rb_gender_female"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/radio_height"
+                            android:layout_weight="1"
+                            android:background="@drawable/radio_button_background"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:checked="@{viewModel.gender == 1}"
+                            android:onClick="@{(v) -> viewModel.onGenderButtonClick(1)}"
+                            android:text="@string/obj_gender_female"
+                            android:textColor="@drawable/radio_text" />
+                    </RadioGroup>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/gap_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/styleInputText"
+                        android:layout_width="@dimen/input_text_width"
+                        android:layout_height="match_parent"
+                        android:text="@string/obj_cal_type" />
+
+                    <RadioGroup
+                        android:id="@+id/rg_cal_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/radio_height"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/radio_group_background"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/rb_cal_type_sun"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/radio_height"
+                            android:layout_weight="1"
+                            android:background="@drawable/radio_button_background"
+                            android:button="@null"
+                            android:checked="true"
+                            android:gravity="center"
+                            android:onClick="@{(v) -> viewModel.onBirthTypeButtonClick(0)}"
+                            android:text="@string/obj_cal_type_sun"
+                            android:textColor="@drawable/radio_text" />
+
+                        <RadioButton
+                            android:id="@+id/rb_cal_type_moon"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/radio_height"
+                            android:layout_weight="1"
+                            android:background="@drawable/radio_button_background"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:onClick="@{(v) -> viewModel.onBirthTypeButtonClick(1)}"
+                            android:text="@string/obj_cal_type_moon"
+                            android:textColor="@drawable/radio_text" />
+
+                        <RadioButton
+                            android:id="@+id/rb_cal_type_moon_leap"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/radio_height"
+                            android:layout_weight="1"
+                            android:background="@drawable/radio_button_background"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:onClick="@{(v) -> viewModel.onBirthTypeButtonClick(2)}"
+                            android:text="@string/obj_cal_type_moon_leap"
+                            android:textColor="@drawable/radio_text" />
+                    </RadioGroup>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/gap_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/styleInputText"
+                        android:layout_width="@dimen/input_text_width"
+                        android:layout_height="wrap_content"
+                        android:text="@string/obj_input_birth" />
+
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:inputType="numberDecimal"
+                        android:text="@={viewModel.yearLabel}" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:text="년" />
+
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:inputType="numberDecimal"
+                        android:text="@={viewModel.monthLabel}" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:text="월" />
+
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:inputType="numberDecimal"
+                        android:text="@={viewModel.dayLabel}" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="일" />
 
 
+                    <!--                    <EditText-->
+                    <!--                        android:id="@+id/et_input_birth"-->
+                    <!--                        android:layout_width="match_parent"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        android:clickable="true"-->
+                    <!--                        android:focusable="false"-->
+                    <!--                        android:gravity="center"-->
+                    <!--                        android:onClick="@{(v) -> viewModel.openBirthPicker(v)}"-->
+                    <!--                        android:text="@{viewModel.birthLabel}" />-->
+                </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/gap_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/styleInputText"
+                        android:layout_width="@dimen/input_text_width"
+                        android:layout_height="wrap_content"
+                        android:text="@string/obj_input_birth_time" />
+
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:enabled="@{viewModel.isIncludeTime}"
+                        android:gravity="center"
+                        android:inputType="numberDecimal"
+                        android:text="@={viewModel.hourLabel}" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:text="시" />
+
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:enabled="@{viewModel.isIncludeTime}"
+                        android:gravity="center"
+                        android:inputType="numberDecimal"
+                        android:text="@={viewModel.minuteLabel}" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:text="분" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="일"
+                        android:visibility="invisible" />
+
+                    <CheckBox
+                        android:id="@+id/cb_input_birth_time"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:buttonTint="@color/green"
+                        android:checked="@={!viewModel.isIncludeTime}"
+                        android:gravity="center"
+                        android:onCheckedChanged="@{(v, b) -> viewModel.clearBirthTimeInfo(b)}"
+                        android:text="@string/obj_input_birth_time_unknown" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/gap_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/styleInputText"
+                        android:layout_width="@dimen/input_text_width"
+                        android:layout_height="wrap_content"
+                        android:text="@string/obj_input_birth_place" />
+
+
+                    <EditText
+                        android:id="@+id/et_input_birth_place"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:gravity="center"
+                        android:text="@{viewModel.birthPlaceLabel}" />
+                </LinearLayout>
+
+                <CheckBox
+                    android:id="@+id/cb_use_summer_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:buttonTint="@color/green"
+                    android:checked="@={viewModel.useSummerTime}"
+                    android:text="서머타임 적용" />
+
+                <CheckBox
+                    android:id="@+id/cb_use_tokyo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:buttonTint="@color/green"
+                    android:checked="@={viewModel.useTokyoTime}"
+                    android:text="동경시 사용" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="※ 대한민국 표준시는 실제 경도보다 30분 느리며,\n 30분을 앞당겨 계산합니다.\n원하지 않을 경우 위 옵션을 체크해주세요."
+                    android:textColor="@color/gray" />
+
+            </LinearLayout>
+        </ScrollView>
+
+        <FrameLayout
+            android:id="@+id/container_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_edit_finish"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/btn_full_height"
+                android:background="@drawable/btn_navy"
+                android:text="수정 완료"
+                android:textColor="@color/mint" />
+
+        </FrameLayout>
+
+
+        <LinearLayout
+            android:id="@+id/container_next_page"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_name_input_finish"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/btn_full_height"
+                android:layout_weight="1"
+                android:background="@drawable/btn_mint"
+                android:foreground="?attr/selectableItemBackground"
+                android:text="@string/obj_search_name"
+                android:textColor="@color/navy" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_calender_input_finish"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/btn_full_height"
+                android:layout_weight="1"
+                android:background="@drawable/btn_navy"
+                android:foreground="?attr/selectableItemBackground"
+                android:text="@string/glb_search"
+                android:textColor="@color/mint" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</layout>

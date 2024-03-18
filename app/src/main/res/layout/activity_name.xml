@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".page.calendarname.NameActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:elevation="3dp"
+        app:title="@string/obj_toolbar_name" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical">
+
+            <RadioGroup
+                android:id="@+id/rg_birth_type"
+                android:layout_width="200dp"
+                android:layout_height="@dimen/btn_full_height"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginVertical="40dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/radio_group_background"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb_year"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:autoSizeTextType="uniform"
+                    android:background="@drawable/radio_button_background"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="년"
+                    android:textColor="@drawable/radio_text"
+                    tools:checked="true" />
+
+                <RadioButton
+                    android:id="@+id/rb_month"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:autoSizeTextType="uniform"
+                    android:background="@drawable/radio_button_background"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="월"
+                    android:textColor="@drawable/radio_text" />
+
+                <RadioButton
+                    android:id="@+id/rb_day"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:autoSizeTextType="uniform"
+                    android:background="@drawable/radio_button_background"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="일"
+                    android:textColor="@drawable/radio_text" />
+
+            </RadioGroup>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="세운 : "
+                    android:textSize="25sp" />
+
+                <EditText
+                    android:id="@+id/et_calender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:gravity="center_horizontal"
+                    android:paddingHorizontal="25dp"
+                    android:text="2020년  1월  1일"
+                    android:textSize="25sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_ganji_top"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textSize="@dimen/title_size"
+                    tools:text="卯" />
+
+                <TextView
+                    android:id="@+id/tv_birth_ganji_top"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textSize="@dimen/title_size"
+                    tools:text="卯" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textSize="@dimen/title_size" />
+
+                <TextView
+                    android:id="@+id/tv_birth_ganji_bottom"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textSize="@dimen/title_size"
+                    tools:text="卯" />
+
+                <TextView
+                    android:id="@+id/tv_ganji_bottom"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textSize="@dimen/title_size"
+                    tools:text="卯" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_name_score"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_name" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="30dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="메모"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/et_memo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/et_box_gray_outlined"
+                android:hint="메모를 입력하세요"
+                android:minHeight="60dp"
+                android:padding="10dp"
+                android:textColor="@color/black" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_share"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/btn_full_height"
+                android:layout_marginHorizontal="@dimen/gap_line_double"
+                android:layout_weight="1"
+                android:background="@drawable/box_mint"
+                android:drawableLeft="@drawable/ic_share"
+                android:drawableTint="@color/white"
+                android:foreground="?attr/selectableItemBackground"
+                android:padding="10dp"
+                android:text="@string/obj_result_share"
+                android:textSize="15sp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_goto_manseryeok"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/btn_full_height"
+                android:layout_margin="@dimen/gap_line_double"
+                android:background="@drawable/btn_navy_10"
+                android:foreground="?attr/selectableItemBackground"
+                android:paddingVertical="@dimen/gap_line"
+                android:text="만세력 보기"
+                android:textSize="15sp" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
