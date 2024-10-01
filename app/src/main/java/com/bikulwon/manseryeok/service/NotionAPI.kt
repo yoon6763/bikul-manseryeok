@@ -1,9 +1,11 @@
 package com.bikulwon.manseryeok.service
 
+import com.bikulwon.manseryeok.models.businessinfo.BusinessInfo
 import com.bikulwon.manseryeok.models.notion.request.AdvertiseRequestDTO
 import com.bikulwon.manseryeok.models.notion.response.advertise.AdvertiseResponseDTO
 import com.bikulwon.manseryeok.models.notion.response.inquery.InquiryRequestDTO
 import com.bikulwon.manseryeok.utils.SecretConstants
+import okhttp3.Response
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -19,7 +21,8 @@ interface NotionAPI {
         fun create(): NotionAPI {
             return Retrofit.Builder()
                 .baseUrl(baseNotionUri)
-                .addConverterFactory(GsonConverterFactory.create()).build()
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
                 .create(NotionAPI::class.java)
         }
     }
@@ -32,7 +35,6 @@ interface NotionAPI {
         @Body inquiryRequestDTO: InquiryRequestDTO
     ): Call<ResponseBody>
 
-
     @POST("v1/databases/{id}/query")
     fun getAdvertiseInfo(
         @Header("Notion-Version") notionVersion: String,
@@ -41,12 +43,11 @@ interface NotionAPI {
         @Body advertiseRequestDTO: AdvertiseRequestDTO
     ): Call<AdvertiseResponseDTO>
 
-
-    @GET("v1/databases/{id}/query")
+    @POST("v1/databases/{id}/query")
     fun getBusinessInfo(
-        @Header("Notion-Version") notionVersion: String = NOTION_API_VERSION,
-        @Header("Authorization") token: String = SecretConstants.NOTION_TOKEN,
-        @Path("id") databaseId: String = SecretConstants.NOTION_BUSINESS_INFO_DB_ID
-    ): Call<ResponseBody>
+        @Header("Notion-Version") notionVersion: String,
+        @Header("Authorization") token: String,
+        @Path("id") databaseId: String,
+    ): Call<BusinessInfo>
 
 }
