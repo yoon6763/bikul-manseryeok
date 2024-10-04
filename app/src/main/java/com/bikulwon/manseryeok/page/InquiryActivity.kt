@@ -7,9 +7,11 @@ import com.bikulwon.manseryeok.service.NotionAPI
 import com.bikulwon.manseryeok.utils.SecretConstants
 import com.bikulwon.manseryeok.databinding.ActivityInquiryBinding
 import com.bikulwon.manseryeok.models.notion.response.inquery.Children
+import com.bikulwon.manseryeok.models.notion.response.inquery.Email
 import com.bikulwon.manseryeok.models.notion.response.inquery.InquiryRequestDTO
 import com.bikulwon.manseryeok.models.notion.response.inquery.Paragraph
 import com.bikulwon.manseryeok.models.notion.response.inquery.Parent
+import com.bikulwon.manseryeok.models.notion.response.inquery.Phone
 import com.bikulwon.manseryeok.models.notion.response.inquery.Properties
 import com.bikulwon.manseryeok.models.notion.response.inquery.RichText
 import com.bikulwon.manseryeok.models.notion.response.inquery.Text
@@ -50,7 +52,11 @@ class InquiryActivity : ParentActivity() {
 
         val requestDTO = InquiryRequestDTO(
             parent = Parent(SecretConstants.NOTION_QUESTION_DB_ID),
-            properties = Properties(Title(List(1) { TitleX(Text(title)) })),
+            properties = Properties(
+                Title(List(1) { TitleX(Text(title)) }),
+                Email = Email("testEmail@naver.com"),
+                Phone = Phone("010-1234-5678"),
+            ),
             children = List(1) { Children(Paragraph(List(1) { RichText(Text(content)) })) }
         )
 
