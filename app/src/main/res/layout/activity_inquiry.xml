@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/gap_line"
             android:text="@string/obj_que_title"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <EditText
@@ -47,7 +47,7 @@
             android:layout_marginTop="@dimen/gap_vertical"
             android:layout_marginBottom="@dimen/gap_line"
             android:text="@string/obj_que_content"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <EditText
