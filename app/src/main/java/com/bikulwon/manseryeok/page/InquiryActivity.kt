@@ -1,15 +1,20 @@
 package com.bikulwon.manseryeok.page
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.MenuItem
 import com.bikulwon.manseryeok.R
 import com.bikulwon.manseryeok.service.NotionAPI
 import com.bikulwon.manseryeok.utils.SecretConstants
 import com.bikulwon.manseryeok.databinding.ActivityInquiryBinding
+import com.bikulwon.manseryeok.databinding.DialogInqueryIncludeUserInfoBinding
+import com.bikulwon.manseryeok.databinding.DialogInqueryNotIncludeUserInfoBinding
 import com.bikulwon.manseryeok.models.notion.response.inquery.Children
+import com.bikulwon.manseryeok.models.notion.response.inquery.Email
 import com.bikulwon.manseryeok.models.notion.response.inquery.InquiryRequestDTO
 import com.bikulwon.manseryeok.models.notion.response.inquery.Paragraph
 import com.bikulwon.manseryeok.models.notion.response.inquery.Parent
+import com.bikulwon.manseryeok.models.notion.response.inquery.Phone
 import com.bikulwon.manseryeok.models.notion.response.inquery.Properties
 import com.bikulwon.manseryeok.models.notion.response.inquery.RichText
 import com.bikulwon.manseryeok.models.notion.response.inquery.Text
@@ -37,10 +42,50 @@ class InquiryActivity : ParentActivity() {
 
         binding.run {
             btnInquiryFinish.setOnClickListener {
-                sendInquiry()
+                if (isExistUserInfo()) {
+                    showInquiryIncludeUserInfo()
+                } else {
+                    showInquiryNotIncludeUserInfo()
+                }
             }
         }
     }
+
+    private fun showInquiryIncludeUserInfo() {
+        val binding = DialogInqueryIncludeUserInfoBinding.inflate(layoutInflater)
+
+        Dialog(this).apply {
+            setContentView(binding.root)
+            setCanceledOnTouchOutside(false)
+            setCancelable(false)
+
+            binding.btnCancel.setOnClickListener { dismiss() }
+            binding.btnSend.setOnClickListener {
+                if (!binding.cbAgree.isChecked) {
+                    showShortToast("개인정보 수집 및 이용에 동의해주세요.")
+                    return@setOnClickListener
+                }
+                sendInquiry()
+            }
+        }.show()
+    }
+
+    private fun showInquiryNotIncludeUserInfo() {
+        val binding = DialogInqueryNotIncludeUserInfoBinding.inflate(layoutInflater)
+
+        Dialog(this).apply {
+            setContentView(binding.root)
+            setCanceledOnTouchOutside(false)
+            setCancelable(false)
+
+            binding.btnCancel.setOnClickListener { dismiss() }
+            binding.btnSend.setOnClickListener { sendInquiry() }
+        }.show()
+
+    }
+
+    private fun isExistUserInfo() = binding.etInquiryEmail.text.toString().isNotEmpty() ||
+            binding.etInquiryPhone.text.toString().isNotEmpty()
 
     private fun sendInquiry() {
         showProgress(this, getString(R.string.glb_please_wait))
@@ -50,7 +95,11 @@ class InquiryActivity : ParentActivity() {
 
         val requestDTO = InquiryRequestDTO(
             parent = Parent(SecretConstants.NOTION_QUESTION_DB_ID),
-            properties = Properties(Title(List(1) { TitleX(Text(title)) })),
+            properties = Properties(
+                Title = Title(List(1) { TitleX(Text(title)) }),
+                Email = Email(binding.etInquiryEmail.text.toString().ifEmpty { " " }),
+                Phone = Phone(binding.etInquiryPhone.text.toString().ifEmpty { " " })
+            ),
             children = List(1) { Children(Paragraph(List(1) { RichText(Text(content)) })) }
         )
 

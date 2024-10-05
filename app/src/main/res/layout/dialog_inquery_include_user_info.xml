@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:text=" [개인정보 제공에 대한 동의]\n
+\n
+고객 상담 및 문의 대응을 위하여\n
+고객님의 이메일과 전화번호를 수집/이용합니다\n
+\n
+• 제공 받는 자: 비결원\n
+• 개인정보 제공 및 이용 목적: 고객 상담 및 문의 사항 대응\n
+• 제공하는 개인정보 항목: 전화번호, 이메일 주소\n
+• 개인정보 보유 및 이용 기간: 수집일로부터 1년\n
+\n
+※ 귀하께서는 동의하지 않을 권리가 있습니다.\n
+동의하지 않을 경우 상담 및 문의 사항 서비스를\n
+제공 받을 수 없음을 알려드립니다\n
+\n
+개인정보 제공에 동의하십니까?"
+        android:textSize="15sp" />
+
+    <CheckBox
+        android:id="@+id/cb_agree"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="20dp"
+        android:text="위 내용을 확인하였으며, 동의합니다" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/btn_full_height"
+            android:layout_weight="1"
+            android:background="@drawable/btn_gray"
+            android:text="취소" />
+
+        <Button
+            android:id="@+id/btn_send"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/btn_full_height"
+            android:layout_weight="1"
+            android:background="@drawable/btn_mint"
+            android:text="전송" />
+
+    </LinearLayout>
+
+</LinearLayout>
