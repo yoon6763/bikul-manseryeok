@@ -55,7 +55,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private val notionAPI = NotionAPI.create()
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private var sliderJob: Job? = null
-    private var businessInfoContent = ""
     private val businessInfoService by lazy { BusinessInfoService() }
 
     override fun onCreate(savedInstanceState: Bundle?) {

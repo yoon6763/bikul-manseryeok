@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:text=" 이메일 혹은 전화번호를 입력하시지 않으면\n
+답신이 어렵습니다.\n
+계속 진행하시겠습니까?"
+        android:textSize="15sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/btn_full_height"
+            android:layout_weight="1"
+            android:background="@drawable/btn_gray"
+            android:text="취소" />
+
+        <Button
+            android:id="@+id/btn_send"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/btn_full_height"
+            android:layout_weight="1"
+            android:background="@drawable/btn_mint"
+            android:text="전송" />
+
+    </LinearLayout>
+
+</LinearLayout>

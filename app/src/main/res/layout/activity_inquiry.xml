@@ -15,51 +15,114 @@
         android:elevation="3dp"
         app:title="@string/obj_toolbar_question" />
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:paddingHorizontal="@dimen/gap_horizontal"
-        android:paddingVertical="@dimen/gap_vertical">
+        android:layout_weight="1">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/gap_line"
-            android:text="@string/obj_que_title"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/et_inquiry_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/et_box"
-            android:gravity="top"
-            android:hint="@string/obj_que_title_hint"
-            android:maxLines="3"
-            android:padding="@dimen/gap_line" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/gap_vertical"
-            android:layout_marginBottom="@dimen/gap_line"
-            android:text="@string/obj_que_content"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/et_inquiry_content"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/et_box"
-            android:gravity="top"
-            android:lineSpacingExtra="10dp"
-            android:hint="@string/obj_que_content_hint"
-            android:padding="@dimen/gap_line" />
-    </LinearLayout>
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/gap_horizontal"
+            android:paddingVertical="@dimen/gap_vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="비결원에 문의하실 내용을 남겨주세요"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="@dimen/gap_vertical"
+                android:text="답신을 원하신다면,\n이메일 혹은 전화번호 중 하나를 남겨주세요"
+                android:textColor="@color/gray" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/gap_line"
+                android:text="@string/obj_que_title"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/et_inquiry_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/et_box"
+                android:gravity="top"
+                android:hint="@string/obj_que_title_hint"
+                android:maxLines="3"
+                android:padding="@dimen/gap_line" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/gap_vertical"
+                android:layout_marginBottom="@dimen/gap_line"
+                android:text="@string/obj_que_email"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/et_inquiry_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/et_box"
+                android:gravity="top"
+                android:hint="@string/obj_que_email_hint"
+                android:inputType="textEmailAddress"
+                android:maxLines="3"
+                android:padding="@dimen/gap_line" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/gap_vertical"
+                android:layout_marginBottom="@dimen/gap_line"
+                android:text="@string/obj_que_phone"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/et_inquiry_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/et_box"
+                android:gravity="top"
+                android:hint="@string/obj_que_phone_hint"
+                android:inputType="phone"
+                android:maxLines="3"
+                android:padding="@dimen/gap_line" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/gap_vertical"
+                android:layout_marginBottom="@dimen/gap_line"
+                android:text="@string/obj_que_content"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/et_inquiry_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/et_box"
+                android:gravity="top"
+                android:hint="@string/obj_que_content_hint"
+                android:lineSpacingExtra="10dp"
+                android:minLines="5"
+                android:padding="@dimen/gap_line" />
+        </LinearLayout>
+
+    </ScrollView>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_inquiry_finish"
