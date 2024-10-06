@@ -92,8 +92,9 @@ dependencies {
     implementation 'jp.wasabeef:glide-transformations:4.3.0'
 
     // Firebase
-    implementation platform('com.google.firebase:firebase-bom:29.0.0')
+    implementation(platform("com.google.firebase:firebase-bom:33.4.0"))
     implementation 'com.google.firebase:firebase-core:21.1.1'
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-inappmessaging-display'
 }

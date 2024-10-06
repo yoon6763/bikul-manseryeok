@@ -37,6 +37,8 @@ import com.bikulwon.manseryeok.utils.Extras
 import com.bikulwon.manseryeok.utils.SecretConstants
 import com.bikulwon.manseryeok.utils.SharedPreferenceHelper
 import com.bikulwon.manseryeok.utils.Utils
+import com.google.firebase.FirebaseApp
+import com.google.firebase.inappmessaging.FirebaseInAppMessaging
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -60,6 +62,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        FirebaseApp.initializeApp(this)
+        FirebaseInAppMessaging.getInstance().isAutomaticDataCollectionEnabled = true
 
         window.statusBarColor = getColor(R.color.navy)
 
