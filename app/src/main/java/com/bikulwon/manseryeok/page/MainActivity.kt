@@ -31,6 +31,7 @@ import com.bikulwon.manseryeok.page.compass.CompassActivity
 import com.bikulwon.manseryeok.page.terms.BusinessInfoDialogFragment
 import com.bikulwon.manseryeok.page.terms.TermsDialogFragment
 import com.bikulwon.manseryeok.page.user.UserDBActivity
+import com.bikulwon.manseryeok.service.BusinessInfoService
 import com.bikulwon.manseryeok.service.NotionAPI
 import com.bikulwon.manseryeok.utils.Extras
 import com.bikulwon.manseryeok.utils.SecretConstants
@@ -47,7 +48,6 @@ import java.security.NoSuchAlgorithmException
 import java.util.*
 import kotlin.collections.ArrayList
 
-
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private val TAG = "MainActivityDev"
@@ -55,6 +55,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private val notionAPI = NotionAPI.create()
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private var sliderJob: Job? = null
+    private val businessInfoService by lazy { BusinessInfoService() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,10 +70,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             clMedia.setOnClickListener(this@MainActivity)
             clQuestion.setOnClickListener(this@MainActivity)
         }
+
         setStatusBar()
         setDayLuck()
         setGridDisplaySize()
         setBottomLayout()
+
+        if (!businessInfoService.isInitialized()) {
+            businessInfoService.fetchData()
+        }
 
         CoroutineScope(Dispatchers.Main).launch {
             setAdvertise()
@@ -98,7 +104,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         tvBusinessInfo.setOnClickListener {
-            val businessInfoDialogFragment = BusinessInfoDialogFragment.newInstance()
+            if (!businessInfoService.isInitialized()) {
+                return@setOnClickListener
+            }
+            val businessInfoDialogFragment = BusinessInfoDialogFragment.newInstance(businessInfoService.content)
             businessInfoDialogFragment.show(supportFragmentManager, "businessInfoDialog")
         }
 

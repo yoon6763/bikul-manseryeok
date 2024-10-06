@@ -162,7 +162,11 @@
         상호: 비결원\n
         대표자: 안종희\n
         주소: 충청남도 공주시 계룡면 성밑길 35-3\n
-        전화번호: 010-8451-6442\n
+        전화번호: 010-7935-4243\n
     </string>
+    <string name="obj_que_email">이메일 (선택)</string>
+    <string name="obj_que_phone">전화번호 (선택)</string>
+    <string name="obj_que_email_hint">이메일을 입력해주세요</string>
+    <string name="obj_que_phone_hint">전화번호를 입력해주세요</string>
 
 </resources>
