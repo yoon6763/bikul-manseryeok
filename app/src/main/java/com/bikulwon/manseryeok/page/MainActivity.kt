@@ -107,7 +107,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             if (!businessInfoService.isInitialized()) {
                 return@setOnClickListener
             }
-            val businessInfoDialogFragment = BusinessInfoDialogFragment.newInstance(businessInfoService.content)
+            val businessInfoDialogFragment =
+                BusinessInfoDialogFragment.newInstance(businessInfoService.content)
             businessInfoDialogFragment.show(supportFragmentManager, "businessInfoDialog")
         }
 
@@ -305,9 +306,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     )
                 )
 
-//                clMedia.id -> Toast.makeText(applicationContext, "곧 오픈 예정입니다", Toast.LENGTH_SHORT)
-//                    .show()
-                clMedia.id -> startActivity(Intent(this@MainActivity, ComposeTestActivity::class.java))
+                clMedia.id -> Toast.makeText(applicationContext, "곧 오픈 예정입니다", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
     }
