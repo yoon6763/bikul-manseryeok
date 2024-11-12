@@ -305,8 +305,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     )
                 )
 
-                clMedia.id -> Toast.makeText(applicationContext, "곧 오픈 예정입니다", Toast.LENGTH_SHORT)
-                    .show()
+//                clMedia.id -> Toast.makeText(applicationContext, "곧 오픈 예정입니다", Toast.LENGTH_SHORT)
+//                    .show()
+                clMedia.id -> startActivity(Intent(this@MainActivity, ComposeTestActivity::class.java))
             }
         }
     }
