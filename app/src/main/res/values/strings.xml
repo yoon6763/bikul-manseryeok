@@ -168,5 +168,6 @@
     <string name="obj_que_phone">전화번호 (선택)</string>
     <string name="obj_que_email_hint">이메일을 입력해주세요</string>
     <string name="obj_que_phone_hint">전화번호를 입력해주세요</string>
+    <string name="title_activity_compose_test">ComposeTestActivity</string>
 
 </resources>

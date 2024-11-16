@@ -107,7 +107,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             if (!businessInfoService.isInitialized()) {
                 return@setOnClickListener
             }
-            val businessInfoDialogFragment = BusinessInfoDialogFragment.newInstance(businessInfoService.content)
+            val businessInfoDialogFragment =
+                BusinessInfoDialogFragment.newInstance(businessInfoService.content)
             businessInfoDialogFragment.show(supportFragmentManager, "businessInfoDialog")
         }
 
