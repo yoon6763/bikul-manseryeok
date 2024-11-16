@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Toast
 import com.bikulwon.manseryeok.adapter.decorator.RecyclerViewDecorator
 import com.bikulwon.manseryeok.adapter.userlist.item.UserRVItem
 import com.bikulwon.manseryeok.adapter.userlist.group.GroupListAdapter
@@ -24,7 +25,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.time.LocalDateTime
 
-class UserDBActivity : ParentActivity() {
+class UserDBActivity : ParentActivity(), DBBottomSheetDialogFragment.DBSheetDialogListener {
     private val binding by lazy { ActivityDbactivityBinding.inflate(layoutInflater) }
     private val userDao by lazy { AppDatabase.getInstance(applicationContext).userDao() }
     private val userGroupDAO by lazy { AppDatabase.getInstance(applicationContext).userGroupDAO() }
@@ -52,6 +53,12 @@ class UserDBActivity : ParentActivity() {
 
         binding.icSearchButton.setOnClickListener {
             startActivity(Intent(this@UserDBActivity, UserSearchActivity::class.java))
+        }
+
+        binding.icBackupButton.setOnClickListener {
+            val bottomSheetDialogFragment = DBBottomSheetDialogFragment()
+            bottomSheetDialogFragment.show(supportFragmentManager, bottomSheetDialogFragment.tag)
+            bottomSheetDialogFragment.listener = this
         }
     }
 
@@ -171,5 +178,13 @@ class UserDBActivity : ParentActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackupDataPressed() {
+        Toast.makeText(this, "백업 기능은 준비중입니다.", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onLoadDataPressed() {
+        Toast.makeText(this, "불러오기 기능은 준비중입니다.", Toast.LENGTH_SHORT).show()
     }
 }

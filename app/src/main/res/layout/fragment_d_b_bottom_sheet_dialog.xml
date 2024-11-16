@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/list"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clipToPadding="false"
+    android:orientation="vertical"
+    android:paddingHorizontal="20dp"
+    android:paddingVertical="20dp"
+    tools:context=".page.user.DBBottomSheetDialogFragment">
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_backup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_navy_5"
+        android:elevation="0dp"
+        android:foreground="?attr/selectableItemBackground"
+        android:paddingVertical="10dp"
+        android:text="이메일로 백업"
+        android:textColor="@color/white" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="20dp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_restore"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_mint_5"
+        android:elevation="0dp"
+        android:foreground="?attr/selectableItemBackground"
+        android:paddingVertical="10dp"
+        android:text="저장된 DB 복원"
+        android:textColor="@color/white" />
+
+</LinearLayout>
