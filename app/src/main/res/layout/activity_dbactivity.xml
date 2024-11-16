@@ -23,6 +23,15 @@
             android:layout_gravity="end"
             android:layout_marginEnd="20dp"
             android:src="@drawable/ic_search" />
+
+        <ImageView
+            android:id="@+id/ic_backup_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/ic_save" />
+
     </androidx.appcompat.widget.Toolbar>
 
     <androidx.recyclerview.widget.RecyclerView

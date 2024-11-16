@@ -75,7 +75,11 @@ class UserDBActivity : ParentActivity() {
                     val usersInThisGroup = userGroupDAO.getUsersByGroup(group.groupId)
 
                     usersInThisGroup.forEach { user ->
-                        val manseryeok = manseryeokSQLHelper.getDayData(user.birthYear, user.birthMonth, user.birthDay)
+                        val manseryeok = manseryeokSQLHelper.getDayData(
+                            user.birthYear,
+                            user.birthMonth,
+                            user.birthDay
+                        )
                         val tags = userTagDAO.getTagsByUser(user.userId)
 
                         val userRVItem = UserRVItem(user, manseryeok, tags)
@@ -87,12 +91,15 @@ class UserDBActivity : ParentActivity() {
                 }
 
 
-
                 val notGroupRVItem = GroupRVItem("미분류", ArrayList<UserRVItem>())
                 val notGroupUsers = userGroupDAO.getUsersWithoutGroup()
 
                 notGroupUsers.forEach { user ->
-                    val manseryeok = manseryeokSQLHelper.getDayData(user.birthYear, user.birthMonth, user.birthDay)
+                    val manseryeok = manseryeokSQLHelper.getDayData(
+                        user.birthYear,
+                        user.birthMonth,
+                        user.birthDay
+                    )
                     val tags = userTagDAO.getTagsByUser(user.userId)
 
                     val userRVItem = UserRVItem(user, manseryeok, tags)
@@ -105,7 +112,8 @@ class UserDBActivity : ParentActivity() {
         }
 
         binding.run {
-            groupListAdapter = GroupListAdapter(this@UserDBActivity, groupRvItems.toList(), calendarService)
+            groupListAdapter =
+                GroupListAdapter(this@UserDBActivity, groupRvItems.toList(), calendarService)
             rvDbList.addItemDecoration(RecyclerViewDecorator(30, Color.parseColor("#d9d9d9")))
             groupListAdapter.notifyDataSetChanged()
             rvDbList.adapter = groupListAdapter
