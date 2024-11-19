@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.core.content.FileProvider
 import com.bikulwon.manseryeok.adapter.decorator.RecyclerViewDecorator
 import com.bikulwon.manseryeok.adapter.userlist.item.UserRVItem
 import com.bikulwon.manseryeok.adapter.userlist.group.GroupListAdapter
@@ -23,6 +24,7 @@ import com.bikulwon.manseryeok.utils.ParentActivity
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import java.io.File
 import java.time.LocalDateTime
 
 class UserDBActivity : ParentActivity(), DBBottomSheetDialogFragment.DBSheetDialogListener {
@@ -181,10 +183,63 @@ class UserDBActivity : ParentActivity(), DBBottomSheetDialogFragment.DBSheetDial
     }
 
     override fun onBackupDataPressed() {
-        Toast.makeText(this, "백업 기능은 준비중입니다.", Toast.LENGTH_SHORT).show()
+        val backupFile = AppDatabase.copyDatabaseToExternalStorage(this)
+        if (backupFile == null) {
+            Toast.makeText(this, "데이터 백업에 실패했습니다.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val uri = FileProvider.getUriForFile(
+            this,
+            "com.bikulwon.manseryeok.fileprovider",
+            backupFile
+        )
+
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            type = "application/octet-stream"
+            putExtra(Intent.EXTRA_STREAM, uri)
+        }
+
+        startActivity(Intent.createChooser(intent, "데이터 백업"))
+
+        Toast.makeText(this, "데이터 백업이 완료되었습니다.", Toast.LENGTH_SHORT).show()
     }
 
     override fun onLoadDataPressed() {
-        Toast.makeText(this, "불러오기 기능은 준비중입니다.", Toast.LENGTH_SHORT).show()
+        val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
+            type = "application/octet-stream" // SQLite DB 파일 타입
+        }
+        startActivityForResult(Intent.createChooser(intent, "Select Database File"), REQUEST_CODE_SELECT_FILE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == REQUEST_CODE_SELECT_FILE && resultCode == RESULT_OK) {
+            data?.data?.let { uri ->
+                try {
+                    val inputStream = contentResolver.openInputStream(uri)
+                    val dbFile = File(getDatabasePath("database_name").absolutePath)
+
+                    // 기존 DB 파일 덮어쓰기
+                    inputStream?.use { input ->
+                        dbFile.outputStream().use { output ->
+                            input.copyTo(output)
+                        }
+                    }
+
+                    Toast.makeText(this, "Database restored successfully", Toast.LENGTH_LONG).show()
+                    // 복원 후 앱 재시작 권장
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    Toast.makeText(this, "Failed to restore database", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+    }
+
+
+    companion object {
+        private const val REQUEST_CODE_SELECT_FILE = 100
     }
 }
