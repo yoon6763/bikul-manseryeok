@@ -32,9 +32,11 @@ class DBBottomSheetDialogFragment : BottomSheetDialogFragment() {
         binding.run {
             btnBackup.setOnClickListener {
                 listener?.onBackupDataPressed()
+                dismiss()
             }
             btnRestore.setOnClickListener {
                 listener?.onLoadDataPressed()
+                dismiss()
             }
         }
     }
