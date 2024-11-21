@@ -1,6 +1,7 @@
 package com.bikulwon.manseryeok.models
 
 import android.content.Context
+import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import androidx.room.Database
@@ -20,6 +21,8 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
+import java.net.URI
+import java.net.URL
 
 @Database(
     entities = [User::class, UserGroup::class, Group::class, Tag::class, UserTag::class],
@@ -61,25 +64,24 @@ abstract class AppDatabase : RoomDatabase() {
         }
 
         // 데이터베이스 복원
-        fun restoreDatabase(context: Context, backupFile: File): Boolean {
-            INSTANCE?.close()
-
-            val result = try {
-                val dbFile = context.getDatabasePath("app_database")
-                backupFile.copyTo(dbFile, overwrite = true)
-                true
-            } catch (e: Exception) {
-                Toast.makeText(context, "데이터 복원에 실패했습니다.", Toast.LENGTH_SHORT).show()
-                // 실패 사유
-                Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
-                Log.e("AppDatabase", "restoreDatabase: ${e.message}")
-                e.printStackTrace()
-                false
-            } finally {
-                INSTANCE = getInstance(context)
+        fun restoreDatabase(context: Context, uri: Uri?) {
+            if (uri == null) {
+                Toast.makeText(context, "복원 중 에러가 발생하였습니다", Toast.LENGTH_SHORT).show()
+                return
             }
 
-            return result
+            getInstance(context).close()
+            val inputStream = context.contentResolver.openInputStream(uri)
+            val outputStream =
+                FileOutputStream(File(context.getDatabasePath("app_database").absolutePath))
+            inputStream.use { input ->
+                outputStream.use { output ->
+                    input?.copyTo(output)
+                }
+            }
+
+            getInstance(context)
+            Toast.makeText(context, "데이터 복원이 완료되었습니다", Toast.LENGTH_SHORT).show()
         }
 
         fun getInstance(context: Context): AppDatabase {

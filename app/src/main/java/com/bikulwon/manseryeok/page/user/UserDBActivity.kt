@@ -185,6 +185,7 @@ class UserDBActivity : ParentActivity(), DBBottomSheetDialogFragment.DBSheetDial
 
     override fun onBackupDataPressed() {
         val backupFile = AppDatabase.copyDatabaseToExternalStorage(this)
+
         if (backupFile == null) {
             Toast.makeText(this, "데이터 백업에 실패했습니다.", Toast.LENGTH_SHORT).show()
             return
@@ -208,10 +209,10 @@ class UserDBActivity : ParentActivity(), DBBottomSheetDialogFragment.DBSheetDial
 
     override fun onLoadDataPressed() {
         val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
-            type = "application/octet-stream" // SQLite DB 파일 타입
+            type = "application/octet-stream"
         }
         startActivityForResult(
-            Intent.createChooser(intent, "Select Database File"),
+            Intent.createChooser(intent, "데이터 소스를 선택하세요"),
             REQUEST_CODE_SELECT_FILE
         )
     }
@@ -221,18 +222,8 @@ class UserDBActivity : ParentActivity(), DBBottomSheetDialogFragment.DBSheetDial
 
         if (requestCode == REQUEST_CODE_SELECT_FILE && resultCode == RESULT_OK) {
             val uri = data?.data
-            AppDatabase.getInstance(applicationContext).close()
-            uri?.let {
-                val inputStream = contentResolver.openInputStream(it)
-                val outputStream =
-                    FileOutputStream(File(getDatabasePath("app_database").absolutePath))
-                inputStream.use { input ->
-                    outputStream.use { output ->
-                        input?.copyTo(output)
-                    }
-                }
-                println("Database restored successfully!")
-            }
+
+            AppDatabase.restoreDatabase(this, uri)
         }
     }
 
