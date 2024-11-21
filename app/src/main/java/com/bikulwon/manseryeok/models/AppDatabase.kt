@@ -1,6 +1,8 @@
 package com.bikulwon.manseryeok.models
 
 import android.content.Context
+import android.util.Log
+import android.widget.Toast
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -38,7 +40,10 @@ abstract class AppDatabase : RoomDatabase() {
 
         // 데이터베이스 백업
         fun copyDatabaseToExternalStorage(context: Context): File? {
-            return try {
+
+            INSTANCE?.close()
+
+            val result = try {
                 val dbFile = context.getDatabasePath("app_database")
                 val externalDir = context.getExternalFilesDir(null) ?: return null
                 val backupFile = File(externalDir, "backup_app_database.db")
@@ -48,28 +53,33 @@ abstract class AppDatabase : RoomDatabase() {
             } catch (e: Exception) {
                 e.printStackTrace()
                 null
+            } finally {
+                INSTANCE = getInstance(context)
             }
+
+            return result
         }
 
         // 데이터베이스 복원
         fun restoreDatabase(context: Context, backupFile: File): Boolean {
-            val currentDBPath = context.getDatabasePath("app_database").absolutePath
-            val backupFilePath = backupFile.absolutePath
+            INSTANCE?.close()
 
-            val src = FileInputStream(backupFilePath).channel
-            val dst = FileOutputStream(currentDBPath).channel
-
-            return try {
-                // 기존 DB 파일 덮어쓰기
-                dst.transferFrom(src, 0, src.size())
+            val result = try {
+                val dbFile = context.getDatabasePath("app_database")
+                backupFile.copyTo(dbFile, overwrite = true)
                 true
-            } catch (e: IOException) {
+            } catch (e: Exception) {
+                Toast.makeText(context, "데이터 복원에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                // 실패 사유
+                Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                Log.e("AppDatabase", "restoreDatabase: ${e.message}")
                 e.printStackTrace()
                 false
             } finally {
-                src.close()
-                dst.close()
+                INSTANCE = getInstance(context)
             }
+
+            return result
         }
 
         fun getInstance(context: Context): AppDatabase {

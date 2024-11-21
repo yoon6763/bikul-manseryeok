@@ -25,6 +25,7 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.io.File
+import java.io.FileOutputStream
 import java.time.LocalDateTime
 
 class UserDBActivity : ParentActivity(), DBBottomSheetDialogFragment.DBSheetDialogListener {
@@ -209,31 +210,28 @@ class UserDBActivity : ParentActivity(), DBBottomSheetDialogFragment.DBSheetDial
         val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
             type = "application/octet-stream" // SQLite DB 파일 타입
         }
-        startActivityForResult(Intent.createChooser(intent, "Select Database File"), REQUEST_CODE_SELECT_FILE)
+        startActivityForResult(
+            Intent.createChooser(intent, "Select Database File"),
+            REQUEST_CODE_SELECT_FILE
+        )
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == REQUEST_CODE_SELECT_FILE && resultCode == RESULT_OK) {
-            data?.data?.let { uri ->
-                try {
-                    val inputStream = contentResolver.openInputStream(uri)
-                    val dbFile = File(getDatabasePath("database_name").absolutePath)
-
-                    // 기존 DB 파일 덮어쓰기
-                    inputStream?.use { input ->
-                        dbFile.outputStream().use { output ->
-                            input.copyTo(output)
-                        }
+            val uri = data?.data
+            AppDatabase.getInstance(applicationContext).close()
+            uri?.let {
+                val inputStream = contentResolver.openInputStream(it)
+                val outputStream =
+                    FileOutputStream(File(getDatabasePath("app_database").absolutePath))
+                inputStream.use { input ->
+                    outputStream.use { output ->
+                        input?.copyTo(output)
                     }
-
-                    Toast.makeText(this, "Database restored successfully", Toast.LENGTH_LONG).show()
-                    // 복원 후 앱 재시작 권장
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    Toast.makeText(this, "Failed to restore database", Toast.LENGTH_LONG).show()
                 }
+                println("Database restored successfully!")
             }
         }
     }
