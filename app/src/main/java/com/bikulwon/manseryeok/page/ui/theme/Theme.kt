@@ -53,7 +53,8 @@ fun ManseryeokTheme(
     }
 
     MaterialTheme(
-        colorScheme = colorScheme,
+//        colorScheme = colorScheme,
+        colorScheme = LightColorScheme, // DarkColorScheme 사용 안함
         typography = Typography,
         content = content
     )
