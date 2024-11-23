@@ -9,14 +9,14 @@ plugins {
 }
 
 android {
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.bikulwon.manseryeok"
         minSdk 26
-        targetSdk 33
-        versionCode 4
-        versionName "1.02"
+        targetSdk 34
+        versionCode 7
+        versionName "1.1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 

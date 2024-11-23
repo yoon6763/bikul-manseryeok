@@ -265,7 +265,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             e.printStackTrace()
         }
         if (packageInfo == null) Log.e("KeyHash", "KeyHash:null")
-        for (signature in packageInfo!!.signatures) {
+        for (signature in packageInfo!!.signatures!!) {
             try {
                 val md: MessageDigest = MessageDigest.getInstance("SHA")
                 md.update(signature.toByteArray())
