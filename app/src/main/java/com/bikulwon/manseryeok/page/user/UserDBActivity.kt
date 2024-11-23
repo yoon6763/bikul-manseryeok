@@ -5,7 +5,10 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.compose.material3.AlertDialog
 import androidx.core.content.FileProvider
+import com.bikulwon.manseryeok.R
 import com.bikulwon.manseryeok.adapter.decorator.RecyclerViewDecorator
 import com.bikulwon.manseryeok.adapter.userlist.item.UserRVItem
 import com.bikulwon.manseryeok.adapter.userlist.group.GroupListAdapter
@@ -21,6 +24,7 @@ import com.bikulwon.manseryeok.page.calendarname.NameActivity
 import com.bikulwon.manseryeok.service.calendar.CalendarService
 import com.bikulwon.manseryeok.utils.Extras
 import com.bikulwon.manseryeok.utils.ParentActivity
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -184,37 +188,51 @@ class UserDBActivity : ParentActivity(), DBBottomSheetDialogFragment.DBSheetDial
     }
 
     override fun onBackupDataPressed() {
-        val backupFile = AppDatabase.copyDatabaseToExternalStorage(this)
+        AlertDialog.Builder(this, R.style.AlertDialogCustom)
+            .setTitle("데이터 복원")
+            .setMessage("안드로이드 정책 상 로컬 파일 시스템이 아닌 이메일, 카카오톡, 클라우드 등에 백업을 진행합니다.")
+            .setPositiveButton("확인") { _, _ ->
+                val backupFile = AppDatabase.copyDatabaseToExternalStorage(this)
 
-        if (backupFile == null) {
-            Toast.makeText(this, "데이터 백업에 실패했습니다.", Toast.LENGTH_SHORT).show()
-            return
-        }
+                if (backupFile == null) {
+                    Toast.makeText(this, "데이터 백업에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                    return@setPositiveButton
+                }
 
-        val uri = FileProvider.getUriForFile(
-            this,
-            "com.bikulwon.manseryeok.fileprovider",
-            backupFile
-        )
+                val uri = FileProvider.getUriForFile(
+                    this,
+                    "com.bikulwon.manseryeok.fileprovider",
+                    backupFile
+                )
 
-        val intent = Intent(Intent.ACTION_SEND).apply {
-            type = "application/octet-stream"
-            putExtra(Intent.EXTRA_STREAM, uri)
-        }
+                val intent = Intent(Intent.ACTION_SEND).apply {
+                    type = "application/octet-stream"
+                    putExtra(Intent.EXTRA_STREAM, uri)
+                }
 
-        startActivity(Intent.createChooser(intent, "데이터 백업"))
-
-        Toast.makeText(this, "데이터 백업이 완료되었습니다.", Toast.LENGTH_SHORT).show()
+                startActivity(Intent.createChooser(intent, "데이터 백업"))
+            }
+            .setNegativeButton("취소") { _, _ -> }
+            .create()
+            .show()
     }
 
     override fun onLoadDataPressed() {
-        val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
-            type = "application/octet-stream"
-        }
-        startActivityForResult(
-            Intent.createChooser(intent, "데이터 소스를 선택하세요"),
-            REQUEST_CODE_SELECT_FILE
-        )
+        AlertDialog.Builder(this, R.style.AlertDialogCustom)
+            .setTitle("데이터 복원")
+            .setMessage("데이터를 복원하려면 백업했던 DB 파일을 선택하세요.\n(확장자: .db)\n\n * 주의 *\n복원 시 기존 데이터는 삭제됩니다.")
+            .setPositiveButton("확인") { _, _ ->
+                val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
+                    type = "application/octet-stream"
+                }
+                startActivityForResult(
+                    Intent.createChooser(intent, "데이터 소스를 선택하세요"),
+                    REQUEST_CODE_SELECT_FILE
+                )
+            }
+            .setNegativeButton("취소") { _, _ -> }
+            .create()
+            .show()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
