@@ -108,9 +108,12 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCBMxOrA67nzoiH0_jrhf9rqMyvaSkmFgo" />
+<!--        <meta-data-->
+<!--            android:name="com.naver.maps.map.CLIENT_ID"-->
+<!--            android:value="0qtamtem0w" />-->
         <meta-data
-            android:name="com.naver.maps.map.CLIENT_ID"
-            android:value="1usbnlh4m0" />
+            android:name="com.naver.maps.map.NCP_KEY_ID"
+            android:value="0qtamtem0w" />
     </application>
 
 </manifest>
